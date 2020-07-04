@@ -1,15 +1,19 @@
 language: "node_js"
 node_js:
   - "node"
+before_install:
+  - find . -type f -name "*.md" ! -path "./README.md" -a ! -path "./SUMMARY.md"|xargs -i sed -ri '/^<extoc>/d;0,/^## /s/(^## .*)/\n<extoc><\/extoc>\n\n\1/' '{}'
 install:
-  - "npm install -g gitbook"
-  - "npm install -g gitbook-cli --force"
+  - "npm install -g gitbook@3.2.3"
+  - "npm install gitbook-cli@2.3.2"
 branches:
   only:
     - master
 env:
   global:
     - GH_REF: github.com/bond-huang/huang.git
+    - secure: "AAAAB3NzaC1yc2EAAAADAQABAAABgQDN783q7WwWmgZVmyUjO9qq2UMReh/eTimiHNIohJgWRV1ZwpTcFcDkTSij67uLJ1F8flounyWGKBfDHv12zw84WhjIQEqpkm7o591l+tY7YEvnPgJq/kILrYRZu1N8g7aLl7oF2sHEgD/xb+KiVzhsFQtwkJOHRUGszmrB3hLpNv4ta65wGdRLwAgKvOJYKuMJt7q6Ir2cjzd5J+ctyuyz4vv4LlxNUy3cDbawTXjhiQeBSMe8tVx4miIp7aiJQkbgUqsshOMnH95VptUDCDK3+sfHTDrTC85hnniS9UfU9dvfXBqnOVM+meKiLWHMl60NAKvvOjtYYm/htKnXwfifVmoDWCzdVYY87JskKvqVl1XIUbktOVZ6KhCM03UkTYqsjBsK0qnMrTUIs1vh1vNfpCCm38vw8g+iJXgC/asx2Hma9UWbEYDmNCjt5FNzHggAUWOklfb9XBRBjEz8woKe6zHNAju+0FDU9TzaTz1claE4AiyP7VU7CXU+QhVabfc= AzureAD+QianHuang@DESKTOP-TUI7PSP"
+#sudo: false
 script:
-  - bash summary_crt.sh
+  - bash summary_create.sh
   - travis_wait 100 bash deploy.sh
