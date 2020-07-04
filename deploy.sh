@@ -1,5 +1,5 @@
 #!/bin/bash
-git config user.name "huang"
+git config user.name "bond-huang"
 git config user.email "huang19891023@163.com"
 git checkout -b gitbook
 git status
