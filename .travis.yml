@@ -3,7 +3,7 @@ node_js:
   - "node"
 install:
   - "npm install -g gitbook"
-  - "npm install -g gitbook-cli"
+  - "npm install -g gitbook-cli --force"
 branches:
   only:
     - master
