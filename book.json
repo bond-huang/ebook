@@ -1,7 +1,7 @@
 {
-    "title": "huang",
-    "author": "author",
-    "description": "desc",
+    "title": "book",
+    "author": "huang",
+    "description": "my notes",
     "extension": null,
     "generator": "site",
     "links": {
@@ -36,11 +36,19 @@
         "-lunr",
         "-search",
         "search-plus",
-        "anchor-navigation-ex@1.0.10",
-        "editlink"
+        "anchor-navigation-ex-toc@0.0.9",
+        "editlink",
+        "copy-code-button"
     ],
     "pluginsConfig": {
-        "anchor-navigation-ex": {
+        "github": {
+            "url": "https://github.com/bond-huang/huang"
+        },
+        "editlink": {
+            "base": "https://github.com/bond-huang/huang/master",
+            "label": "编辑本页"
+        },
+        "anchor-navigation-ex-toc": {
             "showLevel": false,
             "mode": "float",
             "float": {
