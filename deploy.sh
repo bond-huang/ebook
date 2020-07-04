@@ -1,6 +1,8 @@
 #!/bin/bash
-git config user.name "bond-huang"
-git config user.email "huang19891023@163.com"
+git config user.name "huang"
+git config user.email "huang19891023@qq.com"
+git config --global core.quotepath false
+
 git checkout -b gitbook
 git status
 git add .
@@ -12,6 +14,7 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 cd _book
+sed -i '/a href.*\.md/s#\.md#.html#g;/a href.*README\.html/s#README\.html##g' SUMMARY.html
 git init
 git checkout --orphan gh-pages
 git status
