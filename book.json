@@ -1,0 +1,54 @@
+{
+    "title": "blog",
+    "author": "author",
+    "description": "desc",
+    "extension": null,
+    "generator": "site",
+    "links": {
+        "sharing": {
+            "all": null,
+            "facebook": null,
+            "google": null,
+            "twitter": null,
+            "weibo": null
+        }
+    },
+    "pdf": {
+        "fontSize": 18,
+        "footerTemplate": null,
+        "headerTemplate": null,
+        "margin": {
+            "bottom": 36,
+            "left": 62,
+            "right": 62,
+            "top": 36
+        },
+        "pageNumbers": false,
+        "paperSize": "a4"
+    },
+    "plugins": [
+        "advanced-emoji",
+        "toggle-chapters",
+        "theme-comscore",
+        "splitter",
+        "github",
+        "-sharing",
+        "-lunr",
+        "-search",
+        "search-plus",
+        "anchor-navigation-ex@1.0.10",
+        "editlink"
+    ],
+    "pluginsConfig": {
+        "anchor-navigation-ex": {
+            "showLevel": false,
+            "mode": "float",
+            "float": {
+                "showLevelIcon": false,
+                "level1Icon": "fa fa-hand-o-right",
+                "level2Icon": "fa fa-hand-o-right",
+                "level3Icon": "fa fa-hand-o-right"
+            }
+        }
+    }
+}

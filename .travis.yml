@@ -1,0 +1,15 @@
+language: "node_js"
+node_js:
+  - "node"
+install:
+  - "npm install -g gitbook@3.2.3"
+  - "npm install -g gitbook-cli@2.3.2"
+branches:
+  only:
+    - master
+env:
+  global:
+    - GH_REF: github.com/bond-huang/huang.git
+script:
+  - bash summary_crt.sh
+  - travis_wait 100 bash deploy.sh
