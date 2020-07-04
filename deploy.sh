@@ -1,6 +1,6 @@
 #!/bin/bash
 git config user.name "huang"
-git config user.email "huang19891023@qq.com"
+git config user.email "huang19891023@163.com"
 git config --global core.quotepath false
 
 git checkout -b gitbook
