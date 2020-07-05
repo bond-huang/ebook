@@ -1,11 +1,9 @@
 # Welcome to Bond's eBook!  
 
 
-
-在Github中闲逛，发现了一个由Gitbook构建的Blog，称为Book更恰当，极其简洁，用手机查看也非常方便，甚是喜欢。于是搭建了一个，记录一些学习笔记，分享一些经验，也方便自己查阅资料。
+在Github中发现了一个由Gitbook构建的Blog，称为Book更恰当，极其简洁，用手机查看也非常方便，甚是喜欢。于是搭建了一个，记录学习笔记，分享经验，方便随时查阅。
 
 ## 作者简介
-
 
 -  Email : 576608644@qq.com
 
@@ -15,6 +13,10 @@
 
 
 ## Book说明
+
+** 操作说明 **
+- 点击页面左上角可以打开目录导航
+- 点击页面上方字母A可以切换字体大小和类型（Serrif & Scans），以及切换背景模式（White & Sepia &Night）
 
 ** 欢迎收藏交流 **
 
@@ -27,5 +29,7 @@
 - [Travis-CI](https://www.travis-ci.org/) ：持续构建
 - [VScode](https://code.visualstudio.com/) ：编写MarkDown
 
+## 搭建说明
 
 本Book搭建方式参考Lyon的分享，bolgs主页：[Lyon's blog](https://lyonyang.github.io/blogs)
+
