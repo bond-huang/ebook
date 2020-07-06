@@ -18,8 +18,10 @@
 ##### import导入方式
 一个项目一般是多个包和多个模块之间的相互调用构成的，在其中一个模块里面定义了一个变量，可以在另外一个模块中使用，不需要重复定义，例如在ifelse.py中定义a：
 ![import示例](import示例-1.png)
+
 在while_for.py中引用变量a，用import函数，如果ifelse.py 和while_for.py是同一级别，输入模块名即可：
 ![import示例](import示例-2.png)
+
 运行输出结果：
 ```shell
 PS D:\Python\codefile\Python_1> python while_for.py
@@ -27,6 +29,7 @@ PS D:\Python\codefile\Python_1> python while_for.py
 ```
 如果不是同级别，需要加上完整路径，及包名字，命名规则和之前一样：
 ![import示例](import示例-3.png)
+
 运行输出结果和之前一样。我们在运行过程中，可以看到自动生成了__pycache___包，并且下面有一个pyc文件，是一个二进制文件，是python自动生成的字节码，可以提升python程序运行的效率。
 
 improt导入的是一个模块，不能直接导入一个模块的变量，引入模块变量时候就需要:模块名.变量名
