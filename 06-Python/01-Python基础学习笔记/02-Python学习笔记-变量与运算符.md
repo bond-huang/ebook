@@ -91,8 +91,10 @@ TypeError: 'tuple' object does not support item assignment
 ('Thor', 'Iron Man', 'Captain America', ['THANOS', 'Loki'])
 ```
 ### 运算符
+
 基本算数运算符：+（加） 、-（减）、*（乘）、/ （除）、//（整除）、%（求余）、**（次方）；
-赋值运算符：=、+=、*=、/=、%=、**=；
+
+赋值运算符：=、+=、*=、/=、%=、**= ；
 比较（关系）运算符：==、!=、>、<、>=、<=;
 逻辑运算符：and（与）、or（或）、not（非）；
 成员运算符：in(是否在)、not in*(是否不在);
