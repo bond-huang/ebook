@@ -34,6 +34,7 @@ I am come form Asgard
 - 要使用类，就需要将类实例化，实例中superhero=SuperHero()就是将类实例化操作；
 - 在类中的函数，模块参数必须加上self，在函数中调用类中的变量，需要加上路径，例如示例中self.name； 
 - 运行和调用类需要放在类的外部，在类内部调用函数会报错。
+
 #### 在其它模块调用类
 新建一个module_2.py，在里面调用module_1.py中的类，先封装module_1.py实例化和调用的操作，然后在module_2中输入如下代码：
 ```python
@@ -100,6 +101,7 @@ print(superhero.name)
 PS D:\Python\codefile\object> python module_2.py
 
 ```
+
 可以看到是一个空字符，说明上面的代码有问题，得不到我们想要的结果，其实打印出来的是类变量，即name=''。
 在函数中，如果在函数中定义了一个和全局变量同名的局部变量，局部变量不会覆盖全局变量。
 在类中，需要理解两个变量：类变量，实例变量
