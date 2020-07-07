@@ -16,8 +16,8 @@ Python初学者，本小节是学习基础知识中的做的笔记。
 - Python学习笔记-正则表达式
 - Python学习笔记-JSON
 - Python学习笔记-枚举
-- Python学习笔记-高级语法_闭包
-- Python学习笔记-函数式编程&装饰器
+- Python学习笔记-高级语法与应用
+- Python学习笔记-函数式编程
 - Python学习笔记-爬虫学习
 - Python学习笔记-Pythonic
 
