@@ -31,7 +31,8 @@ V8.7以后的HMC版本就都是Enhanced GUI，并且不提供Classis界面
 - 在“Service Data Destination”选项中选择“USB flash memory drive”
 - 在“product engineering files”选项中输入“/var/hsc/log/iqyy*”
 - 点击“Send Problem Reports”页面右上角的“Send Now”按钮，就可以把iqyylog数据发送到U盘了
-- -完成后拔掉U盘，里面iqyy_.zip即是iqyylog
+- 完成后拔掉U盘，里面iqyy_.zip即是iqyylog
+
 ### ASMI LOG
 ASMI全称Advanced System Management Interface,是IBM Power小型机管理界面
 ASM log会记录小型机报告的软硬件事件，在进行故障判断时候此日志也很重要
