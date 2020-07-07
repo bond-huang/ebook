@@ -19,6 +19,7 @@ V8.7以前的HMC版本有Classis界面
 - 在“product engineering files”选项中输入“/var/hsc/log/iqyy*”
 - 最后点击 “send files”
 - 完成后拔掉U盘，里面iqyy_.zip即是iqyylog
+
 #### Enhanced GUI
 V8.7以后的HMC版本就都是Enhanced GUI，并且不提供Classis界面
 收集方法如下：
