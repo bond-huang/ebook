@@ -16,7 +16,7 @@
 
 ** 操作说明 **
 - 点击页面左上角可以打开目录导航
-- 点击页面上方字母A可以切换字体大小和类型（Serrif & Scans），以及切换背景模式（White & Sepia & Night）
+- 点击页面上方字母A可以切换字体大小和类型（Serif & Scans），以及切换背景模式（White & Sepia & Night）
 
 ** 欢迎收藏交流 **
 
