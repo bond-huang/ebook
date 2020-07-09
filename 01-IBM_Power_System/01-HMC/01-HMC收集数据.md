@@ -43,6 +43,7 @@ ASM log会记录小型机报告的软硬件事件，在进行故障判断时候�
 - 显示出事件后，在事件左侧复选框中选中需要收集的事件，当然也可以全选
 - 然后点击“Show Details”
 - 然后crtl+a全选，crtl+c拷贝，最后crtl+v拷贝到登录自己电脑上
+
 ### 收集RIO Topology
 Power小型机经常连接很多扩展柜，此日志对于排查I/O问题很重要
 ### 收集Resource DUMP
