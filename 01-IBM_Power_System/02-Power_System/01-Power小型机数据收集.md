@@ -28,7 +28,7 @@ Power小型机都配有两个HMC管理口，默认ip如下：
 - 选择选项“Error/Event Log”
 - 显示出事件后，在事件左侧复选框中选中需要收集的事件，当然也可以全选
 - 然后点击“Show Details”
-- 然后crtl+a全选，crtl+c拷贝，最后crtl+v拷贝到登录自己电脑上
+- 然后crtl+a全选，crtl+c拷贝，最后crtl+v拷贝到自己电脑上
 
 ### 收集snap
 Power系列小型机大多运行AIX系统，部分是AS400或者Linux，此处介绍常见的AIX系统中有硬件故障时候的日志收集，其它系统在相应系统中介绍。
