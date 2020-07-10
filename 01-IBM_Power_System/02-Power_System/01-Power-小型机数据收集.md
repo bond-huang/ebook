@@ -1,17 +1,17 @@
-# Power_小型机收集数据
+# Power-小型机收集数据
 ### 简介
 系统日志是解决问题的关键，本文介绍下收集Power小型机故障日志一些方法，对硬件故障判断和处理很重要。
 ### 收集iqyylog
 HMC 是Power小型机管理控制台之一，可以对小型机进行硬件管理和逻辑配置等
 HMC 受管小型机故障事件都会报告给HMC进行记录，HMC 中的iqyylog 记录了HMC
 收集方法参考HMC章节内容：
-[HMC收集数据](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC_%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html)
+[HMC-收集数据](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC_%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html)
 ### 收集ASMI log
 ASMI全称Advanced System Management Interface,是IBM Power小型机管理界面
 ASMI log会记录小型机报告的软硬件事件，在进行故障判断时候此日志也很重要
 #### HMC中收集
 收集方法参考HMC章节内容：
-[HMC收集数据](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC_%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html)
+[HMC-收集数据](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC_%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html)
 #### Laptop直连收集
 如果没有HMC，或者HMC不方便收集，可以通过笔记本电脑直连到设备进行收集。
 Power小型机都配有两个HMC管理口，默认ip如下：
@@ -53,4 +53,4 @@ Power小型机经常连接很多扩展柜，此日志对于排查I/O问题很重
 - 点击“Initiate dump”
 
 收集在HMC中进行，方法同样参考HMC章节内容：
-[HMC收集数据](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC_%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html)
+[HMC-收集数据](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC_%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html)
