@@ -15,3 +15,4 @@ HMC全称是Hardware Management Console，是管理IBM Power小型机的控制�
 
 
 
+
