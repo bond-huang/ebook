@@ -10,3 +10,6 @@ HMC全称是Hardware Management Console，是管理IBM Power小型机的控制�
 ## 内容
 
 - [HMC收集数据](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html) 
+- [HMC常用命令](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/02-HMC%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
+- [HMC中shell脚本使用](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/03-HMC%E4%B8%ADshell%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8.html)
+
