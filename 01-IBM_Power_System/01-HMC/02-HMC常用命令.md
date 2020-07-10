@@ -179,3 +179,4 @@ chhwres -r virtualio -m <managed system> -o r -p <partition name> -s 3
 ~>mksyscfg -r prof -m <managed frames> -f /tmp/profcfg
 #为指定受管系统中的指定分区创建profile
 ~>mksyscfg -r prof -m <managed frames> -o save -p <partition name> -n <profile name>
+```
