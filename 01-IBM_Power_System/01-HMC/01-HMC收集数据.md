@@ -37,7 +37,10 @@ V8.7以后的HMC版本就都是Enhanced GUI，并且不提供Classis界面
 ASMI全称Advanced System Management Interface,是IBM Power小型机管理界面
 ASM log会记录小型机报告的软硬件事件，在进行故障判断时候此日志也很重要
 通过HMC收集方法如下，建议通过web远程：
-- 用admin用户登录到ASMI 
+- 选中需要收集的受管Power小型机
+- 展开选项“操作”
+- 点击选项“启动Advanced System Management(ASM)”
+- 用admin用户登录到ASMI
 - 选择选项“Select System Service Aids”
 - 选择选项“Error/Event Log”
 - 显示出事件后，在事件左侧复选框中选中需要收集的事件，当然也可以全选
