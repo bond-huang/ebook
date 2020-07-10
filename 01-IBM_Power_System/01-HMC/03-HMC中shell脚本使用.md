@@ -7,6 +7,7 @@ HMC Scanner可以用于HMC配置信息收集，主要是Lpar的一些重要配�
 此工具有shell也有java，跑的时候还是比较慢，耐心等待，但是数据确实很全面的。
 官方链接：
 [HMC Scanner](http://www.ibm.com/developerworks/wikis/display/WikiPtype/HMC+Scanner)
+
 由于HMC的一些局限性，我觉得此工具提供了一个很好的接口，在上面进行修改或者添加，得到自己定制的内容，也是很不错的。
 ### for循环中运算问题
 近期在HMC中用hscroot用户跑一个for循环去对分区进行批量资源创建的时候，发现运算还是有点不一样。
