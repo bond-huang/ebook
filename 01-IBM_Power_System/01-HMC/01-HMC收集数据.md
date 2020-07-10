@@ -51,5 +51,15 @@ ASM log会记录小型机报告的软硬件事件，在进行故障判断时候�
 Power小型机经常连接很多扩展柜，此日志对于排查I/O问题很重要
 ### 收集Resource DUMP
 DUMP日志对于Power小型机和AIX分区突发性严重故障的排查很重要，例如机器宕机，AIX系统挂死等
+收集方法如下：
+- 登录到HMC
+- 选中一台受管小型机
+- 展开选项“Serviceability”
+- 选择选项“Manage Dumps”
+- 弹出窗口可以看到DUMP的list，选择对应DUMP
+- 展开窗口上面导航栏的选项“Selected”
+- 选择选项“Copy Dump to Media”可以传到U盘或者光盘
+- 选择选项““Copy Dump to Remote System”可以通过FTP传出来
+
 ### 收集pedbg
 对于HMC本身问题以及HMC和Power小型机连接之间的问题排查很重要
