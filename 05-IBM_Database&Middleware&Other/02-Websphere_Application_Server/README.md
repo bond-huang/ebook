@@ -8,4 +8,4 @@ IBM Websphere_Application_Server是一种高性能的 Java 应用服务器，可
 
 ## 内容
 
-- [WAS-数据收集](https://bond-huang.github.io/huang/01-IBM_Power_System/01-HMC/01-HMC_%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html) 
+- [WAS-数据收集](https://bond-huang.github.io/huang/05-IBM_Database&Middleware&Other/02-Websphere_Application_Server/01-WAS-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html) 
