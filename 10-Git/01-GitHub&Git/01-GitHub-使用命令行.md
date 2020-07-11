@@ -1,4 +1,4 @@
-# GitHub使用命令行
+# GitHub-使用命令行
 刚接触的一般会使用GitHub的web界面对自己的Repositories进行操作，简单方便。但是有些操作在web界面是无法完成的，例如就遇到想改文件夹名字，发现没找到，只能用命令行进行；在大批量的修改上传代码的时候，用命令行操作也能体现优势。
 ### 安装Git
 官方下载链接:[https://git-scm.com/downloads](https://git-scm.com/downloads)
