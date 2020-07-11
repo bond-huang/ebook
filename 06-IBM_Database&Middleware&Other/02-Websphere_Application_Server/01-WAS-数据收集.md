@@ -61,7 +61,7 @@ kill -3 <pid>
 ##### 其它日志
 目录<profile_root>/logs下的其它日志和server.xml文件
 
-#### hang or high CPU问题数据收集
+### hang or high CPU问题数据收集
 如果在使用WAS的过程中遇到性能，挂起或高CPU问题,
 可能原因有：
 - 操作系统CPU资源不足
