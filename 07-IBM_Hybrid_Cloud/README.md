@@ -9,7 +9,7 @@
 
 官方链接：[IBM Hybrid Cloud](https://www.ibm.com/cn-zh/cloud/hybrid?mhsrc=ibmsearch_a&mhq=%E6%B7%B7%E5%90%88%E4%BA%91)
 
-IBM混合云团队在YouKu上有个视频专栏进行介绍
+IBM混合云团队在YouKu上有个视频专栏进行介绍，
 视频链接：[IBM_Hybrid_Cloud_Support](http://i.youku.com/i/UMzg0MDQyOTUzMg==/playlists?spm=a2hzp.8244740.0.0)
 
 ## 内容
