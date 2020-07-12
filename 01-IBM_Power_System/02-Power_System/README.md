@@ -1,9 +1,14 @@
 # Power系列小型机
 
 ## 简介
-
 IBM Power System是采用Power处理器的商用服务器，通常称为Power小型机，最新系列是Power9系列；
 早期的RS/6000系列服务器和AS/400系列服务器目前都称为Power System。
+
+目前高端产品Power E980满配：
+- 192核Power9 SMT8 3.9GHz处理器
+- 64TB DDR4
+- 920GB/s内存带宽/节点
+- 32个PCIe4槽位 or 16个I/O扩展柜（12个PCIe3每柜）
 
 官方介绍：[Power Systems](https://www.ibm.com/cn-zh/it-infrastructure/power)
 
