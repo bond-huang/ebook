@@ -16,6 +16,6 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 
 ## 内容
 - [AIX](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/)
-- [AS400]https://bond-huang.github.io/huang/05-IBM_Operating_System/02-AS400/
+- [AS400](https://bond-huang.github.io/huang/05-IBM_Operating_System/02-AS400/)
 - [LinuxOne](https://bond-huang.github.io/huang/05-IBM_Operating_System/03-LinuxOne/)
 - [RedHat](https://bond-huang.github.io/huang/05-IBM_Operating_System/04-RedHat/)
