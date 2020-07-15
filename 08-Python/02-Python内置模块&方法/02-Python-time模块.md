@@ -1,6 +1,7 @@
 # Python-time模块
 ### time_时间的访问和转换
 该模块提供了各种时间相关的函数。可以使用以下函数在时间表示之间进行转换：
+
 从|到|使用
 ---|:---:|:---
 自纪元以来的秒数|UTC 的 struct_time|gmtime()
@@ -63,6 +64,7 @@ y=1, tm_yday=168, tm_isdst=1)
 ##### time.strftime(format,[t])
 转换一个元组或 struct_time 表示的由 gmtime() 或 localtime() 返回的时间到由 format 参数指定的字符串。如果未提供 t ，则使用由 localtime() 返回的当前时间。 format 必须是一个字符串。
 以下指令可以嵌入 format 字符串中。它们显示时没有可选的字段宽度和精度规范，并被 strftime() 结果中的指示字符替换：
+
 指令|含义
 ---|:---
 %a|本地化的缩写星期中每日的名称。
@@ -115,6 +117,7 @@ y=6, tm_yday=193, tm_isdst=-1)
 ```
 ##### class time.struct_time
 返回的时间值序列的类型为 gmtime() 、 localtime() 和 strptime() 。它是一个带有 named tuple 接口的对象：可以通过索引和属性名访问值。 存在以下值：
+
 索引|属性|值
 ---|:---:|:---
 0|tm_year|（例如，1993）
