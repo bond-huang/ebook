@@ -18,3 +18,4 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 
 ## 内容
 - [Switch-收集数据](https://bond-huang.github.io/huang/03-IBM_Storage_System/09-SAN_Switch/01-Switch-%E6%94%B6%E9%9B%86%E6%95%B0%E6%8D%AE.html)
+- [Switch-常用命令](https://bond-huang.github.io/huang/03-IBM_Storage_System/09-SAN_Switch/02-Switch-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
