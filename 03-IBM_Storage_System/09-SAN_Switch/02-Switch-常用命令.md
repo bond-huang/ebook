@@ -41,6 +41,7 @@ nsallshow|查看fabric中的所有设备信息
 - 激活配置：`cfgEnable`
 
 zone配置相关常用命令如下：
+
 命令|用途
 ---|:---
 aliCreate|创建别名
