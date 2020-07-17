@@ -23,4 +23,20 @@ class Solution:
             nums[i] = x
         return nums
 ```
+刚开始做不熟悉LeetCode的模式，自己创建类和方法去解，可以实现功能，但是提交一直报错。刚开始没有用到切片方式，后来才想到，个人感觉还是上面切片方式简单，代码如下：
+```python
+class Solution:
+    num = 0
+    list = []
+    def runningSum(self,nums):
+        for i in nums:
+            self.__class__.num += i
+            self.__class__.list.append(self.__class__.num)
+        print(self.__class__.list)
+    def input_list(self):
+        list_input = eval(input())
+        self.runningSum(list_input)
+solution = Solution()
+solution.input_list()
+```
 ### 下一题还在做
