@@ -58,8 +58,6 @@ class Solution:
         count = 0
         for i in range(0,len(nums)):
             for j in range(0,len(nums)):
-                i = (i,j)[0]
-                j = (i,j)[1]
                 if nums[i] == nums[j] and i < j:
                     count += 1
         return count
