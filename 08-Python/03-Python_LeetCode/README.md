@@ -2,7 +2,8 @@
 
 ## 简介
 LeetCode-全球极客挚爱的技术成长平台。
-一些题目的解答过程，主要是用来学习。
+
+个人一些题目的解答过程，主要是用来学习。
 
 LeetCode官网:[https://git-scm.com/](https://git-scm.com/)
 ## 内容
