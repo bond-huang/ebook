@@ -55,13 +55,13 @@ Return the number of good pairs.
 ```python
 class Solution:
     def numIdenticalPairs(self, nums: List[int]) -> int:
-        pair = ((0,3),(0,4),(3,4),(2,5))
         count = 0
-        for (i,j) in pair:
-            i = (i,j)[0]
-            j = (i,j)[1]
-            if nums[i] == nums[j] and i < j:
-                count += 1
+        for i in range(0,len(nums)):
+            for j in range(0,len(nums)):
+                i = (i,j)[0]
+                j = (i,j)[1]
+                if nums[i] == nums[j] and i < j:
+                    count += 1
         return count
 ```
 ### 下一题解答中
