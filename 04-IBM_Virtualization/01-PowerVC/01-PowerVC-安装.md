@@ -1,5 +1,5 @@
 # PowerVC-安装
-PowerVC支持得系统不多，主要是RedHat和SUSE。但是当前还不不支持RHEL 8。RHEL 7.6 ALT支持PowerVC SDI版本1.4.4和1.4.4.1。
+PowerVC支持得系统不多，主要是RedHat和SUSE。但是当前还不支持RHEL 8。RHEL 7.6 ALT支持PowerVC SDI版本1.4.4和1.4.4.1。
 ### RedHat安装PowerVC
 系统环境：Red Hat Enterprise Linux 7.8 64 位
 #### 安装包准备
@@ -125,7 +125,7 @@ Select the edition to install:
    9 - Exit
 ```
 根据安装需求选择安装类型，中途提示license的回复1同意即可，防火墙提示根据需求选择。
-等待安装大约十几分钟，报错了，因为内存不够进程被killed了，看来虚拟机扛不住，不过方法应该没错。
+等待安装大约十几分钟，报错了，因为内存不够进程被killed了，看来笔记本的虚拟机扛不住，不过方法应该没错。
 ```
 ./install: line 929: 29414 Killed                  /usr/sbin/semanage permissive -d $domai
 nFailed to restore security context. See install log for details.
