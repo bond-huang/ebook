@@ -125,7 +125,7 @@ Select the edition to install:
    9 - Exit
 ```
 根据安装需求选择安装类型，中途提示license的回复1同意即可，防火墙提示根据需求选择。
-等待安装大约十几分钟，报错了，因为内存不够进程被killed了，看来笔记本的虚拟机扛不住，不过方法应该没错。
+等待安装大约十几分钟，报错了，因为内存不够进程被killed了，官方最低要求是10G的交换空间，看来笔记本的虚拟机扛不住，不过方法应该没错。
 ```
 ./install: line 929: 29414 Killed                  /usr/sbin/semanage permissive -d $domai
 nFailed to restore security context. See install log for details.
