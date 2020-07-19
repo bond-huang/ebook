@@ -96,9 +96,11 @@ repolist: 5,231
 RHEL8中自带了Python3，RHEL7.8中自带Python2，Python3会成为趋势，但是每次运行Python都要输入`python3`命令，会很不习惯，可以修改下。
 输入如下命令查看`python3`命令的位置：
 ```
-[root@redhat8 bin]#whereis python3
+[root@redhat8 bin]# whereis python3
+python3: /usr/bin/python3.6 /usr/bin/python3.6m /usr/bin/python3 /usr/lib/python3.6 /usr/l
+ib64/python3.6 /usr/include/python3.6m /usr/share/man/man1/python3.1.gz
 ```
-进入到`/etc/bin`目录下，查找python：
+进入到`/usr/bin`目录下，查找python：
 ```
 [root@redhat8 bin]# ls -l |grep python
 lrwxrwxrwx. 1 root root          25 Jul 18  2020 python3 -> /etc/alternatives/python3
