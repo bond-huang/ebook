@@ -92,3 +92,7 @@ chdev -dev <sea_adapter> -attr ha_mode=standby
 ```shell
 chdev -dev <sea_adapter> -attr ha_mode=auto
 ```
+##### 系统升级
+```shell
+ updateios -accept -install -dev <directory>
+ ```
