@@ -4,6 +4,7 @@ AIX系统中安装Python不复杂，不过相对Windows和Linux步骤还是麻�
 AIX 系统版本：7100-04-03-1642；Python版本:Python 3.7。
 ##### 安装包准备
 Python安装包：python3-3.7.6-1.aix6.1.ppc.rpm
+
 除了Python的安装包，还需要准备依赖包，也行版本不一样要求不一样，不知道需要什么依赖包的话，可以直接安装Python安装包，会有提示需要哪些包，如下所示：
 ```shell
 error: failed dependencies:
@@ -16,14 +17,14 @@ error: failed dependencies:
         sqlite >= 3.28.0 is needed by python3-3.7.6-1
 ```
 所以还需要准备包：
-bzip2-1.0.8-2.aix6.1.ppc.rpm          
-gdbm-1.18.1-1.aix6.1.ppc.rpm       
-readline-8.0-2.aix6.1.ppc.rpm
-sqlite-3.28.0-1.aix6.1.ppc.rpm 
+- bzip2-1.0.8-2.aix6.1.ppc.rpm          
+- gdbm-1.18.1-1.aix6.1.ppc.rpm       
+- readline-8.0-2.aix6.1.ppc.rpm
+- sqlite-3.28.0-1.aix6.1.ppc.rpm 
 
 开发工具包(根据需求装)：
-附带开发工具：python3-tools-3.7.6-1.aix6.1.ppc.rpm
-开发需要的libraries和header文件：python3-devel-3.7.6-1.aix6.1.ppc.rpm
+- 附带开发工具：python3-tools-3.7.6-1.aix6.1.ppc.rpm
+- 开发需要的libraries和header文件：python3-devel-3.7.6-1.aix6.1.ppc.rpm
 
 这些rpm包下载地址：[AIX Toolbox for Linux Applications](https://www.ibm.com/support/pages/node/883796?mhsrc=ibmsearch_a&mhq=AIX%20Toolbox%20for%20Linux%C2%AE%20Applications)
 
@@ -45,3 +46,4 @@ Python 3.7.6 (default, Feb 28 2020, 04:49:11)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> 
 ```
+
