@@ -21,10 +21,10 @@ lsvg -lv rootvg|查看rootvg lv情况
 lsmap -all|查看vscsi映射关系
 lsmap -all -npiv|查看npiv映射关系
 lsmap -all -net|查看网络关系
-lsmap ‑vadapter &#60vhost>|查看某个vhost映射
-lsdev ‑dev &#60device&#62|查看设备(hdisk,vhost)
-lsdev ‑dev &#60device&#62 ‑attr &#60attribute&#62|查看设备指定属性
-entstat -all &#60ent&#62 &#124grep Active|查看SEA状态
+lsmap ‑vadapter &#60;vhost&#62;|查看某个vhost映射
+lsdev ‑dev &#60;device&#62;|查看设备(hdisk,vhost)
+lsdev ‑dev &#60;device&#62; ‑attr &#60;attribute&#62;|查看设备指定属性
+entstat -all &#60;ent&#62; &#124;grep Active|查看SEA状态
 
 ##### 属性修改
 有些命令有点长，换个方式，命令加示例结合。
