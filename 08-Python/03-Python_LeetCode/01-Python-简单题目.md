@@ -62,4 +62,24 @@ class Solution:
                     count += 1
         return count
 ```
+### 1365.How Many Numbers Are Smaller Than the Current Number
+
+#### 描述
+Given the array nums, for each nums[i] find out how many numbers in the array are smaller than it. That is, for each nums[i] you have to count the number of valid j's such that j != i and nums[j] < nums[i].
+（总感觉后面这句描述有问题，还是理解有问题。）
+Return the answer in an array.
+
+#### 解答
+```python
+class Solution:
+    def smallerNumbersThanCurrent(self, nums: List[int]) -> List[int]:
+        out_list = []
+        for i in range(0,len(nums)):
+            count = 0
+            for j in nums:
+                if  j != nums[i] and j < nums[i]:
+                    count += 1
+            out_list.append(count)
+        return out_list
+```
 ### 下一题解答中
