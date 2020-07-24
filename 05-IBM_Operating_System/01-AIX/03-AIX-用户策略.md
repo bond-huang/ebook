@@ -46,6 +46,7 @@ chusr rlogin=true test
 
 ### 用户基本属性
 以下是控制登录并且与密码质量无关的用户属性：
+
 属性名称|属性说明
 :---|:---
 account_locked|如果明确地需要锁定账户，那么该属性可以设置为True；缺省值为False
@@ -71,6 +72,7 @@ maxulogs|指定每个用户的最大登录数。
 
 ### 用户登录策略
 建议用户首先使用自己的普通用户登录，然后允许su命令去登录到root，不建议以root用户的身份登录。下表是摘自IBM官方登录策略推荐：
+
 操作名称|描述|推荐设置
 :---|:---|:---
 Interval between unsuccessful logins|用于为/etc/security/login.cfg中的logininterval属性设置相应的值，该参数的作用是指定一段时间间隔（以秒计），在该时间内，如果尝试进行了若干次登陆后仍无法成功登录，那么将禁用该端口。例如，如果logininterval设为60，logindisable设为4，那么如果在1分钟内发生4此尝试登录失败后就将禁用该账户|高安全性：300;中安全性：600;低安全性：无效;AIX标准设置：无限制
@@ -99,6 +101,7 @@ Local login	|用于更改/etc/security/user中的login属性设置相应的值�
 
 除了这些机制外，还可以通过对密码进行限制，使其不得包含可能被猜到的标准UNIX单词，从而实施更严格的规则。
 下表是摘自IBM官方密码策略规则推荐：
+
 操作名称|描述|推荐设置
 :---|:---|:---
 Minimum number of characters|用于为/etc/security/user中的mindiff属性设置相应的值，该属性的作用是指定组成新密码必须的最少字符|高安全性：4；中安全性：3；低安全性：无效；AIX标准设置：无限制
