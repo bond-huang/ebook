@@ -38,7 +38,7 @@ clstop |停止集群，注意参数
 lscluster -m |查看集群状态
 lssrc -g caa |查看caa/rsct/cluster等服务
 lssrc -ls cthags |检查组服务子系统
-no -a\|grep routerevalidate|查看routerevalidate
+no -a &#124;grep routerevalidate|查看routerevalidate
 no -po routerevalidate=1 |修改routerevalidate
 ls -al /dev/datavg |查看vg信息，主要是看major号
 lvlstmajor |查看可用的 major号
