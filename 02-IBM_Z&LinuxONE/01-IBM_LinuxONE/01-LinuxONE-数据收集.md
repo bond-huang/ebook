@@ -3,7 +3,7 @@ IBM LinuxONE目前关于硬件及其维护维护的资料都是内部的，未�
 操作系统层面故障诊断和排除官方链接:[Linux on Z and LinuxONE](https://www.ibm.com/support/knowledgecenter/linuxonibm/liaaf/lnz_r_main.html)
 
 ### 操作系统数据收集
-使用dbginfo.sh收集基本的诊断信息集。官方介绍：[dbginfo.sh脚本](https://www.ibm.com/support/knowledgecenter/linuxonibm/com.ibm.linux.z.lxsv/lxsv_ts_tool_dbginfo.html)
+使用dbginfo.sh脚本收集基本的诊断信息。官方介绍：[dbginfo.sh脚本](https://www.ibm.com/support/knowledgecenter/linuxonibm/com.ibm.linux.z.lxsv/lxsv_ts_tool_dbginfo.html)
 
 根据系统类型收集对应的信息：
 - SUSE Linux Enterprise Server上运行`supportconfig`,官方介绍：[supportconfig](https://www.ibm.com/support/knowledgecenter/linuxonibm/com.ibm.linux.z.lxsv/lxsv_ts_tool_supportconfig.html)
