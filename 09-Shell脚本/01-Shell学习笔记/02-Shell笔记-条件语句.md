@@ -143,8 +143,8 @@ The number 10 is greater then 9!
 The numbers are different!
 ```
 注意事项：
-- 方括号前后都要有空格，在RHEL8中会报错，上面示例中不加空格会提示：[10: command not found
-- 对于浮点值的比较，bash shell是不能处理的。
+- 方括号前后都要有空格，在RHEL8中会报错，上面示例中不加空格会提示：[10: command not found；或者：./test3.sh: line 3: [: missing `]'
+- 对于浮点值的比较，bash shell是不能处理的
 
 命令`test`的数值比较功能对照表：
 
@@ -158,3 +158,212 @@ n1 -lt n2|检查n1是否小于n2
 n1 -ne n2|检查n1是否不能于n2
 
 ### 字符串比较
+示例如下：
+```shell
+#!/bin/bash
+testuser=tmpusr;string=""
+hero1=Thor;hero2=Hulk
+if [ $USER != $testuser ]
+then
+    echo "This is not $testuser! "
+else
+    echo "Welcome $testuser! "
+fi
+#大小比较
+if [ $hero1 \> $hero2 ]
+then
+    echo "$hero1 is stronger than $hero2!"
+else
+    echo "$hero2 is weaker than $hero2!"
+fi
+#字符串大小
+if [ -n $string ]
+then
+    echo "The string '$string' is empty!"
+else
+    echo "The string '$string' is not empty!"
+fi
+```
+执行后结果如下：
+```
+[root@redhat8 if-for]# ./test4.sh
+This is not tmpusr! 
+Thor is stronger than Hulk!
+The string '' is empty!
+```
+示例中的知识点：
+- 比较字符串相等性时候，会将所有的大小写以及标点都考虑在内
+- 大于号和小于号必须要用转义字符转义，不然会认为是重定向符号
+- 大小写的顺序和sort命令锁采用的不同，比较测试中，大写字母是小于小写字母，采用的标准的ASCII顺序，而sort命令恰好相反
+
+字符串比较测试表：
+
+比较方式|描述
+:---|:---
+str1 = str2|检查str1是否和str2相同
+str1 != str2|检查str1是否和str2不同
+str1 < str2|检查str1是否比str2小
+str1 > str2|检查str1是否比str2大
+-n str1|检查str1长度是否非0
+-z str1|检查str1长度是否为0
+
+### 文件比较
+文件比较在shell编程中使用的比较多，允许测试Linux文件系统上文件和目录的状态，先直接上表：
+
+比较方式|描述
+:---|:---
+-d file|检查file是否存在并是一个目录
+-e file|检查file是否存在
+-f file|检查file是否存在并是一个文件
+-r file|检查file是否存在并可读
+-s file|检查file是否存在并非空
+-w file|检查file是否存在并可写
+-x file|检查file是否存在并可执行
+-O file|检查file是否存在并属当前用户所有
+-G file|检查file是否存在并且默认组于当前用户相同
+file1 -nt file2|检查file1是否比file2新
+file1 -ot file2|检查file1是否比file2旧
+
+代码示例如下：
+```shell
+#!/bin/bash
+homedir=$HOME;file1="testfile"
+if [ -e $homedir ]
+then
+    echo "The $homedir directory exists and now checking the $file1!"
+    if [ -f $homedir/$file1 ]
+    then
+        echo "The $file is a file and exist!"
+        ls -l > $homedir/$file1
+        if [ $homedir/$file1 -nt $homedir/test ]
+        then
+            echo "The $homedir/$file1 newer then $homedir/test"
+        else
+            echo "The $homedir/$file1 older then $homedir/test"
+        fi
+    else
+        echo "The $file1 does not exist!"
+    fi
+else
+    echo "The $homedir directory is not exist!"
+fi
+```
+执行后结果如下：
+```
+[huang@redhat8 if-for]$ ./test5.sh
+The /home/huang directory exists and now checking the testfile!
+The  is a file and exist!
+The /home/huang/testfile newer then /home/huang/test
+```
+一般检查思路就是：检查所在的目录是否存在，然后检查是否是一个文件，然后再检查次文件是否空文件或者是否可读或者可写可执行等。
+
+### 复合条件测试
+if-then语句允许用户使用布尔逻辑来组合测试：
+- [ condition1 ] && [ condition2 ] 
+- [ condition1 ] || [ condition2 ]
+
+第一种是and布尔运算组合条件，要让then部分执行，两个条件必须同时满足，第二种满足其中一个，then部分就会执行。示例如下:
+```shell
+#!/bin/bash
+if [ -d $HOME ] && [ -w $HOME/testfile ]
+then
+    echo "The file exists and you can write!"
+else
+    echo "You cannot write the file!"
+fi
+```
+执行后结果如下：
+```
+[huang@redhat8 if-for]$ ./test6.sh
+The file exists and you can write!
+```
+### if-then的高级特性
+bash 提供了良心可在if-then语句中使用的高级特性：
+- 用于数学表达式的双括号
+- 用于高级字符串处理功能的双方括号
+
+##### 使用双括号
+双括号允许用户再比较过程中使用高级数学表达式，常用命令符号如下
+
+符号|描述
+:---|:---
+val++|后增
+val--|后减
+++val|先增
+--val|先减
+!|逻辑求反
+~|位求反
+**|幂运算
+<<|左位移
+\>>|右位移
+&|位布尔和
+&#124;|位布尔或
+&&|逻辑和
+&#124;&#124;|逻辑或
+
+示例如下：
+```shell
+#!/bin/bash
+num1=10
+if (( $num1 ** 3 > 90 ))
+then
+    (( num2 = $num1 ** 2 ))
+    echo "The square of the $num1 is $num2!"
+fi
+```
+执行后结果如下：
+```
+[root@redhat8 if-for]# sh test7.sh
+The square of the 10 is 100!
+```
+##### 使用双方括号
+双方括号里面的expression使用了test命令中采用的标准字符串比较，也提供了一个test命令没有的特征：匹配模式（pattern maching）。示例如下：
+```shell
+#!/bin/bash
+if [[ $HOSTNAME == r* ]]
+then
+    echo "The hostname is $HOSTNAME!"
+else
+    echo "Unkonw hostname!"
+fi
+```
+执行后结果如下：
+```
+[root@redhat8 if-for]# sh test7.sh
+The hostname is redhat8!
+```
+注意：不是所有的shell都指定双方括号，RedHat8是支持的。
+##### case命令
+当在一组值中寻找特定的值的时候，可能会写出很长的if-then-else语句，有了case命令就很简单了，语法如下：
+```shell
+case varibale in
+pattern1 | prttern2) commands1;;
+pattern3) commands2;;
+*) default commands3;;
+easc
+```
+示例如下：
+```shell
+#!/bin/bash
+case $USER in
+huang | root)
+    echo "Welcome,$USER,please enjoy your visit!";;
+testuser)
+    echo "Special testuser account";;
+tmpusr)
+    echo "Do not forget to log off when you donot operating the system!";;
+*)
+    echo "Sorry,you are not allowed here";;
+esac
+```
+执行后结果如下：
+```
+[root@redhat8 if-for]# sh test8.sh
+Welcome,root,please enjoy your visit!
+```
+我是root用户，将root从条件中改成其它用户选项，输出结果如下：
+```
+[root@redhat8 if-for]# sh test8.sh
+Sorry,you are not allowed here
+```
+其实就是依次判断条件是否满足，满足就执行对于的命令。
