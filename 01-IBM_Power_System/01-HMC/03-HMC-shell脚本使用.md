@@ -19,7 +19,7 @@ hscroot@hmc:~> for i in {2..5}
 > done
 ```
 运行后都是会报错：bash: bc: command not found
-说明HMC的hscroot用户或者系统没bc计算机，用下面运算方法替代即可：
+说明HMC的hscroot用户或者系统没bc计算器，用下面运算方法替代即可：
 ```shell
 hscroot@hmc:~> for i in {2..5}
 > do
