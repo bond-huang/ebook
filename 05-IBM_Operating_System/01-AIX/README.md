@@ -13,3 +13,4 @@ AIX产品文档：[https://www.ibm.com/support/knowledgecenter/ssw_aix](https://
 - [AIX-用户策略](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/03-AIX-%E7%94%A8%E6%88%B7%E7%AD%96%E7%95%A5.html)
 - [AIX-HA常用操作](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/04-AIX-HA%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.html)
 - [AIX-NIMserver](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/05-AIX-NIMserver.html)
+- [AIX-TCPIP-配置IPv6](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/06-AIX-TCPIP-%E9%85%8D%E7%BD%AEIPv6.html)
