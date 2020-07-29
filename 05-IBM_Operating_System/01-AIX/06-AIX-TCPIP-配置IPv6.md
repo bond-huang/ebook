@@ -167,3 +167,8 @@ start /usr/sbin/ndpd-host "$src_running"
 ```
 no -r -o ip6forwarding=1
 ```
+### 其它
+要调出接口的子集，可以使用命令`autoconf6`的`-i`参数。示例显示接口en0和en1：
+```
+autoconf6 -i en0 en1
+```
