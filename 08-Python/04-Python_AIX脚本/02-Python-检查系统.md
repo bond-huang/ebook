@@ -47,4 +47,12 @@ class CheckReboot():
 checkreboot = CheckReboot()
 checkreboot.go_check()
 ```
+#### 示例
+在AIX7100-04-03-1642中运行示例如下：
+```
+bash-5.0# python3 test1.py
+The latest upgrade time is:Tue Jan 22 20:20:24 2019
+The latest reboot time is:Mon Jul 13 21:51:49 2020
+The system has been restart after upgrade!
+```
 ### 检查AIX系统
