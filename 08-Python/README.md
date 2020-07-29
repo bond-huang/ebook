@@ -11,3 +11,4 @@ Python初学者，目前只有基础学习笔记
 - [Python内置模块&函数](https://bond-huang.github.io/huang/08-Python/02-Python%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97&%E6%96%B9%E6%B3%95/)
 - [Python_LeetCode](https://bond-huang.github.io/huang/08-Python/03-Python_LeetCode/)
 - [Python_AIX脚本](https://bond-huang.github.io/huang/08-Python/04-Python_AIX%E8%84%9A%E6%9C%AC/)
+- [Python_爬虫](https://bond-huang.github.io/huang/08-Python/05-Python_%E7%88%AC%E8%99%AB/)
