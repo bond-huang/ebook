@@ -22,15 +22,13 @@
 ### 代码块
 单行代码采用反引号"`",代码块就是用三个反引号，引用前"```"在后面可以加上引用类型，就可以根据代码语言类型显示代码元素颜色，例如加上python或python关键字py，示例： 
 ```
- ```python   
+```python   
 class classname(object):   
     pass   
     def __init__(self):   
         pass   
- ```
 ```
  
-
 显示结果如下：
 ```python
 class classname(object):
