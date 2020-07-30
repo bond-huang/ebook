@@ -90,7 +90,7 @@ class classname(object):
 
 对于特定字体选择，例如微软雅黑啊，华文行楷例如字体颜色，我个人表示懒得用也用的少，简洁为主，以后需要用到了再看怎么用。
 ### 转义字符
-通常使用符号"\"进行转义。有时候有些转不了，需要用到ASCII码去代表字符原有的意思，ASCII码对照表后期整理到查询章节中方便查阅：[Markdown-查询表](https://bond-huang.github.io/huang/10-Git/02-Markdown/02-Markdown-%E6%9F%A5%E8%AF%A2%E8%A1%A8.html)
+通常使用符号"\\"进行转义。有时候有些转不了，需要用到ASCII码去代表字符原有的意思，ASCII码对照表后期整理到查询章节中方便查阅：[Markdown-查询表](https://bond-huang.github.io/huang/10-Git/02-Markdown/02-Markdown-%E6%9F%A5%E8%AF%A2%E8%A1%A8.html)
 ### 流程图和序列图和甘特图
 等用到了再写示例，先收藏几个链接：  
 序列图：[https://bramp.github.io/js-sequence-diagrams/](https://bramp.github.io/js-sequence-diagrams/)  
