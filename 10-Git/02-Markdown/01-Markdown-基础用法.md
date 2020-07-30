@@ -28,6 +28,7 @@ class classname(object):
     def __init__(self):   
         pass   
  ```
+```
  
 
 显示结果如下：
