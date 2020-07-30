@@ -22,13 +22,14 @@
 ### 代码块
 单行代码采用反引号"`",代码块就是用三个反引号，引用前"```"在后面可以加上引用类型，就可以根据代码类型显示代码中的颜色标记，例如加上python或python关键字py，示例：
 ```
-```python
+\```python
 class classname(object):
     pass
     def __init__(self):
         pass
-```
-```
+\```
+```    
+
 显示结果如下：
 ```python
 class classname(object):
@@ -46,7 +47,7 @@ class classname(object):
 ### 换行
 在编辑Markdown过程中，回车可以看到换行了，但是显示的时候是没有换行的，需要行尾加上两个及以上的空格, 然后换行，解析显示的时候就会换行了。
 ### 水平线
-如果一行中只有三个以上的连字符:"\*"或者"-", 会在该位置生成一个 \<hr /> ;"\*"或者"-"之间的空格也行. 示例如下:  
+如果一行中只有三个以上的连字符:"\*"或者"-", 会在该位置生成一个 `<hr />` ;"\*"或者"-"之间的空格也行. 示例如下:  
 ```
 * * *
 ***
@@ -95,4 +96,4 @@ class classname(object):
 等用到了再写示例，先收藏几个链接：  
 序列图：[https://bramp.github.io/js-sequence-diagrams/](https://bramp.github.io/js-sequence-diagrams/)  
 流程图：[http://flowchart.js.org/](http://flowchart.js.org/)  
-甘特图：[https://mermaid-js.github.io/mermaid/#/](https://mermaid-js.github.io/mermaid/#/)  
+甘特图：[https://mermaid-js.github.io/mermaid/#/](https://mermaid-js.github.io/mermaid/#/) 
