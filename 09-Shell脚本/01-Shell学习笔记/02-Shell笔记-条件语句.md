@@ -2,7 +2,7 @@
 主要内容是if条件判断语句和test命令的用法。
 ### if-then-else语句
 格式如下：
-```shell
+```sh
 if command
 then
     command
@@ -11,7 +11,7 @@ else
 fi
 ```
 当if语句中命令返回退出码状态为0时，then部分中的命令会被执行，当返回非零退出状态码时候，shell会执行else部分中的命令。else部分可以根据需求是否添加。脚本示例如下：
-```shell
+```sh
 #!/bin/bash
 testuser=NoneUser
 if grep $testuser /etc/passwd
@@ -29,7 +29,7 @@ The user NoneUser does not exist on the system!
 ```
 ### 嵌套if
 有时候需要多种判断条件，可以使用嵌套的if-then语句。同样检查用户是否存在脚本示例，在Home目录下建立一个用户文件夹，但是不创建用户：`mkdir /home/NoneUser`。脚本示例如下:
-```shell
+```sh
 #!/bin/bash
 testuser=NoneUser
 if grep $testuser /etc/passwd
@@ -51,7 +51,7 @@ The user NoneUser does not exist on the system!
 The user  has a directory!
 ```
 如同条件更多呢，可以使用else部分另外一种性质elif，上面示例修改如下：
-```shell
+```sh
 #!/bin/bash
 testuser=NoneUser
 if grep $testuser /etc/passwd
@@ -71,7 +71,7 @@ The user NoneUser does not exist on the system!
 The user  has a directory!
 ```
 再更近一步，在检查一项，elif后面加上else，示例代码如下：
-```shell
+```sh
 #!/bin/bash
 testuser=noneuser
 if grep $testuser /etc/passwd
@@ -91,7 +91,7 @@ ls: cannot access '/home/noneuser/': No such file or directory
 The user noneuser does not exist on the system,and does not have w directory!
 ```
 可以继续将多个elif语句串起来，格式如下：
-```shell
+```sh
 if command1
 then
     command set 1
@@ -107,14 +107,14 @@ fi
 在if-then语句中，不能测试命令退出状态码之外的条件。命令`test`提供了在if-then语句中不同条件的途径，如果命令`test`中条件成立，命令`test`就会退出并返回退出状态码0，如果不成立，返回非0的退出状态码，if-then语句就不会继续执行了。
 
 test命令格式比较简单：`test condition`，condition是test命令要测试的一系列参数和值,可以判断的条件有三种：数值比较、字符串比较和文件比较，格式如下：
-```shell
+```sh
 if test condition
 then
     commands
 fi
 ```
 也可以用方括号替代：
-```shell
+```sh
 if [ condition ]
 then
     commands
@@ -122,7 +122,7 @@ fi
 ```
 ### 数值比较
 示例如下：
-```shell
+```sh
 #!/bin/bash
 num1=10;num2=99
 if [ $num1 -gt 9 ]
@@ -159,7 +159,7 @@ n1 -ne n2|检查n1是否不能于n2
 
 ### 字符串比较
 示例如下：
-```shell
+```sh
 #!/bin/bash
 testuser=tmpusr;string=""
 hero1=Thor;hero2=Hulk
@@ -225,7 +225,7 @@ file1 -nt file2|检查file1是否比file2新
 file1 -ot file2|检查file1是否比file2旧
 
 代码示例如下：
-```shell
+```sh
 #!/bin/bash
 homedir=$HOME;file1="testfile"
 if [ -e $homedir ]
@@ -263,7 +263,7 @@ if-then语句允许用户使用布尔逻辑来组合测试：
 - [ condition1 ] || [ condition2 ]
 
 第一种是and布尔运算组合条件，要让then部分执行，两个条件必须同时满足，第二种满足其中一个，then部分就会执行。示例如下:
-```shell
+```sh
 #!/bin/bash
 if [ -d $HOME ] && [ -w $HOME/testfile ]
 then
@@ -302,7 +302,7 @@ val--|后减
 &#124;&#124;|逻辑或
 
 示例如下：
-```shell
+```sh
 #!/bin/bash
 num1=10
 if (( $num1 ** 3 > 90 ))
@@ -318,7 +318,7 @@ The square of the 10 is 100!
 ```
 ##### 使用双方括号
 双方括号里面的expression使用了test命令中采用的标准字符串比较，也提供了一个test命令没有的特征：匹配模式（pattern maching）。示例如下：
-```shell
+```sh
 #!/bin/bash
 if [[ $HOSTNAME == r* ]]
 then
@@ -335,7 +335,7 @@ The hostname is redhat8!
 注意：不是所有的shell都指定双方括号，RedHat8是支持的。
 ##### case命令
 当在一组值中寻找特定的值的时候，可能会写出很长的if-then-else语句，有了case命令就很简单了，语法如下：
-```shell
+```sh
 case varibale in
 pattern1 | prttern2) commands1;;
 pattern3) commands2;;
@@ -343,7 +343,7 @@ pattern3) commands2;;
 easc
 ```
 示例如下：
-```shell
+```sh
 #!/bin/bash
 case $USER in
 huang | root)
