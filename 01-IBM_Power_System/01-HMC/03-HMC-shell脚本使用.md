@@ -27,7 +27,7 @@ hscroot@hmc:~> for i in {2..5}
 > done
 ```
 或者用方括号：
-```shell
+```sh
 hscroot@TEST:~> for i in {2..5}
 > do
 > echo Lpar$[ $i * 10 + 1 ]
