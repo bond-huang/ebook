@@ -2,7 +2,7 @@
 shell脚本基础只是学习笔记
 ### 输入和显示
 直接上脚本进行示例：
-```shell
+```sh
 #!/bin/bash
 #This script it a test script!
 echo "who's logged into the system:"
@@ -29,7 +29,7 @@ This is a test script!
 ```
 ### 使用变量
 脚本示例如下：
-```shell
+```sh
 #!/bin/bash
 #Environment variable usage
 echo The user home directory is $HMOE
@@ -60,7 +60,7 @@ shell脚本可以从命令输出中提取信息，有两种方法：
 - $()格式
 
 示例如下：
-```shell
+```sh
 #!/bin/bash
 #Get the command output
 syst1=`date`
@@ -89,7 +89,7 @@ total 8
 在刚才的示例中已经用到了重定向输出的用法，继续详细学习。
 ##### 重定向输出
 示例如下：
-```shell
+```sh
 ls -l > test1
 cat test1
 date >> test1
@@ -113,7 +113,7 @@ Sat Feb 21 08:26:27 EDT 2014
 ```
 ##### 重定向输入
 输入重定向采用符号"<",示例如下：
-```shell
+```sh
 wc < test1
 ```
 执行后输出结果如下：
@@ -158,7 +158,7 @@ shell脚本中有两种途径来进行数学相关运算。
 注意，对于一些字符在shell有特殊含义的，需要使用转移字符"\"来让符号表示原有的含义。
 
 脚本中示例如下:
-```shell
+```sh
 #!/bin/bash
 #use the expr conmmand
 num1=100;num2=10
@@ -177,7 +177,7 @@ The number is 10
 20
 ```
 脚本中示例如下：
-```shell
+```sh
 #!/bin/bash
 num1=100;num2=10;num3=20
 num4=$[$num2 * ($num1-$num3)]
@@ -221,7 +221,7 @@ print num3
 - bash计算机还支持变量，引用就直接引用，用print去打印出来
 
 脚本中使用示例如下：
-```shell
+```sh
 #!/bin/bash
 num1=10
 num2=3.1415926
