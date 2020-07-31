@@ -9,7 +9,7 @@
 > done
 ```
 标准格式如下：
-```shell
+```sh
 for var in list 
 do
     commands
@@ -17,7 +17,7 @@ done
 ```
 ##### 读取列表中的值
 直接代码示例：
-```shell
+```sh
 #!/bin/bash
 for hero in "Captain America" Thor "Iron Man" 
 do
