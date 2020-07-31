@@ -1,4 +1,4 @@
-# Windows-SQL08R2完全卸载&安装
+# Windows-SQLR2完全卸载&安装
 文章是较早时候写的，放在百度文库上，阅读量两万多，下载量过一千（下载赚的积分够用好几年），说明需求还是有不少的，文章有点实际意义，所以搬到这里来，以后新版的Microsoft SQL server的问题说不定可以参考下。
 
 本blog追求精简，和之前文章一样不喜欢贴图，图文的文档可以参考百度文库链接：[Microsoft SQL server 2008 R2完全卸载再安装手册](https://wenku.baidu.com/view/8f4eaf58cfc789eb172dc8c5)
