@@ -16,7 +16,8 @@ SVC是IBM Spectrum Storage™产品家族成员，IBM Storwize Storage系列及I
 ##### 收集方法
 在Management GUI中，选择Settings--> Support--> Download Support Package-->选择日志类型然后点击 "Download"。     
 四种方式收集日志描述及大小估算：   
-Option|        Description        |Size(1Group,30vol)|Size(4Groups,250Vol)
+
+Option|Description|Size(1Group,30vol)|Size(4Groups,250Vol)
 :---|:---|:---|:---
 1|Standard logs|10 MB|340 MB
 2|Standard logs plus one existing statesave|50 MB|520 MB
