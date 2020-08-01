@@ -291,4 +291,70 @@ The loop is end!
 - 如果在内部循环中要停止外部循环，break命令接受单个命令行参数值：`break n`。n指定了跳出循环的层次，默认情况下，n的值为1，表示跳出的是当前的循环，值为2的时候，break命令就会停止下一级的外部循环。
 
 ##### continue命令
-continue命令可以提前中止某次循环中的命令，但是不会终止整个循环
+continue命令可以提前中止某次循环中的命令，但是不会终止整个循环，示例如下：
+```sh
+#!/bin/bash
+for ((i = 1; i <=8; i++ ))
+do
+    if [ $i -gt 3 ] && [ $i -lt 6 ]
+    then
+        continue
+    fi
+    echo "The number is $i !"
+done 
+```
+运行后输出结果如下：
+```
+[root@redhat8 for]# sh test9.sh
+The number is 1 !
+The number is 2 !
+The number is 3 !
+The number is 6 !
+The number is 7 !
+The number is 8 !
+```
+可以看到大于3和小于6的项目被跳过了，if-then里面的条件满足，会跳过循环中剩余的命令，不满足时候，循环继续。    
+同样适用于while和until循环，使用要小心，但是如果在某个条件里面对测试的条件变量进行增值，就会出现问题，会变成死循环，不停执行，示例代码如下：
+```sh
+#!/bin/bash
+i=0
+while echo "while interation:$i"
+        [ $i -lt 10 ]
+do
+    if [ $i -gt 3 ] && [ $i -lt 6 ]
+    then
+        continue
+    fi
+    echo "  The number is $i !"
+    i=$[ $i + 1 ]
+done 
+```
+运行后最后会一直不停输出，无穷无尽：while interation:4
+
+同样`continue`命令接受单个命令行参数值：`continue n`，n定义了要继续的循环的层级。
+
+### 处理循环输出
+代码示例如下：
+```sh
+#!/bin/bash
+for file in /shell/for/*
+do
+    if [ -d "$file" ]
+    then
+        echo "$file is a directory!"
+    else
+        echo "$file is a file!"
+    fi
+done > output.txt
+```
+执行脚本后，不会显示在屏幕上，会将输出写过重定向到output.txt文件中，查看文件内容如下：
+```
+[root@redhat8 for]# cat output.txt
+/shell/for/hero is a directory!
+/shell/for/output.txt is a file!
+/shell/for/SuperHero is a file!
+/shell/for/test10.sh is a file!
+/shell/for/test11.sh is a file!
+/shell/for/test1.sh is a file!
+```
+如果在`done`后面加入`echo`的语句，shell会在`for`完成后在屏幕显示`echo`的内容。也可以使用管道符，例如在`done`后面加上`| sort`，就会对for循环的输出进行排序。
