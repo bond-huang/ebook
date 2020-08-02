@@ -6,6 +6,7 @@
 关于更多HTML的用法，可以参考网站（表格也是截取自此网站）：[http://www.w3chtml.com/html/ref/ascii.html](http://www.w3chtml.com/html/ref/ascii.html)
 
 字母和数字就省略了，很少用到，主要是各种符号：    
+
 结果|描述|实体编号
 :---:|:---:|:---:
 &#32;|space|\&#32;
