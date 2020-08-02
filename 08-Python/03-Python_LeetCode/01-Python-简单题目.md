@@ -1,5 +1,5 @@
 # Python-简单题目
-一些基础题目解答的过程，主要是学习。
+一些基础题目解答的过程。
 ### 1480. Running Sum of 1d Array
 #### 描述
 Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
