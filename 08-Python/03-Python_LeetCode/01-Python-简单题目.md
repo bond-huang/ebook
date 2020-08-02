@@ -82,4 +82,24 @@ class Solution:
             out_list.append(count)
         return out_list
 ```
+### 1470.Shuffle the Array
+#### 描述
+Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].     
+Return the array in the form [x1,y1,x2,y2,...,xn,yn].   
+Example 2:Input: nums = [1,2,3,4,4,3,2,1], n = 4      
+Output: [1,4,2,3,3,2,4,1]     
+#### 解答
+提交代码如下：
+```python
+class Solution:
+    def shuffle(self, nums: List[int], n: int) -> List[int]: 
+        out_list = []
+        for i in range(0,n):
+            j = i + n
+            x = nums[i]
+            out_list.append(x)
+            y = nums[j]
+            out_list.append(y)
+        return out_list
+```
 ### 下一题解答中
