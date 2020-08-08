@@ -2,7 +2,7 @@
 
 ## 简介
 
-IBM 操作系统运根据硬件架构运行在不通的设备上，Linux for Power（如RedHat和SUSE）、AIX和AS/400可以运行在IBM Power系列小型机上，z/OS和LinuxOne运行在IBM Z系列大型机上。
+&#8195;&#8195;IBM 操作系统运根据硬件架构运行在不通的设备上，Linux for Power（如RedHat和SUSE）、AIX和AS/400可以运行在IBM Power系列小型机上，z/OS和LinuxOne运行在IBM Z系列大型机上。
 关于Power上操作系统介绍官网：[IBM 操作系统](https://www.ibm.com/cn-zh/it-infrastructure/power/os)
 
 ## IBM系统支持
