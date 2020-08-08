@@ -1,9 +1,9 @@
 # PowerVM-VIOS常用命令
 VIOS系统中常用的命令。
 ### AIX命令
-VIOS底层是AIX系统，VIOS 2版本使用的是AIX6.1，VIOS 3版本开始使用的是AIX7.2，各版本命令基本一致。用padmin用户登录到VIOS后，可以使用命令：`oem_setup_env`切换到AIX root用户，o开头的命令使用的很少，个人一般使用`r o`进行切换，切换不了就输入完整命令，AIX层面的命令可以参考:[AIX-常用命令](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/02-AIX-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
+&#8195;&#8195;VIOS底层是AIX系统，VIOS 2版本使用的是AIX6.1，VIOS 3版本开始使用的是AIX7.2，各版本命令基本一致。用padmin用户登录到VIOS后，可以使用命令：`oem_setup_env`切换到AIX root用户，o开头的命令使用的很少，个人一般使用`r o`进行切换，切换不了就输入完整命令，AIX层面的命令可以参考:[AIX-常用命令](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/02-AIX-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
 ### VIOS命令
-默认使用padmin用户登录，VIOS相关命令只能在padmin用户下执行，有一些命令在AIX环境下可以执行的在VIOS里面也可以执行，有一些不行，不行就切换一下。下面介绍命令都是只在VIOS中的（有些一样但是输出不一样，例如`lspath`），记下来方便查阅。
+&#8195;&#8195;默认使用padmin用户登录，VIOS相关命令只能在padmin用户下执行，有一些命令在AIX环境下可以执行的在VIOS里面也可以执行，有一些不行，不行就切换一下。下面介绍命令都是只在VIOS中的（有些一样但是输出不一样，例如`lspath`），记下来方便查阅。
 ##### 基础查看类
 命令|用途
 ---|:---
