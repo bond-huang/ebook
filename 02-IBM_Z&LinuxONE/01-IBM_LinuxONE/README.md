@@ -1,7 +1,7 @@
 # IBM_LinuxONE
 
 ## 简介
-IBM LinuxONE™ 是Linux与开放源码结合而成的“巨无霸”级服务器，专为应用经济打造。通过将企业级Linux和开放源码的精华结合起来，将LinuxONE打造成为最高效、最强大和最安全的Linux平台服务器。
+&#8195;&#8195;IBM LinuxONE™ 是Linux与开放源码结合而成的“巨无霸”级服务器，专为应用经济打造。通过将企业级Linux和开放源码的精华结合起来，将LinuxONE打造成为最高效、最强大和最安全的Linux平台服务器。
 
 IBM LinuxONE官网：[https://www.ibm.com/cn-zh/it-infrastructure/linuxone](https://www.ibm.com/cn-zh/it-infrastructure/linuxone)
 
