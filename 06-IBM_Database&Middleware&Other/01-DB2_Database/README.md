@@ -1,7 +1,7 @@
 # Db2_Database
 
 ## 简介
-IBM Db2® Database是一款关系型数据库，可为事务型工作负载提供高级数据管理和分析功能。该运营数据库旨在提供高性能、切实可行的洞察、数据可用性和可靠性，并且在 Linux、Unix 和 Windows 操作系统上均受支持。
+&#8195;&#8195;IBM Db2® Database是一款关系型数据库，可为事务型工作负载提供高级数据管理和分析功能。该运营数据库旨在提供高性能、切实可行的洞察、数据可用性和可靠性，并且在 Linux、Unix 和 Windows 操作系统上均受支持。
 
 官方网站：[IBM Db2 Database](https://www.ibm.com/cn-zh/products/db2-database?mhsrc=ibmsearch_a&mhq=DB2)
 
