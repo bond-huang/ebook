@@ -129,9 +129,10 @@ Round robin sequential (rrs 轮循顺序)：
 hcheck_mode = nonactive：   
 &#8195;&#8195;在此模式下，PCM在没有活动I/O的路径上发送运行状况检查命令，其中包括状态为failed的路径。如果选择的算法是故障转移，那么还将在状态为启用但没有活动I/O的每个路径上发送运行状况检查命令；如果选择的算法为round_robin或shortest_queue，则仅在状态为failed的路径上发送运行状况检查命令；如果磁盘处于空闲状态，则在运行状况检查间隔到期时，会在没有挂起I/O的任何路径上发送运行状况检查命令。
 
-hcheck_mode = enabled：
+hcheck_mode = enabled：     
 &#8195;&#8195;在此模式下，PCM沿所有启用的路径发送健康检查命令，甚至在健康检查时具有其它活动I/O的路径也是如此。
-hcheck_mode = failed：在此模式下，PCM仅向标记为failed的路径发送路径运行状况检查。
+hcheck_mode = failed：    
+&#8195;&#8195;在此模式下，PCM仅向标记为failed的路径发送路径运行状况检查。
 
 ##### hcheck_interval（路径运行状况检查间隔）
 &#8195;&#8195;路径运行状况检查间隔是指基于hcheck_mode设置的MPIO路径运行状况检查将探测并检查打开的磁盘的路径可用性的时间间隔（以秒为单位）。当设置`hcheck_interval = 0`表示禁用MPIO的路径健康检查机制，这意味着任何failed的路径需要人工干预，以恢复或重新启用。     
