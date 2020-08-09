@@ -14,3 +14,4 @@ AIX产品文档：[https://www.ibm.com/support/knowledgecenter/ssw_aix](https://
 - [AIX-HA常用操作](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/04-AIX-HA%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.html)
 - [AIX-NIMserver](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/05-AIX-NIMserver.html)
 - [AIX-TCPIP-配置IPv6](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/06-AIX-TCPIP-%E9%85%8D%E7%BD%AEIPv6.html)
+- [AIX-磁盘多路径](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/07-AIX-%E7%A3%81%E7%9B%98%E5%A4%9A%E8%B7%AF%E5%BE%84.html)
