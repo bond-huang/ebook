@@ -85,6 +85,15 @@ return code = 0
 # chdev -l hdisk2 -a algorithm=load_balance_port
 # chdev -l hdisk2 -a algorithm=round_robin
 ```
+#### 路径状态
+一共六种状态：
+- Enabled：正常状态
+- Disabled：手动disable
+- Defined：已定义，ODM库中有信息
+- Available：包含Enabled和Failed状态
+- Missing：路径丢失
+- Failed：路径失败
+
 #### SDDPCM命令
 SDDPCM重要命令及其功能：
 - pcmpath: 显示和管理 SDDPCM 设备。
