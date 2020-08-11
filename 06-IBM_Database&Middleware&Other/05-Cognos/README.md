@@ -8,3 +8,5 @@
 
 ## 内容
 - [Cognos-数据收集](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/05-Cognos/01-Cognos-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html) 
+- [Cognos-常见问题](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/05-Cognos/02-Cognos-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html) 
+
