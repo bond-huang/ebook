@@ -102,4 +102,18 @@ class Solution:
             out_list.append(y)
         return out_list
 ```
+### 1431.Kids With the Greatest Number of Candies
+#### 描述
+Given the array candies and the integer extraCandies, where candies[i] represents the number of candies that the ith kid has.         
+For each kid check if there is a way to distribute extraCandies among the kids such that he or she can have the greatest number of candies among them. Notice that multiple kids can have the greatest number of candies.   
+#### 解答
+提交代码如下：
+```python
+class Solution:
+    def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]: 
+        out_list = []
+        for i in range(0,len(candies)):
+            out_list.append((candies[i] + extraCandies >= max(candies)))
+        return out_list    
+```
 ### 下一题解答中
