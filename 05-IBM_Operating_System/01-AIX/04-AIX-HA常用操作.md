@@ -43,8 +43,9 @@ no -po routerevalidate=1 |修改routerevalidate
 ls -al /dev/datavg |查看vg信息，主要是看major号
 lvlstmajor |查看可用的 major号
 chdev -l fscsi0 -a fc_err_recov=fast_fail -P|修改光纤口属性
-chdev -l \<disk> -a queue_depth=40 -P|修改磁盘属性示例
-/usr/sbin/rsct/bin/dhb_read -p \<disk> -t|心跳盘测试
+chdev -l &#60;disk&#62; -a queue_depth=40 -P|修改磁盘属性示例
+/usr/sbin/rsct/bin/dhb_read -p &#60;disk&#62; -r|心跳盘测试(主)
+/usr/sbin/rsct/bin/dhb_read -p &#60;disk&#62; -t|心跳盘测试(备)
 
 说明：
 - AIX操作系统缓存路由，需要设置routerevalidate选项：`routerevalidate=1`。
