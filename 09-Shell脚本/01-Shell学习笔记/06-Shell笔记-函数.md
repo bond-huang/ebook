@@ -16,6 +16,7 @@ name (){
 ### 函数使用
 函数示例如下：
 ```sh
+#!/bin/bash
 function heros {
     echo "Thor,Hulk,Wonder Woman,Batman,Captain America"
 }
@@ -43,6 +44,7 @@ Thor,Hulk,Wonder Woman,Batman,Captain America
 ##### 默认退出状态码
 &#8195;&#8195;默认情况下，函数的退出状态码是函数中最后一条命令返回的退出状态码，在函数执行结束后可以用标准变量`$?`来确定函数的退出状态码。使用默认退出状态码值是通过最后一条命令判断，但是无法知道函数中其它命令是否运行成功，示例如下：
 ```sh
+#!/bin/bash
 function1 () {
     ls -l badfile
     echo "Test bad command"
@@ -62,6 +64,7 @@ The exit status is 0
 ##### 使用return命令
 &#8195;&#8195;bash shell使用return命令来退出函数并返回特定的退出状态码。return命令允许指定一个数值来定义函数的退出状态码，脚本示例如下：
 ```sh
+#!/bin/bash
 function db1 {
     read -p "Enter a value: " value
     echo "Doubling the value"
@@ -84,6 +87,7 @@ The new value is 200
 ##### 使用函数输出
 可以将函数的输出保存到变量中,例如将db1函数的输出赋值给result变量：result=&#96;db1&#96;,示例如下：
 ```sh
+#!/bin/bash
 db1 () {
     read -p "Enter a number: " value
     echo $[ $value * 2 ]
@@ -105,6 +109,7 @@ The new number is 2236!
 ##### 向函数传递参数
 &#8195;&#8195;函数可以使用标准的参数环境变量来表示命令行上传给函数的参数。例如，$0是函数名，函数命令行上的任何参数都会通过$1、$2等定义，特殊环境变量$#来判断传递给函数的参数数目。在脚本中指定函数时，必须将参数和函数放在同一行，示例：`function $value 1118`。示例如下：
 ```sh
+#!/bin/bash
 addnum () {
     if [ $# -eq 0 ] || [ $# -gt 2 ]
     then 
@@ -144,6 +149,7 @@ Try adding three numbers: -1
 ###### 全局变量
 示例：
 ```sh
+#!/bin/bash
 function test1 {
     value=$[ $value * 3 ]
 }
@@ -164,6 +170,7 @@ The new value is: 504
 ###### 局部变量
 &#8195;&#8195;如果一个函数调用了一个变量，并赋予了新值，接下来另外一个函数需要调用变量，并且是需要原来的值，此时调用却会是新的值，采用局部变量可以解决此问题。脚本示例如下：
 ```sh
+#!/bin/bash
 test1 () {
     local tmp=$[ $value +2]
     result=$[ $tmp * 2 ]
@@ -185,3 +192,44 @@ Tmp is smaller!
 ```
 ### 数组变量和函数
 ##### 向函数传递数组参数
+&#8195;&#8195;如果直接将数组作为函数参数进行传递，那么函数只会读取数组变量的第一个值。必须将数组变量的值分解成单个的值，然后将这些值作为函数的参数使用，在函数内部，可以将所有的参数重新组合成一个新的变量。示例如下：
+```sh
+#!/bin/bash
+function test2 {
+    local newarray1
+    newarray1=($(echo "$@"))
+    echo "The new array value is: ${newarray1[*]}"
+}
+array1=(1 2 3 4)
+echo "The original array is ${array1[*]}"
+test2 ${array1[*]}
+addarray () {
+    local sum=0
+    local newarray2
+    newarray2=($(echo "$@"))
+    for value in ${newarray2[*]}
+    do
+        sum=$[ $sum + $value ]
+    done
+    echo $sum
+}
+myarray=(4 3 2 1)
+echo "The array is : ${myarray[*]}"
+arg1=$( echo ${myarray[*]})
+result=$(addarray $arg1)
+echo "The result is $result"
+```
+运行后示例如下：
+```
+[root@redhat8 function]# sh test8.sh
+The original array is 1 2 3 4
+The new array value is: 1 2 3 4
+The array is : 4 3 2 1
+The result is 10
+```
+说明：在函数内部，数组仍然可以像其它数组一样使用，上面示例中就使用for循环遍历了数组。
+
+##### 从函数返回数组
+&#8195;&#8195;函数使用echo语句来按正确顺序输出单个数组值，然后脚本再将它们重新放进一个新的数组变量中，示例如下：
+```sh
+#!/bin/bash
