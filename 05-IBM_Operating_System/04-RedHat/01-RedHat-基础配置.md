@@ -92,6 +92,24 @@ repo id                        repo name                                        
 local                          Red Hat Enterprise Linux 6.8                         5,231
 repolist: 5,231
 ```
+##### YUM常用命令
+yum常用操作命令如下：        
+命令|说明
+:---|:---
+yum repolist|显示仓库列表
+yum list|显示仓库的所有软件包
+yum search &#60;Packages name&#62;|搜索软件包
+yum check-update |检查升级
+yum info &#60;Packages name&#62;|查看软件详细信息
+yum provides &#60;Packages name&#62;|查看软件包Provide信息
+yum replist &#60;Packages name&#62;|查看软件包的依赖包
+yum install &#60;Program name&#62;|软件安装
+yum reinstall &#60;Program name&#62;|重新安装软件
+yum update &#60;Program name&#62;| 软件升级
+yum downgrade &#60;Program name&#62;| 软件降级
+yum remove &#60;Program name&#62;|卸载程序
+yum history|查看yum安装的历史
+
 ### 设置Python3为默认
 RHEL8中自带了Python3，RHEL7.8中自带Python2，Python3会成为趋势，但是每次运行Python都要输入`python3`命令，会很不习惯，可以修改下。
 输入如下命令查看`python3`命令的位置：
