@@ -93,7 +93,8 @@ local                          Red Hat Enterprise Linux 6.8                     
 repolist: 5,231
 ```
 ##### YUM常用命令
-yum常用操作命令如下：        
+yum常用操作命令如下：
+
 命令|说明
 :---|:---
 yum repolist|显示仓库列表
