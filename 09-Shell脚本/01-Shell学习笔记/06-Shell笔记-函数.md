@@ -373,5 +373,3 @@ addtest () {
 [huang@redhat8 function]$ divem 81 9
 9
 ```
-### 实例
-实例收录在以下章节，方便查阅：[Shell-bash脚本实例](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/01-Shell-bash%E8%84%9A%E6%9C%AC%E5%AE%9E%E4%BE%8B.html)
