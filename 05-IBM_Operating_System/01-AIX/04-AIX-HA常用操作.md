@@ -3,7 +3,7 @@ PowerHA是AIX系统中常用的高可用软件。
 ### 日志查看和收集
 ##### 日志查看
 大多数HA日志存放在/var/hacmp目录下，常用的有：
-- 命令`errpt -a`输出：系统日志，会有HA集群事件
+- 命令`errpt -e`输出：系统日志，会有HA集群事件
 - /var/hacmp/adm/cluster.log：包含由PowerHA SystemMirror脚本和守护程序生成的带时间戳的格式化消息，诊断集群问题时候首先检查此文件
 - /var/hacmp/log/hacmp.out，包含脚本执行的每个命令的逐行记录，包括每个命令的所有参数的值
 - /var/hacmp/clverify/clverify.log：集群验证详细输出
