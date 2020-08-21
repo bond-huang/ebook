@@ -233,3 +233,145 @@ The result is 10
 &#8195;&#8195;函数使用echo语句来按正确顺序输出单个数组值，然后脚本再将它们重新放进一个新的数组变量中，示例如下：
 ```sh
 #!/bin/bash
+arraydblr () {
+    local origarray
+    local newarray
+    local elements
+    local i
+    origarray=($(echo "$@"))
+    newarray=($(echo "$@"))
+    elements=$[ $# - 1 ]
+    for (( i =0; i <= $elements; i++ ))
+    {
+        newarray[$i]=$[ ${origarray[$i]} * 2 ]
+    }
+    echo ${newarray[*]}
+}
+myarray=(2 7 4 9 1)
+echo "The original array is :${myarray[*]}"
+arg1=$(echo ${myarray[*]})
+result=($(arraydblr $arg1))
+echo "The new array is ${result[*]}"
+```
+运行后输出示例如下：
+```
+[root@redhat8 function]# sh test9.sh
+The original array is :2 7 4 9 1
+The new array is 4 14 8 18 2
+```
+### 函数递归
+&#8195;&#8195;局部函数变量的一个特性是自成体系，除了从脚本命令行获得的变量，自成体系的函数不需要使用任何外部资源。这个特性使得函数可以递归的调用，也就是函数可以调用自己来得到结果。           
+&#8195;&#8195;通常递归函数都一个最终可迭代到的基准值。最经典例子就是计算阶乘，例如阶乘：`3！=1*2*3`,用递归方程可以写成：`x!=x * (x-1)!`,脚本示例如下：
+```sh
+#!/bin/bash
+factorial () {
+    if [ $1 -eq 1 ]
+    then
+        echo 1
+    else
+        local tmp=$[ $1 - 1 ]
+        local result=$(factorial $tmp)
+        echo $[ $result * $1 ]
+    fi
+}
+read -p "Please enter number: " num
+result=$(factorial $num)
+echo "The factorial of enter number is $result"
+```
+运行后输出示例如下：
+```
+Please enter number: 9
+The factorial of enter number is 362880
+```
+### 创建库
+&#8195;&#8195;当需要在多个脚本中使用同一段代码时候，可以创建一个函数库文件，在多个脚本中引用该库文件。首先是创建一个包含所需函数的公用库文件，例如testfuncs库文件，定义了几个简单的函数：
+```sh
+function addem {
+    echo $[ $1 + $2 ]
+}
+multem () {
+    echo $[ $1 * $2 ]
+}
+divem () {
+    fi [ $2 -ne 0 ]
+    then
+        echo $[ $1 / $2 ]
+    else
+        echo -1
+    fi
+}
+```
+&#8195;&#8195;shell函数同样有作用域问题，和环境变量一样，运行testfuncs shell脚本，会创建一个新的shell并在其中运行这个脚本。当像普通脚本那样运行库文件，函数并不会出现在脚本中。使用函数库的关键在于source命令，source命令会在当前shell上下文中执行命令，而不是创建一个新的shell。source命令有个快捷的别名，称作点操作符（dot operator），调用刚才库文件的脚本示例如下：
+```sh
+#!/bin/bash
+. ./testfuncs
+num1=10
+num2=5
+result1=$(addem $num1 $num2)
+result2=$(multem $num1 $num2)
+result3=$(divem $num1 $num2)
+echo "The result of adding them is:$result1"
+echo "The result of adding them is:$result2"
+echo "The result of adding them is:$result3"
+```
+运行后输出示例如下：
+```
+[root@redhat8 function]# sh test11.sh
+The result of adding them is:90
+The result of adding them is:176
+The result of adding them is:44
+```
+### 命令行上使用函数
+采用单号方式进行函数定义，示例如下：
+```
+[root@redhat8 function]# function multem  { echo $[ $1 * $2 ];}
+[root@redhat8 function]# multem 9 9
+81
+[root@redhat8 function]# doubleit () { read -p "Enter number: " num;echo $[ $num * 2 ];}
+[root@redhat8 function]# doubleit
+Enter number: 9
+18
+```
+注意事项：如果给函数起了一个内建命令或与另一命令相同的名字，函数会覆盖原来的命令。
+
+### 在.bashrc文件中定义函数
+&#8195;&#8195;命令行上定义的函数在退出shell时函数就消失了，可以将函数定义在一个特定的位置，每次启动一个新的shell时候，都会有shell重新载入，这个最佳位置就是.bashrc文件，不管是交互式shell还是从现有的shell中启动新的shell，都会在主目录下查找这个文件。          
+&#8195;&#8195;在RHEL中，文件.bash在用户的home目录下，里面有预定义一些东西，不要删除，把个人写的函数放在文件末尾就行了，文件.bashrc的示例如下：
+```
+[huang@redhat8 ~]$ pwd
+/home/huang
+[huang@redhat8 ~]$ cat .bashrc
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment
+PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+```
+&#8195;&#8195;在.bashrc文件中加入如下函数或者库文件，并且用source（点操作符）调用（注意会在下次重新启动bash shell时候生效）：
+```sh
+addtest () {
+    echo $[ $1 + $2 ]
+}
+. /shell/function/testfuncs
+```
+在命令行调用示例如下：
+```
+[huang@redhat8 function]$ addtest 2 4
+6
+[huang@redhat8 function]$ addem 3 13
+16
+[huang@redhat8 function]$ divem 81 9
+9
+```
+### 实例
+实例收录在以下章节，方便查阅：[Shell-bash脚本实例](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/01-Shell-bash%E8%84%9A%E6%9C%AC%E5%AE%9E%E4%BE%8B.html)
