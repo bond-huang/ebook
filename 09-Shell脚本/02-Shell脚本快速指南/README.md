@@ -7,3 +7,4 @@
 ## 内容
 - [Shell-bash脚本实例](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/01-Shell-bash%E8%84%9A%E6%9C%AC%E5%AE%9E%E4%BE%8B.html)
 - [Shell-退出码_test_expr查询表](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/02-Shell-%E9%80%80%E5%87%BA%E7%A0%81_test_expr%E6%9F%A5%E8%AF%A2%E8%A1%A8.html)
+- [Shell-Shtool脚本函数库](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/03-Shell-Shtool%E8%84%9A%E6%9C%AC%E5%87%BD%E6%95%B0%E5%BA%93.html)
