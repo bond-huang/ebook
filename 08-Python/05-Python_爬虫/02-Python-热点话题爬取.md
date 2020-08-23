@@ -82,7 +82,6 @@ popular_reptile.entrance()
 ```
 最后输出结果如下：
 ```
-PS C:\Users\QianHuang\Desktop\big1000\vscode\codefile\reptile> python module_5.py
 搜索排行1：官方通报西安明秦王府城墙坍塌;搜索指数:4799605。
 搜索排行2：黎巴嫩总统称3周前就知道有危险;搜索指数:4631619。
 搜索排行3：陈思诚为佟丽娅庆生;搜索指数:4313079。
@@ -114,7 +113,6 @@ PS C:\Users\QianHuang\Desktop\big1000\vscode\codefile\reptile> python module_5.p
 ```
 把链接换成同一页面的今日热点或者七日热点都行，七日热点输出示例如下：
 ```
-PS C:\Users\QianHuang\Desktop\big1000\vscode\codefile\reptile> python module_5.py
 搜索排行1：特朗普宣布45天后禁止与微信交易;搜索指数:718781。
 搜索排行2：南京失联女生被其男友杀害埋尸;搜索指数:598367。
 搜索排行3：影院老板砸花木兰宣传板;搜索指数:581728。
