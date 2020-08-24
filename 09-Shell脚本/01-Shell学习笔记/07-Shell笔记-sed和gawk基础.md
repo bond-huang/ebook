@@ -252,3 +252,344 @@ root:x:0:0:root:/root:/bin/csh
 &#8195;&#8195;默认情况下，sed编辑器中使用的命令会作用于文本数据的所有行，如果执行将命令作用于特定的行或某些行，必须使用寻址（line addressing），sed编辑器中有两种形式的行寻址：
 - 以数字形式表示的行区间
 - 用文本模式来过滤出行
+
+标准格式：`[address]command`,或者将特定地址的多个命令分组：
+```sh
+address {
+    command1
+    command2
+}
+```
+数字方式的行寻址示例如下：
+```
+[root@redhat8 sed_gawk]# sed '1s/Captain America/Batman/' test5
+I am Batman!
+I am Captain America!
+I am Captain America!
+[root@redhat8 sed_gawk]# sed '1,3s/Captain America/Batman/' test5
+I am Batman!
+I am Batman!
+I am Batman!
+[root@redhat8 sed_gawk]# sed '1,$s/Captain America/Batman/' test5
+I am Batman!
+I am Batman!
+I am Batman!
+```
+说明：
+- sed编辑器会将文本流中的第一行编号为1，按顺序进行编号
+- 在命令中指定的地址可以是单个行号，或者`1,3`这种指定的一定区间范围内的行
+- 可以使用美元符号，例如`1,$`表示从第一行开始的所有行
+
+使用文本模式过滤器示例如下：
+```
+[root@redhat8 sed_gawk]# grep huang /etc/passwd
+huang:x:1000:1000:huang:/home/huang:/bin/bash
+[root@redhat8 sed_gawk]# sed '/huang/s/bash/ksh/' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+[...]
+huang:x:1000:1000:huang:/home/huang:/bin/ksh
+```
+说明：
+- 指定文本模式来过滤出要作用的行格式：`/pattren/command`
+- 示例中演示了只修改huang的默认shell
+
+命令组合示例（使用地址区间一样）：
+```
+[root@redhat8 sed_gawk]# sed '2{
+> s/am/am not/
+> s/Captain America/Thanos/
+> }' test5
+I am Captain America!
+I am not Thanos!
+I am Captain America!
+```
+##### 删除行
+示例如下:
+```
+[root@redhat8 sed_gawk]# cat test6
+1. I am Captain America!
+2. I am Captain America!
+3. I am Captain America!
+[root@redhat8 sed_gawk]# sed '2d' test6
+1. I am Captain America!
+3. I am Captain America!
+[root@redhat8 sed_gawk]# sed '1,$d' test6
+[root@redhat8 sed_gawk]# sed '/1. am/d' test6
+2. I am Captain America!
+3. I am Captain America!
+[root@redhat8 sed_gawk]# sed 'd' test6
+[root@redhat8 sed_gawk]# cat test6
+1. I am Captain America!
+2. I am Captain America!
+3. I am Captain America!
+```
+说明：
+- 删除命令`d`会删除匹配指定寻址模式的所有行
+- 可以指定地址和`d`一起使用，可以指定特定区间，或者模式匹配特性也适用于删除命令
+- sed编辑器不会修改原始文件，删除的行只是从sed编辑器的输出中删除
+
+更多示例：
+```
+[root@redhat8 sed_gawk]# sed '/1/,/2/d' test6
+3. I am Captain America!
+[root@redhat8 sed_gawk]# cat test7
+1. I am Captain America!
+2. I am Captain America!
+3. I am Captain America!
+1. I am Iron man !
+2. I am Thanos 
+3. I am Captain America!
+test line
+[root@redhat8 sed_gawk]# sed '/1/,/2/d' test7
+3. I am Captain America!
+3. I am Captain America!
+test line
+[root@redhat8 sed_gawk]# sed '/1/,/4/d' test7
+[root@redhat8 sed_gawk]# 
+```
+说明：
+- 上面第一个示例中指定第一个模式会打开行删除功能，第二个模式会关闭行删除功能，编辑器会删除两个行之间的所有行，包括指定的行
+- 第二个示例中，发现了第二个数字"1"，然后再次触发了删除命令
+- 第三个示例中，没有匹配到结束模式，所有整个数据流都被删掉了
+
+##### 插入和附加文本
+sed编辑器允许向数据流插入和附加文本行：
+- 插入（insert）命令（i）会在指定行前增加一个新行
+- 附加（append）命令（a）会在指定行后增加一个新行
+
+必须指定是要将行插入还是附加到另一行，标准格式如下：
+```sh
+sed '[address]command\
+new line'
+```
+示例如下：
+```
+[root@redhat8 sed_gawk]# echo "I am Iron Man" |sed 'i\I am Thanos'
+I am Thanos
+I am Iron Man
+[root@redhat8 sed_gawk]# echo "I am Iron Man" |sed 'a\I am Thanos'
+I am Iron Man
+I am Thanos
+[root@redhat8 sed_gawk]# cat test1
+I am Captain America!
+I am Captain America!
+[root@redhat8 sed_gawk]# sed '2i\
+> I am Iron Man!' test1
+I am Captain America!
+I am Iron Man!
+I am Captain America!
+[root@redhat8 sed_gawk]# sed '2a\
+> I am Iron Man!' test1
+I am Captain America!
+I am Captain America!
+I am Iron Man!
+[root@redhat8 sed_gawk]# sed '$a\
+> I am Iron Man!\
+> I am Batman!' test1
+I am Captain America!
+I am Captain America!
+I am Iron Man!
+I am Batman!
+```
+说明：
+- 想要将新行附加到数据流的末尾，只要用代表数据最后一行的美元符号就可以了
+- 要插入或附加多行文本，必须对要插入或附加的新文本中的每一行使用反斜线，直到最后一行
+
+##### 修改行
+修改（change）命令允许修改数据流中整行文本的内容，示例如下：
+```
+[root@redhat8 sed_gawk]# sed '2c\
+> I will save the world!' test6
+1. I am Captain America!
+I will save the world!
+3. I am Captain America!
+[root@redhat8 sed_gawk]# cat test7
+1. I am Captain America!
+2. I am Captain America!
+3. I am Captain America!
+1. I am Iron man !
+2. I am Thanos 
+3. I am Captain America!
+[root@redhat8 sed_gawk]# sed '/2. I am/c\
+> I will save the world!' test7
+1. I am Captain America!
+I will save the world!
+3. I am Captain America!
+1. I am Iron man !
+I will save the world!
+3. I am Captain America!
+[root@redhat8 sed_gawk]# sed '2,5c\
+> I will save the world!' test7
+1. I am Captain America!
+I will save the world!
+3. I am Captain America!
+test line
+```
+说明：
+- 可以使用数字或文本进行寻址，文本模式修改命令会修改它匹配的数据流中的任意文本
+- 当使用地址区间时，会用这一行文本替换数据流中的两行文本，而不是逐一修改这两行文本
+
+##### 转换命令
+转换（transform）命令（y）是唯一可以处理单个字符的sed编辑器命令。格式如下
+```
+[address]y/inchars/outchars/
+```
+示例如下：
+```
+[root@redhat8 sed_gawk]# sed 'y/123/789/' test7
+7. I am Captain America!
+8. I am Captain America!
+9. I am Captain America!
+7. I am Iron man !
+8. I am Thanos 
+9. I am Captain America!
+test line
+[root@redhat8 sed_gawk]# echo "This 1 is a test of 1 try." |sed 'y/123/456/'
+This 4 is a test of 4 try.
+```
+说明：
+- 转换会对inchars和outchars值进行一对一的映射
+- inchars中的第一个字符会被转换为outchars中的第一个字符，第二个字符会被转换成outchars中的第二个字符
+- 映射过程会一直持续到处理完指定字符
+- 如果inchars和outchars的长度不同，则sed编辑器会产生一条错误消息
+- 转换命令是一个全局命令，会对文本中找到的所有指定字符自动进行转换
+
+##### 回顾打印
+之前介绍过使用p标记和替换命令显示sed编辑器修改过的行，另外还有三个命令也能用来打印数据流中的信息：
+- p命令用来打印文本行
+- 等号（=）命令用来打印行号
+- 小写字母l（小写L）命令用来列出行
+
+打印行示例：
+```
+[root@redhat8 sed_gawk]# echo "I am Iron Man!"|sed 'p'
+I am Iron Man!
+I am Iron Man!
+[root@redhat8 sed_gawk]# echo "I am Iron Man!"|sed -n 'p'
+I am Iron Man!
+[root@redhat8 sed_gawk]# sed -n '/Iron man/p' test7
+1. I am Iron man !
+[root@redhat8 sed_gawk]# sed -n '2,4p' test7
+2. I am Captain America!
+3. I am Captain America!
+1. I am Iron man !
+[root@redhat8 sed_gawk]# sed -n '/Thanos/{
+> p
+> s/Thanos/Batman/p
+> }' test7
+2. I am Thanos 
+2. I am Batman 
+```
+说明：
+- 在命令行上用`-n`选项可以禁止输出其他行，只打印包含匹配文本模式的行
+- 最后一个示例中首先找到包含Thanos的行，并且打印出来了，然后用s命令替换文本，并用p标记打印出替换结果，同时显示了原来的文本和新文本
+
+打印行号示例：
+```
+[root@redhat8 sed_gawk]# sed '=' test1
+1
+I am Captain America!
+2
+I am Captain America!
+[root@redhat8 sed_gawk]# sed -n '/Iron man/{
+> =
+> p
+> }' test7
+4
+1. I am Iron man !
+```
+说明：
+- 等号命令回去打印行在数据流中的当前行号，行号有数据流中的换行符决定
+- 第二个示例是数据流中查找特定文本，并标记行号，利用`-n`选项让sed编辑器只显示了包含匹配文本模式的行的行号和文本
+
+&#8195;&#8195;列出（list）命令（l）可以打印数据流中的文本和不可打印的ASCII字符。任何不可打印的字符要么在其八进制前加一个反斜杠，要么使用标准C风格的命名法，比如`\t`来代表制表符。列出行示例：
+```
+[root@redhat8 sed_gawk]# cat test8
+I	am	Iron	Man !
+
+[root@redhat8 sed_gawk]# sed -n 'l' test8
+I\tam\tIron\tMan !$
+$
+```
+说明：
+- 制表符位置使用`\t`来显示，行尾的灭怨妇表示换行符
+- 如果数据流包含了转义字符，列出命令会在毕业时候用八进制来显示
+
+### 使用sed处理文件
+
+##### 写入文件
+命令w来向文件写入行，格式：`[address]w filename`。说明如下：
+- filename可以使用相对路径或绝对路径，运行sed编辑器的用户必须有文件的写权限
+- 地址可以是sed中支持的任意类型的寻址方式，例如单个行号、文本模式、行区间或文本模式
+
+示例如下:
+```
+[root@redhat8 sed_gawk]# sed '1,2w test9' test7
+1. I am Captain America!
+2. I am Captain America!
+3. I am Captain America!
+1. I am Iron man !
+2. I am Thanos 
+3. I am Captain America!
+test line
+[root@redhat8 sed_gawk]# cat test9
+1. I am Captain America!
+2. I am Captain America!
+[root@redhat8 sed_gawk]# sed -n '/Captain America/w test10' test7
+[root@redhat8 sed_gawk]# cat test10
+1. I am Captain America!
+2. I am Captain America!
+3. I am Captain America!
+3. I am Captain America!
+```
+说明：
+- 第一个示例中将数据流中的前两行打印到文本文件test9中
+- 可以使用`-n`选项让行选项不显示到STDOUT上
+- 第二个示例只将包含文本模式的数据行写入到目标文件，次方法非常有用
+
+##### 从文件读取数据
+&#8195;&#8195;读取（read）命令（r）允许将一个独立的文件中的数据插入到数据流中，格式：`[address]r filsname`。在读取命令中使用地址区间，只能指定单独的一个行号或文本模式地址，sed编辑器会将文件中的文本插入到指定的地址后。示例如下：
+```
+[root@redhat8 sed_gawk]# cat test11
+I am Iron Man!
+I will save the world !
+[root@redhat8 sed_gawk]# cat test1
+I am Captain America!
+I am Captain America!
+[root@redhat8 sed_gawk]# sed '1r test11' test1
+I am Captain America!
+I am Iron Man!
+I will save the world !
+I am Captain America!
+[root@redhat8 sed_gawk]# sed '/Iron Man/r test1' test11
+I am Iron Man!
+I am Captain America!
+I am Captain America!
+I will save the world !
+[root@redhat8 sed_gawk]# sed '$r test11' test1
+I am Captain America!
+I am Captain America!
+I am Iron Man!
+I will save the world !
+```
+可以和删除命令一起使用：利用一个文件中的数据来替换文件中的占位文本，例如有一份保持hero的文本文件,：
+```
+[root@redhat8 sed_gawk]# cat hero.std
+Would the following hero:
+LIST
+They will save the world!
+[root@redhat8 sed_gawk]# cat test12
+Thor,T	Asgard
+Hulk,H	Earth
+```
+现在就将hero.std中的LIST替换成hero清单，示例如下：
+```
+[root@redhat8 sed_gawk]# sed '/LIST/{
+> r test12
+> d
+> }' hero.std
+Would the following hero:
+Thor,T	Asgard
+Hulk,H	Earth
+They will save the world!
+```
