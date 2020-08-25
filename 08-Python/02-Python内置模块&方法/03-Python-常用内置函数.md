@@ -87,4 +87,32 @@ PS D:\Python\codefile\function_code> python module_1.py
 ###  map()和reduce()
 和filter()一样，结合使用的话实用性很大，使用方法在学习笔记函数式编程中有介绍，[Python学习笔记-函数式编程](https://bond-huang.github.io/huang/08-Python/01-Python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11-Python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B.html?h=filter)
 
+### sort()
+&#8195;&#8195;此方法会对列表进行原地排序，只使用 `< `来进行各项间比较。异常不会被屏蔽:如果有任何比较操作失败，整个排序操作将失败（而列表可能会处于被部分修改的状态）,标准格式：`sort(*, key=None, reverse=False)`,参数说明：
+- key指定带有一个参数的函数，用于从每个列表元素中提取比较键 (例如 key=str.lower)。 对应于列表中每一项的键会被计算一次，然后在整个排序过程中使用。默认值None表示直接对列表项排序而不计算一个单独的键值
+- reverse为一个布尔值。如果设为True，则每个列表元素将按反向顺序比较进行排序
+
+示例如下：
+```python
+list1 = [4,5,6,7,0,1,2,3]
+list1.sort()
+print(list1)
+list1.sort(key=None)
+print(list1)
+list1.sort(key=None,reverse=False)
+print(list1)
+list1.sort(reverse=True)
+print(list1)
+list1.sort(key=None,reverse=True)
+print(list1)
+```
+运行后输出结果如下：
+```shell
+PS C:\Users\big1000\vscode\codefile\Leetcode> python 1528.py
+[0, 1, 2, 3, 4, 5, 6, 7]
+[0, 1, 2, 3, 4, 5, 6, 7]
+[0, 1, 2, 3, 4, 5, 6, 7]
+[7, 6, 5, 4, 3, 2, 1, 0]
+[7, 6, 5, 4, 3, 2, 1, 0]
+```
 ### 其它常用内置函数待使用
