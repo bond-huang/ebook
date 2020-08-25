@@ -121,5 +121,26 @@ PS C:\Users\big1000\vscode\codefile\Leetcode> python 1528.py
 - reverse为一个布尔值。如果设为True，则每个列表元素将按反向顺序比较进行排序。
 
 示例：在爬虫学习中有使用示例。
+### zip()
+&#8195;&#8195;可以将两个有序数据一一对应进行聚合，标准格式：`zip(*iterables)`,示例如下：
+```
+a = 'codeleet'
+b = [4,5,6,7,0,2,1,3]
+zipped = zip(b,a)
+print(zipped)
+print(list(zipped))
+x,y = zip(*zip(a,b))
+print(x)
+print(y)
+```
+运行后输出结果如下：
+```shell
+PS C:\Users\big1000\vscode\codefile\Leetcode> python 1528.py
+<zip object at 0x00000141C07E68C0>
+[(4, 'c'), (5, 'o'), (6, 'd'), (7, 'e'), (0, 'l'), (2, 'e'), (1, 'e'), (3, 't')]
+('c', 'o', 'd', 'e', 'l', 'e', 'e', 't')
+(4, 5, 6, 7, 0, 2, 1, 3)
+```
+应用实例：在解答leetcode题目1528. Shuffle String时候用到此方法。
 
 ### 其它常用内置函数待使用
