@@ -37,4 +37,14 @@ class Solution:
         result= reduce(lambda x,y:x+y,b)
         return result
 ```
+之前一直用reduce，才了解到可以用join实现list中字符串相加：
+```python
+class Solution:
+    def restoreString(self, s: str, indices: List[int]) -> str:
+        zipped = zip(indices,s)
+        sort_zip = sorted(zipped)
+        a , b = zip(*sort_zip)
+        result= ''.join(b)
+        return result
+```
 ### 下一题解答中
