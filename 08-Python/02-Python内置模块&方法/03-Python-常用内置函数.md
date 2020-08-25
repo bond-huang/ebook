@@ -115,4 +115,11 @@ PS C:\Users\big1000\vscode\codefile\Leetcode> python 1528.py
 [7, 6, 5, 4, 3, 2, 1, 0]
 [7, 6, 5, 4, 3, 2, 1, 0]
 ```
+### sorted()
+&#8195;&#8195;标准格式：`sorted(iterable, *, key=None, reverse=False)`根据iterable中的项返回一个新的已排序列表。具有两个可选参数，它们都必须指定为关键字参数：
+- key指定带有单个参数的函数，用于从iterable的每个元素中提取用于比较的键(例如 key=str.lower)。默认值为 None(直接比较元素)。
+- reverse为一个布尔值。如果设为True，则每个列表元素将按反向顺序比较进行排序。
+
+示例：在爬虫学习中有使用示例。
+
 ### 其它常用内置函数待使用
