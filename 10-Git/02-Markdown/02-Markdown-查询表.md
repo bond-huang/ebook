@@ -9,7 +9,7 @@
 
 结果|描述|实体编号
 :---:|:---:|:---:
-&#32;|space|\&#32;
+&#32;|space|&#32&#59;
 !|exclamation mark|\&#33;
 "|quotation mark|\&#34;
 \#|number sign|\&#35;
