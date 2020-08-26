@@ -10,3 +10,4 @@
 
 - [WAS-数据收集](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/01-WAS-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html) 
 - [WAS-常见问题处理](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/02-WAS-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86.html)
+- [WAS-其它报错处理](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/03-WAS-%E5%85%B6%E5%AE%83%E6%8A%A5%E9%94%99%E5%A4%84%E7%90%86.html)
