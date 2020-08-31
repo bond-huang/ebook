@@ -104,6 +104,8 @@ gawk --re-interval '/^\(?[2-9][0-9]{2}\)?(| |-|\.)[0-9]{3}(| |-|\.)[0-9]{4}$/{pr
 #!/bin/bash
 gawk '/^([a-zA-Z0-9_\-\.\+]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/{print $0}'
 ```
+使用示例如下：
+```
 [root@redhat8 regular]# echo "test@163.com" | sh isemail.sh
 test@163.com
 [root@redhat8 regular]# echo "test123@cn.ibm.com" | ./isemail.sh
