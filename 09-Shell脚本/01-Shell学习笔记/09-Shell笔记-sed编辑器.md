@@ -176,3 +176,223 @@ x|交换模式空间和保持空间的内容
 3.Stupid is as stupid does !
 4.All life is a game of luck!
 ```
+&#8195;&#8195;正常p会答应匹配的的那一行，示例中恰号相反，其它的行都打印了。在之前有一种情况是sed编辑器无法处理数据流中的最后一行文本，因为只会再也没有其他行了，可以用感叹号来解决这个问题。
+```
+[root@redhat8 sed]# sed 'N
+> s/System\nAdministrator/Desktop\nUser/
+> s/System Administrator/Desktop User/
+> ' test4
+Today,the RHEL Desktop
+User's group meeting will be held.
+All System Administrators should attend
+[root@redhat8 sed]# sed '$!N;
+> s/System\nAdministrator/Desktop\nUser/
+> s/System Administrator/Desktop User/
+> ' test4
+Today,the RHEL Desktop
+User's group meeting will be held.
+All Desktop Users  should attend.
+```
+说明：
+&#8195;&#8195;美元符号表示数据流中的最后一行文本，当sed编辑器到了最后一行时，它没有执行N命令，但它对所有其他行都执行了这个命令。
+
+可以用来反转数据流中文本行的顺序，可以参照如下方法使用模式空间：
+- 在模式空间中放置一行
+- 将模式空间中的行放到保持空间中
+- 在模式空间中放入下一行
+- 将保持空间附加到模式空间后
+- 将模式空间中的所有内容都放到保持空间中
+- 重复执行第3-5步，直到所有行都反序放到了保持空间中
+- 提取并打印行
+
+方法说明：
+- 不想在处理过程中打印行，要使用sed的-n命令行选项
+- 下一步决定如何将保持空间文本附加到模式空间文本后面，可以使用G命令完成
+- 不想将保持空间附加到要处理的第一行文本后面，可以使用感叹号解决：`1!G`
+- 下一步是将新的模式空间（含已反转的行）放到保持空间，用h命令就行
+- 将模式空间中的整个数据流都反转后，就是打印结果，打印需要用`$p`
+
+示例如下：
+```
+[root@redhat8 sed]# cat test2
+Miracles happen every day !
+To make each day count !
+Stupid is as stupid does !
+[root@redhat8 sed]# sed -n '{1!G ; h ; $p }' test2
+Stupid is as stupid does !
+To make each day count !
+Miracles happen every day !
+```
+在Linux中，tac命令会倒序显示一个文本文件，cat命令拼写相反，示例如下：
+```
+[root@redhat8 sed]# tac test2
+Stupid is as stupid does !
+To make each day count !
+Miracles happen every day !
+```
+### 改变流
+&#8195;&#8195;一般sed编辑器会从脚本的顶部开始，一直执行号脚本的结尾（D命令除外，它会强制sed返回到脚本的顶部）。sed编辑器提供了一个方法来改变命令脚本的执行流程，其结果与结构化编程类型。
+#### 分支
+&#8195;&#8195;sed编辑器可以基于地址、地址模式或地址区间排除一整块命令，允许只对数据流中的特定行执行一组命令，分支（branch）命令b的格式：`[address]b [label]`。说明：
+- address参数决定了哪些行的数据会触发分支命令
+- label参数定义了要跳转到的位置
+- 如果没有label参数，跳转命令会跳转到脚本的结尾
+
+示例如下：
+```
+[root@redhat8 sed]# cat test6
+This is the header line!
+This is the first data line!
+This is the second data line!
+This is the last line!
+[root@redhat8 sed]# sed '{2,3b;s/This is/Is this/;s/line!/test?/}' test6
+Is this the header test?
+This is the first data line!
+This is the second data line!
+Is this the last test?
+```
+说明：
+- 分支命令在数据流中的第2行和第3行处跳过了两个替换命令
+- 不希望跳到脚本的几位，可以为分支命令定义一个标签，最多七个字符长度，格式：`:label12`
+- 需要指定标签时候将其加到b命令后即可
+- 使用标签允许跳过地址匹配出的命令，但仍然会执行脚本中的其它命令
+
+示例如下：
+```
+[root@redhat8 sed]# sed '{/first/b jump1;s/This is the/No jump on/
+> :jump1
+> s/This is the/Jump here on/}' test6
+No jump on header line!
+Jump here on first data line!
+No jump on second data line!
+No jump on last line!
+```
+说明：
+- 跳转命令指定如果文本中出现了first，程序应该跳到标签为jump1的脚本行
+- 如果分支命令的模式没有匹配，sed会继续执行脚本中的命令，包括分支标签后的命令
+- 所有替换命令都会在不匹配分支模式的行上执行
+- 如果某行匹配了分支模式，sed会跳转到带有分支标签的那行，所有只有最后一个替换命令会执行
+
+&#8195;&#8195;上面示例中是跳转到sed脚本后面的标签上，可以跳转到脚本中靠前的标签上，这样可以达到循环效果，示例如下：
+```
+[root@redhat8 sed]# echo "A, test, to, remove, commas."|sed -n '{
+> :start
+> s/,//1p
+> b start
+> }'
+A test, to, remove, commas.
+A test to, remove, commas.
+A test to remove, commas.
+A test to remove commas.
+^C
+[root@redhat8 sed]# echo "A, test, to, remove, commas."|sed -n '{
+> :start
+> s/,//1p
+> /,/b start
+> }'
+A test, to, remove, commas.
+A test to, remove, commas.
+A test to remove, commas.
+A test to remove commas.
+```
+说明：
+- 脚本每次迭代都会删除文本中的第一个逗号，并打印字符串
+- 第一次示例中有问题，脚本陷入了死循环，不停查找逗号，需要用ctrl+c终止脚本
+- 防止进入死循环，可以为分支命令指定一个地址模式来查找，第二次示例中使用了逗号，当脚本中最后一个逗号被删除后，分支命令就不会再执行了
+
+#### 测试
+&#8195;&#8195;测试（test）命令（t）也可以用来改变sed编辑器脚本的执行流程，测试命令会根据替换命令的结果跳转到某个标签，而不是根据地址跳转。格式：`[address]t [label]`，说明：
+- 如果替换命令成功匹配并替换了一个模式，测试命令就会跳转到指定的标签
+- 如果替换命令未能匹配指定的模式，测试命令就不会跳转
+- 在没有指定标签的情况下，如果测试成功，sed会跳转到脚本的结尾
+- 测试命令提供了对数据流中的文本执行基本的if-then语句的一个低成本的方法
+
+例如已经做了一个替换，不需要再做另一个替换，可以使用测试命令：
+```
+[root@redhat8 sed]# sed '{
+> s/first/matched/
+> t
+> s/This is the/No match on/
+> }' test6
+No match on header line!
+This is the matched data line!
+No match on second data line!
+No match on last line!
+[root@redhat8 sed]# echo "A, test, to, remove, commas."|sed -n '{
+> :start
+> s/,//1p
+> t start
+> }'
+A test, to, remove, commas.
+A test to, remove, commas.
+A test to remove, commas.
+A test to remove commas.
+```
+说明：
+- 第一个替换命令会查找模式文本first，匹配了行中的模式，就会替换文本，而且测试命令会跳过后面的替换命令
+- 如果第一个替换命令未能匹配到模式，第二个替换命令就会被执行
+- 第二个示例演示了用测试命令结束之前用分支命令形成的无限循环
+- 当无需替换时，测试命令不会跳转而是继续实行剩下的脚本
+
+### 模式替代
+&#8195;&#8195;在使用通配符时，很难知道到底哪些文本会匹配模式。例如想在行中匹配的单词边上放上引号，如果只是要匹配模式中的一个单词，就比较简单,如果模式中使用通配符（.）来匹配多个单词，就满足不了需求：
+```
+[root@redhat8 sed]# echo "The cat sleeps in his hat."|sed 's/cat/"cat"/'
+The "cat" sleeps in his hat.
+[root@redhat8 sed]# echo "The cat sleeps in his hat ."|sed 's/.at/".at"/g'
+The ".at" sleeps in his ".at" .
+```
+#### &符号
+&#8195;&#8195;&符号可以用来代表替换命令中的匹配的模式，不管模式匹配的是什么文本，都可以在替换模式中使用&符号来使用这段文本，这样就可以操作模式所匹配到的任何单词了，示例如下：
+```
+[root@redhat8 sed]# echo "The cat sleeps in his hat ."|sed 's/.at/"&"/g'
+The "cat" sleeps in his "hat" .
+```
+说明：
+- 当模式匹配到了单词cat，"cat"就会出现在了替换后的单词里面
+- 当匹配到了单词hat，"cat"就会出现在了替换后的单词里面
+
+#### 替换单独的单词
+&#8195;&#8195;&符号提取匹配替换命令中的指定模式的整个字符串，有时候只想提取字符串的一部分。在sed编辑器中用圆括号来定义替换模式的子模式，子模式说明：
+- 可以在替换模式中使用特殊字符来引用每个子模式，替代字符用反斜线和数字组成，数字表示子模式的位置
+- sed编辑器会给第一个子模式分配字符\1,给第二个分配字符\2，依此类推
+
+示例如下：
+```
+[root@redhat8 sed]# echo "The System Administrator manual" | sed '
+> s/\(System\) Administrator/\1 User/'
+The System User manual
+```
+说明：
+- 在替换命令中使用圆括号时必须用转义字符将他们标为分组而不是普通圆括号
+- 示例中替换命令用一对圆括号将单词System括起来，表示其为一个子模式
+- 然后在替换模式中使用\1来提起第一个匹配的子模式
+
+&#8195;&#8195;如果需要用一个单词来替换一个短语，而这个单词刚好是该短语的子字符串，但是那个子字符串恰巧使用了通配符，这时候使用子模式会很方便：
+```
+[root@redhat8 sed]# echo "The furry cat is pretty"|sed 's/furry \(.at\)/\1/'
+The cat is pretty
+[root@redhat8 sed]# echo "The furry hat is pretty"|sed 's/furry \(.at\)/\1/'
+The hat is pretty
+```
+说明：
+- 这种情况下，不能用&符号，因为他会替换整个匹配的模式
+- 子模式允许选择将模式中的某部分作为替代模式
+
+当需要在两个或多个子模式间插入文本时，尤为有用。下面示例中使用子模式在大数字中插入逗号：
+```
+[root@redhat8 sed]# echo "1234567"|sed '{
+> :start
+> s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/
+> t start
+> }'
+1,234,567
+```
+说明：
+- 示例脚本将匹配模式分成了两部分：`.*[0-9]`和`[0-9]{3}`
+- 这个模式会查找两个子模式，第一个子模式是以数字结尾的任意长度的字符，第二个是若干组三位数字，注意正则表达式中使用花括号时候用了转义字符
+- 如果这个模式在文本中找到阿里，替代文本会在两个子模式之间加一个逗号，每个子模式都会通过其位置来标示
+- 示例脚本使用测试命令来遍历这个数字，知道放置好所有的逗号
+
+### 在脚本中使用sed
+为方便查阅，收录在以下位置：[Shell-脚本中使用sed](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/05-Shell-%E8%84%9A%E6%9C%AC%E4%B8%AD%E4%BD%BF%E7%94%A8sed.html)
