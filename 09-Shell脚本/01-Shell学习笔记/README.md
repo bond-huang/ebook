@@ -15,3 +15,4 @@
 - [Shell笔记-正则表达式](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/01-Shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08-Shell%E7%AC%94%E8%AE%B0-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.html)
 - [Shell笔记-sed编辑器](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/01-Shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09-Shell%E7%AC%94%E8%AE%B0-sed%E7%BC%96%E8%BE%91%E5%99%A8.html)
 - [Shell笔记-gawk程序](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/01-Shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10-Shell%E7%AC%94%E8%AE%B0-gawk%E7%A8%8B%E5%BA%8F.html)
+- [Shell笔记-脚本控制](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/01-Shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11-Shell%E7%AC%94%E8%AE%B0-%E8%84%9A%E6%9C%AC%E6%8E%A7%E5%88%B6.html)
