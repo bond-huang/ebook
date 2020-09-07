@@ -395,4 +395,50 @@ The hat is pretty
 - 示例脚本使用测试命令来遍历这个数字，知道放置好所有的逗号
 
 ### 在脚本中使用sed
-为方便查阅，收录在以下位置：[Shell-脚本中使用sed](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/05-Shell-%E8%84%9A%E6%9C%AC%E4%B8%AD%E4%BD%BF%E7%94%A8sed.html)
+#### 实用包装脚本
+&#8195;&#8195;sed编辑器有时候写的脚本会比较长，可以讲sed编辑器命令放到shell包装脚本（wrapper）中，不需要每次使用都重新键入整个脚本。包装脚本充当sed编辑器脚本和命令行之间的中间人角色。在shell脚本中，可以讲普通的shell变量及参数和sed编辑器脚本一起使用，示例脚本如下：
+```sh
+#!/bin/bash
+# Shell wrapper for sed editor script.
+# Shell wrapper to reverse text file lines.
+sed -n '{ 1!G ; h ; $p }' $1
+#
+```
+运行脚本示例如下：
+```
+[root@redhat8 sed]# sh reverse.sh test6
+This is the last line!
+This is the second data line!
+This is the first data line!
+This is the header line!
+```
+#### 重定向sed的输出
+&#8195;&#8195;默认情况下sed编辑器会将脚本输出到STDOUT上，也可以使用$()将输出重定向到一个变量中，示例脚本如下：
+```sh
+#!/bin/bash
+# Add commas ro number in factorial answer
+factorial=1
+counter=1
+number=$1
+#
+while [ $counter -le $number ]
+do
+    factorial=$[ $factorial * $counter ]
+    counter=$[ $counter + 1 ]
+done
+#
+result=$(echo $factorial | sed '{
+    :start
+    s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/
+    t start
+}')
+echo "The restult is $result"
+```
+脚本运行示例如下：
+```
+[root@redhat8 sed]# sh fact.sh 20
+The restult is 2,432,902,008,176,640,000
+```
+
+### sed实用工具
+为方便查阅，收录在以下位置：[Shell-sed实用工具](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/05-Shell-sed%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7.html)
