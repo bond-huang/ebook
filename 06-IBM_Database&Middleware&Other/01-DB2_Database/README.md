@@ -10,4 +10,6 @@ IBM Db2支持社区：[IBM Db2技术支持](https://www.ibm.com/cn-zh/analytics/
 ## 内容
 
 - [DB2-数据收集](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/01-DB2_Database/01-DB2-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html) 
-
+- [DB2-常见SQL_messages](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/01-DB2_Database/02-DB2-%E5%B8%B8%E8%A7%81SQL_messages.html)
+- [DB2-数据库其它故障](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/01-DB2_Database/03-DB2-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B6%E5%AE%83%E6%95%85%E9%9A%9C.html)
+- [DB2-数据库相关说明](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/01-DB2_Database/04-DB2-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3%E8%AF%B4%E6%98%8E.html)
