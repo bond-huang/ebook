@@ -24,6 +24,7 @@ RETCODE : ZRC=0x8510000A=-2062548982=SQLP_LFUL
 - Reason code 1：增加LOCKLIST数据库配置参数，该参数管理分配给本地锁管理器的锁内存
 - Reason code 2：增加CF_LOCK_SZ数据库配置参数，该参数管理分配给全局锁管理器的锁内存
 
+关于LOCKLIST官方说明:[DB2 LOCKLIST](https://www.ibm.com/support/knowledgecenter/zh/SSEPGG_11.5.0/com.ibm.db2.luw.admin.config.doc/doc/r0000267.html)
 ### SQL20048N 
 官方说明：[DB2 SQL20048N](https://www.ibm.com/support/knowledgecenter/SSEPGG_10.5.0/com.ibm.db2.luw.messages.sql.doc/com.ibm.db2.luw.messages.sql.doc-gentopic15.html#sql20048n)
 
