@@ -156,7 +156,7 @@ ENABLE_USER_SITE: True
 ```
 参照文档:[Error “can't create or remove files in install directory” when installing by source code in Python](https://stackoverflow.com/questions/60727752/error-cant-create-or-remove-files-in-install-directory-when-installing-by-sou)
 
-报错中还或说目录不存在，并且提示用户可以用命令行参数去指定目录，看了下目录确实不存在，根据提示新建了一个目录：
+&#8195;&#8195;报错中还或说目录不存在，并且提示用户可以用命令行参数去指定目录，看了下目录确实不存在，根据提示新建了一个目录：
 ```
 [root@redhat8 site-packages]# pwd
 /usr/local/lib/python3.6/site-packages
