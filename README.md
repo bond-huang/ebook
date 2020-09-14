@@ -7,9 +7,9 @@
 
 - Email : 576608644@qq.com
 
-- Ebook主页: [https://bond-huang.github.io/huang/](https://bond-huang.github.io/huang/)
+- GitHub主页: [https://bond-huang.github.io/huang/](https://bond-huang.github.io/huang/)
 
-- 个人主页 : [http://www.big1000.com](http://www.big1000.com)
+- 个人ebook主页 : [https://www.big1000.com](https://www.big1000.com)
 
 
 ## Book说明
