@@ -57,3 +57,23 @@ To github.com:bond-huang/huang.git
 ```
 在WEB界面刷新下，可以看到更改成功了。
 上面命令更多使用方法可以参考官方：[https://git-scm.com/docs](https://git-scm.com/docs)
+
+### 设置Custom domain
+在仓库根目录创建CNAME文件，写入自己的域名：
+```
+big1000.com
+```
+然后配点击`Setting`,在Custom domain选项中写入自己的地址，然后点击`save`,可以看到如下提示：
+```
+Your site is ready to be published at http://big1000.com/. 
+```
+然后登录到自己的域名管理网站（我是阿里云万网），添加一条解析记录：
+- 记录类型选择：CNAME
+- 主机记录默认空着（创建两条解析记录，第二条写入www）
+- 解析线路默认
+- 在记录值里面输入对应的github地址：bond-huang.github.io
+
+设置完成后，在浏览器输入链接可以访问：[https://big1000.com/](https://big1000.com/)
+
+配置参考链接：[https://blankj.com/gitbook/gitbook/](https://blankj.com/gitbook/gitbook/)        
+配置参考链接：[https://www.cnblogs.com/liangmingshen/p/9561994.html](https://www.cnblogs.com/liangmingshen/p/9561994.html)
