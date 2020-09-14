@@ -12,3 +12,4 @@ Python初学者，目前只有基础学习笔记
 - [Python_LeetCode](https://bond-huang.github.io/huang/08-Python/03-Python_LeetCode/)
 - [Python_AIX脚本](https://bond-huang.github.io/huang/08-Python/04-Python_AIX%E8%84%9A%E6%9C%AC/)
 - [Python_爬虫](https://bond-huang.github.io/huang/08-Python/05-Python_%E7%88%AC%E8%99%AB/)
+- [Python_Excel数据分析](http://big1000.com/08-Python/06-Python_Excel%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/)
