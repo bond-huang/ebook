@@ -1,6 +1,6 @@
 {
     "title": "eBook",
-    "author": "huang",
+    "author": "ebook",
     "description": "my notes",
     "extension": null,
     "generator": "site",
@@ -42,10 +42,10 @@
     ],
     "pluginsConfig": {
         "github": {
-            "url": "https://github.com/bond-huang/huang"
+            "url": "https://github.com/bond-huang/ebook"
         },
         "editlink": {
-            "base": "https://github.com/bond-huang/huang/master",
+            "base": "https://github.com/bond-huang/ebook/master",
             "label": "编辑本页"
         },
         "anchor-navigation-ex-toc": {
