@@ -14,7 +14,7 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 cd _book
-sed -i '/a href.*\.md/s#\.md#.html#g;/a href.*README\.html/s#README\.html##g' Summary.html
+sed -i '/a href.*\.md/s#\.md#.html#g;/a href.*README\.html/s#README\.html##g' SUMMARY.html
 git init
 git checkout --orphan gh-pages
 git status
