@@ -203,3 +203,42 @@ gawk编程语言使用关联数组提供数组功能，特点：
 - 每个索引字符都必须能够唯一的标识出赋给它的数据元素（跟散列列表和字典概念相同）
 
 ### 定义数组变量
+&#8195;&#8195;使用标准复制语句来定义数组变量：`var[index] = element`,其中var是变量名，index是关联数组的索引值，element是数据元素值。示例如下：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{
+> superhero["Asgard"] = "Thor"
+> print superhero["Asgard"]
+> }'
+Thor
+[root@redhat8 gawk]# gawk 'BEGIN{num[1] = 10;num[2] = 5
+> total = num[1] + num[2]
+> print total }'
+15
+```
+### 遍历数组变量
+在gawk中遍历一个关联数组，可以用for语句的一种特殊形式：
+```sh
+for (var in array)
+{
+    statements
+}
+```
+&#8195;&#8195;此for语句会在每次循环时将关联数组array的下一个索引值赋给遍历var，然后执行一遍statements，变量中存储的是索引值而不是数组元素值，可以将这个变量用作数组的所有，提取出数据元素值，示例如下：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{
+> var["a"] = 1
+> var["b"] = 2
+> var["c"] = 3
+> for (test in var)
+> {
+> print "Index:",test," - value :",var[test]
+> }
+> }'
+Index: a  - value : 1
+Index: b  - value : 2
+Index: c  - value : 3
+```
+说明：
+- 索引值不会按任何特定的顺序返回，但它们都能够指向对应的数据元素值
+
+### 删除数组变量
