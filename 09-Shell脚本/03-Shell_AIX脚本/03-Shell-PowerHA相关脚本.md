@@ -84,3 +84,13 @@ Successfully moved the resource group form $RG_Node to $Standy_Node!
 Please check the Cluster status and check the application!
 ```
 ## PowerHA检查
+&#8195;&#8195;PowerHA系统需要定期进行切换演练，有些重要行业例如一些银行放在人行窗口进行切换，在切换前要检查系统，如果需要检查的系统比较多，用脚本就比较方便了。
+### 脚本使用说明
+说明如下：
+- 检查了Cluster进程状态，只要有一个不是active就不激活了
+- 检查了HA集群状态，node状态等等
+- 检查了hosts表和rhosts
+- HA6.1和HA7.1(7.2)版本rhosts位置不一样，并且HA6.1里面一般配置IP，在HA7.1中一般配置Boot IP Lable（一般IP Lable和node配置成一致）在脚本中有判断系统版本，根部版本检查不同路径的rhosts
+- 脚本中写了一个同步，并且询问了是否进行同步，根据需求选择yes或no
+
+### 脚本代码
