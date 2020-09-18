@@ -204,5 +204,54 @@ N | n)  echo
         exit ;;
 esac
 ```
+### 计数方法差异（应该是没有方括号计算方法）
+在RHEL中使用如下方法进行计数：
+```sh
+#!/bin/bash
+count=0
+for i in 1 2 3
+do
+        count=$[ $count + 1 ]
+done
+echo $count
+```
+运行后示例如下：
+```
+[root@redhat8 test]# sh test2.sh
+3
+```
+在AIX 7.1.4.3中运行（使用bash一样不行）：
+```sh
+#!/bin/ksh
+count=0
+for i in 1 2 3
+do
+        count=$[ $count + 1 ]
+done
+echo $count
+```
+运行后示例如下：
+```
+# sh test9.sh
+test9.sh[5]: 0:  not found.
+test9.sh[5]: 0:  not found.
+test9.sh[5]: 0:  not found.
+0
+```
+可以使用双括号的方法进行解决：
+```sh
+#!/bin/ksh
+count=0
+for i in 1 2 3
+do
+        count=$(($count + 1))
+done
+echo $count
+```
+运行后示例如下：
+```
+# sh test9.sh
+3
+```
 ### 其它差异
 AIX7.1.4.3中没有mktemp命令，没用lsof命令，可以单独安装
