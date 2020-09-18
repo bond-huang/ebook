@@ -181,5 +181,28 @@ RHEL8中也可以，示例如下：
 ### gawk差异
 AIX7.1.4.3中默认没有gawk，有awk程序，使用方法差不多，目前还没发现具体差别。
 
+### case差异
+在RHEL的bash中，read命令和case可以结合使用,示例如下：
+```sh
+read -n1 -p "Need to synchronize the Cluster?[Y/N] " answer
+case $answer in
+Y | y)  echo
+        echo "OK,Synchronize the Cluster now,please waiting..." ;;
+N | n)  echo
+        echo "OK,Please synchronize manually if necessary!"
+        exit ;;
+esac
+```
+但是在AIX的ksh中，没有-n等，使用示例如下：
+```sh
+read answer?"Need to synchronize the Cluster?[Y/N] " 
+case $answer in
+Y | y)  echo
+        echo "OK,Synchronize the Cluster now,please waiting..." ;;
+N | n)  echo
+        echo "OK,Please synchronize manually if necessary!"
+        exit ;;
+esac
+```
 ### 其它差异
 AIX7.1.4.3中没有mktemp命令，没用lsof命令，可以单独安装
