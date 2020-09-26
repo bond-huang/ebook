@@ -77,3 +77,22 @@ Your site is ready to be published at http://big1000.com/.
 
 配置参考链接：[https://blankj.com/gitbook/gitbook/](https://blankj.com/gitbook/gitbook/)        
 配置参考链接：[https://www.cnblogs.com/liangmingshen/p/9561994.html](https://www.cnblogs.com/liangmingshen/p/9561994.html)
+
+### 修改git用户名及提交邮箱
+刚开始本地git使用的用户名和邮箱和远程不一致，想改成一致，输入如下命令即可：
+```
+$ git config  --global user.name <name>
+$ git config  --global user.email <emali>
+```
+说明：不加`--global`就是更改当前的project的信息。
+
+修改后查看配置：
+```
+$ git config user.name
+<name>
+$ git config user.email
+<emali>
+```
+或者直接改文件：`vi ~/.gitconfig`。
+
+参考链接：[https://www.cnblogs.com/shenxiaolin/p/7896489.html](https://www.cnblogs.com/shenxiaolin/p/7896489.html)
