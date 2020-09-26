@@ -295,7 +295,7 @@ def register():
 - 当用户最初访问`auth/register`或者注册出错时，应用会显示一个注册表单
 - `render_template()`会渲染一个包含HTML的模板
 
-### 登录试图
+### 登录视图
 和register视图差不多，在auth.py中继续写入如下内容：
 ```python
 @bp.route('/login',methods=('GET','POST'))
