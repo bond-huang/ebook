@@ -98,3 +98,137 @@ $ python -m flask run
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
  ```
  打开浏览器输入地址即可看到相应的网页内容。
+ 
+ ## github托管
+### clone仓库
+可以根据之前学习的创建一个项目文件夹，我个人是克隆仓库（空的）到本地：
+```
+$ git clone git@github.com:bond-huang/OS-Management.git
+Cloning into 'OS-Management'...
+Warning: Permanently added the RSA host key for IP address '52.74.223.119' to the list of known hosts.
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (4/4), 4.52 KiB | 578.00 KiB/s, done.
+```
+使用`.gitignore`来设置应当忽略的文件:
+```
+venv/
+
+*.pyc
+__pycache__/
+
+instance/
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/
+```
+### 同步到github
+首先查看状态(列出当前目录所有还未被git管理的文件或被git管理但修改后未提交的文件或目录)：
+```
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        osmanagement/
+        venvScriptsactivate
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
+添加一下即可，再次查看会提示有新文件：
+```
+$ git add .gitignore
+warning: LF will be replaced by CRLF in .gitignore.
+The file will have its original line endings in your working directory
+$ git add osmanagement/
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .gitignore
+        new file:   osmanagement/__init__.py
+        new file:   osmanagement/auth.py
+        new file:   osmanagement/db.py
+        new file:   osmanagement/schema.sql
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        venvScriptsactivate
+```
+然后提交下,`-m`后面要加参数：
+```
+$ git commit -m "First commit"
+[master 0f5fb28] First commit
+ Committer: <name> <email>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 5 files changed, 172 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 osmanagement/__init__.py
+ create mode 100644 osmanagement/auth.py
+ create mode 100644 osmanagement/db.py
+ create mode 100644 osmanagement/schema.sql
+```
+再次查看状态：
+```
+$ git status
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        venvScriptsactivate
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
+同步到GitHub：
+```
+$ git remote add origin git@github.com:bond-huang/OS-Management.git
+fatal: remote origin already exists.
+$ git config --local --list
+core.repositoryformatversion=0
+core.filemode=false
+core.bare=false
+core.logallrefupdates=true
+core.symlinks=false
+core.ignorecase=true
+remote.origin.url=git@github.com:bond-huang/OS-Management.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+$ git branch -M master
+$ git push -u origin master
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (8/8), 2.46 KiB | 838.00 KiB/s, done.
+Total 8 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:bond-huang/OS-Management.git
+   f639045..98357c6  master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+```
+说明：
+- 后续提交命令不需要`-u`参数，即`git push origin master`
+- 如果就一个master分支，输入`git push`命令即可
