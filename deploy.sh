@@ -6,9 +6,6 @@ git config --global core.quotepath false
 git checkout -b gitbook
 git status
 git add .
-git commit -a
-git status
-git add .
 git commit -m "[Travis] Update SUMMARY.md"
 git push -f "https://${GH_TOKEN}@${GH_REF}" gitbook:gitbook
 gitbook install
