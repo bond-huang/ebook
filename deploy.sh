@@ -11,7 +11,7 @@ git push -f "https://${GH_TOKEN}@${GH_REF}" gitbook:gitbook
 gitbook install
 gitbook build .
 if [ $? -ne 0 ];then
-    exit 1
+    exit 10
 fi
 cd _book
 sed -i '/a href.*\.md/s#\.md#.html#g;/a href.*README\.html/s#README\.html##g' SUMMARY.html
