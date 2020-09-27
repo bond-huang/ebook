@@ -5,7 +5,7 @@ git config --global core.quotepath false
 
 git checkout -b gitbook
 git status
-git add
+git add .
 git commit -a
 git status
 git add .
