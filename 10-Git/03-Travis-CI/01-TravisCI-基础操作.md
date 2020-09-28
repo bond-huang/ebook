@@ -68,4 +68,4 @@ no changes added to commit (use "git add" and/or "git commit -a")
 &#8195;&#8195;在GitHub里面`master-->View all branches-->`删掉所有由Travis创建的分支，travis-ci上的缓存也清理了，但是还是不行。后来把出错当天更新的文档删掉了，然后gitbook分支也删了，再重新运行就好了。当天可疑操作就是文件名后缀写重复了，不知道是不是这个原因：
 ```
 02-Flask-项目构建笔记_1.md.md
-``
+```
