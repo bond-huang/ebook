@@ -18,7 +18,7 @@ $ ls
 base.html
 ```
 在base.html文件中写入：
-```py
+```twig
 <!doctype html>
 <table>{%block title %}{$ endblock %} - Operating System Management</table>
 <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
