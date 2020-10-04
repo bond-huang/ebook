@@ -19,7 +19,7 @@ base.html
 ```
 在base.html文件中写入：
 ```twig
-<!doctype html>
+\<!doctype html\>
 <table>{%block title %}{$ endblock %} - Operating System Management</table>
 <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 <nav>
