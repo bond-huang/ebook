@@ -65,7 +65,5 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ```
 查了下应该是分支冲突了，SUMMARY.md文件提交不了，修改几次脚本都不行，直接用绝招：
 
-&#8195;&#8195;在GitHub里面`master-->View all branches-->`删掉所有由Travis创建的分支，travis-ci上的缓存也清理了，但是还是不行。后来把出错当天更新的文档删掉了，然后gitbook分支也删了，再重新运行就好了。当天可疑操作就是文件名后缀写重复了，不知道是不是这个原因：
-```
-02-Flask-项目构建笔记_1.md.md
-```
+&#8195;&#8195;在GitHub里面`master-->View all branches-->`删掉所有由Travis创建的分支，travis-ci上的缓存也清理了，但是还是不行。后来把出错当天更新的文档删掉了，然后gitbook分支也删了，再重新运行就好了。当天可疑操作就是文件名后缀写重复了，当然不是这个原因；          
+&#8195;&#8195;最后项想明白了，后面那些SUMMARY.md提示无关紧要，`deploy.sh exited with 1`这个才是关键，检查脚本中有个条件语句判断上一条命令的退出状态码，执行失败脚本就exited with 1，也就是`gitbook build .`执行出现了问题，问题就在最新加的markdown中有html的代码，虽然我使用了代码注释但是估计gitbook还是识别有问题，GitHub识别没什么问题。
