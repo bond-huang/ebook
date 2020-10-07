@@ -97,7 +97,9 @@ $ python -m flask run
  * Debug mode: off
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
  ```
- 打开浏览器输入地址即可看到相应的网页内容。
+ 说明：
+ - 打开浏览器输入地址即可看到相应的网页内容
+ - 运行时候最好在项目主目录运行，要不然会报错
  
  ## github托管
 ### clone仓库
