@@ -234,3 +234,20 @@ Branch 'master' set up to track remote branch 'master' from 'origin'.
 说明：
 - 后续提交命令不需要`-u`参数，即`git push origin master`
 - 如果就一个master分支，输入`git push`命令即可
+
+### 同步问题
+后续在更新本地代码后，想同步到远程，发现如下报错：
+```
+$ git push origin master
+To github.com:bond-huang/OS-Management.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'github.com:bond-huang/OS-Management.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+一般是由于本地和远程不一致造成的，这种不一致表示是远程有的代码本地没有，解决方法：
+- 根据提示在使用`push`之前用`git pull`同步到本地，可能会丢失本地的更新
+- 使用`-f`参数进行强制更新：`git push -f origin master`，使用要慎重，可能会丢失远程的更新
