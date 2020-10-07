@@ -17,33 +17,8 @@ $ pwd
 $ ls
 base.html
 ```
-在base.html文件中写入：
-```twig
-\<!doctype html\>
-<table>{%block title %}{$ endblock %} - Operating System Management</table>
-<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
-<nav>
-    <h1>Operating System Management</h1>
-    <ul>
-        {% if g.user %}
-            <li><span>{{ g.user['username'] }}</span>
-            <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-        {% else %}
-            <li><a href="{{ url_for('auth.register') }}">Register</a>
-            <li><a href="{{ url_for('auth.login') }}">Log In</a>
-        {% endif %}    
-    </ul>
-</nav>
-<section class="content">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
-    {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% block content %}{% endblock %}
-</section>
-```
+在base.html文件中写入：    
+
 说明：
 - `g`在模板中自动可用。根据`g.user`是否被设置（在`load_logged_in_user`中进行），要么显示用户名和注销连接，要么显示注册和登录连接
 - `url_for()`也是自动可用的，可用于生成视图的URL，而不用手动来指定
