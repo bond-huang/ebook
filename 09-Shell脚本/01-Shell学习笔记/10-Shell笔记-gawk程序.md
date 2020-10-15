@@ -242,3 +242,87 @@ Index: c  - value : 3
 - 索引值不会按任何特定的顺序返回，但它们都能够指向对应的数据元素值
 
 ### 删除数组变量
+格式：`delete array[index]`,示例如下：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{
+> var["a"] = 1;var["g"] = 2
+> delete var["g"]
+> for (test in var)
+> print "Index:",test," -Value:",var[test]
+> }'
+Index: a  -Value: 1
+```
+注意：一旦从关联数组中删除了索引值，就没法再用它来提取元素。
+
+## 使用模式
+gawk程序支持多种类型的匹配模式来过滤数据记录，和sed编辑器类似。
+### 正则表达式
+在使用正在表达式时，正则表达式必须出现在它要控制的程序脚本的左花括号前：
+```
+[root@redhat8 gawk]# cat test1
+Thor,Hulk,Captain America,Iron man
+Batman,Wonder Woman,Super Man
+[root@redhat8 gawk]# gawk 'BEGIN{FS=","} /Th/{print $1}' test1
+Thor
+```
+说明：
+- gawk程序会用正则表达式对记录中的所有数据字段进行匹配，包括字段分隔符
+- 如果需要用正则表达式匹配某个特定的数据示例，应该使用匹配操作符
+
+### 匹配操作符
+&#8195;&#8195;匹配操作符（matching operator）允许将正则表达式限定在记录中的特定数据字段，匹配操作符是波浪线（~）。可以指定匹配操作符、数据字段变量以及要匹配的正则表达式：`$1 ~ /^data/`。
+- $1变量代表记录中的第一个数据段
+- 这个表达式会过滤出第一个字段以文本data开头的所有记录
+
+示例如下：
+```
+[root@redhat8 gawk]# cat test4
+data11,data12,data13,data14,data15
+data21,data22,data23,data24,data25
+data31,data32,data33,data34,data35
+[root@redhat8 gawk]# gawk 'BEGIN{FS=","} $2 ~ /^data2/{print $0}' test4
+data21,data22,data23,data24,data25
+[root@redhat8 gawk]# gawk -F: '$1 ~ /huang/{print $1,$NF}' /etc/passwd
+huang /bin/bash
+```
+说明：
+- 匹配操作符会用正则表达式`/^data2`来比较第二个数据段，正则表达式指明字符串要以文本data2开头
+- 第二个示例中会在第一个数据字段中查找文本huang，如果在记录中找打了，会打印该记录的第一个和最后袷数据字段值
+
+可以使用`!`符号来排除正则表达式的匹配：`$1 !~ /expression/`，示例如下：
+```
+[root@redhat8 gawk]# gawk -F: '$1 !~ /huang/{print $1,$NF}' /etc/passwd
+root /bin/bash
+bin /sbin/nologin
+daemon /sbin/nologin
+adm /sbin/nologin
+...
+```
+### 数学表达式
+例如想显示所有属于root用户组（组ID为0）的用户，脚本示例：
+```
+[root@redhat8 gawk]# gawk -F: '$4 == 0{print $1}' /etc/passwd
+root
+sync
+shutdown
+halt
+operator
+```
+常见数学比较表达式：
+- x == y:值x等于y
+- x <= y:值x小于等于y
+- x < y:值x小于y
+- x >= y:值x大于等于y
+- x > y:值x大于y
+
+对文本数据使用表达式示例：
+```
+[root@redhat8 gawk]# gawk -F, '$1 == "data"{print $1}' test4
+[root@redhat8 gawk]# gawk -F, '$1 == "data21"{print $1}' test4
+data21
+```
+说明：
+- 对用文本数据使用表达式时，表达式必须完全匹配，数据必须跟模式严格匹配
+- 示例中第一个匹配没用记录，说明没有匹配到，第二个精准匹配到了一条记录
+
+## 结构化命令
