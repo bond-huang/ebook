@@ -326,3 +326,56 @@ data21
 - 示例中第一个匹配没用记录，说明没有匹配到，第二个精准匹配到了一条记录
 
 ## 结构化命令
+### if语句
+gawk编程语言支持标准的if-then-else格式的if语句：
+- 必须为if语句定义一个求职的条件，并将其用圆括号括起来
+- 如果条件求值为TURE，紧跟在if语句后面的语句会执行
+- 如果条件求值为FALSE，这条语句就会被跳过
+
+格式：
+```
+if (condition)
+    statement1
+```
+或者：
+```
+if (condition) statement1
+```
+可以在单行上使用esle自居，但必须在if语句部分之后使用分号：
+```
+if (condition) statement1; else statement2
+```
+示例如下：
+```
+[root@redhat8 gawk]# cat test5
+1
+8
+4
+[root@redhat8 gawk]# gawk '{if ($1 > 5) print $1}' test5
+8
+[root@redhat8 gawk]# gawk '{
+> if ($1 > 5)
+> {
+> a = $1 * 5
+> print a
+> }
+> }' test5
+40
+[root@redhat8 gawk]# gawk '{
+> if ($1 > 5)
+> {
+> a = $1 * 5
+> print a
+> } else
+> {a = $1 + 100
+> print a
+> }}' test5
+101
+40
+104
+[root@redhat8 gawk]# gawk '{if($1>5) print $1 * 5;else print $1 + 100}' test5
+101
+40
+104
+```
+### while语句
