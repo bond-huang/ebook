@@ -62,4 +62,5 @@ DUMP日志对于Power小型机和AIX分区突发性严重故障的排查很重�
 - 选择选项““Copy Dump to Remote System”可以通过FTP传出来
 
 ### 收集pedbg
-对于HMC本身问题以及HMC和Power小型机连接之间的问题排查很重要
+对于HMC本身问题以及HMC和Power小型机连接之间的问题排查很重要。    
+官方链接：[https://www.ibm.com/support/pages/node/688045?mhsrc=ibmsearch_a&mhq=hcpe](https://www.ibm.com/support/pages/node/688045?mhsrc=ibmsearch_a&mhq=hcpe)
