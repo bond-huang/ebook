@@ -36,4 +36,34 @@ RETCODE : ZRC=0x8510000A=-2062548982=SQLP_LFUL
 
 IBM DB2 JDBC Driver版本和下载：[https://www.ibm.com/support/pages/node/382667](https://www.ibm.com/support/pages/node/382667)
 
+### SQL0727N
+官方说明：[DB2 SQL0727N](https://www.ibm.com/support/knowledgecenter/zh/SSEPGG_10.5.0/com.ibm.db2.luw.messages.sql.doc/com.ibm.db2.luw.messages.sql.doc-gentopic2.html#sql0727n)
+
+描述：隐式系统操作类型`action-type`期间发生错误。返回的错误信息包括SQLCODE`sqlcode`，SQLSTATE `sqlstate`和消息令牌`token-list`。
+
+&#8195;&#8195;在执行一个操作的时候，因为触发了一个内部操作，然而在执行这个内部操作的时候失败了
+所以根据客户实际的报错，根据`action type`和具体的`code`去判断引起的原因，报错示例：
+```
+$ db2 rebind package <package name>
+SQL0727N An error occurred during implicit system action type "3"
+Information returned for the error includes SQLCODE "-117",SQLSTATE "42802"
+and massage tokens "". LINE NUMBER=664. SQLSTATE=56098
+```
+在报错示例中可以看到`action type`为3：implicit revalidation of an object，`SQLCODE`为"-117",`SQLSTATE`为"42802"，初步判断是SQL0117N引起的，SQL0117N详细描述单独说明。
+
+### SQL0117N
+官方说明：[DB2 SQL0117N](https://www.ibm.com/support/knowledgecenter/en/SSEPGG_10.5.0/com.ibm.db2.luw.messages.sql.doc/com.ibm.db2.luw.messages.sql.doc-gentopic1.html#sql0117n)
+
+描述：赋值数目与指定的或隐含的列数或变量数不一样，将无法处理该语句。
+
+在下列情况下，值的数目可能会不同：
+- 在`INSERT`语句值列表中的插入值的数目与指定的或隐含的列数不相同。如果未指定任何列列表，那么会隐含包括表（隐式隐藏的表除外）或视图中所有列的列列表。
+- 在`SET`语句或`UPDATE`语句的`SET`子句中，赋值符号右侧的值数目与左侧的列数或变量数不匹配。
+
+解决方法：
+更正该语句以便为每一个指定的或隐含的列或变量指定一个值。
+
+sqlcode：-117
+sqlstate：42802
+
 ### 待补充
