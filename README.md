@@ -23,7 +23,7 @@
 - 如需转载，请注明出处
 - 如果文章中有注明其它出处，需转载请注明文章中的出处
 
-** Book中文章主要使用工具 ** 
+** Book中主要使用工具 ** 
 
 - [GitBook](https://www.gitbook.com/) ：构建本书
 - [Travis-CI](https://www.travis-ci.org/) ：持续构建
