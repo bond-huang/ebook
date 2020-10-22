@@ -106,7 +106,7 @@ lv_data:
 
 ## NIM相关操作
 ### resetmachine
-有时候删除定义machine时候reset一下：
+有时候删除定义machine时候需要先reset一下：
 - smit nim
 - Perfom NIM Administration Tasks
 - Manage Machines
