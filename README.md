@@ -31,5 +31,5 @@
 
 ## 搭建说明
 
-本Book搭建方式参考Lyon的分享，bolgs主页：[Lyon's blog](https://lyonyang.github.io/blogs)
+本Book搭建方式参考Lyon的分享，blogs主页：[Lyon's blog](https://lyonyang.github.io/blogs)
 
