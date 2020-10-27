@@ -91,7 +91,8 @@ alog -t boot -o |查看系统启动日志
 alog -t lvmcfg -o |查看LVM相关日志
 alog -t boot -o &#124;grep data|查看系统最后重启时间
 alog -f /tmp/sample.log -o|列出日志文件的内容
-date | alog -f &#60;LogFile&#62;|记录日志文件中的当前日期和时间
+date &#124; alog -f &#60;LogFile&#62;|记录日志文件中的当前日期和时间
 alog -C -t boot -s 8192|修改boot日志大小为8192字节
 
 更多用法介绍参考官方文档：[alog Command](https://www.ibm.com/support/knowledgecenter/ssw_aix_71/a_commands/alog.html)
+
