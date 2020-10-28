@@ -8,4 +8,6 @@ Red Hat Enterprise Linux可支持多个架构（从IBM Power服务器和IBM Z大
 官方网站：[Red Hat Enterprise Linux](https://www.redhat.com/zh/technologies/linux-platforms/enterprise-linux)
 
 ## 内容
-- [RedHat-基础配置](https://bond-huang.github.io/huang/05-IBM_Operating_System/04-RedHat/01-RedHat-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE.html)
+- [RedHat-基础配置](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/01-RedHat-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE.html)
+- [RedHat-常用命令](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/02-RedHat-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
+- [RedHat-用户及用户权限](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/03-RedHat-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90.html)
