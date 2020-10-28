@@ -17,6 +17,7 @@
 - DPM Storage Group管理功能可以模拟逻辑分区操作去检查FCP的path和lun的可用性，点击“Connection Report”会触发，并且生成一个报告
 
 ## LinuxOne逻辑分区安装
+### 安装分区注意
 安装分区知识点：
 - z15 T01最多可同时激活85个LPAR,z15 T02最多可同时激活40个LPAR
 - Linux操作系统启动中需要手动安装就配置kickstart.cfg脚本,自动安装就不需要
@@ -29,6 +30,16 @@
 - 只使用HMC上的U盘进行逻辑分区的Linux操作系统安装时，必须满足的条件：
     - HMC的ETH1与SE的EM4连接在同一交换机
     - 用作系统盘的SG状态为Complete并已Attach到逻辑分区上
+- 逻辑分区安装完成后，可以在线添加磁盘卷（LUN），不需要重启
+
+开始逻辑分区操作系统安装前需要完成的工作：
+- 完成逻辑分区网卡定义
+- 获取逻辑分区volume信息
+- 获取伙计分区ip及vlan信息
+
+逻辑分区分配物理I/O端口时需要考虑的维度：
+- 按I/O板卡打散分配
+- 按I/O Drawer打散分配
 
 ### Partition Details-Network说明
 在HMC中DMP进行虚拟网卡管理菜单说明：
