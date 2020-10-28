@@ -90,7 +90,7 @@ alog用于创建并维护创建字标准输入的固定大小的日志文件。�
 alog -t boot -o |查看系统启动日志
 alog -t lvmcfg -o |查看LVM相关日志
 alog -t boot -o &#124;grep data|查看系统最后重启时间
-alog -f /tmp/sample.log -o|列出日志文件的内容
+alog -f &#60;LogFile&#62; -o|列出日志文件的内容
 date &#124; alog -f &#60;LogFile&#62;|记录日志文件中的当前日期和时间
 alog -C -t boot -s 8192|修改boot日志大小为8192字节
 
