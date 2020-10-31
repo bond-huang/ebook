@@ -215,6 +215,10 @@ UUID=0a510af6-8abf-4e64-b559-902804c93568 /boot                   xfs     defaul
 # /tmp/not-existing	/mnt/not-existing	iso9660 default		0 0
 # /tmp/test		/mnt/test		iso9660 default		0 0
 ```
+说明：
+- 脚本中只找出了`does not exist`的两种情况，不知道`mount -a`报错还有没有其它情况
+- 如需修改原文件，在使用sed命令注释时候加上`-i`参数
+
 ## grep命令
 &#8195;&#8195;grep比较常用，用于查找文件里符合条件的字符串,常用`-i`参数（忽略字符大小写的差别）。详细介绍及学习参考链接：[https://www.runoob.com/linux/linux-comm-grep.html](https://www.runoob.com/linux/linux-comm-grep.html)
 
