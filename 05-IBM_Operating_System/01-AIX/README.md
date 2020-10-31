@@ -16,3 +16,4 @@ AIX产品文档：[https://www.ibm.com/support/knowledgecenter/ssw_aix](https://
 - [AIX-TCPIP-配置IPv6](https://big1000.com/05-IBM_Operating_System/01-AIX/06-AIX-TCPIP-%E9%85%8D%E7%BD%AEIPv6.html)
 - [AIX-磁盘多路径](https://ebook.big1000.com/05-IBM_Operating_System/01-AIX/07-AIX-%E7%A3%81%E7%9B%98%E5%A4%9A%E8%B7%AF%E5%BE%84.html)
 - [AIX-网络与通信](https://ebook.big1000.com/05-IBM_Operating_System/01-AIX/08-AIX-%E7%BD%91%E7%BB%9C%E4%B8%8E%E9%80%9A%E4%BF%A1.html)
+- [AIX-系统管理](https://ebook.big1000.com/05-IBM_Operating_System/01-AIX/09-AIX-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86.html)
