@@ -15,6 +15,6 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 [高效快速获得IBM售后技术支持](https://mp.weixin.qq.com/s/abopnPZ8uEQ7PC56YiJJHw)
 
 ## 内容
-- [AIX](https://bond-huang.github.io/huang/05-IBM_Operating_System/01-AIX/)
-- [AS400](https://bond-huang.github.io/huang/05-IBM_Operating_System/02-AS400/)
-- [RedHat](https://bond-huang.github.io/huang/05-IBM_Operating_System/04-RedHat/)
+- [AIX](https://ebook.big1000.com/05-IBM_Operating_System/01-AIX/)
+- [AS400](https://ebook.big1000.com/05-IBM_Operating_System/02-AS400/)
+- [RedHat](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/)
