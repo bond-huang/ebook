@@ -114,12 +114,26 @@ $ pip install -r requirements.tex
 使用豆瓣的pypi镜像源,示例安装flask：
 ```
 $ pip install -i https://pypi.douban.com/simple/ flask
+$ pip install -i https://mirrors.aliyun.com/pypi/simple/ flask
 ```
 或者将镜像源写入到配置文件中：
 ```
-$ cat pip.conf
+[root@redhat8 /]# cd ~
+[root@redhat8 ~]# mkdir .pip
+[root@redhat8 ~]# cd .pip
+[root@redhat8 .pip]# touch pip.conf
+[root@redhat8 .pip]# vim pip.conf
+[root@redhat8 .pip]# pwd
+/root/.pip
+[root@redhat8 .pip]# cat pip.conf
 [global]
-index-url = https://pypi.douban.com/simple/
+timeout = 20
+index-url=https://mirrors.aliyun.com/pypi/simple/  
+extra-index-url=https://pypi.douban.com/simple/
+[install]
+trusted-host=
+    mirrors.aliyun.com
+    pypi.douban.con
 ```
 也可以下载到本地，然后再安装：
 ```
@@ -146,6 +160,43 @@ vim用的少，《Python Linux系统管理与自动化运维》书中介绍了�
 jupyter是一种新兴的交互式数据分析与记录工具。     
 官方网站：[https://jupyter.sunao.site](https://jupyter.sunao.site)
 
+安装jupyter：
+```
+[root@redhat8 python]# pip3.6 install jupyter
+[root@redhat8 python]# pip3.6 install -i https://pypi.douban.com/simple/ jupyter
+[root@redhat8 python]# pip3.6 install -i https://mirrors.aliyun.com/pypi/simple/ jupyter
+```
+虚拟机RedHat怎么也安装不成功，在windows下安装成功：
+```
+C:\Users\QianHuang>pip install -i https://mirrors.aliyun.com/pypi/simple/ jupyter
+Looking in indexes: https://mirrors.aliyun.com/pypi/simple/
+Collecting jupyter
+  Downloading https://mirrors.aliyun.com/pypi/packages/83/df/0f5dd132200728a86190397e1ea87cd76244e42d39ec5e88efd25b2abd7e/jupyter-1.0.0-py2.py3-none-any.whl (2.7 kB)
+Collecting jupyter-console
+......
+WARNING: You are using pip version 20.2.3; however, version 20.2.4 is available.
+You should consider upgrading via the 'c:\users\qianhuang\appdata\local\programs\python\python38\python.exe -m pip install --upgrade pip' command.
+```
+设置浏览器进行外部访问：
+```
+C:\Users\QianHuang>jupyter notebook --no-browser
+[I 00:16:09.394 NotebookApp] Writing notebook server cookie secret to C:\Users\QianHuang\AppData\Roaming\jupyter\runtime\notebook_cookie_secret
+[I 00:16:10.298 NotebookApp] Serving notebooks from local directory: C:\Users\QianHuang
+[I 00:16:10.298 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 00:16:10.300 NotebookApp] http://localhost:8888/?token=6ba5db71f72213c9941d66f981330bd7e21ad70ff73d395f
+[I 00:16:10.301 NotebookApp]  or http://127.0.0.1:8888/?token=6ba5db71f72213c9941d66f981330bd7e21ad70ff73d395f
+[I 00:16:10.302 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 00:16:10.327 NotebookApp]
+    To access the notebook, open this file in a browser:
+        file:///C:/Users/QianHuang/AppData/Roaming/jupyter/runtime/nbserver-18428-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=6ba5db71f72213c9941d66f981330bd7e21ad70ff73d395f
+     or http://127.0.0.1:8888/?token=6ba5db71f72213c9941d66f981330bd7e21ad70ff73d395f
+```
+根据提示链接，打开浏览器即可访问，可以加上`--ip`来指定地址，默认是localhost：
+```
+C:\Users\QianHuang>jupyter notebook --no-browser --ip=0.0.0.0
+```
 ## Python调试器
 
 ## Python代码检查规范
