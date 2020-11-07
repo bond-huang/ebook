@@ -1,5 +1,5 @@
 # Python运维笔记-基础知识
-
+记录一些基础知识学习笔记。
 ## Python内置小工具
 ### 下载服务器
 &#8195;&#8195;Linux传输文件通常使用ftp等，用命令有时感觉不方便，Python有个内置web服务器，可以作为一个下载服务器，在Python3中，使用示例：
@@ -54,3 +54,98 @@ Type "help", "copyright", "credits" or "license" for more information.
 ## pip高级用法
 Python生态主流的包管理工具是pip。
 ### pip介绍
+pip是用来安装和管理Python包的工具，手动安装：
+```
+$sudo apt-get indstall python-pip
+```
+我系统中配置了软件仓库，安装时候提示已经安装了：
+```
+[root@redhat8 python]# yum install python3-pip.noarch
+Updating Subscription Management repositories.
+Unable to read consumer identity
+This system is not registered to Red Hat Subscription Management. You can use subscription
+-manager to register.redhat8_app                                               0.0  B/s |   0  B     00:00    
+redhat8_os                                                0.0  B/s |   0  B     00:00    
+Failed to synchronize cache for repo 'redhat8_app', ignoring this repo.
+Failed to synchronize cache for repo 'redhat8_os', ignoring this repo.
+Package python3-pip-9.0.3-13.el8.noarch is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+```
+但是输入`pip`命令无效，查找以下即可：
+```
+[root@redhat8 python]# whereis pip
+pip: /usr/bin/pip3.6
+[root@redhat8 python]# pip3.6 install -U pip
+WARNING: Running pip install with root privileges is generally not a good idea. Try `pip3.
+6 install --user` instead.
+```
+有些软件没有上传到pip网站，可以使用源码安装方式,示例：
+```
+$ git clone https://github.bom/paramiko/paramiko.git
+$ cd paramiko
+$ python setup.py install
+```
+### pip常用命令
+常用子命令如下：
+
+命令|说明
+:---|:---
+install|安装软件包
+download|下载软件包
+uninstall|卸载安装包
+freeze|按照requirements的格式输出按照包
+list|列出当前系统中的安装包
+show|查看安装包信息
+check|检查安装包的依赖是否完整
+search|查找安装包
+wheel|打包软件到wheel格式
+hash|计算按照包的hash值
+completion|生成命令补全配置
+help|获取pip和子命令的帮助信息
+
+导出已安装的软件包列表到requirements文件，并从requirements文件按照示例：
+```
+$ pip freeze > requirements.tex
+$ pip install -r requirements.tex
+```
+### pip加速安装技巧
+使用豆瓣的pypi镜像源,示例安装flask：
+```
+$ pip install -i https://pypi.douban.com/simple/ flask
+```
+或者将镜像源写入到配置文件中：
+```
+$ cat pip.conf
+[global]
+index-url = https://pypi.douban.com/simple/
+```
+也可以下载到本地，然后再安装：
+```
+$ pip install --download=`pwd` -r requirements.txt
+$ pip install --no-index -f file://`pwd` -r requirements.txt
+```
+pip能自动处理软件的依赖问题，里面下载flask时候，依赖包都会被下载到本地：
+```
+$ pip install --download=`pwd` flask
+```
+## Python编辑器
+### vim插件
+vim用的少，《Python Linux系统管理与自动化运维》书中介绍了三个，具体见书中：
+- 一键执行插件:写完测试后不用退出vim，立即执行就能看到结果
+- 代码补全插件snipmate：按tab键补全，方便快捷
+- 语法检查插件Syntastic：提示哪些代码存在语法错误，哪些代码不符合编码规范，并给出具体提示信息
+- 编程提示插件jedi-vim：基于jedi的自动补全插件
+
+### PyCharm
+是目前最流行的Python IDE,目前没使用，具体介绍见《Python Linux系统管理与自动化运维》。
+## Python编程辅助工具
+《Python Linux系统管理与自动化运维》书中介绍了不少，之前有朋友推荐过jupyter，虽然没用过，感觉很屌。
+### jupyter的使用
+jupyter是一种新兴的交互式数据分析与记录工具。     
+官方网站：[https://jupyter.sunao.site](https://jupyter.sunao.site)
+
+## Python调试器
+
+## Python代码检查规范
