@@ -98,7 +98,7 @@ DMP全称Dynamic Partition Management，LinuxONE LPAR&DMP优势：
 ### 安装SUSE操作系统
 #### 利用FTP server上boot开始系统安装
 步骤如下：
-- 选中分区选项“Partition Details”选项
+- 选中分区选择“Partition Details”选项
 - 点击“boot”选项
 - 在“Boot from”选项中选择“FTP server”
 - 在对应选项中填入FTP服务器的信息
@@ -146,3 +146,15 @@ DMP全称Dynamic Partition Management，LinuxONE LPAR&DMP优势：
 - “Installation Settings”：会显示当前SUSE系统的相关配置
 - 确认无误后点击“Install”开始安装
 - 等待几分钟后即可安装完成
+
+### 设置从SAN启动操作系统
+&#8195;&#8195;在LinuxONE中，任何操作系统安装完成后，都需要把boot选项从之前的FTP改成SAN启动，否则系统会无法启动，步骤如下：
+- 选中分区选择“Partition Details”选项
+- 点击“boot”选项
+- 在“Boot from”选项中选择“Storage Group(SAN)”
+- 然后自动列出Storage Group里的boot磁盘，选择对应即可
+- 然后保存
+
+最后将操作系统stop然后start后，整个操作系统即安装完成。
+
+## 待补充
