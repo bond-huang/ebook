@@ -61,4 +61,88 @@ DMP全称Dynamic Partition Management，LinuxONE LPAR&DMP优势：
     - Storage：添加Storage Group，列表中有所有创建的Storage Group，只有状态为Complete的SG才可以被使用
     - Boot：设定启动类型，支持多种类型：FTP、SAN等等
 
-## 待补充
+## Redhat与SUSE在LinuxONE
+### 安装RedHat操作系统
+#### 利用FTP server上boot开始系统安装
+设定FTP启动，步骤如下：
+- 选中分区选项“Partition Details”选项
+- 点击“boot”选项
+- 在“Boot from”选项中选择“FTP server”
+- 在对应选项中填入FTP服务器的信息
+- 在“INS file”中选定ins文件
+
+&#8195;&#8195;启动分区后会读取FTP里面的文件，会出现“Operating System Messages”界面，RedHat安装方式采用的配置文件方式，会提示等待输入配置文件。
+
+#### 设置安装参数并启动VNC
+安装参数配置是一个文本的配置文件，即之前学习过的PRM文件：
+- 第一行是FTP安装源的路径
+- 第二行配置用到的网卡信息，例如layer类型，假如添加的网卡叫3000，那么需要输入3000、3001和3002，是LinuxONE上独有的，规则如下：
+    - 3000代表读
+    - 3001代表写
+    - 3002代表data
+- 第三行配置分区信息：IP、网关、掩码及hostname
+- 接下来四行是配置目标存储的路径
+- 最后“vnc”表示会启用vnc service去安装
+- 在“Operating System Messages”界面输入刚才准备的参数，建议三行粘贴一次
+- 所有配置文件输入完成后，输入英文符号点号，输入回车即可提交
+- 配置参数无误，会出现启动vnc的提示：首先要通过ssh连接到机器，会自动启动vnc service
+
+#### 登录VNC完成后续安装
+登录vnc后步骤：
+- 设置语言
+- 然后是设置面板：主要设定都可以在此设定，例如软件包等
+- 设定完成后点击“Begin installation”
+- 等待几分钟，提示“Complete”代表安装完成
+- 点击“Reboot”重启
+
+### 安装SUSE操作系统
+#### 利用FTP server上boot开始系统安装
+步骤如下：
+- 选中分区选项“Partition Details”选项
+- 点击“boot”选项
+- 在“Boot from”选项中选择“FTP server”
+- 在对应选项中填入FTP服务器的信息
+- 在“INS file”中选定ins文件
+- 点击保存，然后启动分区：选中分区，选择Daily--Start
+- 分区启动完成后提示“success”
+- 启动完成后，选中分区，选择Daily--Operating System Messages
+
+#### 设置安装参数并启动VNC
+&#8195;&#8195;打开“Operating System Messages”后可以看到和RedHat差不多界面，不过RedHat采用的是配置文件模式，SUSE采用的是交互式模式，步骤如下：
+- 选择“1”：“Start installation”
+- 继续选择“1”：“Installation”开始安装
+- 选择安装方式，这里选择的是“Network”，其它方式暂不支持
+- 选择网络安装方式，这里选的是“FTP"
+- 配置网卡，会列出当前分区已经配置的网卡，选择对应的网卡
+- 输入端口值，默认情况下是“0”，如果是接在第二个口，选择“1”
+- 设置网卡的三个通道地址，设定读通道地址（0.0.0001）、写通道地址（0.0.0002）及data通道地址（0.0.0003）
+- 设置layer：根据网络需求设置对应类型
+- 设置IP地址、掩码及网关，敲回车继续
+- 设置name server：如果有就设定，没有就空着
+- 设置domain：如果有就设定，没有就空着
+- 设置FTP服务器的地址
+- 设置安装介质的路径
+- 设置FTP用户名和密码
+- 提示是否使用HTTP proxy，如果环境里面没有网络代理就设置“No”
+- 最后提示后续安装的方式，例如选择“vnc”，然后设置vnc的密码
+- 设置完成后就可以通过vnc进行连接：
+    - 打开vnc客户端
+    - 在“VNC Server”选项里面输入目标端地址：IP:1，代表连接的目标5901端口
+    - 输入密码，点击“OK”继续
+
+#### 登录VNC完成后续安装
+启动VNC后步骤：
+- 设置语言：默认English，并同意协议后点击“next”
+- 配置磁盘：点击“Configure ZFCP Disks”
+    - 在“Configure ZFCP Device”界面点击“Add”进行添加
+    - “Channel ID”对应的是Storage Group里面的device ID，会自动扫描，下拉菜单选择对应即可
+    - 在“Configure ZFCP Device”界面里会看到添加的disks
+    - 点击“next”继续
+- 在“Registration”界面提示是否注册，跳过即可
+- “Suggested Partitioning”界面会显示磁盘默认分区情况，如果想定制点击“Create Partition Setup”
+- 选择时区：选择对应时区即可
+- “Local Users”：创建用户，不是必须选项，可以创建也可以跳过
+- 设置root密码，点击“next”继续
+- “Installation Settings”：会显示当前SUSE系统的相关配置
+- 确认无误后点击“Install”开始安装
+- 等待几分钟后即可安装完成
