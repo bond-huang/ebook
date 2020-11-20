@@ -14,3 +14,4 @@ IBM LinuxONE CSDN主页:[https://linuxone.csdn.net/](https://linuxone.csdn.net/)
 ## 内容
 - [LinuxONE-数据收集](https://bond-huang.github.io/huang/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/01-LinuxONE-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html)
 - [LinuxONE-学习笔记](https://bond-huang.github.io/huang/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/02-LinuxONE-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html)
+- [LinuxONE-云最佳实践笔记](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/03-LinuxONE-%E4%BA%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0.html)
