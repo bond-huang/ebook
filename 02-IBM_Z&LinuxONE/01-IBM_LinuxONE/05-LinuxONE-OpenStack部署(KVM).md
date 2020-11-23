@@ -1249,6 +1249,8 @@ OPENSTACK_NEUTRON_NETWORK = {
     'profile_support': None,
 }
 TIME_ZONE = "UTC"
+[root@controller ~]# vim /etc/httpd/conf.d/openstack-dashboard.conf
+WSGIApplicationGroup %{GLOBAL}
 ```
 重启服务:
 ```
