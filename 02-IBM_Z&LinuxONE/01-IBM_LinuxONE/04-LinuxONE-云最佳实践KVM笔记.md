@@ -96,6 +96,8 @@ libvirt-python virt-manager libvirt-client virt-top
 - 在rdo网站上可以使packstack快速安装OpenStack
 - 可以利益rdo提供的安装包，自行进行安装
 
+![OpenStack介绍](OpenStack-1.png)
+
 云上应用场景：
 - 公有云：OpenStack涉及初衷是服务于公有云，其中的租户设计伟公有云奠定了基础
 - 私有云：OpenStack在中国市场大多作为企业内部私有云建设
@@ -119,5 +121,9 @@ OpenStack在LinuxONE上的优势：
 - 更强的扩展能力，包括横向扩展和纵向扩展
     - 当云平台的资源匮乏时，在LinuxONE上可以在线快速扩展计算节点
     - 当某个计算节点资源匮乏时，可以在线快速纵向扩展几点节点的计算资源
+
+### OpenStack WEB界面示例
+示例图如下：    
+![OpenStack WEB示例](OpenStack-2.png)
 
 ## 待补充
