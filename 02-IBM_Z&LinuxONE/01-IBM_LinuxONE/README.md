@@ -16,3 +16,5 @@ IBM LinuxONE CSDN主页:[https://linuxone.csdn.net/](https://linuxone.csdn.net/)
 - [LinuxONE-学习笔记](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/02-LinuxONE-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html)
 - [LinuxONE-云最佳实践笔记](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/03-LinuxONE-%E4%BA%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0.html)
 - [LinuxONE-云最佳实践KVM笔记](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/04-LinuxONE-%E4%BA%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5KVM%E7%AC%94%E8%AE%B0.html)
+- [LinuxONE-OpenStack on KVM部署](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/05-LinuxONE-OpenStack%20on%20KVM%E9%83%A8%E7%BD%B2.html)
+
