@@ -1254,7 +1254,7 @@ TIME_ZONE = "UTC"
 ```
 [root@controller ~]# systemctl restart httpd.service memcached.service
 ```
-&#8195;&#8195;此时使用浏览器访问，在浏览器中访问http://ip/dashboard若此时正常访问则证明搭建成功，若访问不到，则需要在`/etc/openstack-dashboard/local_settings`最后添加:
+&#8195;&#8195;此时使用浏览器访问，在浏览器中访问`http://ip/dashboard`若此时正常访问则证明搭建成功，若访问不到，则需要在`/etc/openstack-dashboard/local_settings`最后添加:
 ```
 WEBROOT = '/dashboard/'
 LOGIN_URL = '/dashboard/auth/login/'
