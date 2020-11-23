@@ -1,4 +1,4 @@
-# LinuxONE-OpenStack on KVM安装手册1
+# LinuxONE-OpenStack on KVM安装手册
 学习IBM官方云最佳实践视频做的笔记，步骤基本摘自官方手册，手册地址：[LinuxONE高密度云最佳实践成长之路 (KVM版）](https://csc.cn.ibm.com/roadmap/index/e96159c6-cf9b-47cb-bb13-17cb5cecdaf7?eventId=)
 
 ## 部署环境
