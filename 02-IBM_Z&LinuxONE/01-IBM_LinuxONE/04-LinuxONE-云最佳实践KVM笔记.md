@@ -84,4 +84,40 @@ libvirt-python virt-manager libvirt-client virt-top
 - 虚机占用的处理器占整个虚机百分比情况
 - 虚机占用的内存占整个虚机百分比情况
 
+## 基于KVM的OpenStack解决方案
+### OpenStack介绍以及应用场景
+简介：
+- OpenStack是一个开源的IaaS层云管理产品
+- 距今已有10年历史，发布了已经有20多个版本
+- 完全开源，得到了众多厂商的支持，功能愈来愈丰富和稳定
+- OpenStack主要包含计算、网络和存储三大模块
+- 用户通过一个portal管理计算、存储和网络资源
+- 基于LinuxONE的OpenStack已经得到了社区的支持
+- 在rdo网站上可以使packstack快速安装OpenStack
+- 可以利益rdo提供的安装包，自行进行安装
+
+云上应用场景：
+- 公有云：OpenStack涉及初衷是服务于公有云，其中的租户设计伟公有云奠定了基础
+- 私有云：OpenStack在中国市场大多作为企业内部私有云建设
+- 混合云：OpenStack本身可以纳管KVM等虚拟化环境，作为混合云管理的工具
+
+### OpenStack在LinuxONE上的解决方案
+OpenStack分为计算节点和管理节点：
+- 管理节点使用三个节点实现高可用，可安装在LinuxONE平台或X86平台，对计算节点进行管理
+- 计算节点可以有多个，可按照在LinuxONE和X86平台
+
+网络可分为管理、存储和业务网络。
+
+### OpenStack在LinuxONE上的优势
+OpenStack在LinuxONE上的优势：
+- 更强的计算能力，管理更大规模的工作负载
+    - LinuxONE拥有最快CPU，用于KVM或z/VM虚拟化常见可以提高须立即性能
+    - 在同等CPU单位下，可以提供更多虚拟机，实现大规模工作负载和整合与管理
+- 更高的存储性能，支持FC SAN协议
+    - 通常X86的存储支持IP SAN，LinuxONE既支持IP SAN也支持FC SAN 存储
+    - FC SAN 提供更低的时延、速度更快、更稳定
+- 更强的扩展能力，包括横向扩展和纵向扩展
+    - 当云平台的资源匮乏时，在LinuxONE上可以在线快速扩展计算节点
+    - 当某个计算节点资源匮乏时，可以在线快速纵向扩展几点节点的计算资源
+
 ## 待补充
