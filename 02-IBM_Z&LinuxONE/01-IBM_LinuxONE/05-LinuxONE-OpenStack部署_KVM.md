@@ -531,10 +531,40 @@ password = openstack
 ##
 [root@controller ~]# vim  /etc/httpd/conf.d/00-placement-api.conf
 Listen 8778
-#此处省略，GitBook好像不支持
+
+<VirtualHost *:8778>
+  WSGIProcessGroup placement-api
+  WSGIApplicationGroup %{GLOBAL}
+  WSGIPassAuthorization On
+  WSGIDaemonProcess placement-api processes=3 threads=1 user=placement group=placement
+  WSGIScriptAlias / /usr/bin/placement-api
+  <IfVersion >= 2.4>
+    ErrorLogFormat "%M"
+  </IfVersion>
+  ErrorLog /var/log/placement/placement-api.log
+  #SSLEngine On
+  #SSLCertificateFile ...
+  #SSLCertificateKeyFile ...
+</VirtualHost>
+
+Alias /placement-api /usr/bin/placement-api
+<Location /placement-api>
+  SetHandler wsgi-script
+  Options +ExecCGI
+  WSGIProcessGroup placement-api
+  WSGIApplicationGroup %{GLOBAL}
+  WSGIPassAuthorization On
+</Location>
+<Directory /usr/bin>
+   <IfVersion >= 2.4>
+      Require all granted
+   </IfVersion>
+   <IfVersion < 2.4>
+      Order allow,deny
+      Allow from all
+   </IfVersion>
+</Directory>
 ```
-省略部分如下图：    
-![00-placement-api.conf](OpenStack-4.png)
 
 同步数据库:
 ```
@@ -1058,7 +1088,8 @@ INFO  [alembic.runtime.migration] Context impl MySQLImpl.
 INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
 ```
 正在对 neutron 运行 upgrade...
-```INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+```
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
 INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> kilo
 INFO  [alembic.runtime.migration] Running upgrade kilo -> 354db87e3225
