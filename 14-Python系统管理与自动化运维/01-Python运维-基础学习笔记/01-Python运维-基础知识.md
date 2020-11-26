@@ -198,5 +198,124 @@ C:\Users\QianHuang>jupyter notebook --no-browser
 C:\Users\QianHuang>jupyter notebook --no-browser --ip=0.0.0.0
 ```
 ## Python调试器
+&#8195;&#8195;一些软件安装插件后有Python调试功能，例如VScode，还可以使用PyCharm的图形界面调试器，此处学习两个Python调试器，分别是Python标准库自带得pdb和开源的ipdb。
+### 标准库的pdb
+&#8195;&#8195;pdb是Python自带的一个库，提供了交互式的源代码调试功能，包含了现代调试器应有的功能，包括设置断点、单步调试、查看源码、查看程序堆栈等。部分pdb调试命令如下：
+
+命令|缩写|说明
+:---:|:---:|:---:
+break|b|设置断点
+continue|cont/c|继续执行下一个断点
+next|n|执行下一行，如果下一行是子程序，不会进入子程序
+step|s|执行下一行，如果下一行是子程序，会进入子程序
+where|bt/w|打印堆栈轨迹
+enable|-|启用禁用的断点
+disable|-|禁用启用的断点
+pp/p|-|打印变量或表达式
+list|l|根据参数值打印源码
+up|u|移动到上一层堆栈
+down|d|移动到下一层堆栈
+restart|run|重新开始调试
+args|a|打印函数参数
+clear|cl|清楚所有的断点
+return|r|执行到当前函数结束
+
+直接在命令参数指定使用pdb模块,示例如下：
+```
+[root@redhat8 python]# python3 -m pdb test_pdb.py
+> /python/test_pdb.py(1)<module>()
+(Pdb) 
+```
+&#8195;&#8195;另一种启用方法是在Python中调用pdb模块的set_trace方法设置一个断点，当程序运行至断点时，将会暂停执行斌打开pdb调试器，代码示例如下：
+```py
+#/usr/bin/python3
+from __future__ import print_function
+import pdb
+def sum_nums(num):
+    n = 0
+    for i in range(num):
+        pdb.set_trace()
+        n +=1
+        print(n)
+if __name__ == '__main__':
+    sum_nums(10)
+```
+调试示例：
+```
+[root@redhat8 python]# python3 test_pdb.py
+> /python/test_pdb.py(8)sum_nums()
+-> n +=1
+(Pdb) bt
+  /python/test_pdb.py(11)<module>()
+-> sum_nums(10)
+> /python/test_pdb.py(8)sum_nums()
+-> n +=1
+(Pdb) list
+  3  	import pdb
+  4  	def sum_nums(num):
+  5  	    n = 0
+  6  	    for i in range(num):
+  7  	        pdb.set_trace()
+  8  ->	        n +=1
+  9  	        print(n)
+ 10  	if __name__ == '__main__':
+ 11  	    sum_nums(10)
+[EOF]
+(Pdb) p n
+0
+(Pdb) p i
+(Pdb) n
+> /python/test_pdb.py(9)sum_nums()
+-> print(n)
+```
+说明：
+- 示例中先用`bt`命令查看当前函数的调用堆栈
+- 然后使用`list`命令查看Python代码
+- 再使用`P`命令打印`n`和`i`变量当前的取值
+- 最后使用`n`执行下一行Python代码
+
+### 开源的ipdb
+&#8195;&#8195;ipdb是一个开源的Python调试器，和pdb有相同的接口，相对pdb它具有语法高亮、tab补全、更友好的堆栈信息等高级功能。ipdb是一个第三方库，使用前需要先安装：
+```
+[root@redhat8 python]# pip install ipdb
+```
+使用方法和pdb类似。
 
 ## Python代码检查规范
+### PEP 8编码规范介绍
+Python官方编码风格指导手册：[https://www.python.org/dev/peps/pep-0008/](https://www.python.org/dev/peps/pep-0008/)
+
+PEP 8 编码规范简单介绍：
+- 在Python中，import应该一次只导入一个模块，不同的模块应该独立一行
+- import语句应该处于源码文件的顶部，位于模块注释和文档字符串之后，全局变量和常量之前
+- 导入不同的库时，应该按以下顺序分组，各个分组直接以空行分隔：
+    - 导入标准库模块
+    - 导入相关的第三方库模块
+    - 导入当前应用程序/库模块
+- Python中支持相对导入和绝对导入，推荐使用绝对导入
+- 如果处理复杂的包结果，可以使用相对导入
+
+### 使用pycodestyle检查代码规范
+&#8195;&#8195;Python官方的代码规范成为PEP8，检查代码风格的命令工具也叫pep8，Python之父建议重命名为pycodestyle，通过pip安装即可：
+```
+[root@redhat8 python]# pip install pycodestyle
+```
+对一个或多个文件运行pycodestyle，打印检查报告示例:
+```
+[root@redhat8 python]# pycodestyle --first test.py
+```
+通过`--show-source`显示不符合规范的源码：
+```
+[root@redhat8 python]# pycodestyle --show-source --show-pep8 test.py
+```
+### 使用autopep8将代码格式化
+&#8195;&#8195;autopep8是一个开源的命令行工具，能够将Python代码自动格式化为PEP8风格，autopep8使用pycodestyle工具来决定代码中的哪些部分需要被可视化，安装方法：
+```
+[root@redhat8 python]# pip install autopep8
+```
+使用方法（不指定`--in-place`选项，会将结果输出到命令行，使用`--in-place`选项后，将不会有任何输出）：
+```
+[root@redhat8 python]# autopep8 --in-place test.py
+```
+## Python工具环境管理
+
