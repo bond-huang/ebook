@@ -114,23 +114,10 @@ remote: Compressing objects: 100% (3/3), done.
 remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
 Receiving objects: 100% (4/4), 4.52 KiB | 578.00 KiB/s, done.
 ```
-使用`.gitignore`来设置应当忽略的文件:
-```
-venv/
+使用`.gitignore`来设置应当忽略的文件:    
+GitBook识别有问题，用图片替代：      
+![忽略的文件](flask-1.png)
 
-*.pyc
-__pycache__/
-
-instance/
-
-.pytest_cache/
-.coverage
-htmlcov/
-
-dist/
-build/
-*.egg-info/
-```
 ### 同步到github
 首先查看状态(列出当前目录所有还未被git管理的文件或被git管理但修改后未提交的文件或目录)：
 ```
