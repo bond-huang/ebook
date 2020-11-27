@@ -2,7 +2,7 @@
 &#8195;&#8195;学习IBM官方LinuxONE高密度云最佳实践视频做的笔记，步骤基本摘自官方，结合上机实践步骤，整理成此文档方便查阅巩固知识。官方地址：[LinuxONE高密度云最佳实践成长之路 (KVM版）](https://csc.cn.ibm.com/roadmap/index/e96159c6-cf9b-47cb-bb13-17cb5cecdaf7?eventId=)
 
 ## OpenShift简介
-&#8195;&#8195;红帽OpenShift是一个企业就绪型Kubernetes容器平台，可以实现全堆栈自动化运维，以管理混合云和多云部署。OKD是嵌入在Red Hat OpenShift中的上游Kubernetes发行版。     
+&#8195;&#8195;OpenShift是由红帽（RedHat）开发的容器化软件解决方案，这是基于企业级Kubernetes管理的平台即服务（PaaS）。OKD是嵌入在Red Hat OpenShift中的上游Kubernetes发行版。       
 &#8195;&#8195;Kubernetes又称为k8s（首字母为k、首字母与尾字母之间有8个字符、尾字母为s，简称 k8s）或者简称为 "kube"，是一种可自动实施Linux容器操作的开源平台。最初由Google的工程师开发和设计。       
 &#8195;&#8195;OpenShift 虚拟化是红帽OpenShift的一项功能，其将每个虚拟机（VM）封装在特殊容器内，便于您对传统应用以及新的云原生工作负载和无服务器工作负载进行现代化改造，且全部可通过单一的 Kubernetes 原生架构进行管理。
 
