@@ -1,5 +1,11 @@
 # LinuxONE-OpenStack云平台使用手册
 结合上机实践步骤，简单用文字记录使用手册，官方手册图文并茂，手册地址：[LinuxONE高密度云最佳实践成长之路 (KVM版）](https://csc.cn.ibm.com/roadmap/index/e96159c6-cf9b-47cb-bb13-17cb5cecdaf7?eventId=)
+## OpenStack简介
+&#8195;&#8195;OpenStack是一个开源的云计算管理平台项目，是一系列软件开源项目的组合。由NASA(美国国家航空航天局)和Rackspace合作研发并发起，以Apache许可证（Apache软件基金会发布的一个自由软件许可证）授权的开源代码项目。
+
+官方网站：[https://www.openstack.org/](https://www.openstack.org/)      
+官方文档：[https://docs.openstack.org/](https://docs.openstack.org/)       
+GitHub：[https://github.com/openstack/openstack](https://github.com/openstack/openstack)
 
 ## 普通用户使用手册
 在浏览器中输入`http://IP/dashboard`会看进入到登录界面。
