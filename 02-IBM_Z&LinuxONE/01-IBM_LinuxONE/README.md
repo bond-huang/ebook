@@ -18,4 +18,7 @@ IBM LinuxONE CSDN主页:[https://linuxone.csdn.net/](https://linuxone.csdn.net/)
 - [LinuxONE-云最佳实践KVM笔记](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/04-LinuxONE-%E4%BA%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5KVM%E7%AC%94%E8%AE%B0.html)
 - [LinuxONE-OpenStack部署_KVM](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/05-LinuxONE-OpenStack%E9%83%A8%E7%BD%B2_KVM.html)
 - [LinuxONE-OpenStack使用手册](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/06-LinuxONE-OpenStack%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html)
+- [LinxuONE-OpenShift安装配置](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/07-LinxuONE-OpenShift%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE.html)
+- [LinuxONE-部署Kubernetes集群](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/08-LinuxONE-%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4.html)
+- [LinuxONE-Prometheus监控](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/09-LinuxONE-Prometheus%E7%9B%91%E6%8E%A7.html)
 
