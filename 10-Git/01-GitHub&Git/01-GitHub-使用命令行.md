@@ -137,7 +137,7 @@ usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]
 参考博客：[安装失败：error: zlib.h: No such file or directory](http://blog.chinaunix.net/uid-20344928-id-5751083.html)     
 gzip网站：[http://www.gzip.org/](http://www.gzip.org/)      
 zlib官网：[http://www.zlib.net/](http://www.zlib.net/)      
-zlib各版本下载链接：[http://rpmfind.net/linux/rpm2html/search.php?query=zlib(x86-64)] (http://rpmfind.net/linux/rpm2html/search.php?query=zlib(x86-64))
+zlib各版本下载链接：[http://rpmfind.net/linux/rpm2html/search.php?query=zlib(x86-64)] (http://rpmfind.net/linux/rpm2html/search.php?query=zlib(x86-64))    
 zlib-devel下载链接：[http://rpmfind.net/linux/rpm2html/search.php?query=zlib-devel](http://rpmfind.net/linux/rpm2html/search.php?query=zlib-devel)      
 
 ### 其它系统安装
