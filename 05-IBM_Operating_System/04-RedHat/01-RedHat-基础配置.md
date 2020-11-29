@@ -1,7 +1,7 @@
 # RedHat-基础配置
 RedHat接触不多，近期安装了RHEL8.0和RHEL7.8，RHEL8.0发现重启后IP不自动up，hostname也会变。配置很简单，不常用容易忘掉，记录下来。
-### 网络和主机名
-##### RHEL8.0修改hostname
+## 网络和主机名
+### RHEL8.0修改hostname
 临时修改可以用hostname命令，但是重启后失效：
 ```
 [root@192 ~]# hostname redhat8
@@ -16,21 +16,21 @@ HOSTNAME=redhat8
 ```
 192.168.18.129 redhat8
 ```
-##### RHEL7.8_hostname
+### RHEL7.8_hostname
 RHEL7.8我在安装的时候配置了网络和主机名，然后默认都是永久生效的，主机名配置在`/etc/hostname`文件中，修改应该修改此文件即可：
 ```
 [root@redhat PowerVC]# cat /etc/hostname
 redhat
 ```
-##### 设置网卡自动启动
+### 设置网卡自动启动
 REHL8可能是装机时候没配好，重启网络不自动启动，设置方法如下;
 配置文件存放目录和文件：`/etc/sysconfig/network-scripts/ifcfg-ens160`，ens160是我机器网卡设备的编号，要改其它就是对应名字。
 将配置文件中选项`ONBOOT=no`修改为`ONBOOT=yes`，然后可以重启验证reboot验证。
 在RHEL7.8中，修改方法一样，只不过配置文件中值加了引号，如：`ONBOOT='no'`。
 
-### 配置本地YUM源
-发现在REHL7.8和REHL8中有点不一样，本地YUM源都是用的光盘。
-##### REHL8配置本地YUM源
+## 配置本地YUM源
+发现在REHL7.8和REHL8中有点不一样，本地YUM源都是用的光盘。安装软件方式有很多，除了YUM方式安装还有编译安装，还有rpm方式安装，rpm安装参考博客：[https://www.cnblogs.com/chuijingjing/p/9951267.html](https://www.cnblogs.com/chuijingjing/p/9951267.html)
+### REHL8配置本地YUM源
 创建镜像挂载点并挂载镜像：
 ```
 [root@redhat8 home]# mkdir -p /mnt/cdrom
@@ -68,7 +68,7 @@ repo id                                   repo name                             
 redhat8_app                               redhat8_app                               4,672
 redhat8_os                                redhat8_os                                1,658
 ```
-##### REHL7.8配置本地YUM源
+### REHL7.8配置本地YUM源
 前面步骤和REHL8一样，只是新建的.repo写入的内容有所差别，新建文件名：`redhat7.repo`，写入如下内容：
 ```
 [local]
@@ -92,9 +92,8 @@ repo id                        repo name                                        
 local                          Red Hat Enterprise Linux 6.8                         5,231
 repolist: 5,231
 ```
-##### YUM常用命令
-yum常用操作命令如下：
-
+### YUM常用命令
+yum常用操作命令如下：     
 命令|说明
 :---|:---
 yum repolist|显示仓库列表
@@ -103,7 +102,7 @@ yum search &#60;Packages name&#62;|搜索软件包
 yum check-update |检查升级
 yum info &#60;Packages name&#62;|查看软件详细信息
 yum provides &#60;Packages name&#62;|查看软件包Provide信息
-yum replist &#60;Packages name&#62;|查看软件包的依赖包
+yum deplist &#60;Packages name&#62;|查看软件包的依赖包
 yum install &#60;Program name&#62;|软件安装
 yum reinstall &#60;Program name&#62;|重新安装软件
 yum update &#60;Program name&#62;| 软件升级
@@ -111,7 +110,7 @@ yum downgrade &#60;Program name&#62;| 软件降级
 yum remove &#60;Program name&#62;|卸载程序
 yum history|查看yum安装的历史
 
-### 设置Python3为默认
+## 设置Python3为默认
 RHEL8中自带了Python3，RHEL7.8中自带Python2，Python3会成为趋势，但是每次运行Python都要输入`python3`命令，会很不习惯，可以修改下。
 输入如下命令查看`python3`命令的位置：
 ```
@@ -142,4 +141,7 @@ Python 3.6.8 (default, Jan 11 2019, 02:17:16)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> 
 ```
-### 待补充
+## 安装git
+&#8195;&#8195;安装方法在Git章节中，安装过程中出现一些问题也进行了记录，参考链接：[GitHub-使用命令行](https://ebook.big1000.com/10-Git/01-GitHub&Git/01-GitHub-%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C.html)
+
+## 待补充
