@@ -318,4 +318,51 @@ PEP 8 编码规范简单介绍：
 [root@redhat8 python]# autopep8 --in-place test.py
 ```
 ## Python工具环境管理
+&#8195;&#8195;在实际应用中，可能会同时用到Python2和Python3。学习两个工具：pyenv和virtualenv，前者用于管理不同的Python，后者用于管理不同的工作环境。
+### 使用pyenv管理不同的Python版本
+#### pyenv安装
+直接从GitHub下载项目到本地，安装步骤如下：
+```
+[root@redhat8 git-2.29.2]# git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+Cloning into '/root/.pyenv'...
+git: 'remote-https' is not a git command. See 'git --help'.
+[huang@redhat8 ~]$ git clone git@github.com:pyenv/pyenv.git ~/.pyenv
+Cloning into '/root/.pyenv'...
+ssh: connect to host github.com port 22: Connection refused
+fatal: Could not read from remote repository.
+Please make sure you have the correct access rights
+and the repository exists.
+```
+可能是虚拟机网络问题，使用windows系统clone下来:
+```
+$ git clone git@github.com:pyenv/pyenv.git
+Cloning into 'pyenv'...
+Warning: Permanently added the RSA host key for IP address '192.30.255.112' to the list of known hosts.
+remote: Enumerating objects: 18376, done.
+remote: Total 18376 (delta 0), reused 0 (delta 0), pack-reused 18376
+Receiving objects: 100% (18376/18376), 3.65 MiB | 1.26 MiB/s, done.
+Resolving deltas: 100% (12514/12514), done.
+```
+传到RHEL上，然后设置环境变量：
+```
+[root@redhat8 pyenv]# cd /root/.pyenv
+[root@redhat8 .pyenv]# ls
+bin           COMMANDS.md  CONDUCT.md  LICENSE   plugins  README.md  terminal_output.png
+CHANGELOG.md  completions  libexec     Makefile  pyenv.d  src        test
+[root@redhat8 .pyenv]# echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
+[root@redhat8 .pyenv]# echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
+[root@redhat8 .pyenv]# echo 'eval "$pyenv init -)"' >> ~/.bash_profile
+```
+完成后需要重新载入配置文件，或者退出以后重新登录，也可以使用source命令重新载入配置文件，示例如下：
+```
+[root@redhat8 .pyenv]# source ~/.bash_profile
+-bash: /root/.pyenv/bin/pyenv: Permission denied
+[root@redhat8 bin]# chmod 755 -R /root/.pyenv/bin
+[root@redhat8 bin]# source ~/.bash_profile
+/root/.pyenv/bin/pyenv: line 1: ../libexec/pyenv: Permission denied
+```
+各种尝试都是报错，权限问题或者跟我从windows传上来有关，等以后有空再研究。
+
+### 使用vitualenv管理不同的项目
+&#8195;&#8195;vitualenv本身是一个独立的项目，用以隔离不同项目的工作环境。上面的pyenv在RedHat上没安装成功，这个也等用到的时候再学。
 
