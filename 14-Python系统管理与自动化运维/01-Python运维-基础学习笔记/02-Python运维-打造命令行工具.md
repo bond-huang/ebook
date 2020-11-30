@@ -154,4 +154,68 @@ user = getpass.getuser('Please input your username: ')
 passwd = getpass.getpass('Please input your passwor: ')
 print(user,passwd)
 ```
-## 使用ConfigParse解析配置文件
+## 使用ConfigParser解析配置文件
+&#8195;&#8195;一个典型的配置文件包含一到多个（section），每个章节下面可以包含一个或多个选项（option），里面下面的MySQL配置文件：
+```
+[client]
+port        = 3306
+user        = mysql
+password    = mysql
+host        = 127.0.0.1
+
+[mysqld]
+basedir     = /usr
+datadir     = /var/lib/mysql
+tmpdir      = /tmp
+skip-external-locking
+```
+&#8195;&#8195;在Python3中，ConfigParse模块重命名为configparser，使用有细微差异。要解析一个配置文件，需先创建一个ConfigParse对象（名称自定义），然后用read方法读取配置文件，也可以使用readfp从一个已经打开的文件中读取配置：
+```python
+import configparser
+cf = configparser.ConfigParser(allow_no_value=True)
+cf.read('my.cnf')
+```
+&#8195;&#8195;参数`allow_no_value`默认取值是`False`，表示配置文件中是否允许选项没有值的情况，之前配置文件中`skip-external-locking`选项只有名称没有选区制，所有需指定`allow_no_value`值为`True`。ConfigParser中有很多方法，如下：
+- sections：返回一个包含所有章节的列表
+- has_section：判断章节是否存在
+- items：以元组的形式返回所有选项
+- options：返回一个包含章节下所有选项的列表
+- get,getboolean,gitint,getfloat：获取选项的值
+- remove_section：删除一个章节
+- add_setcion：添加一个章节
+- remote_option：删除一个选项
+- set：添加一个选项
+- write将ConfigParser对象中的数据保存到文件中
+
+以之前的MySQL配置文件为例，测试各种方法的使用：
+```python
+import configparser
+cf = configparser.ConfigParser(allow_no_value=True)
+cf.read('my.cnf')
+print(cf.get('client', 'host'))
+print(cf.sections())
+print(cf.has_section('client'))
+cf.remove_option('mysqld','tmpdir')
+cf.remove_section('client')
+cf.add_section('mysql')
+cf.set('mysql','host','127.0.0.1')
+cf.write(open('new_my.cnf','w'))
+```
+运行示例如下：
+```
+[root@redhat8 python]# python3 configparse_test.py
+127.0.0.1
+['client', 'mysqld']
+True
+[root@redhat8 python]# cat new_my.cnf
+[mysqld]
+basedir = /usr
+datadir = /var/lib/mysql
+skip-external-locking
+
+[mysql]
+host = 127.0.0.1
+```
+## 使用argparse解析命令行参数
+&#8195;&#8195;在Python中，argparse是标准库中用来解析命令行参数的模块，能够根据程序中的定义从sys.argv中解析参数，并自动生成帮助和使用信息。
+### ArgumentParse解析器
