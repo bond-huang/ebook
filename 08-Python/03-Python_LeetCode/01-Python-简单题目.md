@@ -116,4 +116,19 @@ class Solution:
             out_list.append((candies[i] + extraCandies >= max(candies)))
         return out_list    
 ```
+### 1672.Richest Customer Wealth
+#### 描述
+&#8195;You are given an `m x n` integer grid accounts where `accounts[i][j]` is the amount of money the `i​​​​​​​​​​​th`​​​​ customer has in the `j​​​​​​​​​​​th`​​​​ bank. Return the wealth that the richest customer has.
+&#8195;A customer's wealth is the amount of money they have in all their bank accounts. The richest customer is the customer that has the maximum wealth.
+#### 解答
+提交代码如下：
+```python
+class Solution:
+    def maximumWealth(self, accounts: List[List[int]]) -> int:
+        wealth_list = []
+        for i in range(0,len(accounts)):
+            wealth_sum = sum(accounts[i])
+            wealth_list.append(wealth_sum)
+        return max(wealth_list)
+```
 ### 下一题解答中
