@@ -131,4 +131,16 @@ class Solution:
             wealth_list.append(wealth_sum)
         return max(wealth_list)
 ```
+### 1108.Defanging an IP Address
+#### 描述
+&#8195;Given a valid (IPv4) IP address, return a defanged version of that IP address.A defanged IP address replaces every period "." with "[.]".
+#### 解答
+提交代码如下：
+```python
+class Solution:
+    def defangIPaddr(self, address: str) -> str:
+        import re
+        new_add = re.sub('\.','[.]',address,0)
+        return new_add
+```
 ### 下一题解答中
