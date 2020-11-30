@@ -123,7 +123,7 @@ PS C:\Users\big1000\vscode\codefile\Leetcode> python 1528.py
 示例：在爬虫学习中有使用示例。
 ### zip()
 &#8195;&#8195;可以将两个有序数据一一对应进行聚合，标准格式：`zip(*iterables)`,示例如下：
-```
+```py
 a = 'codeleet'
 b = [4,5,6,7,0,2,1,3]
 zipped = zip(b,a)
@@ -142,5 +142,23 @@ PS C:\Users\big1000\vscode\codefile\Leetcode> python 1528.py
 (4, 5, 6, 7, 0, 2, 1, 3)
 ```
 应用实例：在解答leetcode题目1528. Shuffle String时候用到此方法。
+
+### sum()
+&#8195;&#8195;标准格式：`sum(iterable,/,start=0)`,从start开始从左向右对`iterable`的项求和并返回总计值。`iterable`项通常为数字，start值不允许为字符串。示例如下：
+```py
+a = [1,3,4,6,2,9,8]
+b = sum(a)
+print(b)
+```
+运行示例如下：
+```
+PS C:\Users\big1000\vscode\codefile\Leetcode> python 1672.py
+33
+```
+应用实例：在解答leetcode题目1672.Richest Customer Wealth时候用到此方法。       
+延申说明：
+- 字符串拼接调用`.join(sequence)`,在[Python-常用字符串方法](https://ebook.big1000.com/08-Python/02-Python%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97&%E6%96%B9%E6%B3%95/05-Python-%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%B9%E6%B3%95.html)中有介绍。
+- 要以扩展精度对浮点值求和，可以使用`math.fsum()`
+- 要拼接一系列可迭代对象，可以使用`itertools.chain()`
 
 ### 其它常用内置函数待使用
