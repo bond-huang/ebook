@@ -143,4 +143,83 @@ class Solution:
         new_add = re.sub('\.','[.]',address,0)
         return new_add
 ```
+### 771.Jewels and Stones
+#### 描述
+&#8195;You're given strings`J`representing the types of stones that are jewels,and `S`representing the stones you have. Each character in S is a type of stone you have. You want to know how many of the stones you have are also jewels.      
+&#8195;The letters in`J`are guaranteed distinct,and all characters in`J`and`S`are letters. Letters are case sensitive, so"a"is considered a different type of stone from "A".
+#### 解答
+提交代码如下：
+```python
+class Solution:
+    def numJewelsInStones(self, J: str, S: str) -> int:
+        count = 0 
+        for i in J:
+            for j in S:
+                if i == j:
+                    count +=1
+        return count
+```
+### 1662.Check If Two String Arrays are Equivalent
+#### 描述
+&#8195;Given two string arrays`word1`and`word2,return true if the two arrays represent the same string,and false otherwise.      
+&#8195;A string is represented by an array if the array elements concatenated in order forms the string.
+#### 解答
+提交代码如下：
+```python
+class Solution:
+    def arrayStringsAreEqual(self, word1: List[str], word2: List[str]) -> bool:
+        i = ''.join(word1)
+        j = ''.join(word2)
+        if i ==j:
+            return True
+        else:
+            return False
+```
+### 1603.Design Parking System
+#### 描述
+&#8195;Design a parking system for a parking lot.The parking lot has three kinds of parking spaces:`big`,`medium`,and`small`,with a fixed number of slots for each size.          
+Implement the ParkingSystem class:
+- ParkingSystem(int big, int medium, int small) Initializes object of the ParkingSystem class. The number of slots for each parking space are given as part of the constructor.
+- bool addCar(int carType) Checks whether there is a parking space of carType for the car that wants to get into the parking lot. carType can be of three kinds: big, medium, or small, which are represented by 1, 2, and 3 respectively. A car can only park in a parking space of its carType. If there is no space available, return false, else park the car in that size space and return true.
+#### 解答
+提交代码如下：
+```python
+class ParkingSystem:
+    def __init__(self, big: int, medium: int, small: int):
+        self.big = big
+        self.medium = medium
+        self.small = small
+    def addCar(self, carType: int) -> bool:
+        if carType == 1:
+            if self.big > 0:
+                self.big -= 1
+                return True
+        if carType == 2:
+            if self.medium > 0:
+                self.medium -= 1
+                return True
+        if carType == 3:
+            if self.small > 0:
+                self.small -= 1
+                return True    
+# Your ParkingSystem object will be instantiated and called as such:
+# obj = ParkingSystem(big, medium, small)
+# param_1 = obj.addCar(carType)
+```
+### 1313.Decompress Run-Length Encoded List
+#### 描述
+&#8195;We are given a list`nums`of integers representing a list compressed with run-length encoding.Consider each adjacent pair of elements`[freq, val] = [nums[2*i], nums[2*i+1]]` (with i >= 0).For each such pair,there are`freq`elements with value`val`concatenated in a sublist.Concatenate all the sublists from left to right to generate the decompressed list.   
+Return the decompressed list.
+#### 解答
+提交代码如下：
+```python
+class Solution:
+    def decompressRLElist(self, nums: List[int]) -> List[int]:
+        result_list = []
+        for i in range(0,len(nums)//2):
+            [freq, val] = [nums[2*i], nums[2*i+1]]
+            array = freq * [val]
+            result_list = result_list + array
+        return result_list
+```
 ### 下一题解答中
