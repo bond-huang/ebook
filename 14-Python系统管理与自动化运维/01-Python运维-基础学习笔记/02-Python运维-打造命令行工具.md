@@ -219,3 +219,139 @@ host = 127.0.0.1
 ## 使用argparse解析命令行参数
 &#8195;&#8195;在Python中，argparse是标准库中用来解析命令行参数的模块，能够根据程序中的定义从sys.argv中解析参数，并自动生成帮助和使用信息。
 ### ArgumentParse解析器
+创建解析器方式如下：
+```python
+import argparse
+parser = argparse.ArgumentParser()
+```
+&#8195;&#8195;ArgumentParser类的初始化函数有多个参数，比较常用的是description，是程序的描述信息，即帮助信息前的文字。为应用程序添加参数选项需要用ArgumentParser对象的add_argument方法，方法格式如下：
+```
+add_argument(name or flags...[, action][, nargs][, const][, default][, type][, choices][, required][, help][, metavar][, dest])
+```
+各参数含义：
+- name/flags：参数的名字；
+- action：遇到参数时的动作，默认值时store
+- nargs：参数的个数，可以是具体的数组，或者“+”号（表示0或霍格参数）与“*”号（表示1或霍格参数）
+- const action 和 nargs：需要的常量值
+- default：不指定参数时的默认值
+- type：参数的类型
+- choices：参数允许的值
+- required：可选参数是否可以省略
+- help：参数的帮助信息
+- metavar：在usage说明中的参数名称
+- dest：解析后的参数名称
+
+示例以后用实例演示。
+### 模仿MySQL客户端的命令行参数
+MySQL几乎没接触，以后用到了再看。
+## 使用logging记录日志
+记录日志的两个目的：
+- 诊断日志：记录与应用程序操作相关的日志
+- 审计日志：为商业分析而记录的日志
+
+### Python的logging模块
+&#8195;&#8195;直接导入logging模块，调用它的debug,info,warn,error和critical等函数记录日志。默认情况下打印WARRNING级别或更高级别日志到屏幕。示例如下：
+```python
+#!/usr/local/bin/python
+import logging
+logging.debug('debug message')
+logging.info('info meeeage')
+logging.warn('warn message')
+logging.error('error message')
+logging.critical('critical message')
+```
+执行后示例如下：
+```
+[root@redhat8 python]# python3 logging_test.py
+WARNING:root:warn message
+ERROR:root:error message
+CRITICAL:root:critical message
+```
+各个日志级别的含义：
+
+日志级别|权重|含义
+:---:|:---:|:---
+CRITICAL|50|严重错误，表面软件已经不能继续运行了
+ERROR|40|发生了严重的错误，必须马上处理
+WARNING|30|应用程序可以容忍这些信息，软件还在正常工作，但是应该即使修复，避免后续发生问题
+INFO|20|证明事情按预期工作，突出强调应用程序的运行过程
+DEBUG|10|详细信息，只有开发人员调试程序时才需要关注的事情
+
+### 配置日志格式
+&#8195;&#8195;在使用logging记录日志之前，可以进行一些简单的配置，如下所示：
+```python
+#!/usr/local/bin/python
+# -*- coding:utf-8 -*-
+import logging
+logging.basicCconfig(filename='app.log',level=logging.INFO)
+logging.debug('debug message')
+logging.info('info meeeage')
+logging.warn('warn message')
+logging.error('error message')
+logging.critical('critical message')
+```
+&#8195;&#8195;执行程序，会在当前目录下产生一个app.log文件，文件中记录INFO及更高级别的日志信息。示例中使用basicCconfig进行了简单的配置，还可以进行更加复杂的日志配置：
+- Logger：日志记录器，是应用程序中能直接使用的接口
+- Handler：日志处理器，用以表明将日志保存到什么地方以及保存多久
+- Formatter：格式化，用以配置日志的输出格式
+
+下面是一个在Python源码中配置日志的示例：
+```Python
+#!/usr/local/bin/python
+# -*- coding:utf-8 -*-
+import logging
+logging.basicCconfig(
+    level=logging.DEBUG,
+    format='%(asctime)s : %(levelname)s : %(message)s',
+    filename="app.log"
+    )
+logging.debug('debug message')
+logging.info('info meeeage')
+logging.warn('warn message')
+logging.error('error message')
+logging.critical('critical message')
+```
+对于复杂的项目，一般将日志配置保存到配置文件中，例如下面配置文件：
+```
+[loggers]
+keys = root
+[handlers]
+keys = logfile
+[formatters]
+keys = generic
+[logger_root]
+handlers = logfile
+[handler_logfile]
+class = handlers.TimeRotatingFileHandler
+args = ('app.log','midnight',1,10)
+level = DEBUG
+fomatter = generic
+[fomatter_generic]
+format=%(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s] %(message)s
+```
+配置说明：
+- 在[loggers]中声明一个名为root的logger
+- 在[handlers]中声明一个名为logfile的handler
+- 在[formatters]中声明一个名为generic的formatter
+- 在[logger_root]中定义root这个logger所使用的handler
+- 在[handler_logfile]中定义handler输出日志的方式、日志文件的切换时间等
+- 最后在[fomatter_generic]定义了日志的格式，包括日志产生时间、日志级别、产生日志文件名和行号等信息
+
+&#8195;&#8195;在Python中，使用logging.config模块的fileConfig函数加载日志配置，如下所示：
+```Python
+#!/usr/local/bin/python
+# -*- coding:utf-8 -*-
+import logging
+import logging.config
+
+logging.config.fileConfig('logging.cnf')
+
+logging.debug('debug message')
+logging.info('info meeeage')
+logging.warn('warn message')
+logging.error('error message')
+logging.critical('critical message')
+```
+## 与命令行相关的开源项目
+学习两个与命令行工具相关的开源项目。
+### 使用click解析命令行参数
