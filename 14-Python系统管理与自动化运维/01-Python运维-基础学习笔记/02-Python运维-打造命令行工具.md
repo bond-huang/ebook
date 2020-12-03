@@ -353,5 +353,92 @@ logging.error('error message')
 logging.critical('critical message')
 ```
 ## 与命令行相关的开源项目
-学习两个与命令行工具相关的开源项目。
+学习两个与命令行工具相关的开源项目。官方网站：[https://click.palletsprojects.com/en/5.x/](https://click.palletsprojects.com/en/5.x/)
 ### 使用click解析命令行参数
+&#8195;&#8195;Click是Flask的作者开发的一个第三方模块，用于快速创建命令行。作用与argparse相同，但使用更加简单。在使用前需要先安装：
+```
+# pip install click
+```
+使用click步骤：
+- 使用`@click.command()`装饰一个函数，使之成为命令行接口
+- 使用`@click.option()`等装饰函数，为其添加命令行选项等
+
+使用Click官方文档中的示例：
+```python
+import click
+@click.command()
+@click.option('--count',default=1,help='Number of greetings.')
+@click.option('--name',prompt='Your name',help='The person to gteet.')
+def hello(count,name):
+    """Simple prigram that greets NAME for a total of COUNT times."""
+    for x in range(count):
+        click.echo('Hello %s!' % name)
+if __name__ == '__main__':
+    hello()
+```
+示例说明：
+- 示例中，函数hello接收两个参数，它们的取值从命令行中获取
+- 示例中使用ckick模块中的command、option和echo：
+    - command：使函数hello成为命令行接口
+    - option：增加命令行选项
+    - echo：输出结果，使用echo是为了获取更好兼容性，在python2中print是一个语句，而python3中是一个函数
+- 在option中使用了prompt函数，当没有直接指定name参数时，会提示在交互模式下输入
+
+运行示例：
+```
+[root@redhat8 python]# python3 test_click.py
+Your name: redhat
+Hello redhat!
+[root@redhat8 python]# python3 test_click.py --count 2
+Your name: ROOT
+Hello ROOT!
+Hello ROOT!
+```
+click和argparse一样，会自定产生帮助信息：
+```
+[root@redhat8 python]# python3 test_click.py --help
+Usage: test_click.py [OPTIONS]
+  Simple prigram that greets NAME for a total of COUNT times.
+Options:
+  --count INTEGER  Number of greetings.
+  --name TEXT      The person to gteet.
+  --help           Show this message and exit.
+```
+option常用的设置参数如下：
+- default：设置命令行参数的默认值
+- help：参数说明
+- type：参数类型，可以是string、int、float等
+- prompt：档名和中没有输入相应参数时，会根据prompt提示用户输入
+- nargs：指定命令行参数接受的值的个数
+
+&#8195;&#8195;如果命令行参数只能取固定的几个值之一，可以使用Choice函数，Choice函数的参数是一个列表，列表中列出所有的可能值，示例如下：
+```python
+import click
+@click.command()
+@click.option('--hash_type',type=click.Chioce(['md5','shal']))
+def digest(hash_type):
+    click.echo(hash_type)
+```
+&#8195;&#8195;如果需要输入密码，设置prompt为True就能交互式输入密码，hide_input为True可以隐藏命令行输入，设置confirmation_prompt为True可以进行密码两次验证，示例如下：
+```python
+import click
+@click.command()
+@click.option('--password',prompt=True,hide_input=True,confirmation_prompt=True)
+def encrypt(password):
+    click.echo('Encrypting password to %s' % password.encode('rot13'))
+if __name__ == '__main__':
+    encrypt()
+```
+运行示例（会提示unknown encoding:rot13，应该是RHEL8中没有）：
+```
+[root@redhat8 python]# python3 test_click_1.py
+Password: 
+Repeat for confirmation: 
+```
+&#8195;&#8195;在Bash中有fc命令编辑比较长的输入，比如输错了一个较长的命令，可以运行fc命令打开一个编辑器，编辑器保存了上一条命令内容，编辑修复错误的输入，退出后会自动运行编辑后的命令。使用Click也可以实现类似的功能，如下所示：
+```python
+import click
+message = click.edit()
+print(message,end="")
+```
+### 使用prompt_toolkit打造交互式命令行工具
