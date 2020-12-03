@@ -144,4 +144,55 @@ Type "help", "copyright", "credits" or "license" for more information.
 ## 安装git
 &#8195;&#8195;安装方法在Git章节中，安装过程中出现一些问题也进行了记录，参考链接：[GitHub-使用命令行](https://ebook.big1000.com/10-Git/01-GitHub&Git/01-GitHub-%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C.html)
 
+## 安装PIP
+&#8195;&#8195;在使用Python中需要安装一些第三方库，用pip安装比较方便，RHEL中默认没有，需要安装，使用脚本安装和升级pip。参考博客：[https://www.cnblogs.com/zhongyehai/p/10619917.html](https://www.cnblogs.com/zhongyehai/p/10619917.html)    
+下载get-pip.py脚本：
+```
+[root@redhat8 ~]# wget https://bootstrap.pypa.io/get-pip.py
+--2020-12-03 10:10:16--  https://bootstrap.pypa.io/get-pip.py
+Resolving bootstrap.pypa.io (bootstrap.pypa.io)... 151.101.76.175, 2a04:4e42:12::175
+Connecting to bootstrap.pypa.io (bootstrap.pypa.io)|151.101.76.175|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1886796 (1.8M) [text/x-python]
+Saving to: ‘get-pip.py’
+get-pip.py             100%[==========================>]   1.80M  42.1KB/s    in 36s     
+2020-12-03 10:10:53 (50.9 KB/s) - ‘get-pip.py’ saved [1886796/1886796]
+```
+运行get-pip.py脚本:
+```
+[root@redhat8 ~]# python3 get-pip.py
+Looking in indexes: https://mirrors.aliyun.com/pypi/simple/, https://pypi.douban.com/simpl
+e/Collecting pip
+  Downloading https://mirrors.aliyun.com/pypi/packages/ab/11/2dc62c5263d9eb322f2f028f7b56c
+d9d096bb8988fcf82d65fa2e4057afe/pip-20.3.1-py2.py3-none-any.whl (1.5 MB)     |███████████████████████▎        | 1.1 MB 3.0 MB/s eta 0:00:0
+     |███████████████████████▌        | 1.1 MB 3.0 MB/s eta 0:00:0
+...
+     |████████████████████████████████| 1.5 MB 997 kB/s 
+Collecting wheel
+  Downloading https://mirrors.aliyun.com/pypi/packages/84/e8/3caa0d932d0edd9c9611065831fd0
+6cf05c53671f78a0fa553a635da7e2f/wheel-0.36.0-py2.py3-none-any.whl (34 kB)Installing collected packages: pip, wheel
+  Attempting uninstall: pip
+    Found existing installation: pip 9.0.3
+    Uninstalling pip-9.0.3:
+      Successfully uninstalled pip-9.0.3
+Successfully installed pip-20.3.1 wheel-0.36.0
+```
+查看pip版本：
+```
+[root@redhat8 ~]# pip -V
+pip 20.3.1 from /usr/local/lib/python3.6/site-packages/pip (python 3.6)
+```
+使用pip安装Python第三方模块click示例：
+```
+[root@redhat8 ~]# pip install click
+Looking in indexes: https://mirrors.aliyun.com/pypi/simple/, https://pypi.douban.com/simpl
+e/Collecting click
+  Downloading https://pypi.doubanio.com/packages/d2/3d/fa76db83bf75c4f8d338c2fd15c8d33fdd7
+ad23a9b5e57eb6c5de26b430e/click-7.1.2-py2.py3-none-any.whl (82 kB)     |███████████████████████████▊    | 71 kB 601 kB/s eta 0:0
+     |███████████████████████████████▊| 81 kB 682 kB/s eta
+     |████████████████████████████████| 82 kB 540 kB/s 
+Installing collected packages: click
+Successfully installed click-7.1.2
+```
+&#8195;&#8195;对于PIP其它安装方法及常用命令，在本ebook的章节[Python运维-基础知识](https://ebook.big1000.com/14-Python%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/01-Python%E8%BF%90%E7%BB%B4-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01-Python%E8%BF%90%E7%BB%B4-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html?h=pip)中有详细的介绍和示例演示。
 ## 待补充
