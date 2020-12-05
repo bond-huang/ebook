@@ -442,3 +442,81 @@ message = click.edit()
 print(message,end="")
 ```
 ### 使用prompt_toolkit打造交互式命令行工具
+&#8195;&#8195;prompt_toolkit是一个处理交互式场景的开源库，用来取代开源的readline与curses，prompt_toolkit有很多高级功能，特性如下：
+- 语法高亮
+- 支持多行编辑
+- 支持代码补全
+- 支持自动提示
+- 可以使用鼠标移动光标
+- 支持Emacs与Vi风格的快捷键
+- 支持查询历史
+- 对Unicode支持友好
+- 使用Python语言开发，跨平台
+
+使用之前需要先安装：
+```
+[root@redhat8 ~]# pip install prompt_toolkit
+```
+&#8195;&#8195;下面示例是Python开发的REPL（读取-求值-输出）应用,用户输入数据，Python程序打印用户的输入：
+```python
+while True:
+    user_input = raw_input('>')
+    print(user_input)
+```
+&#8195;&#8195;示例中，无法使用任何Linux下的快捷键，退格或删除都会出现问题，使用prompt_toolkit中的prompt函数来接受输入，就可以使用bash下的常用快捷键：
+```python
+from prompt_toolkit import prompt
+while True:
+    user_input = prompt('>')
+    print(user_input)
+```
+使用示例：
+```
+[root@redhat8 python]# python3 test_prompt.py
+>Miracles happen every day.
+Miracles happen every day.
+```
+&#8195;&#8195;prompt_toolkit也可以实现查找历史的功能，使用prompt_toolkit.history模块下的FileHistory类，然后调用prompt时构造的FileHistory对象，并传递给history参数：
+```python
+from __future__ import unicode_literals
+from prompt_toolkit import prompt
+from prompt_toolkit.history import FileHistory
+while True:
+    user_input = prompt('>',
+                        history=FileHistory('history.txt')
+                        )
+    print(user_input)
+```
+&#8195;&#8195;还可以利用历史输入的数据，在用户输入时进行自动提示，在调用prompt函数时指定auto_suggest参数即可：
+```python
+from __future__ import unicode_literals
+from prompt_toolkit import prompt
+from prompt_toolkit.history import FileHistory
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+while True:
+    user_input = prompt('>',
+                        history=FileHistory('history.txt'),
+                        auto_suggest=AutoSuggestFromHistory()
+                        )
+    print(user_input)
+```
+&#8195;&#8195;输入两行字符串，随后输入匹配的历史输入时，就会以暗色字体显示匹配的历史输入，回车即可自动输入，运行示例如下图：    
+![prompt_toolkit示例1](prompt_toolkit-1.png)
+
+&#8195;&#8195;bash中tab键补全会选择提示的内容，使用prompt_toolkit中一个名为WordCompleter的函数即可实现，会将用户输入与可能建议的字典进行匹配，并提供一个列表，使用tab键从列表中进行选项，示例如下：
+```python
+from __future__ import unicode_literals
+from prompt_toolkit import prompt
+from prompt_toolkit.history import FileHistory
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.contrib.completers import WordCompleter
+SQLCompleter = WordCompleter(['select','from','insert','update','delete','drop'],ignore_case=True)
+while True:
+    user_input = prompt('>',
+                        history=FileHistory('history.txt'),
+                        auto_suggest=AutoSuggestFromHistory(),
+                        completer=SQLCompleter
+                        )
+    print(user_input)
+```
+在python3中运行后提示无法import WordCompleter，查了下可能时兼容性问题。
