@@ -110,21 +110,3 @@ def to_bytes(bytes_or_str):
 #}
 ```
 &#8195;&#8195;在Jinja2中for循环使用与Python类似，但没了复合语句末尾的冒号，需要使用endfor作为结束标志，if语句也一样，需要使用endif作为结束标志，示例如下：
-```
-{% if users %}
-    <ul>
-    {% for user in users %}
-        <li>{{ user.username }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
-```
-#### 变量
-&#8195;&#8195;Jinja2模板中使用{{ }}语法表示一个变量。Jinja2识别所有的Python数据类型，包括复杂的数据类型，例如列表、字典和对象等，如下所示：
-```
-<p>A value from a dictionary: {{ mydict['key'] }}.</p>
-<p>A value from a list: {{ mylist[3] }}.</p>
-<p>A value from a list,with a variable index: {{ mylist[myintvar] }}.</p>
-<p>A value from an object's method: {{ myobj.somemethod() }}.</p>
-```
-#### Jinja2中的过滤器
