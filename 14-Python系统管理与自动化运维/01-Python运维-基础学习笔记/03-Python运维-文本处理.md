@@ -100,3 +100,12 @@ def to_bytes(bytes_or_str):
 - 控制结构&#123;&#37; &#37;&#125;
 - 变量取值&#123;&#123; &#125;&#125;
 - 注释&#123;&#35; &#35;&#125;
+
+示例如下：
+```
+{# note:disable template because we no longer user this
+    {% for user in users %}
+    ...
+    {% endfor %}
+#}
+```
