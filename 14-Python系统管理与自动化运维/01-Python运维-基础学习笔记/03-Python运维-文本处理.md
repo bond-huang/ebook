@@ -89,3 +89,42 @@ def to_bytes(bytes_or_str):
 - 相对于Mako，Jinja2提供了仅有的控制结构，不允许在模板中编写太多的业务逻辑，避免乱用
 - 相对于Django模板，Jinja2的性能更好
 - Jinja2模板的可读性很好
+
+如果安装了Flask，Jinja2会随之安装，也可以进行单独安装：
+```
+[root@redhat8 ~]# pip install jinja2
+[root@redhat8 ~]# python3 -c "import jinja2"
+```
+#### 语法块
+&#8195;&#8195;Jinja2可以应用于任何基于文本的格式，如HTML和XML。Jinja2使用大括号的方式表示Jinja2的语法，主要有三种语法：
+- 控制结构{% %}
+- 变量取值{{ }}
+- 注释{# #}
+
+示例如下：
+```
+{# note:disable template because we no longer user this
+    {% for user in users %}
+    ...
+    {% endfor %}
+#}
+```
+&#8195;&#8195;在Jinja2中for循环使用与Python类似，但没了复合语句末尾的冒号，需要使用endfor作为结束标志，if语句也一样，需要使用endif作为结束标志，示例如下：
+```
+{% if users %}
+    <ul>
+    {% for user in users %}
+        <li>{{ user.username }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+```
+#### 变量
+&#8195;&#8195;Jinja2模板中使用{{ }}语法表示一个变量。Jinja2识别所有的Python数据类型，包括复杂的数据类型，例如列表、字典和对象等，如下所示：
+```
+<p>A value from a dictionary: {{ mydict['key'] }}.</p>
+<p>A value from a list: {{ mylist[3] }}.</p>
+<p>A value from a list,with a variable index: {{ mylist[myintvar] }}.</p>
+<p>A value from an object's method: {{ myobj.somemethod() }}.</p>
+```
+#### Jinja2中的过滤器
