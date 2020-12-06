@@ -120,7 +120,7 @@ def to_bytes(bytes_or_str):
 {% endif %}
 ```
 #### 变量
-&#8195;&#8195;Jinja2模板中使用{{ }}语法表示一个变量。Jinja2识别所有的Python数据类型，包括复杂的数据类型，例如列表、字典和对象等，如下所示：
+&#8195;&#8195;Jinja2模板中使用&#123;&#123; &#125;&#125;语法表示一个变量。Jinja2识别所有的Python数据类型，包括复杂的数据类型，例如列表、字典和对象等，如下所示：
 ```
 <p>A value from a dictionary: {{ mydict['key'] }}.</p>
 <p>A value from a list: {{ mylist[3] }}.</p>
