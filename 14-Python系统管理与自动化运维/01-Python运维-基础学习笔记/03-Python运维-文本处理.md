@@ -109,3 +109,49 @@ def to_bytes(bytes_or_str):
     {% endfor %}
 #}
 ```
+&#8195;&#8195;在Jinja2中for循环使用与Python类似，但没了复合语句末尾的冒号，需要使用endfor作为结束标志，if语句也一样，需要使用endif作为结束标志，示例如下：
+```
+{% if users %}
+    <ul>
+    {% for user in users %}
+        <li>{{ user.username }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+```
+#### 变量
+&#8195;&#8195;Jinja2模板中使用{{ }}语法表示一个变量。Jinja2识别所有的Python数据类型，包括复杂的数据类型，例如列表、字典和对象等，如下所示：
+```
+<p>A value from a dictionary: {{ mydict['key'] }}.</p>
+<p>A value from a list: {{ mylist[3] }}.</p>
+<p>A value from a list,with a variable index: {{ mylist[myintvar] }}.</p>
+<p>A value from an object's method: {{ myobj.somemethod() }}.</p>
+```
+#### Jinja2中的过滤器
+&#8195;&#8195;变量可以通过“过滤器”进行修改，可以理解为Jinja2中的内置函数和字符串处理函数，常用的过滤器如下表所示：
+
+过滤器名|说明
+:---|:---
+safe|渲染值时不转义
+capitalize|把值的首字母转换成大写，其它字母转换成小写
+lower|把值转换成小写形式
+upper|把值转换成大写形式
+title|把值中每个单词的首字母都转换成大写
+trim|把值的首位空格去掉
+striptags|渲染之前把值中所有的HTML标签都删掉
+join|拼接多个值为字符串
+replace|替换字符串的值
+round|默认对数字进行四舍五入，也可以用参数进行控制
+int|把值转换成整型
+
+过滤器与变量通过管道（|）分割，多个过滤器可以链式调用，前一个过滤器的输出会作为后一个过滤器的输入，示例如下：
+```
+{{ "Hello World" | replace("Hello","Good") }}
+    ->Good World
+{{ "Hello World" | replace("Hello","Good") | upper }}
+    ->GOOD WORLD
+{{ 58.59 | round }}
+    ->59.0
+{{ 58.59 | round | int }}
+    ->59
+```
