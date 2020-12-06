@@ -97,16 +97,6 @@ def to_bytes(bytes_or_str):
 ```
 #### 语法块
 &#8195;&#8195;Jinja2可以应用于任何基于文本的格式，如HTML和XML。Jinja2使用大括号的方式表示Jinja2的语法，主要有三种语法：
-- 控制结构{% %}
-- 变量取值{{ }}
-- 注释{# #}
-
-示例如下：
-```
-{# note:disable template because we no longer user this
-    {% for user in users %}
-    ...
-    {% endfor %}
-#}
-```
-&#8195;&#8195;在Jinja2中for循环使用与Python类似，但没了复合语句末尾的冒号，需要使用endfor作为结束标志，if语句也一样，需要使用endif作为结束标志，示例如下：
+- 控制结构`{% %}`
+- 变量取值`{{ }}`
+- 注释`{# #}`
