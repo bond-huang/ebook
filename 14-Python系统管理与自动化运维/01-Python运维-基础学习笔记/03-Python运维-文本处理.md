@@ -155,3 +155,46 @@ int|把值转换成整型
 {{ 58.59 | round | int }}
     ->59
 ```
+更多过滤器可以参考官方文档： [https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters](https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters)
+#### Jinja2的控制结构
+&#8195;&#8195;if语句类似Python中if语句，但需要使用endif作为结束标志，可以判断一个变量是否定义，是否为空，是否为真值，也可以使用elif和else构建多个分支，示例如下：
+```
+{% if Thanos.sick %}
+    Thanos is sick.
+{% elif Thanos.dead %}
+    Thor kill Thanos!He is a superhero!
+{% else %}
+    Thanos looks okay!
+{% endif %}
+```
+#### Jinja2的for循环
+&#8195;&#8195;Jinja2中的for循环用于迭代Python的数据类型，包括列表、元组和字典，在Jinja2中不存在while循环。在Jinja2中迭代列表示例如下：
+```
+<hl>Members</hl>
+<ul>
+    {% for user in users %}
+        <li>{{ user.username }}</li>
+    {% endfor %}
+</ul>
+```
+遍历字典示例：
+```
+<dl>
+    {% for key,value in d.iteritems() %}
+        <dt>{{ key }}</dt>
+        <dd>{{ value }}</dd>
+    {% endfor %}
+</dl>
+```
+&#8195;&#8195;Jinja2还提供了一些特殊变量，不需要定义就可以直接使用，如下表所示：
+
+变量|描述
+:---|:---
+loop.index|当前循环迭代的次数（从1开始）
+loop.index0|当前循环迭代的次数（从0开始）
+loop.revindex|到循环结束的次数（从1开始）
+loop.revindex0|到循环结束的次数（从0开始）
+loop.first|如果是第一次迭代，为True，否则为False
+loop.last|如果是最后一次迭代，为True，否则为False
+loop.length|序列中的项目数
+loop.cycle|在一串序列间取值的辅助函数
