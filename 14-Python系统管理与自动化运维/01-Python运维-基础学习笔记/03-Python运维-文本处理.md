@@ -251,3 +251,48 @@ for key,value in data.viewtiems():
 </div>
 </bady>
 ```
+&#8195;&#8195;在base.html中，使用&#123;&#37; bolck name  &#37;&#125;的方式定义了三个块，这些块可以在子模块中进行替换或调用。下面是名为index.html的文档，内容如下：
+```
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style type="test/css">
+    .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block content %}
+    <hl>Index</hl>
+    <p class="important">Welcome on my homepage. </p>
+{% endblock %}
+```
+&#8195;&#8195;在index.html中，使用&#123;&#37; extends "base.html"  &#37;&#125;继承base.html后，其中的所有内容都会在index.html中展现，并在index.html中重新定义了title和contend这两个块的内容。
+#### Jinja2的其它运算
+&#8195;&#8195;Jinja2提供了算数操作、比较操作和逻辑操作，使用Jinja2模板时，尽量在Python代码中进行逻辑处理，在Jinja2中仅处理显示问题，所以一般很少使用Jinja2的变量和变量的运算操作，部分运算操作如下：
+- 算数运算：`+-*/ // % * **`
+- 比较运算：`== != > >= < <=`
+- 逻辑运算：`not and or`
+
+### Jinja2实战
+&#8195;&#8195;在Flask中使用Jinja2，只需使用Flask包下的render_template函数访问模板即可。如果使用Jinja2管理配置文件，需要了解Jinja2提供的API。    
+&#8195;&#8195;Jinja2模板中有Environment类，用于存储配置和全局对象，然后从文件系统或其它位置加载模板。大多数应用会在初始化时创建一个Environment对象并用它加载模板，配置Jinja2为应用加载文档的最简单方式如下：
+```python
+from jinja2 import Environment, PackageLoader
+env = Environment(loader=PackageLoader('yourapplication','templates'))
+```
+&#8195;&#8195;上面代码创建了一个Environment对象和一个包加载器，该加载器会在yourapplication这个Python的templates目录下查找模板。然后以模板的名字作为参数调用Environment.get_template方法杰克，会返回一个模板，最后使用模板的render方法进行渲染，如下所示：
+```python
+template = env.get_template('mytemplate.html')
+print(template.render(the='variables',go='here'))
+```
+&#8195;&#8195;除使用包加载器外，还可以使用文件系统加载器，不需要模板位于一个Python包下，可以直接访问系统中的文件。便于功能演示，在接下来的例子中使用下面这个辅助函数：
+```python
+import os
+import jinja2
+def render(tpl_path,**kwargs):
+    path,falename = os.path.split(tpl_path)
+    return jinja2.Environment(
+        loader=jinja2.FlieSystemLoader(path or './')
+    ).get_template(filename).render(**kwargs)
+```
+#### 基本功能演示
