@@ -198,3 +198,56 @@ loop.first|如果是第一次迭代，为True，否则为False
 loop.last|如果是最后一次迭代，为True，否则为False
 loop.length|序列中的项目数
 loop.cycle|在一串序列间取值的辅助函数
+
+&#8195;&#8195;有一个联系人信息的字典，key是名字，value是电话，想以表格的形式显示在HTML页面上，还希望第一列是序号，在Python代码中实现示例如下：
+```python
+data = dict(Thor=13856788888,Hulk=18675557777,Batman=18033339999)
+index = 0
+for key,value in data.viewtiems():
+    index += 1
+    print(index,key,value,sep=",")
+```
+在Jinja2中示例如下：
+```
+{% for key,value in data.iteritems() %}
+    <tr class="info" >
+        <td>{{ loop.index }}</td>
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+    </tr>
+{% endfor %}
+```
+#### Jinja2的宏
+&#8195;&#8195;宏类似于编程语言中的函数，用于将行为抽象成可重复调用的代码块，与函数一样，宏分为定义和嗲用，示例如下：
+```
+{% macro input(name,type='text',value='') %}
+    <input type="{{ type }}" name="{{ name }}" value="{{ value}}">
+{% endmacro %}
+```
+宏说明：
+- 在宏的定义中，使用macro关键字定义一个宏，input是宏的名称
+- input有三个参数，分别是name、type和value，其中type和value参数有默认值
+- 与Jinja2中的for循环一样，不需要使用符合语句的冒号，用endmacro结束宏的定义
+
+下面是宏的调用示例：
+```
+<p>{{ input('username',value='user') }}</p>
+<p>{{ input('password','password') }}</p>
+<p>{{ input('submit','submit','Submit') }}</p>
+```
+#### Jinja2的继承和Super函数
+&#8195;&#8195;使用Jinja2进行文件管理，级别用不到继承功能，如果是进行web开发，Jinja2的继承功能使用广泛，最强大的部分就是模板继承。模板允许构建一个包含站点的共同元素的基本模板的“骨架”，并定义子模版可以覆盖的块。例如有个base.html的文档，内容如下：
+```
+<html lang="en">
+<head>
+    {% bolck head %}
+    <link rel="stylesheet" href="style.css" />
+        <title>{% block title %}{% endblock %}-My Homepage</title>
+    {% endblock %}
+</head>
+<bady>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+</bady>
+```
