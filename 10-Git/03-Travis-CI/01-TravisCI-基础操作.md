@@ -1,7 +1,7 @@
 # TravisCI-基础操作
 &#8195;&#8195;配置Travis-CI自动构建步骤不难，目前用到的知识也不多，以为后期不会再用到了，就没打算写，结果后来由于一些原因又搞了两次，还是记下来避免忘记。记录一些构建过程中的问题，以及记录我配置好后出现问题后（被GitHub撤销访问）重新配置，对于完整构建可以参考Lyon的分享：[GitHub Pages&Gitbook&Travis CI持续构建博客](https://lyonyang.github.io/blogs/09-Linux/Git/GitHub%20Pages&Gitbook&Travis%20CI%E6%8C%81%E7%BB%AD%E6%9E%84%E5%BB%BA%E5%8D%9A%E5%AE%A2.html)
 ### Travis-CI重新配置
-近期收到GitHub的邮件，主要内容是：As a precautionary measure, we have revoked the OAuth token. A new token will need to be generated in order to continue using OAuth to authenticate to GitHub.
+&#8195;&#8195;近期收到GitHub的邮件，主要内容是：As a precautionary measure, we have revoked the OAuth token. A new token will need to be generated in order to continue using OAuth to authenticate to GitHub.
 
 被GitHub撤销了访问，需要重新配置。
 ##### GitHub生成Personal access tokens
@@ -66,4 +66,5 @@ no changes added to commit (use "git add" and/or "git commit -a")
 查了下应该是分支冲突了，SUMMARY.md文件提交不了，修改几次脚本都不行，直接用绝招：
 
 &#8195;&#8195;在GitHub里面`master-->View all branches-->`删掉所有由Travis创建的分支，travis-ci上的缓存也清理了，但是还是不行。后来把出错当天更新的文档删掉了，然后gitbook分支也删了，再重新运行就好了。当天可疑操作就是文件名后缀写重复了，当然不是这个原因；          
-&#8195;&#8195;最后项想明白了，后面那些SUMMARY.md提示无关紧要，`deploy.sh exited with 1`这个才是关键，检查脚本中有个条件语句判断上一条命令的退出状态码，执行失败脚本就exited with 1，也就是`gitbook build .`执行出现了问题，问题就在最新加的markdown中有html的代码，虽然我使用了代码注释但是估计gitbook还是识别有问题，GitHub识别没什么问题。
+&#8195;&#8195;后来发现，那些SUMMARY.md提示无关紧要，`deploy.sh exited with 1`这个才是关键，检查脚本中有个条件语句判断上一条命令的退出状态码，执行失败脚本就exited with 1，也就是`gitbook build .`执行出现了问题，问题就在最新加的markdown中有html的代码，虽然我使用了代码注释但是估计gitbook还是识别有问题，GitHub识别没什么问题；    
+&#8195;&#8195;最后弄明白了，代码块引用没什么问题，但是在说明描述中单反引号引用html相关代码时候不行，用对应的HTML ASCII码替代即可。
