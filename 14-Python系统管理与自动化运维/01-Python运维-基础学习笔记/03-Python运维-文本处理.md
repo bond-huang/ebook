@@ -237,7 +237,7 @@ for key,value in data.viewtiems():
 ```
 #### Jinja2的继承和Super函数
 &#8195;&#8195;使用Jinja2进行文件管理，级别用不到继承功能，如果是进行web开发，Jinja2的继承功能使用广泛，最强大的部分就是模板继承。模板允许构建一个包含站点的共同元素的基本模板的“骨架”，并定义子模版可以覆盖的块。例如有个base.html的文档，内容如下：
-```
+```html
 <html lang="en">
 <head>
     {% bolck head %}
@@ -252,7 +252,7 @@ for key,value in data.viewtiems():
 </bady>
 ```
 &#8195;&#8195;在base.html中，使用&#123;&#37; bolck name  &#37;&#125;的方式定义了三个块，这些块可以在子模块中进行替换或调用。下面是名为index.html的文档，内容如下：
-```
+```html
 {% extends "base.html" %}
 {% block title %}Index{% endblock %}
 {% block head %}
