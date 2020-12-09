@@ -245,11 +245,11 @@ for key,value in data.viewtiems():
         <title>{% block title %}{% endblock %}-My Homepage</title>
     {% endblock %}
 </head>
-<bady>
+<body>
 <div id="content">
     {% block content %}{% endblock %}
 </div>
-</bady>
+</body>
 ```
 &#8195;&#8195;在base.html中，使用&#123;&#37; bolck name  &#37;&#125;的方式定义了三个块，这些块可以在子模块中进行替换或调用。下面是名为index.html的文档，内容如下：
 ```html
@@ -262,7 +262,7 @@ for key,value in data.viewtiems():
     </style>
 {% endblock %}
 {% block content %}
-    <hl>Index</hl>
+    <h1>Index</h1>
     <p class="important">Welcome on my homepage. </p>
 {% endblock %}
 ```
@@ -292,7 +292,68 @@ import jinja2
 def render(tpl_path,**kwargs):
     path,falename = os.path.split(tpl_path)
     return jinja2.Environment(
-        loader=jinja2.FlieSystemLoader(path or './')
+        loader=jinja2.FileSystemLoader(path or './')
     ).get_template(filename).render(**kwargs)
 ```
 #### 基本功能演示
+学习模板渲染示例，例如有一个名为simple.html的文件，内容如下：
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- 使用过滤器处理表达式的结果 -->
+        <title>{{ title | tirm }}</title>
+    </head>
+    <body>
+        <!-- 注释 -->
+        {# This is a Comment #}
+        <ul id="navigation">
+            <!-- for语句，以endfor结束 -->
+            {% for item in items %}
+                <!-- 访问变量的属性 -->
+                <li><a href="{{ item.href }}">{{ item['cation'] }}</a></li>
+            {% enfor %}
+        </ul>
+        <p>{{ content }}</p>
+    </body>
+</html>
+```
+示例说明：
+- 在示例HTML模板中，使用for循环遍历一个列表，列表中每一项是一个字典
+- 字典中包含了文字和链接，将使用字典中的数据渲染成HTML的超链接
+- 示例中还使用了Jinja2提供的过滤器trim删除title中的空格
+
+执行下面Python代码：
+```python
+def test_simple():
+    title = "Title H   "
+    items = [{'herf':'big1000.com','caption':'big1000'},{'herf':'google.com','caption':'google'}]
+    content="This is content"
+    result = render('simple.html',**locals())
+    print(result)
+if __name__ == '__main__':
+    test_simple()
+```
+执行后渲染模板结果如下：
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- 表达式结果，以及过滤器 -->
+        <title>Title H</title>
+    </head>
+    <body>
+        <!-- 注释 -->
+        <ul id="navigation">
+            <!-- for语句，以endfor结束 -->
+                <!-- 访问变量的属性 -->
+                <li><a href="big1000.com">big1000</a></li>
+                <!-- 访问变量的属性 -->
+                <li><a href="google.com">google</a></li>
+        </ul>
+        <p>This is content</p>
+    </body>
+</html>
+```
+&#8195;&#8195;示例中，使用Jinja2渲染模板后title中的空格已经被删除，for循环也正确渲染了多个超链接标签。
+#### 继承功能演示
