@@ -302,7 +302,7 @@ def render(tpl_path,**kwargs):
 <html lang="en">
     <head>
         <!-- 使用过滤器处理表达式的结果 -->
-        <title>{{ title | tirm }}</title>
+        <title>{{ title | trim }}</title>
     </head>
     <body>
         <!-- 注释 -->
@@ -312,7 +312,7 @@ def render(tpl_path,**kwargs):
             {% for item in items %}
                 <!-- 访问变量的属性 -->
                 <li><a href="{{ item.href }}">{{ item['cation'] }}</a></li>
-            {% enfor %}
+            {% endfor %}
         </ul>
         <p>{{ content }}</p>
     </body>
@@ -325,10 +325,18 @@ def render(tpl_path,**kwargs):
 
 执行下面Python代码：
 ```python
+import os
+import jinja2
+def render(tpl_path,**kwargs):
+    path,falename = os.path.split(tpl_path)
+    return jinja2.Environment(
+        loader=jinja2.FileSystemLoader('./')
+    ).get_template('simple.html').render(**kwargs)
+
 def test_simple():
     title = "Title H   "
-    items = [{'herf':'big1000.com','caption':'big1000'},{'herf':'google.com','caption':'google'}]
-    content="This is content"
+    items = [{'herf':'big1000.com','caption':'big1000'},{'herf':'google.com','caption':'go
+ogle'}]    content="This is content"
     result = render('simple.html',**locals())
     print(result)
 if __name__ == '__main__':
@@ -336,20 +344,25 @@ if __name__ == '__main__':
 ```
 执行后渲染模板结果如下：
 ```html
+[root@redhat8 jinja2]# python3 simple.py
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- 表达式结果，以及过滤器 -->
+        <!-- 使用过滤器处理表达式的结果 -->
         <title>Title H</title>
     </head>
     <body>
         <!-- 注释 -->
+        
         <ul id="navigation">
             <!-- for语句，以endfor结束 -->
+            
                 <!-- 访问变量的属性 -->
-                <li><a href="big1000.com">big1000</a></li>
+                <li><a href=""></a></li>
+            
                 <!-- 访问变量的属性 -->
-                <li><a href="google.com">google</a></li>
+                <li><a href=""></a></li>
+            
         </ul>
         <p>This is content</p>
     </body>
@@ -357,3 +370,102 @@ if __name__ == '__main__':
 ```
 &#8195;&#8195;示例中，使用Jinja2渲染模板后title中的空格已经被删除，for循环也正确渲染了多个超链接标签。
 #### 继承功能演示
+使用base.html和index.html演示继承功能。     
+base.html内容如下：
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- 定义代码块，可以在子模版中重载 -->
+        {% block head %}
+            <link rel="stylesheet" href="style.css" />
+            <title>{% block title %}{% endblock %} - My HomePage</title>
+        {% endblock %}
+    </head>
+    <body>
+        <div id="content">
+            <!-- 定义代码块，没用提供默认内容 -->
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div id="footer">
+            <!-- 定义代码块，没用提供默认内容 -->
+            {% block footer %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
+```
+index.html内容如下：
+```html
+<!-- 写在开头，用以继承 -->
+{% extends "base.html" %}
+<!-- 标题模块被重载 -->
+{% block title %}Index{% endblock %}
+<!-- head模块被重载，并且使用super继承了base.html中的head内容 -->
+{% block head %}
+    {{ super() }}
+<style type="test/css"> .important { color:#3333FF; }</style>
+{% endblock %}
+<!-- 覆盖了content模块 -->
+{% block content %}
+<h1>This is h1 content</h1>
+<p class="important">Welcome on my homepage</p>
+{% endblock %}
+```
+使用下面的Python代码渲染Jinja2模板：
+```python
+import os
+import jinja2
+def render(tpl_path,**kwargs):
+    path,falename = os.path.split(tpl_path)
+    return jinja2.Environment(
+        loader=jinja2.FileSystemLoader('./')
+    ).get_template(index.html).render(**kwargs)
+
+def test_extend():
+    result = render('index.html')
+    print(result)
+if __name__ == '__main__':
+    test_extend()
+```
+渲染后生成的结果如下：
+```html
+[root@redhat8 jinja2]# python3 extend.py
+<!-- 写在开头，用以继承 -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- 定义代码块，可以在子模版中重载 -->
+        
+    
+            <link rel="stylesheet" href="style.css" />
+            <title>Index - My HomePage</title>
+        
+<style type="test/css"> .important { color:#3333FF; }</style>
+
+    </head>
+    <body>
+        <div id="content">
+            <!-- 定义代码块，没用提供默认内容 -->
+            
+<h1>This is h1 content</h1>
+<p class="important">Welcome on my homepage</p>
+
+        </div>
+        <div id="footer">
+            <!-- 定义代码块，没用提供默认内容 -->
+            
+            
+        </div>
+    </body>
+</html>
+```
+示例说明：
+- 示例中渲染的是index.html，并没有直接渲染base.html，但最后生成的模板中保护玩的HTML框架
+- 虽然在index.html中定义了title模块，但示例中使用&#123;&#123; super() &#125;&#125;引用了base.html中的HEAD模块，所以最后渲染结果中有base.html中的head块和index.html中的head块，结果中的`Index - My HomePage`就是来自于此
+- 示例在index.html中重新定义了content块的内容，所以最后生成的文档中正确位置显示了content块的内容
+
+### 案例演示
+使用Jinja2生成HTML表格和XML配置文件。
+#### 使用Jinja2生成HTML表格
