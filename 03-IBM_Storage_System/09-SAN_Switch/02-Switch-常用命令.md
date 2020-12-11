@@ -7,7 +7,7 @@ IBM SAN B-type系列交换机是OEM博科的，命令和博科交换机基本一
 configshow -pattern "fabric.ops"
 ```
 ### 基本信息查看
-对于高端B384这种交换机，&#60;port_index&#62;有些命令不是index，而是slot加port，例如index是84，solt号是2，port号是5，那么就是2/5。常用命令如下：
+&#8195;&#8195;对于高端B384这种交换机，&#60;port_index&#62;有些命令不是index，而是slot加port，例如index是84，solt号是2，port号是5，那么就是2/5。常用命令如下：
 
 命令|用途
 ---|:---
