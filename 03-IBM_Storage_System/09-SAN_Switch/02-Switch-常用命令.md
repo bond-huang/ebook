@@ -7,7 +7,7 @@ IBM SAN B-type系列交换机是OEM博科的，命令和博科交换机基本一
 configshow -pattern "fabric.ops"
 ```
 ### 基本信息查看
-&#8195;&#8195;对于高端B384这种交换机，&#60; port_index &#62;有些命令不是index，而是slot加port，例如index是84，solt号是2，port号是5，那么就是2/5。常用命令如下：
+&#8195;&#8195;对于高端B384这种交换机，&#60;port_index&#62;有些命令不是index，而是slot加port，例如index是84，solt号是2，port号是5，那么就是2/5。常用命令如下：
 
 命令|用途
 ---|:---
@@ -15,9 +15,9 @@ chassisshow|查看交换机chassis信息
 switchshow|查看交换机配置信息
 ipaddrshow|查看交换机ip地址
 switchStatusshow|查看交换机健康状态
-portshow &#60; port_index &#62;|查看某个端口状态，NPIV的虚拟WWN查看
+portshow &#60;port_index&#62;|查看某个端口状态，NPIV的虚拟WWN查看
 slotshow|查看交换机slot状态
-sfpshow &#60; port_index& #62;|查看某个sfp状态
+sfpshow &#60;port_index&#62;|查看某个sfp状态
 porterrshow|查看端口数据和数据类型错误统计信息
 pshow|查看交换机电源状态
 fanhow|查看交换机风扇状态
