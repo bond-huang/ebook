@@ -1,13 +1,13 @@
 # Switch-常用命令
 交换机管理常用命令
-### SAN B-type 常用命令
+## SAN B-type 常用命令
 IBM SAN B-type系列交换机是OEM博科的，命令和博科交换机基本一致。
 示例：
 ```shell
 configshow -pattern "fabric.ops"
 ```
-#### 基本信息查看
-对于高端B384这种交换机，<port_index>有些命令不是index，而是slot加port，例如index是84，solt号是2，port号是5，那么就是2/5。常用命令如下：
+### 基本信息查看
+对于高端B384这种交换机，&#60;port_index&#62;有些命令不是index，而是slot加port，例如index是84，solt号是2，port号是5，那么就是2/5。常用命令如下：
 
 命令|用途
 ---|:---
@@ -15,9 +15,9 @@ chassisshow|查看交换机chassis信息
 switchshow|查看交换机配置信息
 ipaddrshow|查看交换机ip地址
 switchStatusshow|查看交换机健康状态
-portshow <port_index>|查看某个端口状态，NPIV的虚拟WWN查看
+portshow &#60;port_index&#62;|查看某个端口状态，NPIV的虚拟WWN查看
 slotshow|查看交换机slot状态
-sfpshow <port_index>|查看某个sfp状态
+sfpshow &#60;port_index&#62;|查看某个sfp状态
 porterrshow|查看端口数据和数据类型错误统计信息
 pshow|查看交换机电源状态
 fanhow|查看交换机风扇状态
@@ -32,7 +32,7 @@ fabricShow|显示fabric信息及级联信息
 nsshow|查看当前交换机设备信息
 nsallshow|查看fabric中的所有设备信息
 
-#### zone配置相关
+### zone配置相关
 创建一个zone的基本步骤：
 - 创建alias：`aliCreate`
 - 创建zone：`zoneCreate`
@@ -79,7 +79,7 @@ cfgSave
 cfgEnable "cfg_A"
 ```
 
-##### 修改配置
+### 修改配置
 常用对交换机配置修改命令如下：
 
 命令|用途
@@ -98,5 +98,5 @@ hafailover|切换HA
 ipaddrset|IP地址配置
 configuration|配置菜单，例如配置Domain ID
 
-### SAN C-type 常用命令
+## SAN C-type 常用命令
 暂未接触
