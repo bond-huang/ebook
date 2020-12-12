@@ -116,4 +116,82 @@ with open('test.txt') as inf:
 将文件中所有的单词的首字母变成大写。为方便查阅，收录在[Python运维-Linux系统管理实例](https://ebook.big1000.com/14-Python%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/01-Python%E8%BF%90%E7%BB%B4-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05-Python%E8%BF%90%E7%BB%B4-Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E5%AE%9E%E4%BE%8B.html)
 
 ## 文件与文件路径管理
+&#8195;&#8195;Python标准库的os模块对操作系统的API进行了封装，并使用统一的API访问不同的操作系统。os模块包含与操作系统的系统环境、文件系统、用户数据库以及权限进行交互的函数。
+### 使用os.path进行路径和文件管理
+&#8195;&#8195;os模块下getcwd函数和listdir函数，getcwd函数用来获取当前目录，listdir函数用来列出目录下的所有文件和文件夹，示例如下：
+```
+>>> os.getcwd()
+'/python/jinja2'
+>>> os.listdir('.')
+['simple.py', '.simple.html.swp', 'simple.html', 'index.html', 'extend.py', 'base.html', '
+test1.txt', 'test.txt', 'test2.txt', 'test3.txt', 'captialize.py']
+```
+#### 拆分路径
+&#8195;&#8195;os.path模块用来对文件和路径进行管理，它包含很多拆分路径的函数，相关函数有：
+- split：返回一个二元组，包含文件的路径与文件名
+- dirname：返回文件的路径
+- basename：返回文件的文件名
+- splitext：返回一个除去文件扩展名的部分和扩展名的二元组
+
+这几个函数功能示例如下：
+```
+>>> import os
+>>> path = '/python/jinja2/test.txt'
+>>> os.path.dirname(path)
+'/python/jinja2'
+>>> os.path.split(path)
+('/python/jinja2', 'test.txt')
+>>> os.path.basename(path)
+'test.txt'
+>>> os.path.splitext(path)
+('/python/jinja2/test', '.txt')
+```
+#### 构建路径
+&#8195;&#8195;os.path也包含了用以构建路径的函数，最常用的是expanduser、abspath和join函数：
+- expanduser：展开用户的HOME目录，如~、~username
+- abspath：得到文件或路径的绝对路径
+- join：根据不同的系统平台，使用不同的路径分隔符拼接路径
+
+这几个函数功能示例如下：
+```
+>>> import os
+>>> os.path.expanduser('~')
+'/root'
+>>> os.path.expanduser('~huang')
+'/home/huang'
+>>> os.path.abspath('.')
+'/python/jinja2'
+>>> os.path.abspath('./test.txt')
+'/python/jinja2/test.txt'
+>>> os.path.join('~','test','test.py')
+'~/test/test.py'
+>>> os.path.join(os.path.expanduser('~huang'),'test','test.py')
+'/home/huang/test/test.py'
+```
+os.path模块中isabs函数用来检查一个路径是否为绝对路径：
+```
+>>> os.path.isabs('/python/jinja2/test.txt')
+True
+>>> os.path.isabs('.')
+False
+```
+&#8195;&#8195;在Python中，可以使用`__file__`这个特殊的遍历表示当前代码所在的源文件。在编写代码时，有时需要导入当前源文件父目录下的软件包，代码如下：
+```python
+#!/usr/bin/python3
+#_*_ coding: UTF-8 _*_
+import os
+print('Current directory:',os.getcwd()) 
+path = os.path.abspath(__file__)
+print('Full path of current file:',path)
+print('Parent directory of current file:',
+os.path.abspath(os.path.join(os.path.dirname(path),os.path.pardir)))
+```
+运行后示例：
+```
+[root@redhat8 jinja2]# python3 test.py
+Current directory: /python/jinja2
+Full path of current file: /python/jinja2/test.py
+Parent directory of current file: /python
+```
+#### 获取文件属性
 
