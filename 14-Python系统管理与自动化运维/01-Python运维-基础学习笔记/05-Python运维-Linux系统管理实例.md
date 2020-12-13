@@ -1,7 +1,7 @@
 # Python运维学习笔记-Linux系统管理实例
 学习过程中摘自教材：《Python Linux系统管理与自动化运维》（赖明星著）中的实例。
 ## 文件读写实例
-### 将文件中所有的单词的首字母变成大写
+### 案例：将文件中所有的单词的首字母变成大写
 代码如下：
 ```python
 with open('test.txt') as inf,open('test3.txt','w') as outf:
@@ -29,3 +29,22 @@ with open('test.txt') as inf,open('test3.txt','w') as outf:
         print(*[word.capitalize() for word in line.split()],file=outf)
 ```
 ## 文件与文件路径管理
+### 案例：打印最常用的Linux命令
+&#8195;&#8195;在Linux系统中，`~/.bash_history`文件保存了命令的历史，可以读取此文件进行统计，统计时只统计命令的名称，同一个命令不同参数的也算同一个命令，下面是找出出现次数最多的五条命令：
+```python
+import os
+from collections import Counter
+c = Counter()
+with open(os.path.expanduser('~/.bash_history')) as f:
+    for line in f:
+        cmd = line.strip().split()
+        if cmd:
+            c[cmd[0]] += 1
+print(c.most_common(5))
+```
+运行后示例如下：
+```
+[root@redhat8 test]# python3 test.py
+[('ls', 171), ('vi', 95), ('cd', 87), ('python3', 71), ('cat', 67)]
+```
+## 查找文件
