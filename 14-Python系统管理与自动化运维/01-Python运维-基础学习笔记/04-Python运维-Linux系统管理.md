@@ -194,4 +194,91 @@ Full path of current file: /python/jinja2/test.py
 Parent directory of current file: /python
 ```
 #### 获取文件属性
+&#8195;&#8195;os.path模块也包含了若干函数用来获取文件的属性，包括文件的创建时间、修改时间、文件大小等：
+- getatime：获取文件的访问时间
+- getmtime：获取文件的修改时间
+- getctime：获取文件的创建时间
+- getsize：获取文件的大小
+
+#### 判断文件类型
+&#8195;&#8195;os.path模块中有若干函数来判断路径是否存在，以及路径所指文件的类型，这类函数一般以`is`开头，并返回一个Boolean型结果：
+- exists：参数path所指向的路径是否存在
+- isfile：参数path所指向的路径存在，并且是一个文件
+- isdir：参数path所指向的路径存在，并且是一个文件夹
+- islink：参数path所指向的路径存在，并且是一个链接
+- ismount：参数path所指向的路径存在，并且是一个挂载点
+
+获取当前用户home目录下的所有文件列表：
+```python
+[item for item in os.listdir(os.path.expanduser('~')) if os.path.isfile(item)]
+```
+获取当前用户home目录下的所有目录列表：
+```python
+[item for item in os.listdir(os.path.expanduser('~')) if os.path.isdir(item)]
+```
+获取当前用户home目录下的所有目录的目录名到绝对路径之间的字典：
+```python
+{item: os.path.realpath(item) for item in os.listdir(os.path.expanduser('~')) if os.path.isdir(item)}
+```
+获取当前用户home目录下的所有文件到文件大小之间的字典：
+```python
+{item: os.path.getsize(item) for item in os.listdir(os.path.expanduser('~')) if os.path.isfile(item)}
+```
+### 使用os模块管理文件和目录
+os模块的文件和目录的操作函数：
+- chdir：修改当前目录
+- unlink/remome：删除path路径所指向的文件
+- rmdir：删除path路径所指向的文件夹，该文件夹必须为空，否则报错
+- mkdir：创建一个文件夹
+- rename：重命名文件或文件夹
+
+使用示例：
+```
+>>> import os
+>>> os.getcwd()
+'/python/jinja2'
+>>> os.chdir(os.path.expanduser('~'))
+>>> os.getcwd()
+'/root'
+[root@redhat8 test]# ls
+11.png  12.png  test1  test1.py  test2  test2.py  test.py
+>>> os.remove('11.png')
+>>> os.unlink('12.png')
+>>> os.rmdir('test1')
+>>> os.removedirs('test2')
+[root@redhat8 test]# ls
+test1.py  test2.py  test.py
+>>> os.mkdir('test3')
+>>> os.rename('test2.py','test3.py')
+[root@redhat8 test]# ls
+test1.py  test3  test3.py  test.py
+```
+&#8195;&#8195;os模块也包含了文件权限、判断文件权限的函数，即chmod和access，用三个常量来表示读、写、可执行权限，即R_OK、W_OK、X_OK，示例如下：
+```python
+#!/usr/bin/python
+#_*_ coding: UTF-8 _*_
+import os
+import sys
+def main():
+    sys.argv.append('')
+    filename = sys.argv[1]
+    if not os.path.isfile(filename):
+        raise SystemExit(filename + ' does not exists!')
+    elif not os.path.access(filename,os.R_OK):
+        os.chmod(filename,0777)
+    else:
+        with open(filename) as f:
+            print(f.read())
+if __name__ == '__main__':
+    main()
+```
+示例说明：
+- 示例中首先通过命令行读取文件的名称，先判断文件是否存在，如果不存在就直接退出
+- 然后判断文件是否具有读权限，如果没有，则将文件赋予`777`权限
+- 如果文件存在并且具有读权限，则读取文件内容
+
+### 案例：打印最常用的10条Linux命令
+为方便查阅，收录在[Python运维-Linux系统管理实例](https://ebook.big1000.com/14-Python%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/01-Python%E8%BF%90%E7%BB%B4-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05-Python%E8%BF%90%E7%BB%B4-Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E5%AE%9E%E4%BE%8B.html)
+
+## 查找文件
 
