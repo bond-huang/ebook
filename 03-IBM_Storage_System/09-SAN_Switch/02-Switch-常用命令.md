@@ -75,9 +75,11 @@ aliCreate "vios2_fcs1","10:00:00:10:9b:66:da:b7"
 zoneCreate "DE4000H_vios1","DE4000H_A_port2;DE4000H_B_port2;vios1_fcs1;vios2_fcs1"
 zoneCreate "DE4000H_vios2","DE4000H_A_port2;DE4000H_B_port2;vios1_fcs1;vios2_fcs1"
 cfgAdd "cfg_A","DE4000H_vios1;DE4000H_vios2"
-cfgSave
 cfgEnable "cfg_A"
+cfgSave
 ```
+注意：      
+&#8195;&#8195;建议先cfgEnable然后cfgSave。先cfgSave的话，会有提示defind和effective的配置会不一致，并且在错误日志里面有warning：defind and effective zone configurations are inconsistent。
 
 ### 修改配置
 常用对交换机配置修改命令如下：
