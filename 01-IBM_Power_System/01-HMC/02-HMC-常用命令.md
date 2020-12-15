@@ -204,30 +204,30 @@ lssysconn -r all -F ipaddr:state
 ## 使用示例
 查看指定受管设备的lpar信息：
 ```shell
-hscroot@TEST:~> lssyscfg -r lpar -m Server-9117-570-SN65B4D6E -F --header
+hscroot@TEST:~> lssyscfg -r lpar -m Server-9117-570-SN65YDR6E -F --header
 name,lpar_id,lpar_env,state,resource_config,os_version,logical_serial_num,default_profile,
-curr_profile,work_group_id,shared_proc_pool_util_auth,allow_perf_collection,power_ctrl_lpar_ids,boot_mode,ipl_source,lpar_keylock,auto_start,redundant_err_path_reporting,rmc_state,rmc_ipaddr,rmc_osshutdown_capable,dlpar_mem_capable,dlpar_proc_capable,dlpar_io_capable,sync_curr_profile,uuiddump_9.200.104.174_not_shutdown,12,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65B4D6EC,aix
-dumpserver,aixdumpserver,none,0,0,none,norm,null,norm,0,0,active,9.200.104.174,1,1,1,1,0,15F601A7-CE17-43E3-B7DC-F53CBC3D0E78teacher02 9.200.104.238,10,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65B4D6EA,client08,cl
-ient08,none,0,0,none,norm,null,norm,0,0,active,9.200.104.238,1,1,1,1,0,08A64825-D324-4FBB-A6D3-D44143ED8AF3teacher01 9.200.104.237,9,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65B4D6E9,client07,cli
-ent07,none,0,0,none,norm,null,norm,0,0,inactive,9.200.104.237,0,0,0,0,1,3E8A72FB-C815-4AAD-9754-89037455DCFC
+curr_profile,work_group_id,shared_proc_pool_util_auth,allow_perf_collection,power_ctrl_lpar_ids,boot_mode,ipl_source,lpar_keylock,auto_start,redundant_err_path_reporting,rmc_state,rmc_ipaddr,rmc_osshutdown_capable,dlpar_mem_capable,dlpar_proc_capable,dlpar_io_capable,sync_curr_profile,uuid
+teacher02 9.210.114.218,10,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65YDR6EA,client08,cl
+ient08,none,0,0,none,norm,null,norm,0,0,active,9.210.114.218,1,1,1,1,0,08A64825-D324-4FBB-A6D3-D44143ED8AF3
+teacher01 9.220.154.227,9,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65YDR6E9,client07,cli
+ent07,none,0,0,none,norm,null,norm,0,0,inactive,9.220.154.227,0,0,0,0,1,3E8A72FB-C815-4AAD-9754-89037455DCFC
 ...
-hscroot@TEST:~> lssyscfg -r lpar -m Server-9117-570-SN65B4D6E -F
-7-43E3-B7DC-F53CBC3D0E78teacher02 9.200.104.238,10,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65B4D6EA,client08,client08,none,0,0,none,norm,null,norm,0,0,active,9.200.104.238,1,1,1,1,0,08A64825-D324-4FBB-A6D3-D44143
-ED8AF3teacher01 9.200.104.237,9,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65B4D6E9,client07,client07,none,0,0,none,norm,null,norm,0,0,inactive,9.200.104.237,0,0,0,0,1,3E8A72FB-C815-4AAD-9754-89037
+hscroot@TEST:~> lssyscfg -r lpar -m Server-9117-570-SN65YDR6E -F
+teacher02 9.210.114.218,10,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65YDR6EA,client08,client08,none,0,0,none,norm,null,norm,0,0,active,9.210.114.218,1,1,1,1,0,08A64825-D324-4FBB-A6D3-D44143
+ED8AF3
+teacher01 9.220.154.227,9,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65YDR6E9,client07,client07,none,0,0,none,norm,null,norm,0,0,inactive,9.220.154.227,0,0,0,0,1,3E8A72FB-C815-4AAD-9754-89037
 455DCFC
 ...
 ```
 列出RMC连接的分区信息：
 ```shell
 hscroot@TEST:~> lspartition -dlpar                                       
-<#0> Partition:<12*9117-570*65B4D6E, , 9.200.104.174>
-       Active:<1>, OS:<AIX, 7.1, 7100-04-03-1642>, DCaps:<0xc3f>, CmdCaps:<0x1b, 0x1b>, Pi
-nnedMem:<1134><#1> Partition:<6*9117-570*65B4D6E, , 9.200.104.234>
+<#1> Partition:<6*9117-570*65YDR6E, , 9.210.114.214>
        Active:<1>, OS:<AIX, 6.1, 6100-09-08-1642>, DCaps:<0xc3f>, CmdCaps:<0x3b, 0x3b>, Pi
-nnedMem:<645><#2> Partition:<10*9117-570*65B4D6E, , 9.200.104.238>
+nnedMem:<645>
+<#2> Partition:<10*9117-570*65YDR6E, , 9.220.154.228>
        Active:<1>, OS:<AIX, 7.1, 7100-04-03-1642>, DCaps:<0xc3f>, CmdCaps:<0x1b, 0x1b>, Pi
 nnedMem:<559>
 ```
 ## 用户权限
 各用户命令使用权限参考官方文档：[HMC 任务，用户角色，标识和相关联的命令](https://www.ibm.com/support/knowledgecenter/zh/POWER7/p7ha1/hmctasksanduserroles.htm)
-```
