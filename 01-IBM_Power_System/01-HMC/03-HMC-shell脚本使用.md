@@ -40,3 +40,53 @@ Lpar31
 Lpar41
 Lpar51
 ```
+## 获取分区信息
+&#8195;&#8195;抓取HMC受管机器的已激活分区信息：所在机器名称、分区名称、分区ip、分区操作系统版本。但是HMC的hscroot用户的有很多限制，很多命令用不了，awk和gawk都用不了，重定向也被限制了，研究了一下hscroot用户也配置不了ssh免密登录。当然也可以使用HMC Scanner，抓取信息很详细，抓取后后期也需要整理，想了个办法抓取这些信息，除了输入多次密码比较麻烦，整理是还算简单。
+### 获取信息的命令
+在HMC中，获取信息的命令如下：
+```shell
+# 获取受管机器信息
+hscroot@TEST:~> lssyscfg -r sys -F
+# 获取Lpar信息
+hscroot@TEST:~> lssyscfg -r lpar -m Server-9117-570-SN65B4D6E -F
+```
+找一台可以ssh到HMC的机器，我找了个AIX系统，首先获取受管机器信息：
+```
+# ssh hscroot@9.210.114.112 "lssyscfg -r sys -F" > sysinfo.txt
+Password: 
+#
+```
+然后抓取受管机器名字：
+```
+# awk 'BEGIN{FS=","}{print $1}' sysinfo.txt > lparinfo.txt
+# cat syslist.txt
+Server-9117-570-SN65YDR6E
+Server-9117-570-SN7578HB1
+Server-9131-52A-SN066HC5G
+Server-9117-MMA-SN10GF66F
+```
+然后获取Lpar信息（循环一次输入一次密码）：
+```
+# for i in `cat syslist.txt`
+do 
+ssh hscroot@9.210.114.112 "lssyscfg -r lpar -m $i -F"
+done >> lparinfo.txt
+Password: 
+Password: 
+Password: 
+Password: 
+# cat lparinfo.txt
+teacher02 9.210.114.218,10,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65YDR6EA,client08,client08,none,0,0,none,norm,null,norm,0,0,active,9.210.114.218,1,1,1,1,0,08A64825-D324-4FBB-A6D3-D44143
+ED8AF3
+teacher01 9.220.154.227,9,aixlinux,Running,1,AIX 7.1 7100-04-03-1642,65YDR6E9,client07,client07,none,0,0,none,norm,null,norm,0,0,inactive,9.220.154.227,0,0,0,0,1,3E8A72FB-C815-4AAD-9754-89037
+455DCFC
+```
+抓取需要的信息：
+```sh
+awk 'BEGIN{FS=","; OFS=" "}{if ($4 == "Running") print $1 $6 $7 $20}' lparinfo.txt > result.txt
+```
+在AIX中设置了OFS好像没什么效果,基本上已获取了需求的信息，AIX中使用下面命令也行：
+```
+awk -F, '{if ($4 == "Running") print $1 $6 $7 $20}' lparinfo.txt > result.txt
+```
+## 待补充
