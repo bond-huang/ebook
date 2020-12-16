@@ -89,4 +89,8 @@ awk 'BEGIN{FS=","; OFS=" "}{if ($4 == "Running") print $1 $6 $7 $20}' lparinfo.t
 ```
 awk -F, '{if ($4 == "Running") print $1 $6 $7 $20}' lparinfo.txt > result.txt
 ```
+可以单独把ip取出来，遍历IP表去登录到系统（如果没有配置自动登录就手动输入密码）：
+```sh
+for i in `cat ip.list`;do ssh tmpusr@$1;done
+```
 ## 待补充
