@@ -333,7 +333,7 @@ gawk编程语言支持标准的if-then-else格式的if语句：
 - 如果条件求值为FALSE，这条语句就会被跳过
 
 格式：
-```
+```sh
 if (condition)
     statement1
 ```
@@ -342,7 +342,7 @@ if (condition)
 if (condition) statement1
 ```
 可以在单行上使用esle自居，但必须在if语句部分之后使用分号：
-```
+```sh
 if (condition) statement1; else statement2
 ```
 示例如下：
@@ -379,3 +379,89 @@ if (condition) statement1; else statement2
 104
 ```
 ### while语句
+while语句格式：
+```sh
+while (condition)
+{
+    statements
+}
+```
+&#8195;&#8195;while循环允许遍历一组数据，并检查迭代的结束条件，例如在计算中必须使用每条记录中的多个数据值，示例如下：
+```
+[root@redhat8 gawk]# cat test6
+150 120 135
+160 113 140
+145 180 216
+[root@redhat8 gawk]# gawk '{total = 0;i = 1
+> while(i < 4)
+> {total += $i;i++}
+> avg = total / 3
+> print "Average:",avg
+> }' test6
+Average: 135
+Average: 137.667
+Average: 180.333
+```
+示例说明：
+- while语句会遍历记录中的数据字段，将每个值都加到total变量上，并将计数器变量i增值
+- 当计数器值等于4时，while的条件变成了FALSE，循环结束，然后执行脚本中下一条语句，及计算并打印平均值
+- 以上过程会在数据文件中的每条记录上不断重复
+
+gawk支持在while循环中使用break语句和continue语句：
+```
+[root@redhat8 gawk]# gawk '{total = 0;i = 1
+> while(i < 4)
+> {total += $i
+> if (i == 2)
+> break
+> i++}
+> avg = total / 2
+> print "The average of the first two data is:",avg
+> }' test6
+The average of the first two data is: 135
+The average of the first two data is: 136.5
+The average of the first two data is: 162.5
+```
+### do-while语句
+&#8195;&#8195;do-while语句类似于while语句，但会在检查条件语句之前执行命令,格式如下：
+```sh
+do
+{
+    statements
+}while (condition)
+```
+&#8195;&#8195;这种格式保证了语句在条件被求值之前至少执行一次，当需要在求值条件前执行语句是非常方便：
+```
+[root@redhat8 gawk]# gawk '{total = 0;i = 1
+> do
+> {total += $i;i++
+> }while (total < 150)
+> print total }' test6
+150
+160
+325
+```
+示例说明：
+- 示例脚本会读取每条记录的数据字段并将它们加在一起，直到累加结果达到150
+- 如果第一个数据字段大于等于150，例如第一条和第二条记录中的一个数据字段，脚本会保证在条件被求值前至少读取第一个数据字段的内容
+
+### for语句
+gawk支持C语言风格的for循环：
+```sh
+for ( variable assignment; condition; iteration process)
+```
+将多个功能合并到一个语句有助于简化循环：
+```
+[root@redhat8 gawk]# gawk '{total = 0
+> for (i = 1;i < 4; i++)
+> {
+> total += $i
+> }
+> avg = total / 3
+> print "Average:",avg
+> }' test6
+Average: 135
+Average: 137.667
+Average: 180.333
+```
+## 格式化打印
