@@ -465,3 +465,118 @@ Average: 137.667
 Average: 180.333
 ```
 ## 格式化打印
+格式化打印命令printf格式：
+```sh
+printf "format string",var1,var2 ...
+```
+说明：
+- format string是格式化输出的关键，会用文本元素和格式化指定符来具体指定如何呈现格式化输出
+- 格式化指定符是一种特殊的代码，会指明显示什么类型的的变量以及如何显示
+- gawk程序会将每个格式化指定符作为占位符，供命令中的变量使用
+- 第一个格式化指定符对应列出的第一个变量，第二个对应第二个变量
+
+格式化指定符格式如下：
+```sh
+%[modifier]control-letter
+```
+说明：
+- control-letter是一个单字符代码，用于指明显示说明类型的数据
+- modifier定义了可选的格式化特性
+
+下表是可用在格式化指定符中的控制字母：
+
+控制字母|描述
+:---|:---
+c|将一个数作为ASCII字符显示
+d|显示一个整数值
+i|显示一个整数值（跟d一样）
+e|用科学计数法显示一个数
+f|显示一个浮点值
+g|用科学计数法或浮点数显示（选择较短的格式）
+o|显示一个八进制值
+s|显示一个文本字符串
+x|显示一个十六进制值
+X|显示一个十六进制值，但用大写字母
+
+示例如下：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{
+> x = 100 * 1000
+> printf "The answer is: %e\n",x
+> }'
+The answer is: 1.000000e+05
+```
+除了控制字母外，还有3种修饰符可以用来进一步控制输出：
+- width：指定了输出字段最小宽度的数字值，如果输出短于这个值，printf会将文本右对齐，并用空格填充；如果输出比指定的宽度要长，则按实际的长度输出
+- prec：这是一个数字值，指定了浮点数中小数点后面位数，或文本字符串中显示的最大字符数
+- &#45;（减号）：指明在向格式化空间中放入数据时采用左对齐而不是右对齐
+
+在之前学习过程中，使用print命令来显示数据行中的数据字段：
+```
+[root@redhat8 gawk]# cat test3
+Bond Huang
+123 ZhongXin street
+ShenZhen,518000
+0755-12345678
+
+Bond Huang
+321 HongFu street
+DongGuan,523000
+0769-87654321
+[root@redhat8 gawk]# gawk 'BEGIN{FS="\n";RS=""}{print $1,$4}' test3
+Bond Huang 0755-12345678
+Bond Huang 0769-87654321
+```
+使用printf命令来进行格式化输出：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{FS="\n";RS=""}{printf "%s %s\n", $1,$4}' test3
+Bond Huang 0755-12345678
+Bond Huang 0769-87654321
+```
+示例说明：
+- 使用printf会产生跟print命令相同的输出，printf命令用`%s`格式化指定符来作为这两个字符串值的占位符 
+- 注意，需要在printf命令末尾手动添加换行符来生成新行，如果没添加，会继续在同一行打印后续输出
+
+如果需要用几个单独的printf名留在同一行打印多个输出，就非常有用：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{FS=","}{printf "%s ",$1} END{printf "\n"}' test4
+data11 data21 data31 
+```
+示例说明：
+- 每个printf的输出都出现在同一行
+- 为了终止该行，END部分打印了一个换行符
+
+用装饰符来格式化第一个字符串值：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{FS="\n";RS=""}{printf "%16s %s\n", $1,$4}' test3
+      Bond Huang 0755-12345678
+      Bond Huang 0769-87654321
+```
+示例说明：
+- 通过添加一个值为16的修饰符，强制将第一个字符串的输出宽度位16个字符
+- 默认情况下，printf命令使用右对齐来将数据放到格式化空间中
+- 如果要改成左对齐，只需给修饰符加一个减号即可
+
+示例如下：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{FS="\n";RS=""}{printf "%-16s %s\n", $1,$4}' test3
+Bond Huang       0755-12345678
+Bond Huang       0769-87654321
+```
+printf命令处理浮点值也非常方便，：
+```
+[root@redhat8 gawk]# gawk '{total = 0
+> for (i = 1;i < 4;i++)
+> {total += $i}
+> avg = total / 3
+> printf "Average: %5.1f\n",avg
+> }' test6
+Average: 135.0
+Average: 137.7
+Average: 180.3
+```
+示例说明：
+- 通过为变量指定一个格式，可以让输出看起来更统一
+- 示例中使用`%5.1f`格式指定符来强制printf命令将浮点值近似到小数后一位
+
+## 内建函数
