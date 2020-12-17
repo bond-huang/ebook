@@ -1,7 +1,7 @@
 # WAS-常见问题处理
 WAS常见问题有两类，配置相关问题和性能相关问题。    
-### 内存溢出问题
-##### WAS使用的内存类型
+## 内存溢出问题
+### WAS使用的内存类型
 Jave堆内存(Java heap)：
 - 存放Java对象的内存空间
 - 通过-Xms(初始堆大小)和-Xmx(最大堆大小)设置，并在运行过程中由JVM动态调整
@@ -15,7 +15,7 @@ Jave堆内存(Java heap)：
     - Linux:3G-Xmx
     - Windows:2G-Xmx
 
-##### Java堆内存溢出分类
+### Java堆内存溢出分类
 大对象分配：
 - 大于64KB即为大对象
 - 可添加JVM参数找出大对象：`-Xdump:stack:events=allocation,filter=#5m`
@@ -27,17 +27,17 @@ Jave堆内存(Java heap)：
 堆内存碎片化（主要是V6及以前版本，几乎没有在使用的）：
 - pinned objedts不可移动的对象
 
-##### 查看堆内存使用量
+### 查看堆内存使用量
 查看方法：      
 登录到WAS管理控制台-->监控和调整-->性能查看器-->当前活动-->(服务器名称)-->性能模块      
 看到的内存使用量的曲线图一半两种状态：
 - 锯齿状，说明比较稳定，是正常情况
 - 持续增长或指数增长型，当增长到最大堆后，将无法分配新的内存，就会出现内存溢出。
 
-##### 需要收集的数据
+### 需要收集的数据
 收集数据方法参考上一篇文章：[WAS-数据收集](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/01-WAS-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html)
 
-##### 本地内存溢出
+### 本地内存溢出
 常见原因及建议：
 - 最大堆设置过大：减小最大堆
 - java.lang.TreadLocal泄露本地内存：设置WebContainer线程池最大值等于最小值
@@ -53,8 +53,8 @@ Jave堆内存(Java heap)：
 - [Native Memory Issues on Linux](https://www.ibm.com/support/pages/node/331133)
 - [Native Memory Issues on AIX](https://www.ibm.com/support/pages/node/127703)
 
-### WAS响应慢&线程挂起&CPU高
-##### WAS响应慢&线程挂起
+## WAS响应慢&线程挂起&CPU高
+### WAS响应慢&线程挂起
 一般情况下WAS响应慢原因：
 - HTTP服务器和插件导致
 - Java堆内存配置不合理
@@ -76,7 +76,7 @@ Jave堆内存(Java heap)：
 - 垃圾回收效率低下，GC开销过大
 - 系统物理资源瓶颈：物理内存不足，换页空间使用率高，I/O过高
 
-##### 高CPU问题
+### 高CPU问题
 造成WAS高CPU的主要原因和分析思路：
 - 垃圾回收消耗大量CPU资源：
     - 通过tprof/top定位问题
@@ -94,7 +94,7 @@ Jave堆内存(Java heap)：
     - 物理CPU个数太少
     - CPU出现排队等待现象(vmstat)
 
-##### 需要收集的数据
+### 需要收集的数据
 收集数据方法参考上一篇文章：[WAS-数据收集](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/01-WAS-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html)
 
 官方介绍链接：
@@ -102,7 +102,7 @@ Jave堆内存(Java heap)：
 - [Performance,hang,orhigh CPU issues with WAS on Linux](https://www.ibm.com/support/pages/node/72419?mhsrc=ibmsearch_a&mhq=%20hang%2C%20or%20high%20CPU%20issues%20with%20WebSphere%20Application%20Server%20on%20linux)
 - [Performance,hang,or high CPU issues on Windows](https://www.ibm.com/support/pages/node/71631)
 
-### WAS carsh(宕机)
+## WAS carsh(宕机)
 应用程序服务器因为软件方便的原因进程意外终止的一种故障。carsh和线程挂起的区别：carsh进程不在，线程挂起进程还在。
 
 WAS carsh常见原因：
@@ -118,5 +118,10 @@ WAS carsh常见原因：
 - JNI(Java Native Interface)调用异常
     - 程序中调用到了本地库文件，或程序中的第三方代码使用了本地库文件，如JDBC驱动，MQ库文件，CM库文件
 
-##### 需要收集的数据
+### 需要收集的数据
 收集数据方法参考上一篇文章：[WAS-数据收集](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/01-WAS-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html)
+
+## Installation Manager issues
+使用Installation Manager安装和更新WAS的问题。     
+官方参考链接：[Troubleshooting : IBM Installation Manager and WebSphere Application Server Installation Common Issues](https://www.ibm.com/support/pages/node/554503)
+
