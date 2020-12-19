@@ -580,3 +580,112 @@ Average: 180.3
 - 示例中使用`%5.1f`格式指定符来强制printf命令将浮点值近似到小数后一位
 
 ## 内建函数
+### 数学函数
+gawk中内建的数学函数如下表所示：
+
+函数|描述
+:---|:---
+atan2(x,y)|x/y的反正切，x和y以弧度为单位
+cos(x)|x的余弦，x以弧度为单位
+exp(x)|x的指数函数
+int(x)|x的整数部分，取靠近零一侧的值
+log(x)|x的自然对数
+rand()|比0大比1小的随机浮点值
+sin(x)|x的正弦，x以弧度为单位
+sqrt(x)|x的平方根
+srand(x)|为计算随机数指定一个种子值
+
+产生较大整数随机数可以使用rand()函数和int()函数创建一个算法：
+```sh
+x = int(10 * rand())
+```
+gawk对于它能够处理的数值有一个限定区域，示例如下：
+```
+[root@redhat8 shell]# gawk 'BEGIN{x=exp(100);print x}'
+26881171418161356094253400435962903554686976
+[root@redhat8 shell]# gawk 'BEGIN{x=exp(1000);print x}'
+gawk: cmd. line:1: warning: exp: argument 1000 is out of range
+inf
+```
+gawk还支持一些按位操作数据的函数：
+- and(v1,v2):执行v1和v2的按位与运算
+- compl(val):执行val的补运算
+- lshift(val,count):将val左移count位
+- or(v1,v2):执行v1和v2的按位或运算
+- rshift(val,count):将val右移count位
+- xor(v1,v2):执行v1和v2的按位异或运算
+
+### 字符串函数
+gawk提供的处理字符串的函数如下表所示：
+
+函数|描述
+:---|:---
+asort(s,&#91;,d&#93;)|将数组s按数据元素值排序。索引值会被替换成表示新的排序顺序的连续数字；如果指定了d则排序后的数组会存储在数组d中
+asorti(s,&#91;,d&#93;)|将数组s按索引值排序。生成的数组会将索引值作为数据元素值，用连续数字索引来表明排序顺序；如果指定了d则排序后的数组会存储在数组d中
+gensub(r,s,h&#91;,t&#93;)|查找变量`$0`或目标字符串t(如有指定)来匹配正则表达式r。如果h是一个以g或G开头的字符串，就用s替换掉匹配的文本；如果h是一个数字，则表示要替换掉第h处r匹配的地方
+gsub(r,s&#91;,t&#93;)|查找变量`$0`或目标字符串t(如有指定)来匹配正则表达式r。如果找到了，就全部替换成字符串s
+index(s,t)|返回字符串t在字符串s中的索引值，如果没找到就返回0
+length(&#91;s&#93;)|返回字符串s的长度，如果没有指定，则返回`$0`长度
+match(s,r&#91;,a&#93;)|返回字符串s中正则表达式r出现位置的索引，如果指定了数组a，会存储s中匹配的正则表达式的那部分
+split(s,a&#91;,r&#93;)|将s用FS字符或正则表达式r(如有指定)分开放到数组a中。返回字符串的总数
+sprintf(format,variables)|用提供的format和variables返回一个类似于printf输出的字符串
+sub(r,s&#91;,t&#93;)|在变量`$0`或目标字符串t中查找正则表达式r的匹配，如果找到了，就用字符串s替换掉第一处匹配
+substr(s,i&#91;,n&#93;)|返回s中从索引值i开始的n个字符组成的子字符串。如果未提供n，则返回s剩下的部分
+tolower(s)|将s中的所有字符转换成小写
+toupper(s)|将s中的所有字符转换成大写
+
+toupper(s)和length(&#91;s&#93;)使用示例：
+```
+[root@redhat8 shell]# gawk 'BEGIN{
+> a = "superuser";print toupper(a);print length(a) }'
+SUPERUSER
+9
+```
+asort(s,&#91;,d&#93;)示例如下：
+```
+[root@redhat8 shell]# gawk 'BEGIN{
+> var["a"] = 1;var["d"] = 2
+> var["m"] = 3;var["t"] = 4
+> asort(var,test)
+> for (i in test)
+> print"Index:",i," - value:",test[i]}'
+Index: 1  - value: 1
+Index: 2  - value: 2
+Index: 3  - value: 3
+Index: 4  - value: 4
+```
+split函数是将数据字段放到数组中以供进一步处理好方法：
+```
+[root@redhat8 gawk]# cat test4
+data11,data12,data13,data14,data15
+data21,data22,data23,data24,data25
+data31,data32,data33,data34,data35
+[root@redhat8 gawk]# gawk 'BEGIN{FS=","}{
+split($0,var);print var[1],var[5]}' test4
+data11 data15
+data21 data25
+data31 data35
+```
+新的数组使用连续数字作为数组索引，从含有第一个数据字段的索引值1开始。
+### 时间函数
+&#8195;&#8195;gawk包含一些函数来帮助处理时间，时间函数常用于处理日志文件，日志文件常含有需要比较的日期，可以转换成时间戳进行比较。gawk提供的时间函数如下表所示：
+
+函数|描述
+:---|:---
+mktime(datespec)|将一个按YYYY MM DD HH MM SS&#91;DST&#91;格式指定的日期转换成时间戳
+strftime(format &#91;,timestamp&#91;)|将当前时间的时间戳或timestamp（如有提供）转化格式化日期（采用shell函数date()的格式）
+systime()|返回当前时间的时间戳
+
+使用示例：
+```
+[root@redhat8 gawk]# gawk 'BEGIN{
+> date = systime()
+> day = strftime("%A,%B %d,%Y",date)
+> print day}'
+Saturday,December 19,2020
+```
+示例说明：
+- 示例中使用systime函数从系统获取当前的epoch时间戳
+- 然后用strftime函数转换成用户可读的格式，使用了shell命令date的日期格式化字符
+
+## 自定义函数
