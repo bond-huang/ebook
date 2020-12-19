@@ -441,4 +441,4 @@ The restult is 2,432,902,008,176,640,000
 ```
 
 ### sed实用工具
-为方便查阅，收录在以下位置：[Shell-sed实用工具](https://bond-huang.github.io/huang/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/05-Shell-sed%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7.html)
+为方便查阅，收录在以下位置：[Shell-sed&gawk实例](https://ebook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/05-Shell-sed&gawk%E5%AE%9E%E4%BE%8B.html)
