@@ -689,3 +689,80 @@ Saturday,December 19,2020
 - 然后用strftime函数转换成用户可读的格式，使用了shell命令date的日期格式化字符
 
 ## 自定义函数
+### 定义函数
+使用function关键字定义函数（函数名必须唯一）：
+```sh
+function neme ([variables])
+{
+    statements
+}
+```
+在调用的gawk程序中可以传给这个函数一个或多个变量。
+```sh
+function printchird()
+{
+    print $3
+}
+```
+上面示例会打印记录中的第三个数据字段。
+```sh
+function myrand(limit)
+{
+    return int(limit * rand())
+}
+x = myrand(100)
+```
+示例说明：
+- 函数可以使用return语句返回值，值可以是变量，或者是最终能计算处值的算式
+- 可以间该函数的返回值赋给gawk程序中的一个变量，这个变量包含函数的返回值
+
+### 使用自定义函数
+示例如下：
+```
+[root@redhat8 gawk]# gawk 'function myprint()
+> {printf "%-16s - %s\n",$1,$4}
+> BEGIN{FS="\n";RS=""}
+> {myprint()}' test3
+Bond Huang       - 0755-12345678
+Bond Huang       - 0769-87654321
+```
+示例说明：
+- 在定义函数时，它必须出现在所有代码块之前（包括BEGIN代码块）
+- 示例中定义了myeprint()函数，函数会格式化记录中的第一个和第四个数据字段以供打印输出
+- gawk程序然后用该函数显示输出数据文件中的数据
+
+### 创建函数库
+&#8195;&#8195;gawk提供了一种途径来将多个函数放到一个库文件中，就可以在所有的gawk程序中使用了。首先需要创建一个存储所有gawk函数的文件，示例如下：
+```
+[root@redhat8 gawk]# cat funclib
+function myprint()
+{
+    printf "%-16s - %s\n",$1,$4
+}
+function printchird()
+{
+    print $3
+}
+function myrand(limit)
+{
+    return int(limit * rand())
+}
+```
+使用示例：
+```
+[root@redhat8 gawk]# cat script
+BEGIN{FS="\n";RS=""}
+{
+	myprint()
+}
+[root@redhat8 gawk]# gawk -f funclib -f script test3
+Bond Huang       - 0755-12345678
+Bond Huang       - 0769-87654321
+```
+示例说明：
+- 使用`-f`命令行参数可以使用函数库中的函数，但是不能将其和内敛gawk脚本在一起使用
+- 需要创建一个包含gawk程序的文件，然后在命令行上同时指定库文件和程序文件
+- 可以在同一个命令行中使用多个`-f`参数
+
+## 实例
+为方便查阅，收录在以下位置：[Shell-sed&gawk实例](https://ebook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/05-Shell-sed&gawk%E5%AE%9E%E4%BE%8B.html)
