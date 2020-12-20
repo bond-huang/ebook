@@ -132,4 +132,47 @@ done
 - 正则表达式中，`/`需要转义，`&`也需要转移，转义字符`\`本身也需要转义
 - `&`符号可以用来代表替换命令中的匹配的模式，本实例中代表匹配模式`/`
 
+## gawk使用注意
+### gawk空格注意
+使用数据字段符号时候可以使用如下方式：
+```sh
+gawk 'BEGIN{FS=","} {print $2}' scores.txt
+```
+简单点使用`-F`参数也可以：
+```sh
+gawk -F, '{print $2}' scores.txt
+```
+注意，`-F`参数后面指定了字段分隔符后，一定要空格，不然会报错：
+```
+[root@redhat8 gawk]# sh bowling.sh
+gawk: cmd. line:1: scores.txt
+gawk: cmd. line:1:       ^ syntax error
+```
+### 自定义函数
+在定义函数时，它必须出现在所有代码块之前（包括BEGIN代码块），示例如下：
+```sh
+gawk 'function myprint()
+{
+    printf "%-16s - %s\n",$1,$4
+}
+BEGIN{FS="\n";RS=""}
+{
+    myprint()
+}' test3
+```
+### 函数库
+&#8195;&#8195;使用`-f`命令行参数可以使用函数库中的函数，但是不能将其和内敛gawk脚本在一起使用，需要创建一个包含gawk程序的文件，然后在命令行上同时指定库文件和程序文件；可以在同一个命令行中使用多个`-f`参数，示例如下：
+```
+[root@redhat8 gawk]# cat funclib
+function myprint()
+{
+    printf "%-16s - %s\n",$1,$4
+}
+[root@redhat8 gawk]# cat script
+BEGIN{FS="\n";RS=""}
+{
+	myprint()
+}
+[root@redhat8 gawk]# gawk -f funclib -f script test3
+```
 ## 待补充
