@@ -119,7 +119,7 @@ Stupid is as stupid does !
 
 ### 删除行
 删除数据流中不需要的空白行。
-##### 删除连续的空白行
+#### 删除连续的空白行
 删除连续空白行的方法是用地址区间来检查数据流，示例如下：
 ```
 [root@redhat8 sed]# cat test7
@@ -148,7 +148,7 @@ Stupid is as stupid does !
 - 操作脚本：`/./,/^$/!d`，其中区间是`/./`到`/^$/`，区间开始地址会匹配任何含有一个字符的行，区间结束地址会匹配一个空白行，这区间内的行不会被删除
 - 无论文本的数据行之间出现多个空白行，输出结果只会在行间保留一个空白行
 
-##### 删除开头的空白行
+#### 删除开头的空白行
 一样使用地址空间来解决那些行要删掉，示例如下：
 ```
 [root@redhat8 sed]# cat test8
@@ -166,7 +166,7 @@ Stupid is as stupid does !
 - 在此区间的任何行都不会从输出中删除，所有第一行被删除了
 - 不管数据会之前有多少行，都会被删除，而数据行中的空白行会保留
 
-##### 删除结尾的空白行
+#### 删除结尾的空白行
 利用循环来实现，示例如下：
 ```
 [root@redhat8 sed]# cat test9
@@ -243,3 +243,42 @@ information to use in our sed script.
 - 示例中可以看到需要的数据，但是还是有很多空格，加一条删除命令来删除多余空白行即可
 
 ## gawk实例
+&#8195;&#8195;gawk可以用来处理出数据文件中的数据值，例如表格化销售数据或计算保龄球得分等。处理数据文件的关键是把相关的数据放在一起，然后对相关数据进行必要的计算。例如有个数据文件，包含了两只队伍（每队两名选手）的保龄球比赛的分情况：
+```
+Captain America,MCU,125,113,119
+Iron Man,MCU,117,109,127
+Batman,DC,120,115,114
+Wonder Woman,DC,110,129,121
+```
+下面脚本对每队的成绩进行了排序，并计算了总分和平均分：
+```sh
+#!/bin/bash
+for team in $(gawk -F, '{print $2}' scores.txt |uniq)
+do
+     gawk -v team=$team 'BEGIN{FS=",";total=0}
+     {
+          if ($2==team)
+          {
+               total += $3 + $4 + $5;
+          }
+     }
+     END {
+          avg = total / 6
+          print "Total for",team,"is",total,",the average is",avg
+     }' scores.txt
+done
+```
+说明：
+- for循环中的第一条语句过滤出数据文件中的队名，然后使用uniq命令去重，for循环再对每个队进行迭代
+- for循环的内部gawk语句进行计算操作：
+     - 对每一条记录，首先确定队名是否和正在循环的队名相符
+     - 通过利用gawk的`-v`选项来实现，该选项允许在gawk程序中传递shell变量
+     - 如果队名相符，代码会对数据中的三场比赛得分求和，然后将每条记录的值再相加，只要数据记录属于同一队
+- 最后gawk代码会显示出总分以及平均分
+
+运行后输出结果如下：
+```
+[root@redhat8 gawk]# sh bowling.sh
+Total for MCU is 710 ,the average is 118.333
+Total for DC is 709 ,the average is 118.167
+```
