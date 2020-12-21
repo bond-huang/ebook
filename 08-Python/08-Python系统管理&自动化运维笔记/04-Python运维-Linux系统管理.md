@@ -373,3 +373,49 @@ for root,dirnames,filenames in os.walk(os.path.expanduser("/python")):
 ## 高级文件处理接口shutil
 &#8195;&#8195;os模块的函数和shutil模块包中的函数有一些重叠。os模块是对操作系统的接口的封装，主要左右是跨平台，shutil模块包含复制、移动、重命名和删除文件及目录的函数，主要作用是管理文件和目录，二者是互补关系。
 ### 复制文件和文件夹
+copy:拷贝一个文件，copytree：拷贝一个目录，示例如下：
+```
+[root@redhat8 shutil]# ls
+a.py  dir1
+[root@redhat8 shutil]# python3
+>>> import shutil
+>>> shutil.copy('a.py','b.py')
+'b.py'
+>>> shutil.copytree('dir1','dir2')
+'dir2'
+[root@redhat8 shutil]# ls
+a.py  b.py  dir1  dir2
+```
+### 文件和文件夹的移动与改名
+&#8195;&#8195;shutil模块中move(src,dst)用来将路径src处的文件移动到dst处，并返回新的位置的绝对路径。如果dst是一个目录，则将文件一定到目录下，如果dst是一个文件名称，则将文件一定到目标目录下，并重命名为dst。示例如下：
+```
+[root@redhat8 shutil]# ls
+a.py  dir1
+[root@redhat8 shutil]# python3
+>>> import shutil
+>>> shutil.move('a.py','b.py')
+'b.py'
+>>> shutil.move('b.py','dir1')
+'dir1/b.py'
+[root@redhat8 shutil]# ls dir1
+b.py
+[root@redhat8 shutil]# ls
+dir1
+```
+### 删除目录
+os模块的remove和unlink函数可以删除文件，os模块的rmdir和removedirs函数可以删除目录，但是此两个函数都要求被删除的目录非空，不能强制删除。而shutil.rmtree不管目录是否为空，都直接删除整个目录。示例如下：
+```
+[root@redhat8 shutil]# ls
+dir1
+[root@redhat8 shutil]# python3
+>>> import os
+>>> import shutil
+>>> os.rmdir('dir1')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+OSError: [Errno 39] Directory not empty: 'dir1'
+>>> shutil.rmtree('dir1')
+[root@redhat8 shutil]# ls
+[root@redhat8 shutil]# 
+```
+## 文件内容管理
