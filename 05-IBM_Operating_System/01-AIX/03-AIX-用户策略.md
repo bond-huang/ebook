@@ -1,4 +1,5 @@
 # AIX-用户策略
+## 用户属性文件
 AIX中每个用户都有相关属性，与用户属性相关的文件：
 - 用户基本属性：/etc/passwd
 - 用户环境属性：/etc/security/environ
@@ -10,7 +11,8 @@ AIX中每个用户都有相关属性，与用户属性相关的文件：
 - 组的扩展属性：/etc/security/group
 - 用户最后登录属性：/etc/security/lastlog
 
-### 常用命令
+## 常用命令
+常用用户操作命令如下：
 
 命令|用途
 :---|:---
@@ -24,17 +26,18 @@ pwdadm test |为test设置密码
 passwd |修改当前用户密码
 chuser |修改用户属性
 
-### 用户属性修改
+## 用户属性修改
 创建修改用户都可以使用smit菜单，参数一目了然，推荐用此方法；不推荐直接修改配置文件，后果可能会很严重，用命令也要注意。
-##### 修改配置文件
+### 修改配置文件
 修改/etc/security/user文件注意事项：
 - 修改default的配置会影响所有用户，如果用户指定了相应的配置，以用户指定的配置为准
 - 有些default的配置对root无效，例如maxexpired
 - 修改expires参数要注意格式，此参数是设置用户到期时间，如果不慎修改了default里面的值，并且格式不对，例如`expires = 120`，那么所有未单独指定此值的用户（一般都是采用default）都将很快过期
 - 修改maxage注意，如果修改的是default里面的值，会应用到所有未配置此值的用户，例如设为4，4周内没改过密码，那么此用户将在下一次登录提示更改密码
 - 修改密码策略例如密码长度，需要字符数量等，会在下一次修改密码提示，目前的密码不受影响
+- 在修改user文件后，用户间配置需要空一行，否则会出现问题
 
-##### 修改用户示例
+### 修改用户示例
 修改用户test的到期日期为2020年12月31日12点：
 ```shell
 chusr expires=1231120020 test
@@ -44,9 +47,8 @@ chusr expires=1231120020 test
 chusr rlogin=true test
 ```
 
-### 用户基本属性
+## 用户基本属性
 以下是控制登录并且与密码质量无关的用户属性：
-
 属性名称|属性说明
 :---|:---
 account_locked|如果明确地需要锁定账户，那么该属性可以设置为True；缺省值为False
@@ -70,9 +72,8 @@ hostallowedlogin|指定许可用户登录的主机。
 hostdeniedlogin|指定不许可用户登录的主机
 maxulogs|指定每个用户的最大登录数。
 
-### 用户登录策略
+## 用户登录策略
 建议用户首先使用自己的普通用户登录，然后允许su命令去登录到root，不建议以root用户的身份登录。下表是摘自IBM官方登录策略推荐：
-
 操作名称|描述|推荐设置
 :---|:---|:---
 Interval between unsuccessful logins|用于为/etc/security/login.cfg中的logininterval属性设置相应的值，该参数的作用是指定一段时间间隔（以秒计），在该时间内，如果尝试进行了若干次登陆后仍无法成功登录，那么将禁用该端口。例如，如果logininterval设为60，logindisable设为4，那么如果在1分钟内发生4此尝试登录失败后就将禁用该账户|高安全性：300;中安全性：600;低安全性：无效;AIX标准设置：无限制
@@ -84,7 +85,7 @@ Login timeout|用于为/etc/security/login.cfg中的ligintimeout属性设置相�
 Delay between unsuccessful logins|用于为/etc/security/login.cfg中的logindelay属性设置相应的值，该属性的作用是指定两次失败登录之间的延迟时间（以秒计）。每次登录失败后将附加一段延迟时间。例如，设置为5，在第一次登录失败后，终端将等待5秒，然后再发出下一次登录请求，第二次失败后，终端将等待10秒（2*5）|高安全性：10;中安全性：4;低安全性：5;AIX标准设置：无限制
 Local login	|用于更改/etc/security/user中的login属性设置相应的值，该属性的作用是指定系统上是否允许以root账户登录控制台|高安全性：False;中安全性：无效;低安全性：无效;AIX标准设置：True
 
-### 用户密码策略
+## 用户密码策略
 
 良好的密码是抵御未授权进入系统的第一道有效防线。
 符合以下条件的密码有效：
@@ -101,7 +102,6 @@ Local login	|用于更改/etc/security/user中的login属性设置相应的值�
 
 除了这些机制外，还可以通过对密码进行限制，使其不得包含可能被猜到的标准UNIX单词，从而实施更严格的规则。
 下表是摘自IBM官方密码策略规则推荐：
-
 操作名称|描述|推荐设置
 :---|:---|:---
 Minimum number of characters|用于为/etc/security/user中的mindiff属性设置相应的值，该属性的作用是指定组成新密码必须的最少字符|高安全性：4；中安全性：3；低安全性：无效；AIX标准设置：无限制
@@ -115,3 +115,28 @@ Password reuse time	|用于为/etc/security/user中的histsize属性设置相应
 Time to change pass-word after the expire-tion|用于为/etc/security/user中的maxexpired属性设置相应的值，该属性的作用是指定maxage后用户可更改到期密码的最长周期	|高安全性：2；中安全性：4；低安全性：8；AIX标准设置：-1
 Minimum number of non-alphabetic char-acters|用于为/etc/security/user中的minother属性设置相应的值，该属性的作用是指定密码中非字母字符的最少个数|高安全性：2；中安全性：2；低安全性：2；AIX标准设置：无限制
 Password expiration warning time|用于为/etc/security/user中的pwdwarntime属性设置相应的值，该属性的作用是指定系统发出需要更改密码的警告前等待的天数|高安全性：5；中安全性：14；低安全性：5；AIX标准设置：无限制
+
+## 修改root用户注意事项
+### 修改/etc/security/user文件注意
+&#8195;&#8195;最近改了一些系统root用户的参数，都是直接修改/etc/security/user文件，主要是root用户过期时间，即参数`maxage = 15`，表示15周过期。过一段时间发现登录root提示：Your account has expired。     
+找了几个测试分区，都是很久没改过，修改`maxage = 15`后，有的提示：
+```
+[compat]: 3004-332 Your password has expired.
+```
+有的分区提示：
+```
+3004-302 Your account has expired; please see the system administrator.
+```
+提示用户过期的改了密码是也是一样的提示。继续进行了一些测试：     
+- 修改近期改过密码分区的root用户`maxage = 15`后（和下一个用户条目没有空行），登录root用户过期，删掉此行（删掉后和下一个用户条目间没有空行），重新试一样提示用户过期登录不了
+- 修改近期改过密码分区的root用户`maxage = 15`后（和下一个用户条目有空行）,用户可以正常登录，密码也没过期；删掉空行，提示用户过期；加上空行，用户可以正常登录
+- 修改长时间没改过root密码分区的root用户`maxage = 15`后（和下一个用户条目没有空行），会提示用户过期，无法进行登录
+- 修改长时间没改过root密码分区的root用户`maxage = 15`后（和下一个用户条目有空行），会提示密码过期，也会提示输入新密码进行修改
+
+&#8195;&#8195;注意，在修改过程中，保持一个root用户会话的连接，因为提示root用户过期后，没有其它系统配置免密登录的是无法再用root进入到系统的，只能通过光盘引导进入维护模式修改user文件，例如加空行可以使用下面命令：
+```
+sed '/daemon:/{x;p;x;}' user > user.bak
+mv user.bak user
+```
+&#8195;&#8195;在操作user前建议备份一份，因为我第一次在使用命令`sed '/daemon:/{x;p;x;}' user > user`直接重定向到user文件后，user文件内容清空了，还好有备份。维护模式下vi虽然很不好用，但是依然可以vi文件然后`i`进行插入文本。
+## 待补充
