@@ -68,7 +68,7 @@ test5.sh[2]: 0403-057 Syntax error at line 2 : `(' is not expected.
 
 ### sed的差别
 在编写修改image.data脚本过程中发现不少区别，记录下来避免忘记。
-##### 地址使用差别
+#### 地址使用差别
 例如下面同样的文本：
 ```
 bash-5.0# cat test1
@@ -111,7 +111,7 @@ sed: 0602-404 Function 2{s/PP=/ls/} cannot be parsed.
 bash-5.0# sed '2{s/PP=/ls/}' test1
 sed: 0602-404 Function 2{s/PP=/ls/} cannot be parsed.
 ```
-##### sed中选项差异
+#### sed中选项差异
 &#8195;&#8195;sed编辑器一般不会对原文本进行修改，当然有w命令可以将输出保存到某一文件，有时候直接想修改原文件，选项`-i`就可以起到这个作用，但是`-i`只是最近才更新的功能，RHEL8中是有的，但是在AIX7.1.4.3（AIX系统更新到7.2.5版本了，不知道后面有没有）中sed编辑器没有-i选项，替换文件并直接保存在RHEL中两种方法示例如下：
 ```
 [root@redhat8 test]# sed -i 's/PP=/ls/' test1
@@ -152,7 +152,7 @@ bash-5.0# cat test1
         ls 42
 ```
 
-##### 列数据转换成行差异
+#### 列数据转换成行差异
 RHEL8中把一列数据转换成一行：
 ```
 [root@redhat8 test]# cat test2 | awk '/LPs=/{print $2}' | sed ':a;N;s/\n/ /g;ta'
@@ -179,8 +179,13 @@ RHEL8中也可以，示例如下：
 ```
 
 ### gawk差异
-AIX7.1.4.3中默认没有gawk，有awk程序，使用方法差不多，目前还没发现具体差别。
-
+&#8195;&#8195;AIX7.1.4.3中默认没有gawk，有awk程序，使用方法差不多，目前发现awk中没用`-mr`选项，使用会报错，应该也没有`-mr`和`-W`选项：
+```
+# lparstat -i |awk -mr 6 '/Entitled Capacity/{print $4}'
+awk: Not a recognized flag: m
+Usage: awk [-u] [-F Character][-v Variable=Value][-f File|Commands][Variable=Value|File ..
+.]
+```
 ### case差异
 在RHEL的bash中，read命令和case可以结合使用,示例如下：
 ```sh
