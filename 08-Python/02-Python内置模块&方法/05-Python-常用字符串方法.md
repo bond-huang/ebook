@@ -18,7 +18,7 @@ leetcode
 ```
 应用实例：在解答leetcode题目1528. Shuffle String时候用到此方法。
 
-### str.strip
+### str.strip()
 &#8195;&#8195;标准格式：` str.strip([chars])`   
 &#8195;&#8195;返回原字符串的副本，移除其中的前导和末尾字符。chars参数为指定要移除字符的字符串,如果省略或为 None，则chars参数默认移除空格符。实际上chars参数并非指定单个前缀或后缀,而是会移除参数值的所有组合,示例如下：
 ```python
