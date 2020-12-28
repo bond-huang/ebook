@@ -132,4 +132,53 @@ y=6, tm_yday=193, tm_isdst=-1)
 N/A|tm_zone|时区名称的缩写
 N/A|tm_gmtoff|以秒为单位的UTC以东偏离
 
-### datetime_基本的日期和时间类型
+## datetime_基本的日期和时间类型
+&#8195;&#8195;datetime模块提供用于处理日期和时间的类。在支持日期时间数学运算的同时，实现的关注点更着重于如何能够更有效地解析其属性用于格式化输出和数据操作。
+### date对象
+date对象代表一个理想化历法中的日期（年、月和日），格式如下：
+```python
+class datetime.date(year, month, day)
+```
+说明：
+- 所有参数都是必要的。 参数必须是在下面范围内的整数：
+    - MINYEAR <= year <= MAXYEAR
+    - 1 <= month <= 12
+    - 1 <= 日期 <= 给定年月对应的天数
+- 如果参数不在这些范围内，则抛出ValueError异常
+
+#### 使用示例
+获取当前日期：
+```python
+>>> import datetime
+>>> today = datetime.date.today()
+>>> print(today)
+2020-12-28
+>>> nowtime = datetime.datetime.now()
+>>> print(nowtime)
+2020-12-28 16:28:37.426762
+```
+### timedelta类对象
+timedelta对象表示两个date或者time的时间间隔。标准格式如下：
+```python
+class datetime.timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
+```
+说明：
+- 所有参数都是可选的并且默认为0
+- 这些参数可以是整数或者浮点数，也可以是正数或者负数
+
+#### 使用示例
+获取一天前和一个月前的时间：
+```
+>>> import datetime
+>>> nowtime = datetime.datetime.now()
+>>> print(nowtime)
+2020-12-28 16:28:37.426762
+>>> yesterday = nowtime + datetime.timedelta(days=-1)
+>>> print(yesterday)
+2020-12-27 16:28:37.426762
+>>> lastmonth = nowtime + datetime.timedelta(days=-30)
+>>> print(lastmonth.strftime("%m%d%I%M%y"))
+1128042820
+```
+
+更多用法和示例参考官方文档：[datetime---基本的日期和时间类型](https://docs.python.org/zh-cn/3/library/datetime.html?highlight=datetime#module-datetime)
