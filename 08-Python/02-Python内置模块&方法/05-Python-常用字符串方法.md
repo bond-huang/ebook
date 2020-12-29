@@ -36,4 +36,36 @@ leetcode
 >>> 'www.google.com'.strip('cmowz.')
 'google'
 ```
+### str.split()
+标准格式：`str.split(sep=None, maxsplit=-1)`   
+说明：
+- 返回一个由字符串内单词组成的列表，使用sep作为分隔字符串
+- 如果给出了maxsplit，则最多进行maxsplit次拆分；如果maxsplit未指定或为-1，则不限制拆分次数
+- 如果给出了sep，则连续的分隔符不会被组合在一起而是被视为分隔空字符串
+
+示例如下：
+```
+>>> import os
+>>> user_rate_cmd = 'iostat -t 1 5|awk \'{print $3,$4,$5}\'|sed -n \'/^[0-9]/p\''
+>>> user_rate = os.popen(user_rate_cmd)
+>>> for i in user_rate:
+...     print(i)
+... 
+1.0 2.9 96.1
+0.5 2.2 97.3
+0.7 2.5 96.8
+0.2 1.8 98.0
+0.2 1.3 98.5
+>>> user_rate = os.popen(user_rate_cmd)
+>>> for i in user_rate:
+...     j = i.split(' ')
+...     print(j)
+... 
+['2.9', '5.4', '91.8\n']
+['0.3', '1.8', '98.0\n']
+['0.2', '1.8', '98.0\n']
+['0.2', '1.8', '97.9\n']
+['0.4', '1.6', '98.0\n']
+```
+如果不进行分割，如果去遍历j，就会一个字符一个字符去遍历。
 ### 待补充
