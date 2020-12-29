@@ -44,7 +44,7 @@ leetcode
 - 如果给出了sep，则连续的分隔符不会被组合在一起而是被视为分隔空字符串
 
 示例如下：
-```
+```python
 >>> import os
 >>> user_rate_cmd = 'iostat -t 1 5|awk \'{print $3,$4,$5}\'|sed -n \'/^[0-9]/p\''
 >>> user_rate = os.popen(user_rate_cmd)
