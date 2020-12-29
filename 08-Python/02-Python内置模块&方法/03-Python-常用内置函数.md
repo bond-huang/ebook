@@ -1,6 +1,6 @@
 # Python-常见内置函数
 Python中提供了一些内置函数可用直接调用，最常用的例如print()函数。官方文档:[内置函数](https://docs.python.org/zh-cn/3/library/functions.html#int)
-### 基本数据处理
+## 基本数据处理
 主要有三种：
 - int()：返回一个基于数字或字符串 x 构造的整数对象，或者在未给出参数时返回 0
 - oct()：将一个整数转变为一个前缀为“0o”的八进制字符串
@@ -8,9 +8,9 @@ Python中提供了一些内置函数可用直接调用，最常用的例如print
 
 还有`tuple()`、`list()`、`str()`、`dict()` 、`set()` ·和`round()`使用方法和示例在学习笔记中有:[Python学习笔记-基本数据类型](https://bond-huang.github.io/huang/08-Python/01-Python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01-Python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html)
 
+## 常用内置函数
 ### print()
 标准格式：`print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)`
-
 目前用到的也是常用方法示例：
 ```python
 for a in range(0,10,2):
@@ -27,7 +27,7 @@ I am Iron Man!
 ### input()
 标准格式：` input([prompt])`
 
-如果存在prompt实参，则将其写入标准输出，末尾不带换行符。接下来，该函数从输入中读取一行，将其转换为字符串（除了末尾的换行符）并返回。当读取到 EOF 时，则触发 EOFError。示例如下：
+&#8195;&#8195;如果存在prompt实参，则将其写入标准输出，末尾不带换行符。接下来，该函数从输入中读取一行，将其转换为字符串（除了末尾的换行符）并返回。当读取到 EOF 时，则触发 EOFError。示例如下：
 ```python
 >>> input('Please input hdisk name:')
 Please input hdisk name:hdisk2
@@ -40,25 +40,75 @@ Please input hdisk name:hdisk2
 ### quit()
 在代码中输入`quit()`可以直接终止代码执行并退出到shell，就是后面的代码都不执行了。
 ### range()
-range 类型表示不可变的数字序列，通常用于在 for 循环中循环指定的次数:`for i in range(0,10)`,基本示例如下：
+&#8195;&#8195;range 类型表示不可变的数字序列，通常用于在 for 循环中循环指定的次数:`for i in range(0,10)`,基本示例如下：
 ```python
 >>> list(range(0, 10, 3))
 [0, 3, 6, 9]
 ```
 ### len()
-返回对象的长度（元素个数）。实参可以是序列（如 string、bytes、tuple、list 或 range 等）或集合（如 dictionary、set 或 frozen set 等）。
+&#8195;&#8195;返回对象的长度（元素个数）。实参可以是序列（如 string、bytes、tuple、list 或 range 等）或集合（如 dictionary、set 或 frozen set 等）。
 
 在for循环中经常和range一起使用：`for i in range(0,len(hex_ids))`。
 ### eval()
-标准格式： `eval(expression, [globals,[locals]])`
-
+&#8195;&#8195;标准格式： `eval(expression, [globals,[locals]])`
 实参是一个字符串，以及可选的 globals 和 locals。globals 实参必须是一个字典。locals 可以是任何映射对象。
 
 用到过的示例：`oct_id = oct(eval('0x'+hex_ids[i]))`，对eval里面表达式计算成16进制格式，然后再用oct()转换成8进制。
 ### open()
-标准格式：`open(file, mode='r',buffering=-1,encoding=None,errors=None,newline=None,closefd=True,opener=None)`
+标准格式：`open(file, mode='r',buffering=-1,encoding=None,errors=None,newline=None,closefd=True,opener=None)`   
+说明：
+- 打开file并返回对应的file object,如果该文件不能打开，则触发 OSError
+- file是一个path-like object，表示将要打开的文件的路径（绝对路径或者当前工作目录的相对路径）
+- mode是一个可选字符串，用于指定打开文件的模式。默认值是 'r' 
+- buffering是一个可选的整数，用于设置缓冲策略
+- encoding是用于解码或编码文件的编码的名称
+- errors是一个可选的字符串参数，用于指定如何处理编码和解码错误（不能在二进制模式下使用）
+- newline控制universal newlines模式如何生效（它仅适用于文本模式）
+- 如果closefd是False并且给出了文件描述符而不是文件名，那么当文件关闭时，底层文件描述符将保持打开状态。如果给出文件名则closefd必须为True（默认值），否则将引发错误
+- 可以通过传递可调用的opener来使用自定义开启器
 
-打开 file 并返回对应的 file object。如果该文件不能打开，则触发 OSError。
+可用的模式有：
+字符|意义
+:---:|:---
+'r'|读取（默认）
+'w'|写入，并先截断文件
+'x'|排它性创建，如果文件已存在则失败
+'a'|写入，如果文件存在则在末尾追加
+'b'|二进制模式
+'t'|文本模式（默认）
+'+'|打开用于更新（读取与写入）
+
+使用示例：
+```
+>>> f = open('test2','w')
+>>> f.write('Miracles happen every day.')
+>>> f.close()
+bash-5.0# cat test2
+Miracles happen every day.
+>>> with open('test2','w') as f:
+...     f.write('You can\'t change the past\n')
+...     f.close()
+... 
+26
+>>> 
+bash-5.0# cat test2
+You can't change the past
+```
+&#8195;&#8195;尝试使用上面方法写入变量，变量是多行的额，发现不行。如果写入的数据是多个或者多行，或者变量中有多行，可以使用readlines,示例如下：
+```
+>>> import os
+>>> a = os.popen('ls -l')
+>>> with open('test2','w') as f:
+...     f.writelines(a)
+...     f.close()
+... 
+>>> 
+bash-5.0# cat test2
+total 4408
+-rw-r-----    1 root     system         1784 Dec 29 16:57 base.html
+drwxr-x---    3 root     system          256 Dec 29 13:14 script
+-rwxr-xr-x    1 root     system         1587 Dec 29 13:12 setup.py
+```
 ### format()
 标准格式： `format(value,[format_spec])`
 
@@ -70,7 +120,7 @@ range 类型表示不可变的数字序列，通常用于在 for 循环中循环
 ###  filter()
 标准格式：`filter(function, iterable)`
 
-用 iterable 中函数 function 返回真的那些元素，构建一个新的迭代器。经常和lambda表达式结合使用，
+&#8195;&#8195;用 iterable 中函数 function 返回真的那些元素，构建一个新的迭代器。经常和lambda表达式结合使用，
 例如下面示例把list_a中的1筛选出来：
 ```python
 list_a = [3,1,0,5,6,1,9,6,1,4,1]
@@ -121,6 +171,7 @@ PS C:\Users\big1000\vscode\codefile\Leetcode> python 1528.py
 - reverse为一个布尔值。如果设为True，则每个列表元素将按反向顺序比较进行排序。
 
 示例：在爬虫学习中有使用示例。
+
 ### zip()
 &#8195;&#8195;可以将两个有序数据一一对应进行聚合，标准格式：`zip(*iterables)`,示例如下：
 ```py
