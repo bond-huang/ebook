@@ -76,10 +76,12 @@ PS D:\Python\codefile\J_JSON> python module_1.py
 ```
 在编程中，有一个术语来定义由字符串到某一种语言对象的解析过程，即反序列化。
 下面做了一个表格来表示转换后的数据类型：
+
 语言|字典|列表|字符|整型|浮点数|布尔值
 ---|:---:|:---|:---|:---|:---|:---
 JSON|object|array|string|number|number|true
 Python|dict|list|str|int|float|True
+
 ### 序列化
 就是把Python的数据类型像JSON数据类型转换的过程。
 定义一个字典superhero，但是使用了多行，现在转换成JSON数据类型，一样是引用json模块，使用模块下的json.dumps方法来实现：
