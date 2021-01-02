@@ -70,4 +70,7 @@ print(list1)
 bash-5.0# python3 test.py
 [[1, 3, 5], [2, 4, 5], [3, 13, 5]]
 ```
+## NumPY
+&#8195;&#8195;Numeric Python扩展(NumPy)定义了另一种数组类型，是一个第三方库，需要安装，可以用于在数组提取某一列元素，或者矩阵按列进行重新组成新矩阵。官方网站：[https://numpy.org/](https://numpy.org/)
+
 ### 待补充
