@@ -6,7 +6,28 @@ Python中提供了一些内置函数可用直接调用，最常用的例如print
 - oct()：将一个整数转变为一个前缀为“0o”的八进制字符串
 - hex()：将整数转换为以“0x”为前缀的小写十六进制字符串
 
-还有`tuple()`、`list()`、`str()`、`dict()` 、`set()` ·和`round()`使用方法和示例在学习笔记中有:[Python学习笔记-基本数据类型](https://bond-huang.github.io/huang/08-Python/01-Python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01-Python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html)
+### round()
+标准格式： `round(number,[ndigits])`    
+说明：
+- 返回number舍入到小数点后ndigits位精度的值
+- 如果ndigits被省略或为None，则返回最接近输入值的整数
+
+使用示例：
+```python
+>>> sum([1.4,0.2])
+1.5999999999999999
+>>> a = 1.4;b=0.2
+>>> (a + b) == 1.6
+False
+>>> c = round((a + b),2)  
+>>> print(c)
+1.6
+```
+注意：   
+&#8195;&#8195;对于浮点运算，另一个有用的工具是math.fsum()函数；round()有时候不是期望的结果，例如round(2.675, 2)将给出2.67而不是期望的2.68，可以参考官方说明：
+[浮点算术：争议和限制](https://docs.python.org/zh-cn/3.7/tutorial/floatingpoint.html#tut-fp-issues)
+
+还有`tuple()`、`list()`、`str()`、`dict()` 和`set()` 使用方法和示例在学习笔记中有:[Python学习笔记-基本数据类型](https://bond-huang.github.io/huang/08-Python/01-Python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01-Python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html)
 
 ## 常用内置函数
 ### print()
