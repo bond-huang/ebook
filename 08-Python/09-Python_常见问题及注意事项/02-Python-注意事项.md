@@ -69,4 +69,13 @@ False
 >>> print(c)
 1.6
 ```
+另一个方法是使用math.fsum()函数：
+```python
+>>> import math
+>>> sum([0.1] * 10) == 1.0
+False
+>>> math.fsum([0.1] * 10) == 1.0
+True
+```
+math.fsum()官方介绍：[math—数学函数](https://docs.python.org/zh-cn/3.6/library/math.html#math.fsum)
 ## 待补充
