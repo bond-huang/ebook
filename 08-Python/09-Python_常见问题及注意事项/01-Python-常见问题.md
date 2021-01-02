@@ -83,4 +83,21 @@ print(list1)
 ```
 [[1, 3, 5], [2, 4, 5]]
 ```
+## 内置函数使用问题
+### len()使用报错
+报错内容：
+```
+TypeError: object of type '_wrap_close' has no len()
+```
+原因是我在使用os.popen()运行系统命令赋值给变量后得到的是一个对象：
+```python
+cpu_type = os.popen(type_cmd)
+if len(cpu_type) == 0:
+```
+使用read函数读取对象内容即可：
+```python
+cpu_type = os.popen(type_cmd)
+cpu_type = cpu_type.read()
+if len(cpu_type) == 0:
+```
 ## 待补充
