@@ -45,6 +45,7 @@ al not in range(256)
 ```
 在写html中，一个冒号使用了中文的字符，因为没有指定UTF-8，但是我使用的全是英文，所以改过来即可。
 ## 正则表达式注意
+### 示例一
 正则表达式中使用变量作为参数：
 ```python
 import re
@@ -82,6 +83,42 @@ print(list1)
 运行示例：
 ```
 [[1, 3, 5], [2, 4, 5]]
+```
+### 示例二
+跟示例一问题类似，出现问题是因为是对象，示例代码：
+```python
+vg_disk_cmd = 'lsvg -p rootvg |awk \'NR>2{print $1}\''
+vg_disk = os.popen(vg_disk_cmd)
+bootlist_cmd = 'bootlist -m normal -o'
+bootlist = os.popen(bootlist_cmd)
+for i in vg_disk:
+    if re.findall(i,bootlist):
+        print('x')
+```
+报错如下：
+```
+Traceback (most recent call last):
+  File "test7.py", line 9, in <module>
+    if re.findall(i,bootlist):
+  File "/opt/freeware/lib64/python3.7/re.py", line 223, in findall
+    return _compile(pattern, flags).findall(string)
+TypeError: expected string or bytes-like object
+```
+两个问题：
+- 变量i在从对象中遍历后可能会有换行符，去掉换行符即可
+- 变量bootlist是个对象，在正则表达式中使用会有上面报错，改成字符串即可
+
+改后代码如下所示：
+```python
+vg_disk_cmd = 'lsvg -p rootvg |awk \'NR>2{print $1}\''
+vg_disk = os.popen(vg_disk_cmd)
+bootlist_cmd = 'bootlist -m normal -o'
+bootlist = os.popen(bootlist_cmd)
+bootlist = bootlist.read().strip()
+for i in vg_disk:
+    i = i.strip()
+    if re.findall(i,bootlist):
+        print('x')
 ```
 ## 内置函数使用问题
 ### len()使用报错
