@@ -50,6 +50,53 @@ cmd1 = 'lspv |grep '+hdisk
 os.popen(cmd1);os.popen(cmd2)
 ```
 上面示例中hdisk变量只代表“hdisk1”，此方式可以。
+### 脚本中运行命令问题
+示例代码如下：
+```python
+>>> disk_list_cmd = 'lspv |awk \'{print $1}\''
+>>> disk_list = os.popen(disk_list_cmd)
+>>> for disk in disk_list:
+...     disk_iostat_cmd = 'iostat -d '+disk+' 1 5 |grep '+disk+'| awk \'{print $2,$3,$4,$5,$6}\''
+...     disk_iostat = os.popen(disk_iostat_cmd)
+...     for i in disk_iostat:
+...             print(i)
+```
+执行后会报错，只执行到`'iostat -d '+disk+`：
+```
+/bin/sh[2]: 1:  not found.
+/bin/sh[3]: 0403-057 Syntax error at line 3 : `|' is not expected.
+```
+但是同样的赋值语句代码，下面这种就没问题：
+```python
+>>> import os
+>>> disk = 'hdisk3'       
+>>> disk_iostat_cmd = 'iostat -d '+disk+' 1 5 |grep '+disk+'| awk \'{print $2,$3,$4,$5,$6}\''
+>>> disk_iostat = os.popen(disk_iostat_cmd)
+>>> for i in disk_iostat:
+...     print(i)
+```
+&#8195;&#8195;两个示例代码中，不同的是变量disk，第一个示例代码变量disk是从对象中遍历出来的，估计是有换行符，shell就从1开始执行了，所以报错，进行了如下测试：
+```python
+>>> disk_list = os.popen(disk_list_cmd)
+>>> for disk in disk_list:
+...     print(disk)
+... 
+hdisk3
+
+hdisk4
+
+hdisk5
+
+>>> disk_list = os.popen(disk_list_cmd)
+>>> for disk in disk_list:
+...     disk = disk.strip()
+...     print(disk)
+... 
+hdisk3
+hdisk4
+hdisk5
+```
+所以在最开始报错代码中修改下代码使用`strip()`将变量disk的换行符去掉即可。
 ## 浮点运算
 在浮点运算中，用sum()内置函数进行运算的时候，会出现小数点位特别多的情况，而实际上原来相加的小数点是有限的，示例如下：
 ```python
