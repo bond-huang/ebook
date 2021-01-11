@@ -97,8 +97,40 @@ hdisk4
 hdisk5
 ```
 所以在最开始报错代码中修改下代码使用`strip()`将变量disk的换行符去掉即可。
+### 获取命令使用read()问题
+&#8195;&#8195;例如通过os.popen()运行命令后获取了一个对象，在一个if语句中调用read()去读取，在else中继续使用变量，就会发现是read()后的结果，而不是运行os.popen()获取的对象：
+```python
+def missing_check(self):
+    missing_cmd= 'lspath -F "name status path_id parent connection"\
+        |grep -i missing'
+    missing_path = os.popen(missing_cmd)
+    missing_path_list = []
+    if len(missing_path.read()) == 0:
+        missing_result = 'No missing path was found.'
+    else:
+        for path in missing_path:
+            print(path)
+            path = path.strip()
+            path = path.split(' ')
+            print(path)
+```
+&#8195;&#8195;示例中应该运行else，但是发现else后面可以运行，但是for循环后面的都没有结果，包括print(path)都不会输出。问题应该是在if语句中使用read()读取了missing_path，修改后代码如下：
+```python
+def missing_check(self):
+    missing_cmd= 'lspath -F "name status path_id parent connection"\
+        |grep -i missing'
+    missing_path = os.popen(missing_cmd)
+    missing_path = missing_path.read()
+    missing_path_list = []
+    if len(missing_path) == 0:
+        missing_result = 'No missing path was found.'
+    else:
+        missing_path = os.popen(missing_cmd)
+        for path in missing_path:
+            path = path.strip()
+```
 ## 浮点运算
-在浮点运算中，用sum()内置函数进行运算的时候，会出现小数点位特别多的情况，而实际上原来相加的小数点是有限的，示例如下：
+&#8195;&#8195;在浮点运算中，用sum()内置函数进行运算的时候，会出现小数点位特别多的情况，而实际上原来相加的小数点是有限的，示例如下：
 ```python
 >>> sum([0.1,0.1])
 0.2
@@ -125,4 +157,5 @@ False
 True
 ```
 math.fsum()官方介绍：[math—数学函数](https://docs.python.org/zh-cn/3.6/library/math.html#math.fsum)
+
 ## 待补充
