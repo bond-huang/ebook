@@ -29,6 +29,7 @@ class CheckReboot():
     def __get_reboot_time(self):
         reboot_time = os.popen(CheckReboot.reboot_time_cmd)
         reboot_time = reboot_time.read(28)
+        reboot_time = reboot_time.strip()
         reboot_time = time.strptime(reboot_time,'%a %b %d %H:%M:%S %Z %Y')
         reboot_time = time.mktime(reboot_time)
         reboot_time = reboot_time + 28800
