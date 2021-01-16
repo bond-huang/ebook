@@ -34,7 +34,12 @@
   - Check the system process
   - Check the system ulimit setting
 - Check The PowerHA
-  - PowerHA 
+  - Check the HA cluster configuration status
+  - Get the cluster service status
+  - Get the cluster configuration information
+  - Get the cluster operating status
+  - Get the node operating status
+- Archive system information
 
 ## 详细结构说明
 ### System Information
@@ -123,7 +128,50 @@
 列出了系统ulimit设置，并对各参数进行了简单说明。
 
 ### Check The PowerHA
-首先检查了系统是否配置了PowerHA。
+对于安装配置了PowerHA的系统进行检查。
+#### Check the HA cluster configuration status
+首先检查了系统是否配置了PowerHA集群，没有配置后面就不检查了。
+#### Get the cluster service status
+在配置了HA集群情况下，检查集群服务是否启动，启动了继续后面的检查
+#### Get the cluster configuration information
+获取集群配置信息，主要有：
+- Cluster Name
+- Cluster Tpye
+- Heartbat Type
+- Repository Disk
+- Resource Group
+- Startup Policy
+- Fallover Policy
+- Fallback Policy
+- Participating Nodes
+- Service IP Lable
+
+网络配置信息整理在另外一个表里面包括服务IP和各节点的IP配置。
+
+#### Get the cluster operating status
+获取集群状态信息，包含一些进程，主要有：
+- Cluster Name
+- Cluster State
+- Cluster Substate
+- Chages Subsystem
+- Crtmc Subsystem
+- ClstrmgrES Subsystem
+- ClevmgrdES Subsystem
+- ClinfoES Subsystem
+- Clconfd Subsystem
+- Clcond Subsystem
+#### Get the node operating status
+获取各节点的状态信息，分为Local和Remote，分别有如下信息：
+- Node name
+- Group State
+- Cluster services status
+- Remote communications
+- Cluster-Aware AIX status
+- Network Nmae
+- IP Label
+
+### Archive system information
+&#8195;&#8195;收集详细操作系统信息可以使用snap命令，但是解析需要专用工具，很多数据也很少用到。此节内容归档一些命令输出的信息并打包，可能会比较有用，例如`df -g`的输出。
 
 ## 使用说明
 使用说明如下：
@@ -133,6 +181,8 @@
 - 需要AIX系统root用户权限才能运行，有些命令必须要root权限
 - 如果系统使用非IBM多路径软件，则路径检查脚本可能用处不大
 - 如果使用了多个pagespace，可能获取信息不准确，脚本中暂时没考虑到此点，有空修改
+- 脚本中PowerHA检查由于没有环境，没实测过
+- 脚本中PowerHA检查只支持7.1及以上版本，对于多Site的可能不支持
 
 ## 其它说明
 &#8195;&#8195;之前打算使用第三方库reportlab，可以画图、画表格、编辑文字,最后可以输出PDF格式，尝试了几次AIX系统安装不上。打算通过jinja2生成HTML报告，然后再使用wkhtmltopdf转成pdf，尝试了几次AIX系统安装不上。生成的HTML报告可以通过其它平台进行转换。对于报告更完善的界面和舒适阅读方式还在研究中。
