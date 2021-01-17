@@ -4,7 +4,7 @@
 ## 结构
 整体结构如下：
 - System Information
-- System Error Check
+- System Error Check   
   - System Hardware Error Event
   - System Software Error Event
   - System Errlogger Event
@@ -140,11 +140,6 @@
 - Heartbat Type
 - Repository Disk
 - Resource Group
-- Startup Policy
-- Fallover Policy
-- Fallback Policy
-- Participating Nodes
-- Service IP Lable
 
 网络配置信息整理在另外一个表里面包括服务IP和各节点的IP配置。
 
@@ -153,13 +148,14 @@
 - Cluster Name
 - Cluster State
 - Cluster Substate
-- Chages Subsystem
-- Crtmc Subsystem
+- Cthags Subsystem
+- Ctrmc Subsystem
 - ClstrmgrES Subsystem
 - ClevmgrdES Subsystem
 - ClinfoES Subsystem
 - Clconfd Subsystem
-- Clcond Subsystem
+- Clcomd Subsystem
+
 #### Get the node operating status
 获取各节点的状态信息，分为Local和Remote，分别有如下信息：
 - Node name
@@ -167,11 +163,46 @@
 - Cluster services status
 - Remote communications
 - Cluster-Aware AIX status
-- Network Nmae
+- Network Name
 - IP Label
+
+#### Get Resource Group information and status
+获取的信息有：
+- Resource Group name
+- Startup Policy
+- Fallover Policy
+- Fallback Policy
+- Site Policy
+- Participating Nodes Resource Group state
 
 ### Archive system information
 &#8195;&#8195;收集详细操作系统信息可以使用snap命令，但是解析需要专用工具，很多数据也很少用到。此节内容归档一些命令输出的信息并打包，可能会比较有用，例如`df -g`的输出。
+
+目前收集的命令信息和对应文件命：
+- prtconf : prtconf.log
+- lscfg -vp : lscfg.log
+- lparstat -i : lparstat.log
+- lsdev : lsdev.log
+- lspath :lspath.log
+- lsfs : lsfs.log
+- df -g : df.log
+- errpt -a : errpt.log
+- lspv : lspv.log
+- lsvg -p rootvg : rootvg.log
+- lsps -a : lsps.log
+- alog -ot boot : alog.log
+- cat /etc/hosts : hosts.log
+- cat /etc/filesystems : filesystems.log
+- cat /etc/inittab : inittab.log
+- netstat -rn : netstat.log
+- netstat -in : netstat.log
+- netstat -a : netstat.log
+- lsvg -o | lsvg -il : lsvg.log
+- lsattr -El sys0 : sysattr.log
+- lsdev -Cc disk |awk ' {print "lsattr -El "$1""}' |sh : diskattr.log
+- lspath |awk '{print $3}'|uniq|awk ' {print "lsattr -El "$1""}' |sh : adapterattr.log
+
+后续有补充再加。收集的数据放置在脚本当前文件夹下面，并用日期进行了命名。
 
 ## 使用说明
 使用说明如下：
@@ -182,7 +213,9 @@
 - 如果系统使用非IBM多路径软件，则路径检查脚本可能用处不大
 - 如果使用了多个pagespace，可能获取信息不准确，脚本中暂时没考虑到此点，有空修改
 - 脚本中PowerHA检查由于没有环境，没实测过
-- 脚本中PowerHA检查只支持7.1及以上版本，对于多Site的可能不支持
+- 脚本中PowerHA检查只支持7.1及以上版本，并且对于多Site的可能不支持
+- 脚本中只考虑了单资源组情况，多资源组情况后续有需要再优化
 
 ## 其它说明
 &#8195;&#8195;之前打算使用第三方库reportlab，可以画图、画表格、编辑文字,最后可以输出PDF格式，尝试了几次AIX系统安装不上。打算通过jinja2生成HTML报告，然后再使用wkhtmltopdf转成pdf，尝试了几次AIX系统安装不上。生成的HTML报告可以通过其它平台进行转换。对于报告更完善的界面和舒适阅读方式还在研究中。
+
