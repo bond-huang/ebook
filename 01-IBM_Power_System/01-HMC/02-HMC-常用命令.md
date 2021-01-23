@@ -192,6 +192,8 @@ lssysconn -r all -F ipaddr:state
 ~> lspartition -c <Machine Type, Model, and Serial> 
 # Invoked by InvScout directly for ext data.Return format: <LParID,IPaddress,active,hostname,OStype,OSlevel;>
 ~> lspartition -ix
+# Invoked by InvScout through lshsc.Return format: <LParID,IPaddress,active;>
+~> lspartition -i           
 ```
 #### lslparutil
 列出受管系统和分区的利用率指标。该命令仅在Integrated Virtualization Manager环境中可操作:
