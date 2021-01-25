@@ -419,3 +419,78 @@ OSError: [Errno 39] Directory not empty: 'dir1'
 [root@redhat8 shutil]# 
 ```
 ## 文件内容管理
+### 目录和文件比较
+创建如下文件和目录：
+```
+[root@redhat8 filecmp]# tree
+.
+├── dir1
+│   ├── a_copy.txt
+│   ├── a.txt
+│   ├── b.txt
+│   ├── c.txt
+│   └── sdir1
+│       └── sa.txt
+└── dir2
+    ├── a.txt
+    ├── b.txt
+    ├── c.txt
+    ├── sdir1
+    │   └── sb.txt
+    └── sdir2
+5 directories, 9 files
+```
+&#8195;&#8195;两个目录中a.txt和c.txt内容一样，不过是分别创建的两个文件，a_copy.txt是从a.txt文件cp生成的，两个目录中b.txt的内容不一样，详细内容如下所示：
+```
+[root@redhat8 filecmp]# cd dir1
+[root@redhat8 dir1]# cat a.txt
+Life was like a box of chocolates
+[root@redhat8 dir1]# cat b.txt
+Stupid is as stupid does
+[root@redhat8 dir1]# cat c.txt
+Life was like a box of chocolates
+[root@redhat8 dir1]# cd sdir1
+[root@redhat8 sdir1]# cat sa.txt
+Life was like a box of chocolates
+[root@redhat8 sdir1]# cd ..
+[root@redhat8 dir1]# cd ..
+[root@redhat8 filecmp]# cd dir2
+[root@redhat8 dir2]# cat b.txt
+Miracles happen every day
+[root@redhat8 dir2]# cd sdir1
+[root@redhat8 sdir1]# cat sb.txt
+Stupid is as stupid does
+```
+filecmp模块中cmp函数用来比较两个文件是否相同，在dir1示例如下：
+```python
+>>> import filecmp
+>>> filecmp.cmp('a.txt','b.txt')
+False
+>>> filecmp.cmp('a.txt','a_copy.txt')
+True
+>>> filecmp.cmp('a.txt','c.txt')
+True
+```
+filecmp模块中copyfiles函数用来比较两个不同目录下多个文件：
+```python
+>>> import filecmp
+>>> filecmp.cmpfiles('dir1','dir2',['a.txt','b.txt','c.txt','a_copy.txt'])
+(['a.txt', 'c.txt'], ['b.txt'], ['a_copy.txt'])
+```
+可以使用dircmp函数比较两个目录：
+```python
+>>> result = filecmp.dircmp('dir1','dir2')
+>>> result.report()
+diff dir1 dir2
+Only in dir1 : ['a_copy.txt']
+Only in dir2 : ['sdir2']
+Identical files : ['a.txt', 'c.txt']
+Differing files : ['b.txt']
+Common subdirectories : ['sdir1']
+>>> result.left_list
+['a.txt', 'a_copy.txt', 'b.txt', 'c.txt', 'sdir1']
+>>> result.right_list
+['a.txt', 'b.txt', 'c.txt', 'sdir1', 'sdir2']
+>>> result.left_only
+['a_copy.txt']
+```
