@@ -165,3 +165,72 @@ rpm -qa --qf  "%-20{NAME} %-10{VERSION} %-10{RELEASE} %-10{ARCH}\n" >/tmp/rpmlis
 
 ### 官方参考
 官方参考链接：[MustGather:Installation Manager issues for installing and updating WebSphere Application Server V8.0, V8.5, and V9.0](https://www.ibm.com/support/pages/node/157799#)
+
+## 类加载问题
+收集步骤：  
+1) 使用以下跟踪字符串启用和收集Application Server traces：
+```
+com.ibm.ws.classloader.*=all
+```
+Static trace:
+- 登录到管理控制台
+- 在左侧面板中，展开`Troubleshooting`,单击`Logs and Trace`
+- 选择要跟踪的应用程序服务器，然后在下一页上单击`Diagnostic Trace`链接
+- 选择`Configuration `选项卡。
+- 在`Trace Output`下，选择`File`单选按钮并指定`File Name`。另外，将`Maximum file size`增加到100 MB，并将`Maximum number of historical files`增加到10
+- 选择`Basic (Compatible) Trace Output Format`,除非IBM支持人员另有说明
+- 在同一面板上，单击右侧面板上`Additional Properties`下的`Change Log Detail Levels`
+- 在`Configuration tab`选项卡下，通过输入特定于您要为其收集数据的MustGather文档的跟踪字符串来指定`Trace Specification`
+- 单击` Apply `和`OK`,然后`Save`配置（选择`Synchronize changes with Nodes`选项）
+- 重新启动服务器以开始tracing
+
+Dynamic trace:
+- 登录到管理控制台
+- 在左侧面板中，展开`Troubleshooting`,单击`Logs and Trace`
+- 选择要跟踪的应用程序服务器，然后在下一页上单击`Diagnostic Trace`链接
+- 选择`Runtime`选项卡（服务器应已启动并正在运行，此选项卡才能显示）
+- 在`Trace Output`下，选择`File`单选按钮并指定`File Name`。另外，将`Maximum file size`增加到100 MB，并将`Maximum number of historical files`增加到10
+  - 重要提示：如果不希望此设置成为永久设置，不要选择`Save Runtime Changes to Configuration as well`
+- 在同一面板上，单击右侧面板上`Additional Properties`下的`Change Log Detail Levels`
+- 选择`Runtime`选项卡
+- 在`Trace Specification`下，输入要为其收集数据的特定MustGather的跟踪字符串
+- 单击` Apply `和`OK`,然后`Save`配置（选择`Synchronize changes with Nodes`选项）
+- 服务器不需要重新启动
+
+Stopping trace:
+- 在适当的跟踪选项卡（Configuration and/or Runtime）中，从`Trace Specification`中删除跟踪字符串
+- 单击` Apply `和`OK`,然后`Save`配置（选择`Synchronize changes with Nodes`选项）
+
+2) 通过管理控制台启用Java™虚拟机（JVM）类加载器跟踪:
+- 选择`Servers`，选择` Application servers`，然后选择要配置的服务器
+- 在`Server Infrastructure`部分中，打开`ava and Process Management`，然后选择`Process Definition`
+- 在`Additional Properties`下，选择`Java Virtual Machine`
+- 选中`Verbose class loading`复选框。
+- 将以下字符串添加到`Generic JVM arguments field`字段中：`Dws.ext.debug = true  -Dws.osgi.debug`
+- 单击`OK`
+
+3) 保存更改,停止服务器;   
+4) 清除JVM和OSGi类缓存,有关更多详细信息，请参阅如何清除WebSphere类高速缓存;    
+5) 备份和删除此WebSphere进程的所有WebSphere日志文件（SystemOut * .log，SystemErr * .log，native_stderr.log，native_stdout.log，startServer.log，stopServer.log和trace.log）。
+
+日志文件位于以下目录中：
+```
+<profile_root> / logs / server_name / * 
+```
+清除所有WebSphere Application Server FFDC日志。FFDC文件位于以下目录中：
+```
+<profile_root> / profile_name / logs / ffdc / *
+```
+注意：如果已配置为将FFDC日志文件写入其他位置，请相应地清除它们。
+
+6 )重新启动服务器,重现该问题。确保在WebSphere日志（SystemOut.log）和跟踪文件（trace.log）中生成了类加载器异常
+
+7 )针对问题概要文件运行收集器工具:
+- [Gathering information with the collector tool - V8.5](https://www.ibm.com/support/knowledgecenter/SSEQTP_8.5.5/com.ibm.websphere.base.doc/ae/ttrb_runct.html)
+- [Gathering information with the collector tool - V9.0](https://www.ibm.com/support/knowledgecenter/SSEQTP_9.0.5/com.ibm.websphere.base.doc/ae/ttrb_runct.html)
+
+### 参考链接
+官方参考链接：
+- [Classloader problems for WebSphere Application Server](https://www.ibm.com/support/pages/node/337371)
+- [Setting up a trace in WebSphere Application Server](https://www.ibm.com/support/pages/node/89123)
+- [How to clear the WebSphere class caches](www-01.ibm.com/support/docview.wss?uid=swg21607887)
