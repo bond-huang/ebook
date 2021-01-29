@@ -51,6 +51,7 @@ VIOserver1,active,9.200.104.132,1,1,1,1
 - 通过运行df命令（需要超级用户权限）验证HMC中的/tmp文件系统是否已满，如果满了需要清理
 
 ## 实例说明
+### 实例一
 &#8195;&#8195;在近期遇到过一种情况，就是同一个HMC的A机的a系统迁移到B机的b分区上了，b系统上原有RMC连接的网络弃用了，采用a分区的网络配置，这样就导致b上的RMC连接出现问题，`lspartition -dlpar`,命令还是可以看到a分区系统的信息，b分区的RMC连接异常，尝试过下面几种方法（hscroot用户）：
 - 直接运行`chsysstate -m <system name> -o rebuild -r sys`，不行
 - 重新启动HMC，不行，`lspartition -dlpar`看到结果还是一样
@@ -59,6 +60,9 @@ VIOserver1,active,9.200.104.132,1,1,1,1
 注意：
 - 如果在没有RMC连接情况下进行动态分区操作，会有提示需要在重启分区后生效，虽然看到HMC上的资源是修改后的资源数量，但是实际系统使用的还是原来的
 - 官方文档中有提到：更改网络设置或激活逻辑分区后，RMC连接大约需要五分钟来建立连接。建议在修改配置后，尽量等几分钟再查看状态
+
+### 实例二
+&#8195;&#8195;A分区安装后，RMC使用的是IP1，后来改成了IP2，但是HMC上记录的还是IP1信息，RMC连接状态就异常，使用命令`chsysstate -m <system name> -o rebuild -r sys`依然是不行，在HMC上重置了此物理机器的FSP连接后，等几分钟就正常了。
 
 ## 官方文档
 官方参考文档：[验证移动分区的RMC连接](https://www.ibm.com/support/knowledgecenter/zh/POWER7/p7hc3/iphc3hmcpreprmc.htm)
