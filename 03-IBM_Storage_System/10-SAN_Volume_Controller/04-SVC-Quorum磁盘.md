@@ -47,7 +47,7 @@ LU 必须满足以下条件，才能被视为候选定额磁盘：
 ## 参考链接
 关于定额磁盘官方相关描述和命令及HyperSwap配置或基于IP的光纤通道用法参考链接：
 - [配置定额](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_quorumoverview.html)
-- [定额磁盘配置]https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_scsiquorumdiskovr_1bchni.html
+- [定额磁盘配置](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_scsiquorumdiskovr_1bchni.html)
 - [定额磁盘创建和数据块分配](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_quorumdisksupportreq_293lei.html)
 - [使用 CLI 设置定额磁盘](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_setquorumdisksmdisks_cli_05151600.html)
 - [chquorum](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_chquorum.html)
