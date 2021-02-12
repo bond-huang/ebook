@@ -1,1 +1,10 @@
-# 云平台
+# OpenShift
+OpenShift是红帽的云开发平台即服务（PaaS）。
+
+官方网站：[https://www.openshift.com/](https://www.openshift.com/)
+
+学习链接:[OpenShift 容器平台简介和离线裸机安装步骤](https://csc.cn.ibm.com/roadmap/index/6cad9db3-bca0-45a8-abbc-c2c6fd38cb60?eventId=5c9e9c67-e55e-483a-a6bb-32f89b1bdc23)
+
+## 内容
+- [OpenShift-简介](https://ebook.big1000.com/14-%E4%BA%91%E5%B9%B3%E5%8F%B0/01-OpenShift/01-OpenShift-%E7%AE%80%E4%BB%8B.html)
+- [01-OpenShift-安装](https://ebook.big1000.com/14-%E4%BA%91%E5%B9%B3%E5%8F%B0/01-OpenShift/02-Openshift-%E5%AE%89%E8%A3%85.html)
