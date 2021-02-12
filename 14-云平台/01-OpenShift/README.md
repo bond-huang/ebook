@@ -7,4 +7,4 @@ OpenShift是红帽的云开发平台即服务（PaaS）。
 
 ## 内容
 - [OpenShift-简介](https://ebook.big1000.com/14-%E4%BA%91%E5%B9%B3%E5%8F%B0/01-OpenShift/01-OpenShift-%E7%AE%80%E4%BB%8B.html)
-- [01-OpenShift-安装](https://ebook.big1000.com/14-%E4%BA%91%E5%B9%B3%E5%8F%B0/01-OpenShift/02-Openshift-%E5%AE%89%E8%A3%85.html)
+- [OpenShift-安装](https://ebook.big1000.com/14-%E4%BA%91%E5%B9%B3%E5%8F%B0/01-OpenShift/02-Openshift-%E5%AE%89%E8%A3%85.html)
