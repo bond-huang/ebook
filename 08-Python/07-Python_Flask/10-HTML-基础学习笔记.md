@@ -58,10 +58,10 @@
 ```
 ### 常用标签
 表格中常用标签：
-- &#60;table&#62;:标签定义HTML表格,链接：[HTML <table> 标签](https://www.w3school.com.cn/tags/tag_table.asp)
-- &#60;tr&#62;：标签定义HTML表格中的行，链接：[HTML <tr> 标签](https://www.w3school.com.cn/tags/tag_tr.asp)
-- &#60;th&#62;:定义表格内的表头单元格,链接：[HTML <th> 标签](https://www.w3school.com.cn/tags/tag_th.asp)
-- &#60;td&#62;:标签定义HTML表格中的标准单元格，链接：[HTML <td> 标签](https://www.w3school.com.cn/tags/tag_td.asp)
+- &#60;table&#62;:标签定义HTML表格,链接：[HTML table 标签](https://www.w3school.com.cn/tags/tag_table.asp)
+- &#60;tr&#62;：标签定义HTML表格中的行，链接：[HTML tr 标签](https://www.w3school.com.cn/tags/tag_tr.asp)
+- &#60;th&#62;:定义表格内的表头单元格,链接：[HTML th 标签](https://www.w3school.com.cn/tags/tag_th.asp)
+- &#60;td&#62;:标签定义HTML表格中的标准单元格，链接：[HTML td 标签](https://www.w3school.com.cn/tags/tag_td.asp)
 
 ### 单元格的合并
 通过HTML&#60;td&#62;标签的colspan和rowspan属性实现:
