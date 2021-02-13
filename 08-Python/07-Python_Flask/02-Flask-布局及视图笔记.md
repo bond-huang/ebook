@@ -2,7 +2,7 @@
 学习Flask项目搭建笔记，边学习边实践。
 ## 项目布局
 项目包含如下内容（根据flask官方教程来的，内容基本一致）:
-- `flaskr/`：包含应用代码和文件的Python包
+- `osmanagement/`：包含应用代码和文件的Python包
 - `tests/` :包含测试模块的文件夹
 - `venv/` :Python虚拟环境，用于安装Flask和其他依赖的包
 - 告诉 Python 如何安装项目的安装文件
@@ -71,7 +71,7 @@ def create_app(test_config=None):
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
-    except OSERROR:
+    except OSError:
         pass
     # a simple page that says gump
     @app.route('/gump')
@@ -151,7 +151,7 @@ DROP TABLE IF EXISTS post;
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
-    passwork TEXT NOT NULL
+    password TEXT NOT NULL
 );
 
 CREATE TABLE post (
