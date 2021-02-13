@@ -97,4 +97,5 @@
 colspan参考学习链接：[https://www.w3school.com.cn/tags/att_td_colspan.asp](https://www.w3school.com.cn/tags/att_td_colspan.asp)     
 rowspan参考学习链接：[https://www.w3school.com.cn/tags/att_td_rowspan.asp](https://www.w3school.com.cn/tags/att_td_rowspan.asp)
 
-## 标题
+## 说明
+&#8195;&#8195;HTML5需要学习的比较多，后来买了一本书进行学习，笔记记录位置：[HTML+CSS+JavaScript/HTML5](https://ebook.big1000.com/15-HTML+CSS+JavaScript/01-HTML5/)，此处将只记录一些使用过程中的知识要点或注意事项
