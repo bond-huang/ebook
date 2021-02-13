@@ -5,7 +5,7 @@ HTML5学习笔记，主要学习教程：《HTML5+CSS3+JavaScript从入门到精
 一个简单的HTML5文档基本结构如下：
 ```html
 <!DOCTYPE html>
-<mate charset="UTF-8">
+<meta charset="UTF-8">
 <title>HTML5文档基本结构</title>
 <h1>HTML 的目标</h1>
 <p>HTML5的目标是为了能够创建简单的WEB程序，书写出更简洁的HTML代码。
@@ -31,11 +31,11 @@ HTML5学习笔记，主要学习教程：《HTML5+CSS3+JavaScript从入门到精
 ### 字符编码
 在HTML4中，使用meta元素定义文档的字符编码：
 ```html
-<mate http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 ```
 在HTML5中，简化了charset属性写法：
 ```html
-<mate charset="UTF-8">
+<meta charset="UTF-8">
 ```
 说明及注意：
 - 以上两种方法在HTML5中都有效，但是不能混用
@@ -46,3 +46,113 @@ HTML5学习笔记，主要学习教程：《HTML5+CSS3+JavaScript从入门到精
 - 不允许写结束标记的元素：area,base,br,col,command,embed,hr,img,input,keygen,link,meta,param,source,track,wbr
 - 可以省略结束标记的元素：li,dt,dd,p,rt,rp,optgroup,option,colgroup,thead,tbody,tfoot,tr,td,th
 - 可以省略全部标记的元素：html,head,body,colgroup,tbody
+
+&#8195;&#8195;不允许写结束标记的元素指不允许使用开始标记与结束标记将元素括起来形式，只允许使用&#60;元素/>形式书写，示例如下：
+```html
+<br></br>
+```
+在HTML5中正确书写方式：
+```html
+<br/>
+```
+&#8195;&#8195;可以省略全部标记的元素是指该元素可以完全被省略，但该元素还是以隐式的方式存在，例如body元素省略了，在文档结构中还是存在，可以使用document.body进行访问。
+### 布尔值
+示例说明如下：
+```html
+<!--只写属性，不写属性值，代表属性为true-->
+<input type="checkbox" checked>
+<!--不写属性值，代表属性为false-->
+<input type="checkbox">
+<!--属性值=属性名，代表属性为true-->
+<input type="checkbox" checked="checked">
+<!--属性值=空字符串，代表属性为true-->
+<input type="checkbox" checked="">
+```
+### 属性值
+&#8195;&#8195;属性值两边可以用双引号，也可以用单引号。在HTML5中，当属性值不包括空字符串、<、>、=、单引号、双引号等字符时，属性值两边的引号可以省略，示例：
+```html
+<input type="text">
+<input type='text'>
+<input type=text>
+```
+## HTML4元素
+这些元素基本在HTML5中通用。
+### 结构元素
+结构元素用于构建网页的结构，多指块状元素：
+
+元素|说明
+:---:|:---
+div|在文档中定义一块区域，即包含框、容器
+ol|根据一定排序进行的列表
+ul|没有排序的列表
+li|每条列表项
+dl|以定义的方式进行列表
+dt|定义列表中的词条
+dd|对定义的词条进行解释
+del|定义删除的文本
+ins|定义插入的文本
+h1-h6|标题1到标题6，定义不同级别标题
+p|定义段落结构
+hr|定义水平线
+
+### 内容元素
+内容元素定义了元素在文本中表示内容的语义，一般指文本格式化元素，多是行内元素：
+
+元素|说明
+:---:|:---
+span|在文本中定义一个区域，即行内包含框
+a|定义超链接
+abbr|定义缩写词
+address|定义地址
+dfn|定义术语，以斜体显示
+kbd|定义键盘键
+samp|定义样本
+var|定义变量
+tt|定义打印机字体
+code|定义计算机源代码
+pre|定义预定义格式文本，保留源代码格式
+bolckquote|定义大块内容引用
+cite|定义引文
+q|定义引用短语
+strong|定义重要文本
+em|定义文本为重要
+
+### 修饰元素
+修饰元素定义了文本的显示效果：
+
+元素|说明
+:---:|:---
+b|视觉提醒，显示为粗体
+i|语气强调，显示为斜体
+big|定义较大文本
+small|表示细则一类的旁注，文本缩小显示
+sup|定义上标
+sub|定义下标
+bdi和bdo|定义文本显示方向
+br|定义换行
+u|非文本注解，显示下划线
+
+## HTML4属性
+### 核心属性
+核心属性主要包括以下三个，此三个属性为大部分元素所拥有：
+- class：定义类规则或样式规则
+- id：定义元素的唯一标识
+- style：定义元素的样式声明
+
+### 语言属性
+语言属性主要定义元素的语言类型，包括两个属性：
+- lang：定义元素的语言代码或编码
+- dir：定义文本的方向，包括ltr和rtl取值，分别标识从左向右和从右向左
+
+### 键盘属性
+键盘属性定义元素的键盘访问方法，包括两个属性：
+- accesskey：定义访问某元素的键盘快捷键
+- tabindex：定义元素的Tab键索引编号
+
+例如在文档中插入3个超链接，并分别定义tabindex属性，可以通过Tab键快速切换超链接：
+```html
+<a href="#" tabindex="1">Tab 1</a>
+<a href="#" tabindex="2">Tab 2</a>
+<a href="#" tabindex="3">Tab 3</a>
+```
+### 内容属性
