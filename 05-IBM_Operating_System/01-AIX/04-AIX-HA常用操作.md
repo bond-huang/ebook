@@ -3,12 +3,13 @@ PowerHA是AIX系统中常用的高可用软件。
 ## 日志查看和收集
 ### 日志查看
 大多数HA日志存放在/var/hacmp目录下，常用的有：
-- 命令`errpt -e`输出：系统日志，会有HA集群事件
+- 命令`errpt -e`输出：系统日志，会有HA集群事件，也可以查看/var/adm/ras/errlog文件
 - /var/hacmp/adm/cluster.log：包含由PowerHA SystemMirror脚本和守护程序生成的带时间戳的格式化消息，诊断集群问题时候首先检查此文件
 - /var/hacmp/log/hacmp.out，包含脚本执行的每个命令的逐行记录，包括每个命令的所有参数的值
 - /var/hacmp/clverify/clverify.log：集群验证详细输出
 - /var/hacmp/log/autoverify.log：在自动集群验证运行期间发生的任何警告或错误
 - /var/hacmp/log/clutils.log：包含有关日期，时间，结果以及哪个节点执行了自动集群配置验证的信息
+- /var/adm/ras/syslog.caa:CAA日志，CAA即Cluster-Aware AIX
 
 在检查启动问题时候，启动HA的时候，跟踪hacmp.out输出查看日志，执行命令：`tail -f hacmp.out`。     
 在PowerVM环境，通常要检查netmon.cf配置，路径：/usr/es/sbin/cluster/netmon.cf。
@@ -103,3 +104,30 @@ smit查看及修改方法：
 官方说明：[PowerHA SystemMirror use of Cluster Aware AIX ](https://www.ibm.com/support/knowledgecenter/zh/SSPHQG_7.2/concept/ha_concepts_ex_cluster.html)
 
 ## 常见问题
+### 同步问题
+问题一：    
+&#8195;&#8195;同步时候报error时间戳问题，在同步时候选项中第二个选项选择yes可以自动修复这个问题（在HA停止状态下才有此选项），
+Force synchronization if verification fails? [No] to 
+Force synchronization if verification fails? [Yes] 
+
+问题二：    
+&#8195;&#8195;A是主节点在运行资源组，B是备节点未启动，A可以同步到B（可能有warring说配置不一致），B也可以启动，但是启动后查看状态B看到A是down，A看到B是down，如果尝试从A向B切换，会发现选择不了B节点的，建议步骤：停掉B备节点，然后检查两个节点的rhost文件：
+- HA6:etc/es/sbin/cluster/rhosts
+- HA7:/etc/cluster/rhosts
+
+### 切换问题
+问题一：      
+&#8195;&#8195;在切换HA过程中很慢，看日志是发现HA脚本出现问题过不去，执行选项
+`Recover From PowerHA SystemMirror Script Failure`即可，然后去检查修复脚本的问题。        
+问题二:     
+&#8195;&#8195;A是主节点在运行资源组，B是备节点HA也在运行，状态看都正常，但是从A向B切换后发现部分文件系统挂载，然后又自动卸载，查看状态节点资源组是error状态，如果排除脚本的问题，那可能是文件系统配置问题，建议检查/etc/filesystems是否一致，还有就是检查文件系统，是否有在B机单独在HA的文件系统中加过文件或者目录或者软链接等。       
+问题三:       
+&#8195;&#8195;A往B切换过程中出现问题，A变成error状态，资源组两边都没有，执行选项
+`Recover From PowerHA SystemMirror Script Failure`后HA状态看起来正常，但是B机的NAS文件系统未挂载（在HA脚本中有写挂载），手动挂载后，发现A机`df -g`命令有报错，并且不会自动返回到shell。检查解决步骤：
+- 检查rc.local和inittab都没有异常的选项
+- 检查A机HA停止脚本中有无效的NFS文件系统umonut选项，注释或者删除
+- 检查A机HA停止脚本中有漏掉的NFS文件系统umonut选项，添加上去
+- 手动执行umonut漏掉的NFS文件系统
+- 执行后发现有操作系统的文件系统umount了，手动mount或者重启即可
+
+### 节点通信问题
