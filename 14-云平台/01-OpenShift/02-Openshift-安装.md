@@ -59,3 +59,28 @@
 - 负载均衡服务器
 - Web服务器
 - 执行oc命令的客户端
+
+### Openshift离线Bare metal安装步骤
+步骤如下：
+- 堡垒机准备：
+    - DNS & DHCP:dnsmasq
+    - Web服务器：Niginx
+    - LB服务器:haproxy
+    - Mirror Registry:Registry docker using podman
+    - Openshift-install & Oc命令行
+- 创建虚拟机（根据需求创建）：
+    - 1 bootstrap
+    - 3 master
+    - 2 worker
+    - 1 bastion
+- 生成点火文件：使用openshift-install生成的点火文件
+- 开始安装：从操作系统引导开始自动安装
+- 监视安装完成：观察安装进度，批准证书，配置失败的operator
+
+### 在裸机上部署安装程序置备的集群
+&#8195;&#8195;以上内容均摘自IBM在线实验室教程。原版也参考红帽官方《在裸机上部署安装程序置备的集群》和《在 vSphere 上安装》安装手册的基础上，结合了IBM实验室各方同仁在vSphere上以裸机方式安装OpenShift Container Platform的配置经验，尽量简化了安装步骤，屏蔽了安装过程中各种可能导致安装失败的配置错误,以更加贴近生产集群部署实践的方式体验OpenShift Container Platform安装过程。
+
+相关链接如下：
+在裸机上部署安装程序置备的集群：[在裸机上部署安装程序置备的集群](https://access.redhat.com/documentation/zh-cn/openshift_container_platform/4.6/html/deploying_installer-provisioned_clusters_on_bare_metal/index?_ga=2.241581835.845499386.1613305155-1408166508.1612514124)     
+在vSphere上安装：[安装 OpenShift Container Platform vSphere 集群](https://access.redhat.com/documentation/zh-cn/openshift_container_platform/4.6/html/installing_on_vsphere/index?_ga=2.44110765.845499386.1613305155-1408166508.1612514124)    
+IBM上机实验地址：[Openshift container Platfom (OCP) bare metal installation](https://csc.cn.ibm.com/src/index/425ebe3f-163d-4bd2-8ffd-a3770f9f5162?rtype=experiment&roadmapId=6cad9db3-bca0-45a8-abbc-c2c6fd38cb60&eventId=5c9e9c67-e55e-483a-a6bb-32f89b1bdc23)
