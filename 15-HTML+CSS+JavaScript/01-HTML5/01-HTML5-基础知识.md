@@ -219,3 +219,117 @@ HTML5新增了很多专用元素，简单说明如下。
 <video src="ssn-030.avi" controls="controls">video 元素</video>
 ```
 在HTML4中使用object元素表示。
+#### audio元素
+定义音频，比如音乐或其它音频流：
+```html
+<audio src="yesterday once nore.mp3">audio 元素</video>
+```
+在HTML4中使用object元素表示。
+#### embed元素
+用来插入各种多媒体，格式可以是Midi、Wav、AIFF、AU、MP3等：
+```html
+<embed src="home.wav" />
+```
+在HTML4中使用object元素表示。
+#### marky元素
+用来在视觉上向用户呈现那些需要突出显示或高亮的显示文本，例如在搜索结构中高亮关键字：
+```html
+<mark></mark>
+```
+在HTML4中表示为：
+```html
+<span></span>
+```
+#### dialog元素
+定义对话框或窗口：
+```html
+<dialog open>这是打开的对话窗口</dialog>
+```
+在HTML4中表示为：
+```html
+<div id="dialog">这是打开的对话窗口</div>
+```
+#### bdi元素
+定义文本的文本方向，使其脱离其周围文本的方向设置：
+```html
+<ul>
+<li>Username <bdi>Thor</bdi>:80 prints</li>
+<li>Username <bdi>Batman</bdi>:78 prints</li>
+</ul>
+```
+#### figcaption元素
+定义figure元素的标题：
+```html
+<figure>
+    <figcaption>这是一个图片</figcaption>
+    <img src="test.jpg" width="500" heigth="800" />
+</figure>
+```
+在HTML4中表示为：
+```html
+<div id = "figure">
+    <h2>这是一个图片</h2>
+    <img src="test.jpg" width="500" heigth="800" />
+</div>
+```
+#### time元素
+表示日期或时间，也可以同时表示：
+```html
+<time></time>
+```
+在HTML4中表示为：
+```html
+<span></span>
+```
+#### canvas元素
+&#8195;&#8195;表示图形，如图表和其它图像。此元素本身没有行为，仅提供一块画布，但是可以把一个绘图API展现给客户端JavaScript，使脚本能够把想绘制的东西绘制到此画布上：
+```html
+<canvas id="myCanvas" width="400" heigh="400"></canvas>
+```
+在HTML4中表示为：
+```html
+<object data="inc/hdr.svg" type="image/svg+xml" width="400" heigh="400">
+</object>
+```
+#### output元素
+表示不同类型的输出，比如脚本的输出：
+```html
+<output>></output>
+```
+在HTML4中表示为：
+```html
+<span></span>
+```
+#### source元素
+为媒介元素（例如video和audio）定义媒介资源：
+```html
+<source>
+```
+在HTML4中表示为：
+```html
+<param>
+```
+#### menu元素
+表示菜单列表。当希望列出表单控件时使用该标签：
+```html
+<menu>
+    <li><input type="checkbox" />Green</li>
+    <li><input type="checkbox" />Red</li>
+</menu>
+```
+在HTML4中，menu元素不推荐使用。
+#### reby元素
+表示ruby注释（中文注音或字符）：
+```html
+<ruby>美<rt><rp>(</rp>ㄇㄟˇ<rp>)</rp></rt></ruby>
+```
+#### rt元素
+表示字符（中文注音或字符）的解释或发音：
+```html
+<ruby>美<rt>ㄇㄟˇ</rt></ruby>
+```
+#### rp元素
+在ruby注释中使用，以定义不支持ruby元素的浏览器所显示的内容：
+```html
+<ruby>美<rt><rp>(</rp>ㄇㄟˇ<rp>)</rp></rt></ruby>
+```
