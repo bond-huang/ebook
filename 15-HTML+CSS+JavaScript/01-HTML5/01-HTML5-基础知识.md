@@ -333,3 +333,70 @@ HTML5新增了很多专用元素，简单说明如下。
 ```html
 <ruby>美<rt><rp>(</rp>ㄇㄟˇ<rp>)</rp></rt></ruby>
 ```
+#### wbr元素
+&#8195;&#8195;表示软换行。br元素表示必须换行，wbr意思是浏览器窗口或父级元素的宽度足够宽时（没必要换行）不进行换行，宽度不够时主动换行。
+#### command元素
+表示命令按钮，如单选按钮、复选框或按钮：
+```html
+<command onclick="cut()" lable="cut">
+```
+目前只有Internet Explorer支持command标签。
+#### details和summary元素
+&#8195;&#8195;表示用户要求得到并且可以得到的细节信息，与summary元素配合使用。summary元素提供标题或图例，标题是可见的，用户单击标题时，会显示出细节信息：
+```html
+<details>
+    <summary>Shawshank Redemption</summary>
+    You know some birds are not meant to be caged, their feathers are just too bright.
+</details>
+```
+#### datalist元素
+表示可选数据的列表，与input元素配合使用，可以制作输入值的下拉列表：
+```html
+<datalist></datalist>
+```
+#### datagrid元素
+表示可选数据的列表，以树形列表的形式显示：
+```html
+<datagrid></datagrid>
+```
+此标签好像很少用或者废除了。
+#### keygen标签
+表示生成密钥：
+```html
+<keygen>
+```
+主流浏览器一般都支持keygen标签，除了Internet Explorer和Safari。
+#### progress标签
+表示运行中的进程，可以使用progress元素来显示JavaScript中耗费的时间的函数的进程：
+```html
+<progress></progress>
+```
+#### meter元素
+度量给定范围（gauge）内的数据：
+```html
+<meter value="3" min="0" max="10">十分之三</meter>
+<meter value="0.6">60%</meter>
+```
+#### track元素
+定义用在媒体播放器中的文本轨道。
+
+### 表单元素
+通过type属性，HTML5为input元素新增了很多类型，如下表所示：
+
+类型|格式|说明
+:---:|:---:|:---
+tel|&#60;input type="tel"/>|表示必须输入电话号码的文本框
+search|&#60;input type="search"/>|表示搜索文本框
+url|&#60;input type="url"/>|表示必须输入URL地址的文本框
+email|&#60;input type="emali"/>|表示必须输入电子邮件地址的文本框
+datetime|&#60;input type="datetime"/>|表示日期和时间的文本框
+date|&#60;input type="date"/>|表示日期文本框
+month|&#60;input type="month"/>|表示月份文本框
+week|&#60;input type="week"/>|表示星期文本框
+time|&#60;input type="time"/>|表示时间文本框
+datetime-local|&#60;input type="datetime-local"/>|表示本地时间和日期文本框
+number|&#60;input type="number"/>|表示必须输入数字的文本框
+range|&#60;input type="range"/>|表示范围文本框
+color|&#60;input type="color"/>|表示颜色文本框
+
+## HTML5属性
