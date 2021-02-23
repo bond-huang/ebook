@@ -10,4 +10,4 @@
 CSS文档：[https://developer.mozilla.org/en-US/docs/Web/CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
 
 ## 内容
-- [CSS3-基本用法](https://ebook.big1000.com/15-HTML+CSS+JavaScript/02-CSS/01-CSS3-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95.html)
+- [CSS3-基础](https://ebook.big1000.com/15-HTML+CSS+JavaScript/02-CSS/01-CSS3-%E5%9F%BA%E7%A1%80.html)
