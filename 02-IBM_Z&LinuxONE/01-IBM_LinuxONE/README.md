@@ -11,6 +11,8 @@ Open Source Software on IBM LinuxONE：[https://www.ibm.com/it-infrastructure/li
 
 IBM LinuxONE CSDN主页:[https://linuxone.csdn.net/](https://linuxone.csdn.net/)
 
+LinuxONE安装体验tomcat：[部署Tomcat，体验Tomcat](https://csc.cn.ibm.com/labs/lab/384e76a9-a115-4f62-8cf6-fe76c82c5b17/da63749a-3478-48eb-a5ce-996e688dd102)
+
 ## 内容
 - [LinuxONE-数据收集](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/01-LinuxONE-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html)
 - [LinuxONE-学习笔记](https://ebook.big1000.com/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/02-LinuxONE-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html)
