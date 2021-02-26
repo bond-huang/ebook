@@ -102,7 +102,7 @@
 - 在页面的底部可以看到`Webhooks`组
 - 点击`Generic`的`Copy URL with Secret`复制Webhook的URL
 - 回到终端窗口，用`vi`创建`webhook`文件，并将拷贝的`URL`粘贴在文件中保存退出
-- 再用`vi `修改`java `源文件`src/main/java/org/openshift/quickstarts/undertow/servlet/PhoneBookServlet.java`文件
+- 再用`vi`修改`java`源文件`src/main/java/org/openshift/quickstarts/undertow/servlet/PhoneBookServlet.java`文件
     ```
     vi src/main/java/org/openshift/quickstarts/undertow/servlet/PhoneBookServlet.java
     将第 87 行的
@@ -136,3 +136,26 @@
 - 点击`圆形`图标右上角的`Open URL`，可以打开应用的`Welcome`页面，至此该应用部署成功
 - 接下来，可以通过左导航的`+Add`，然后在右侧点击`Samples`，继续添加其他应用
 
+## Build失败
+记录下bulid失败几种情况。
+### Git Repository URL填写错误
+部署应用的步骤不多，最容易出现错误的就是`Git Repository URL`写错了。
+
+日志查看步骤：
+- 在左侧导航栏顶部选择`Administrator`视图
+- 点击`Projects`后在右侧点击`cscdemoXX`项目
+- 点击`Workloads`打开该选项卡
+- 点击`(DC) nodejs-mongodb-example`项目可以看到刚刚部署的`Node.JS`应用信息
+- 点击`Build`任务后面的`View Logs`可以查看`Build`任务的运行日志
+
+修改配置步骤：
+- 点击右上角`Action`展开下拉菜单
+- 选择`Edit Build Config`选项
+- 在`YAML`选项中会显示配置文件，找到`type:Git`,下面`uri`中有之前输入的Git Repository URL
+- 检查修改成正确地址后，点击左下角`save`保存
+- 点击右上角`Action`展开下拉菜单
+- 选择`Start Build`选项重新开始build
+- 通过上面的查看步骤查看状态
+
+## 红帽官方链接
+更多操作参考红帽官方：[GETTING STARTED GUIDE](https://access.redhat.com/documentation/en-us/red_hat_codeready_containers/1.18/html/getting_started_guide/index?_ga=2.142747381.190581808.1613978048-540765612.1577072940)
