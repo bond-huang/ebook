@@ -9,6 +9,6 @@ Bootstrap文档：[https://v3.bootcss.com/](https://v3.bootcss.com/)
 
 Bootstrap图标库：[https://icons.bootcss.com/](https://icons.bootcss.com/)
 
-Bootstrap runoob教程:[runoob.com 中文教程](https://www.runoob.com/bootstrap/bootstrap-environment-setup.html)
+Bootstrap runoob教程：[runoob.com 中文教程](https://www.runoob.com/bootstrap/bootstrap-environment-setup.html)
 
 ## 内容
