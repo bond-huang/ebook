@@ -109,55 +109,55 @@ CSS方式,在CSS中使用SVG图标：
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>Bootstrap使用测试</title>
-	<!-- 包含头部信息用于适应不同设备 -->
+    <!-- 包含头部信息用于适应不同设备 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
     <!-- bootstrap图标 -->
-	<link rel="stylesheet" href="./bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="./bootstrap-icons/bootstrap-icons.css">
 </head>
 <body>
-	<div class="container">
-	<h2>示例表格</h2>
-	<p>The system disk performance is follow:</p>
-	<!-- 创建响应式表格 (将在小于768px的小型设备下水平滚动) -->
-	<div class="table-responsive">          
+    <div class="container">
+    <h2>示例表格</h2>
+    <p>The system disk performance is follow:</p>
+    <!-- 创建响应式表格 (将在小于768px的小型设备下水平滚动) -->
+    <div class="table-responsive">          
        <table class="table table-striped table-bordered">
-	   <thead>
-		<tr>
-			<th rowspan="2">Disk</th>
-			<th colspan="2">kbps</th>
-			<th colspan="2">tps</th>
-		</tr>
-		<tr>
-			<th>max</th>
-			<th>avg</th>
-			<th>max</th>
-			<th>avg</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-			<td>hdisk2</td>
-			<td>1.4</td>
-			<td>1.1</td>
-			<td>5</td>
-			<td>1.7</td>
-		</tr>
-		</tbody>
-		</table>
-	</div>
-		<h2>图标示例</h2> 
-		<!-- 从bootstrap-icons.css中获取图标 -->
-		<p>这是一棵树：<i class="bi bi-tree-fill"></i></p>
-		<p>这是一棵大绿树：<i class="bi bi-tree-fill" style="font-size: 2rem; color: green;"></i></p>
-		<!-- 作为外部图片文件引用 -->
-		<p>闹钟图标：<img src="./bootstrap-icons/alarm.svg" alt="Bootstrap" width="25" height="25"></p>
-	</div>
-	<!-- JavaScript放置在后面可以使页面加载速度更快 -->
+       <thead>
+        <tr>
+            <th rowspan="2">Disk</th>
+            <th colspan="2">kbps</th>
+            <th colspan="2">tps</th>
+        </tr>
+        <tr>
+            <th>max</th>
+            <th>avg</th>
+            <th>max</th>
+            <th>avg</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>hdisk2</td>
+            <td>1.4</td>
+            <td>1.1</td>
+            <td>5</td>
+            <td>1.7</td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+        <h2>图标示例</h2> 
+        <!-- 从bootstrap-icons.css中获取图标 -->
+        <p>这是一棵树：<i class="bi bi-tree-fill"></i></p>
+        <p>这是一棵大绿树：<i class="bi bi-tree-fill" style="font-size: 2rem; color: green;"></i></p>
+        <!-- 作为外部图片文件引用 -->
+        <p>闹钟图标：<img src="./bootstrap-icons/alarm.svg" alt="Bootstrap" width="25" height="25"></p>
+    </div>
+    <!-- JavaScript放置在后面可以使页面加载速度更快 -->
     <script type="text/javascript" src="./bootstrap/jquery/jquery-3.5.1.js"></script>
-	<script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
 </body>
 </html>
 ```
@@ -175,25 +175,25 @@ CSS方式,在CSS中使用SVG图标：
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>Bootstrap使用测试</title>
-	<!-- 包含头部信息用于适应不同设备 -->
+    <!-- 包含头部信息用于适应不同设备 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 <body>
-	<div class="container">
-	<h2>图像示例</h2>
-	  <p>图片以椭圆型展示：</p>
-	  <!-- 创建响应式图片(将扩展到父元素) -->
-	  <img src="erhai.jpg" class="img-responsive img-circle" alt="洱海" width="304" height="236"> 
+    <div class="container">
+    <h2>图像示例</h2>
+      <p>图片以椭圆型展示：</p>
+      <!-- 创建响应式图片(将扩展到父元素) -->
+      <img src="erhai.jpg" class="img-responsive img-circle" alt="洱海" width="304" height="236"> 
     <h2>图标示例</h2>  
       <p>云图标: <span class="glyphicon glyphicon-cloud"></span></p>      
       <p>信件图标: <span class="glyphicon glyphicon-envelope"></span></p>            
       <p>搜索图标: <span class="glyphicon glyphicon-search"></span></p>
       <p>打印图标: <span class="glyphicon glyphicon-print"></span></p>      
       <p>下载图标：<span class="glyphicon glyphicon-download"></span></p>  
-	</div>
+    </div>
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
