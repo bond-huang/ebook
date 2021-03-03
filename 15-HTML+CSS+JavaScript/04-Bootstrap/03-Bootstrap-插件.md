@@ -1,4 +1,4 @@
-# Bootstrap-下载及使用
+# Bootstrap-插件
 学习过程中记录的笔记，学习教程及参考链接：
 - [runoob.com Bootstrap教程](https://www.runoob.com/bootstrap/bootstrap-environment-setup.html)
 - [bootcss.com Bootstrap教程](https://v3.bootcss.com/getting-started/)
