@@ -131,3 +131,65 @@
 </body>
 </html>
 ```
+示例说明：
+- 此示例采用链接方式触发模态框，和按钮没什么区别
+- 示例中增加了一些输入选项，底部按钮增加提交保存按钮
+
+## 提示工具
+&#8195;&#8195;提示工具（Tooltip）插件根据需求生成内容和标记，默认情况下是把提示工具（tooltip）放在它们的触发元素后面。   
+两种方式添加提示工具：
+```html
+<!-- 通过data属性 -->
+<a href="#" data-toggle="tooltip" title="Example tooltip">鼠标悬停</a>
+<!-- 通过JavaScript触发提示工具（tooltip）-->
+$('#identifier').tooltip(options)
+```
+示例如下：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>提示工具示例</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div style="padding: 50px 100px 30px;">
+    <!-- 使用按钮 -->
+    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">Tooltip on bottom</button>
+    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Tooltip on right">Tooltip on bottom</button>
+</div>
+<div style="padding: 50px 100px 30px;">
+    <!-- 使用锚 -->
+    <a href="#" class="tooltip-test" data-toggle="tooltip" title="Tooltip on top">
+    Tooltip on top</a>
+    <a href="#" class="tooltip-test" data-toggle="tooltip" data-placement="left" title="Tooltip on left">Tooltip on left</a>
+</div>
+<script>
+$(function(){
+    $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+</body>
+</html>
+```
+进一步使用JavaScript触发提示工具示例：
+```html
+<!-- 通过JavaScript触发提示工具（tooltip）-->
+<div style="padding: 100px 100px 10px;">
+    <a href="#" class="tooltip-show" data-toggle="tooltip" title="show">Tooltip方法show</a>
+    <p class="tooltip-options" >
+    <a href="#" data-toggle="tooltip" title="<h2>I'am Header2</h2>">
+        Tooltip方法options</a>.
+    </p>
+<script>
+    $(function () { $('.tooltip-show').tooltip('show');});
+    $(function () { $(".tooltip-options a").tooltip({html : true });});
+</script>
+```
+示例说明：
+- 注意要留有空间，要不然不会弹出来，达不到预期效果
+- Tooltip插件不是纯CSS插件，如需使用该插件，必须用jQuery激活它（读取js）。示例中的JS脚本即是激活方法
