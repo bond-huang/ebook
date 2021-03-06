@@ -193,3 +193,93 @@ $(function(){
 示例说明：
 - 注意要留有空间，要不然不会弹出来，达不到预期效果
 - Tooltip插件不是纯CSS插件，如需使用该插件，必须用jQuery激活它（读取js）。示例中的JS脚本即是激活方法
+
+## 标签页（Tab）插件
+&#8195;&#8195;标签页（Tab）通过结合一些data属性，可以创建一个标签页界面。通过这个插件您可以把内容放置在标签页或者是胶囊式标签页甚至是下拉菜单标签页中。
+### 用法
+通过data属性：需要添加`data-toggle="tab"`或`data-toggle="pill"`到锚文本链接中:
+```html
+<ul class="nav nav-tabs">
+    <li><a href="#identifier" data-toggle="tab">Home</a></li>
+     ...
+</ul>
+```
+可以使用Javascript来启用标签页，如下所示：
+```js
+$('#myTab a').click(function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+})
+```
+### 示例
+示例如下：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>标签页tab插件</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+</head>
+<body style="background: #f0f0f0">
+<div class="container-fluid">
+    <div class="row-fluid">
+    <div class="col-sm-2">
+       <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Main Category</h3>
+          </div>
+            <ul id="myTab" class="nav nav-stacked">
+                <li class="active"><a href="#IBM" data-toggle="tab">IBM</a></li>
+                <li><a href="#Python" data-toggle="tab">Python</a></li>
+            </ul>
+       </div>
+    </div>
+    <div class="col-sm-10">
+        <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="IBM">
+            <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">IBM Home Page</h3>
+            </div>
+            <div class="panel-body" aria-hidden="true">
+                <div class="col-sm-3">
+                <a href="https://www.ibm.com/cn-zh">IBM官方中文网站</a></div>
+                <div class="col-sm-3">
+                <a href="https://www.ibm.com/support/knowledgecenter">IBM Knowledge Center</a></div>
+                <div class="col-sm-3">
+                <a href="https://www.ibm.com/support/fixcentral/">IBM Fix Central</a></div>
+                <div class="col-sm-3">
+                <a href="https://www.secure.ecurep.ibm.com/app/upload">IBM Ecurep</a></div>
+            </div>
+          </div>
+    </div>
+        <div class="tab-pane fade" id="Python">
+            <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Python</h3></div>
+                <div class="panel-body">
+                Panel content
+            </div>
+            </div>
+            <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">flask</h3></div>
+                <div class="panel-body">
+                Panel content
+            </div>
+            </div>
+	    </div>
+	</div>
+ </div>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
+```
+示例说明：
+- 示例中，第一个&#60;li>里面有`class="active"`，其它的添加了会不生效
+- 示例中，点击不同的按钮，就会切换对应的内容块
+
+## 待补充
