@@ -46,6 +46,15 @@ CREATE TABLE post (
 - 在created列中，定义了默认值，DEFAULT CURRENT_TIMESTAMP表示获取当前时间戳
 - 最后一句是设置外键，作用是保持数据一致性，完整性；控制存储在外键表中的数据，使两张表形成关联
 
+### 注意事项
+最近创建时候发现报错：
+```
+  File "D:\navigator\nav\db.py", line 20, in init_db
+    db.executescript(f.read().decode('utf8'))
+sqlite3.OperationalError: near ")": syntax error
+```
+以为Python代码写错了，后来发现是在创建表的SQL语句中，最后一项加了逗号，去掉即可。
+
 ### 参考链接
 创建表参考教程：
 - [RUNOOB.COM SQLite创建表](https://www.runoob.com/sqlite/sqlite-create-table.html)
