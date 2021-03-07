@@ -138,7 +138,7 @@ File "D:\OS-Management\osmanagement\templates\base.html", line 23, in template
 jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
 ```
 一般是`{%`的问题，中间有空格或者缺少空格或者写错了，找了半天找到下面语句中两处错误：
-```
+```html
 <table>{%block title %}{$ endblock %} - osmanagement</table>
 ```
 修改后进入`http://127.0.0.1:5000/auth/register`可以看到注册的页面,注册后报错了：
@@ -149,7 +149,7 @@ werkzeug.exceptions.BadRequestKeyError: 400 Bad Request: The browser (or proxy) 
 KeyError: 'password'
 ```
 &#8195;&#8195;应该是`request.form['password']`用法不支持还是错了，改成`request.form.get('password')`后不报错，但是提示`Password is required!`,也就是相当于没获取到密码,查了半天是前端register.html和login.html里面这句都写错了，`name="username"`应该是`name="password"`：
-```
+```html
 <input type="password" name="username" id="password" required>
 ```
 修改后运行报错变了：
@@ -175,7 +175,7 @@ passwork TEXT NOT NULL
 - 改动静态文件后需要刷新页面，如果刷新无效，需要清除浏览器的缓存
 
 在style.css文件中写入如下内容：
-```
+```css
 html { font-family: sans-serif; background: #eee; padding: 1rem; }
 body { max-width: 960px; margin: 0 auto; background: white; }
 h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
