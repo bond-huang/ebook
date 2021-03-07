@@ -72,5 +72,90 @@ bash-5.0# python3 test.py
 ```
 ## NumPY
 &#8195;&#8195;Numeric Python扩展(NumPy)定义了另一种数组类型，是一个第三方库，需要安装，可以用于在数组提取某一列元素，或者矩阵按列进行重新组成新矩阵。官方网站：[https://numpy.org/](https://numpy.org/)
+## 字典组合列表实例
+例如有如下list：
+```py
+[{'id':1,'main':'IBM','sub':'power','name':'p720','url':'p720.com'},
+{'id':2,'main':'IBM','sub':'power','name':'e980','url':'e980.com'},
+{'id':3,'main':'IBM','sub':'storage','name':'v7000','url':'v7000.com'},
+{'id':4,'main':'Python','sub':'flask','name':'huang','url':'big100.com'},
+{'id':5,'main':'Python','sub':'flask','name':'flask','url':'flask.com'},
+{'id':6,'main':'Python','sub':'jinja2','name':'jinja2','url':'jinja2.com'},
+{'id':7,'main':'html','sub':'css','name':'css','url':'css.com'}]
+```
+根据字典中的key值进行排序，示例：
+```py
+>>> from operator import itemgetter
+>>> links = [{'id':1,'main':'IBM','sub':'power','name':'p720','url':'p720.com'},{'id':2,'m
+ain':'IBM','sub':'power','name':'e980','url':'e980.com'},{'id':3,'main':'IBM','sub':'storage','name':'v7000','url':'v7000.com'},{'id':4,'main':'Python','sub':'flask','name':'huang','url':'big100.com'},{'id':5,'main':'Python','sub':'flask','name':'flask','url':'flask.com'},{'id':6,'main':'Python','sub':'jinja2','name':'jinja2','url':'jinja2.com'},{'id':7,'main':'html','sub':'css','name':'css','url':'css.com'}]
+links.sort(key=itemgetter('sub'))
+```
+根据字典中key值进行筛选：
+```py
+>>> from itertools import groupby
+>>> for i in groupby(links,key=itemgetter('main')):
+...     print(i)
+... 
+('IBM', <itertools._grouper object at 0x7fb6e34ed518>)
+('Python', <itertools._grouper object at 0x7fb6e34ede80>)
+('html', <itertools._grouper object at 0x7fb6e34ed518>)
+```
+可以看到返回的是一个对象，遍历查看内容：
+```python
+>>> for i,j in groupby(links,key=itemgetter('main')):
+...     print(i)
+...     for k in j:
+...             print(k) 
+IBM
+{'id': 1, 'main': 'IBM', 'sub': 'power', 'name': 'p720', 'url': 'p720.com'}
+{'id': 2, 'main': 'IBM', 'sub': 'power', 'name': 'e980', 'url': 'e980.com'}
+{'id': 3, 'main': 'IBM', 'sub': 'storage', 'name': 'v7000', 'url': 'v7000.com'}
+Python
+{'id': 4, 'main': 'Python', 'sub': 'flask', 'name': 'huang', 'url': 'big100.com'}
+{'id': 5, 'main': 'Python', 'sub': 'flask', 'name': 'flask', 'url': 'flask.com'}
+{'id': 6, 'main': 'Python', 'sub': 'jinja2', 'name': 'jinja2', 'url': 'jinja2.com'}
+html
+{'id': 7, 'main': 'html', 'sub': 'css', 'name': 'css', 'url': 'css.com'}
+```
+可以看到进行了分类对应。进一步再通过key：sub进行分类：
+```python
+power
+[{'id': 1, 'main': 'IBM', 'sub': 'power', 'name': 'p720', 'url': 'p720.com'}, {'id': 2, 'main': 'IBM', 'sub': 'power', 'name': 'e980', 'url': 'e980.com'}]
+storage
+[{'id': 3, 'main': 'IBM', 'sub': 'storage', 'name': 'v7000', 'url': 'v7000.com'}]
+flask
+[{'id': 4, 'main': 'Python', 'sub': 'flask', 'name': 'huang', 'url': 'big100.com'}, {'id': 5, 'main': 'Python', 'sub': 'flask', 'name': 'flask', 'url': 'flask.com'}]
+jinja2
+[{'id': 6, 'main': 'Python', 'sub': 'jinja2', 'name': 'jinja2', 'url': 'jinja2.com'}]
+css
+[{'id': 7, 'main': 'html', 'sub': 'css', 'name': 'css', 'url': 'css.com'}]
+```
+继续整理下，把弄到一个列表里面去：
+```python
+from operator import itemgetter
+from itertools import groupby
+links = [{'id':1,'main':'IBM','sub':'power','name':'p720','url':'p720.com'},{'id':2,'main':'IBM','sub':'power','name':'e980','url':'e980.com'},{'id':3,'main':'IBM','sub':'storage','name':'v7000','url':'v7000.com'},{'id':4,'main':'Python','sub':'flask','name':'huang','url':'big100.com'},{'id':5,'main':'Python','sub':'flask','name':'flask','url':'flask.com'},{'id':6,'main':'Python','sub':'jinja2','name':'jinja2','url':'jinja2.com'},{'id':7,'main':'html','sub':'css','name':'css','url':'css.com'}]
+links_list = []
+for i,j in groupby(links,key=itemgetter('main')):
+    j = list(j)
+    sub_list = []
+    for x,y in groupby(j,key=itemgetter('sub')):
+        y = list(y)
+        subdict = {'subclass':x,'link':y}
+        sub_list.append(subdict)
+    maindict = {'mainclass':i,'subdict':sub_list}
+    links_list.append(maindict)
+print(links_list)
+```
+输出如下：
+```py
+[{'mainclass': 'IBM', 'subdict': [{'subclass': 'power', 'link': [{'id': 1, 'main': 'IBM', 'sub': 'power', 'name': 'p720', 'url': 'p720.com'}, {'id': 2, 'main': 'IBM', 'sub': 'power', 'name': 
+'e980', 'url': 'e980.com'}]}, {'subclass': 'storage', 'link': [{'id': 3, 'main': 'IBM', 'sub': 'storage', 'name': 'v7000', 'url': 'v7000.com'}]}]}, 
+{'mainclass': 'Python', 'subdict': [{'subclass': 'flask', 'link': [{'id': 4, 'main': 'Python', 'sub': 'flask', 'name': 'huang', 'url': 'big100.com'}, {'id': 5, 'main': 'Python', 'sub': 'flask', 'name': 'flask', 'url': 'flask.com'}]}, {'subclass': 'jinja2', 'link': [{'id': 6, 'main': 'Python', 'sub': 'jinja2', 'name': 'jinja2', 'url': 'jinja2.com'}]}]}, 
+{'mainclass': 'html', 'subdict': [{'subclass': 'css', 'link': [{'id': 7, 'main': 'html', 'sub': 'css', 'name': 'css', 'url': 'css.com'}]}]}]
+```
+示例中使用了itemgetter和groupby，官方文档说明：
+- [operator-标准运算符替代函数](https://docs.python.org/zh-cn/3/library/operator.html?highlight=operator)
+- [itertools-为高效循环而创建迭代器的函数](https://docs.python.org/zh-cn/3/library/itertools.html?highlight=groupby#itertools.groupby)
 
-### 待补充
+## 待补充
