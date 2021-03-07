@@ -281,4 +281,148 @@ $ touch index.html
 - 当用户是 博客作者时，可以看到一个“ Edit ”连接，指向 update 视图
 - loop.last 是一个 Jinja for 循环 内部可用的特殊变量，它用于在每个 博客帖子后面显示一条线来分隔帖子，最后一个帖子除外
 
-### 创建
+### 创建视图
+&#8195;&#8195;create视图与register视图原理相同。显示表单或发送内容，已通过验证且内容已加入数据库，或者显示一个出错信息。login_required装饰器用在了osm视图中，这样用户必须登录以后才能访问这些视图，否则会被重定向到登录页面。
+
+osm.py中写入：
+```py
+@bp.route('/create', methods=('GET', 'POST'))
+@login_required
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        error = None
+        if not title:
+            error = 'Title is required.'
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO post (title, body, author_id)'
+                ' VALUES (?, ?, ?)',
+                (title, body, g.user['id'])
+            )
+            db.commit()
+            return redirect(url_for('osm.index'))
+    return render_template('osm/create.html')
+```
+templates/osm/create.html内写入：
+```html
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Post{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <label for="body">Body</label>
+    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}
+```
+### 更新视图
+&#8195;&#8195;update和delete视图都需要通过id来获取一个post ，并且检查作者与登录用户是否一致。为避免重复代码，可以写一个函数来获取post， 并在每个视图中调用它。
+
+osm.py中写入：
+```py
+def get_post(id, check_author=True):
+    post = get_db().execute(
+        'SELECT p.id, title, body, created, author_id, username'
+        ' FROM post p JOIN user u ON p.author_id = u.id'
+        ' WHERE p.id = ?',
+        (id,)
+    ).fetchone()
+    if post is None:
+        abort(404, "Post id {0} doesn't exist.".format(id))
+    if check_author and post['author_id'] != g.user['id']:
+        abort(403)
+    return post
+```
+说明：
+- `abort()`会引发一个特殊的异常，返回一个HTTP状态码：
+    - 它有一个可选参数，用于显示出错信息，若不使用该参数则返回缺省出错信息
+    - 404表示“未找到”， 403代表“禁止访问”
+    - 401表示“未授权”，但是这里重定向到登录 页面来代替返回这个状态码
+- `check_author`参数的作用是函数可以用于在不检查作者的情况下获取一个post，这用于显示一个独立的帖子页面的情况，因为这时用户是谁没有关系， 用户不会修改帖子
+
+在osm.py中写入：
+```py
+@bp.route('/<int:id>/update', methods=('GET', 'POST'))
+@login_required
+def update(id):
+    post = get_post(id)
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        error = None
+        if not title:
+            error = 'Title is required.'
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'UPDATE post SET title = ?, body = ?'
+                ' WHERE id = ?',
+                (title, body, id)
+            )
+            db.commit()
+            return redirect(url_for('osm.index'))
+    return render_template('osm/update.html', post=post)
+```
+说明：
+- 和所有以前的视图不同， update函数有一个id参数。该参数对应路由中的&#60;int:id> 。一个真正的URL，类似 `/1/update`
+- Flask会捕捉到URL中的 1 ，确保其为一个int，并将其作为id参数传递给视图
+- 如果没有指定int: 而是仅仅写了&#60;id> ，那么将会传递一个字符串。 要生成一个指向更新页面的URL，需要传递 id 参数给`url_for()`： `url_for('blog.update', id=post['id'])` 。
+- 前文的index.html文件中同样如此
+
+flaskr/templates/osm/update.html中写入：
+```html
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Edit "{{ post['title'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Title</label>
+    <input name="title" id="title"
+      value="{{ request.form['title'] or post['title'] }}" required>
+    <label for="body">Body</label>
+    <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
+    <input type="submit" value="Save">
+  </form>
+  <hr>
+  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}
+```
+说明：
+- 这个模板有两个表单：
+    - 第一个提交已编辑过的数据给当前页面（ /&#60;id>/update ）
+    - 另一个表单只包含一个按钮，它指定一个action属性，指向删除视图。这个按钮使用了一些JavaScript用以在提交前显示一个确认对话框。
+- 参数`request.form['title'] or post['title']`用于选择在表单显示什么数据:
+    - 当表单还未提交时，显示原post数据
+    - 如果提交了非法数据，然后需要显示这些非法数据以便于用户修改时，就显示request.form中的数据
+
+### 删除
+&#8195;&#8195;删除视图没有自己的模板。删除按钮已包含于update.html之中，该按钮指向/&#60;id>/delete URL 。既然没有模板，该视图只处理POST方法并重定向到index视图。
+
+在osm.py中写入：
+```py
+@bp.route('/<int:id>/delete', methods=('POST',))
+@login_required
+def delete(id):
+    get_post(id)
+    db = get_db()
+    db.execute('DELETE FROM post WHERE id = ?', (id,))
+    db.commit()
+    return redirect(url_for('osm.index'))
+```
