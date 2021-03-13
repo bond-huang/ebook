@@ -161,10 +161,51 @@ print(links_list)
 注意事项：
 上面的示例中的数据想对比较整齐，如果在数据中添加如下数据：
 ```PY
-{'id':8,'main':'IBM','sub':'storage','name':'DS8000','url':'DS8000.com'},
+{'id':8,'main':'IBM','sub':'storage','name':'DS8000','url':'DS8000.com'}
 ```
-&#8195;&#8195;那么最终使用上面示例代码后，这条不会归纳到第一个IBM主类里面去，storage也会新建一个分类，就不是想要达到的效果了，解决方法就是在做groupby之前，先进行排序，示例：
+输出效果：
 ```py
-links.sort(key=itemgetter('sub')
+[{'mainclass': 'IBM', 'subdict': [{'subclass': 'power', 'link': [{'id': 1, 'main': 'IBM', 
+'sub': 'power', 'name': 'p720', 'url': 'p720.com'}, {'id': 2, 'main': 'IBM', 'sub': 'power', 'name': 'e980', 'url': 'e980.com'}]}, {'subclass': 'storage', 'link': [{'id': 3, 'main': 'IBM', 'sub': 'storage', 'name': 'v7000', 'url': 'v7000.com'}]}]}, 
+{'mainclass': 'Python', 'subdict': [{'subclass': 'flask', 'link': [{'id': 4, 'main': 'Python', 'sub': 'flask', 'name': 'huang', 'url': 'big100.com'}, {'id': 5, 'main': 'Python', 'sub': 'flask', 'name': 'flask', 'url': 'flask.com'}]}, {'subclass': 'jinja2', 'link': [{'id': 6, 'main': 'Python', 'sub': 'jinja2', 'name': 'jinja2', 'url': 'jinja2.com'}]}]}, 
+{'mainclass': 'html', 'subdict': [{'subclass': 'css', 'link': [{'id': 7, 'main': 'html', 'sub': 'css', 'name': 'css', 'url': 'css.com'}]}]}, 
+{'mainclass': 'IBM', 'subdict': [{'subclass': 'storage', 'link': [{'id': 8, 'main': 'IBM', 'sub': 'storage', 'name': 'DS8000', 'url': 'DS8000.com'}]}]}]
+```
+&#8195;&#8195;新加的数据不会归纳到第一个IBM主类里面去，就不是想要达到的效果了，解决方法就是在做groupby之前，先进行排序，示例：
+```py
+links.sort(key=itemgetter('sub'))
+```
+示例代码：
+```py
+from operator import itemgetter
+from itertools import groupby
+links = [
+    {'id':1,'main':'IBM','sub':'power','name':'p720','url':'p720.com'},
+    {'id':2,'main':'IBM','sub':'power','name':'e980','url':'e980.com'},
+    {'id':3,'main':'IBM','sub':'storage','name':'v7000','url':'v7000.com'},
+    {'id':4,'main':'Python','sub':'flask','name':'flask','url':'flask.com'},
+    {'id':5,'main':'Python','sub':'jinja2','name':'jinja2','url':'jinja2.com'},
+    {'id':6,'main':'HTML','sub':'css','name':'css','url':'css.com'},
+    {'id':7,'main':'IBM','sub':'storage','name':'DS8000','url':'DS8000.com'},
+    {'id':8,'main':'HTML','sub':'bootstrap','name':'bootstrap','url':'bootstrap.com'},
+    {'id':9,'main':'Python','sub':'flask','name':'huang','url':'big100.com'}]
+links_list = []
+links.sort(key=itemgetter('main'))
+for i,j in groupby(links,key=itemgetter('main')):
+    j = list(j)
+    j.sort(key=itemgetter('sub'))
+    sub_list = []
+    for x,y in groupby(j,key=itemgetter('sub')):
+        y = list(y)
+        subdict = {'subclass':x,'link':y}
+        sub_list.append(subdict)
+    maindict = {'mainclass':i,'subdict':sub_list}
+    links_list.append(maindict)
+print(links_list)
+```
+输出如下：
+```py
+[{'mainclass': 'HTML', 'subdict': [{'subclass': 'bootstrap', 'link': [{'id': 8, 'main': 'HTML', 'sub': 'bootstrap', 'name': 'bootstrap', 'url': 'bootstrap.com'}]}, {'subclass': 'css', 'link': [{'id': 6, 'main': 'HTML', 'sub': 'css', 'name': 'css', 'url': 'css.com'}]}]}, 
+ {'mainclass': 'IBM', 'subdict': [{'subclass': 'power', 'link': [{'id': 1, 'main': 'IBM', 'sub': 'power', 'name': 'p720', 'url': 'p720.com'}, {'id': 2, 'main': 'IBM', 'sub': 'power', 'name': 'e980', 'url': 'e980.com'}]}, {'subclass': 'storage', 'link': [{'id': 3, 'main': 'IBM', 'sub': 'storage', 'name': 'v7000', 'url': 'v7000.com'}, {'id': 7, 'main': 'IBM', 'sub': 'storage', 'name': 'DS8000', 'url': 'DS8000.com'}]}]}, {'mainclass': 'Python', 'subdict': [{'subclass': 'flask', 'link': [{'id': 4, 'main': 'Python', 'sub': 'flask', 'name': 'flask', 'url': 'flask.com'}, {'id': 9, 'main': 'Python', 'sub': 'flask', 'name': 'huang', 'url': 'big100.com'}]}, {'subclass': 'jinja2', 'link': [{'id': 5, 'main': 'Python', 'sub': 'jinja2', 'name': 'jinja2', 'url': 'jinja2.com'}]}]}]
 ```
 ## 待补充
