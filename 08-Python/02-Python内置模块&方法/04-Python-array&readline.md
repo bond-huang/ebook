@@ -205,7 +205,23 @@ print(links_list)
 ```
 输出如下：
 ```py
-[{'mainclass': 'HTML', 'subdict': [{'subclass': 'bootstrap', 'link': [{'id': 8, 'main': 'HTML', 'sub': 'bootstrap', 'name': 'bootstrap', 'url': 'bootstrap.com'}]}, {'subclass': 'css', 'link': [{'id': 6, 'main': 'HTML', 'sub': 'css', 'name': 'css', 'url': 'css.com'}]}]}, 
- {'mainclass': 'IBM', 'subdict': [{'subclass': 'power', 'link': [{'id': 1, 'main': 'IBM', 'sub': 'power', 'name': 'p720', 'url': 'p720.com'}, {'id': 2, 'main': 'IBM', 'sub': 'power', 'name': 'e980', 'url': 'e980.com'}]}, {'subclass': 'storage', 'link': [{'id': 3, 'main': 'IBM', 'sub': 'storage', 'name': 'v7000', 'url': 'v7000.com'}, {'id': 7, 'main': 'IBM', 'sub': 'storage', 'name': 'DS8000', 'url': 'DS8000.com'}]}]}, {'mainclass': 'Python', 'subdict': [{'subclass': 'flask', 'link': [{'id': 4, 'main': 'Python', 'sub': 'flask', 'name': 'flask', 'url': 'flask.com'}, {'id': 9, 'main': 'Python', 'sub': 'flask', 'name': 'huang', 'url': 'big100.com'}]}, {'subclass': 'jinja2', 'link': [{'id': 5, 'main': 'Python', 'sub': 'jinja2', 'name': 'jinja2', 'url': 'jinja2.com'}]}]}]
+[{'mainclass': 'HTML', 'subdict': [
+    {'subclass': 'bootstrap', 'link': [
+        {'id': 8, 'main': 'HTML', 'sub': 'bootstrap', 'name': 'bootstrap', 'url': 'bootstrap.com'}]}, 
+    {'subclass': 'css', 'link': [
+        {'id': 6, 'main': 'HTML', 'sub': 'css', 'name': 'css', 'url': 'css.com'}]}]}, 
+{'mainclass': 'IBM', 'subdict': [
+    {'subclass': 'power', 'link': [
+        {'id': 1, 'main': 'IBM', 'sub': 'power', 'name': 'p720', 'url': 'p720.com'}, 
+        {'id': 2, 'main': 'IBM', 'sub': 'power', 'name': 'e980', 'url': 'e980.com'}]}, 
+    {'subclass': 'storage', 'link': [
+        {'id': 3, 'main': 'IBM', 'sub': 'storage', 'name': 'v7000', 'url': 'v7000.com'}, 
+        {'id': 7, 'main': 'IBM', 'sub': 'storage', 'name': 'DS8000', 'url': 'DS8000.com'}]}]},
+{'mainclass': 'Python', 'subdict': [
+    {'subclass': 'flask', 'link': [
+        {'id': 4, 'main': 'Python', 'sub': 'flask', 'name': 'flask', 'url': 'flask.com'}, 
+        {'id': 9, 'main': 'Python', 'sub': 'flask', 'name': 'huang', 'url': 'big100.com'}]}, 
+    {'subclass': 'jinja2', 'link': [
+        {'id': 5, 'main': 'Python', 'sub': 'jinja2', 'name': 'jinja2', 'url': 'jinja2.com'}]}]}]
 ```
 ## 待补充
