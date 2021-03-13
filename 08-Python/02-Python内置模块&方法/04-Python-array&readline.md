@@ -158,4 +158,13 @@ print(links_list)
 - [operator-标准运算符替代函数](https://docs.python.org/zh-cn/3/library/operator.html?highlight=operator)
 - [itertools-为高效循环而创建迭代器的函数](https://docs.python.org/zh-cn/3/library/itertools.html?highlight=groupby#itertools.groupby)
 
+注意事项：
+上面的示例中的数据想对比较整齐，如果在数据中添加如下数据：
+```PY
+{'id':8,'main':'IBM','sub':'storage','name':'DS8000','url':'DS8000.com'},
+```
+&#8195;&#8195;那么最终使用上面示例代码后，这条不会归纳到第一个IBM主类里面去，storage也会新建一个分类，就不是想要达到的效果了，解决方法就是在做groupby之前，先进行排序，示例：
+```py
+links.sort(key=itemgetter('sub')
+```
 ## 待补充
