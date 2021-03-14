@@ -1,5 +1,18 @@
 # Navigator-基础环境
 基础环境搭建简介。
+## 效果预览
+选择一个主项目：      
+![main category](home.png)
+
+添加：   
+![Add](add.png)
+
+编辑：   
+![Edit](edit.png)
+
+删除：   
+![Delete](delete.png)
+
 ## 基础环境准备
 使用的windows系统，需要环境及使用版本：
 - Python：Python 3.8.3
