@@ -1,4 +1,4 @@
-# TravisCI-部署Python项目
+# TravisCI-构建Flask项目
 以个人写的navigator为例，代码托管在GitHub，参考官方文档一步一步进行。  
 相关链接：   
 - Navigator GitHub：[https://github.com/bond-huang/navigator](https://github.com/bond-huang/navigator)
