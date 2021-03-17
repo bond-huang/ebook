@@ -48,6 +48,40 @@ D:\navigator>venv\Scripts\activate
 ```
 ## 项目布局
 布局如下：
+```
+-- navigator
+    |-- instance
+    |   `-- nav.sqlite
+    |-- LICENSE
+    |-- MANIFEST.in
+    |-- nav
+    |   |-- db.py
+    |   |-- __init__.py
+    |   |-- navigation.py
+    |   |-- schema.sql
+    |   |-- static
+    |   |   |-- nav.js
+    |   |   `-- style.css
+    |   `-- templates
+    |       |-- base.html
+    |       |-- footer.html
+    |       |-- header.html
+    |       |-- index.html
+    |       `-- modal
+    |           |-- add.html
+    |           |-- edit.html
+    |           |-- empty.html
+    |           `-- license.html
+    |-- README.md
+    |-- setup.cfg
+    |-- setup.py
+    `-- tests
+        |-- conftest.py
+        |-- data.sql
+        |-- test_db.py
+        |-- test_factory.py
+        `-- test_navigator.py
+```
 ### 创建应用
 创建目录`nav`并添加`__init__.py`文件，写入内容：
 ```py
@@ -188,6 +222,40 @@ bp = Blueprint('navigation',__name__)
 ## 静态文件
 &#8195;&#8195;存放图片，CSS及JS等，计划使用Bootstrap，Vue和jQuery，直接从网上获取，CSS全部用Bootstrap，JS会写一点东西，新建一个文件即可。在nav目录下新建目录static并创建文件nav.js。
 
+删除和编辑图标使用了自定义样式：
+```css
+.editicon i {
+    color: rgba(255, 255, 255, 0);
+}
+.editicon i:hover {
+    color: green;
+}
+
+.deleteicon i {
+    color: rgba(255, 255, 255, 0);
+}
+.deleteicon i:hover {
+    color: red;
+}
+```
+编辑模态框使用的js：
+```js
+// editModal
+$('#editModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var link_id = button.data('link_id') // Extract information from data-* attributes
+        var link_mcg = button.data('link_mcg')
+        var link_scg = button.data('link_scg')
+        var link_name = button.data('link_name')
+        var link_url = button.data('link_url')
+        var modal = $(this)
+        $("#linkid").attr("action", link_id);
+        $("#linkmcg").attr("value", link_mcg);
+        $("#linkscg").attr("value", link_scg);
+        $("#linkname").attr("value", link_name);
+        $("#linkurl").attr("value", link_url);
+  })
+```
 ### 索引
 索引会显示所有内容，在navigation.py中继续写入一下内容：
 ```python
@@ -197,5 +265,23 @@ def index():
     links = db.execute(
         'SELECT * FROM links'
     ).fetchall()
-    return render_template('index.html',links=links)
+    maincg_list = db.execute(
+        'SELECT distinct maincategory FROM links'
+    ).fetchall() 
+    links_list = []
+    links.sort(key=itemgetter('maincategory'))
+    for i,j in groupby(links,key=itemgetter('maincategory')):
+        j = list(j)
+        j.sort(key=itemgetter('subcategory'))
+        sub_list = []
+        for x,y in groupby(j,key=itemgetter('subcategory')):
+            y = list(y)
+            subdict = {'sub_cg':x,'link':y}
+            sub_list.append(subdict)
+        maindict = {'main_cg':i,'sub_cg_list':sub_list}
+        links_list.append(maindict)
+    return render_template('index.html',links=links_list,maincg_list=maincg_list)
 ```
+说明：
+- 示例中红从数据库取出两个内容，第一个是表中所有内容，第二个只是取maincategory值并去重
+- 示例中对数据进行了处理，其实就是分类处理，方便jinja2进行渲染
