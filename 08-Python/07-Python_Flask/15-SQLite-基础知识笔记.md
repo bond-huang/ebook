@@ -196,11 +196,11 @@ sqlite>
 ### 基本语法
 从table_2中取所有记录INSERT到table_1中：
 ```sql
-INSERT INTO table_1 select * from table_2
+INSERT INTO table_1 SELECT * FROM table_2
 ```
 如果两张表有重复的内容，主要是ID一样的：
 ```sql
-INSERT OR REPLACE INTO table_1 select * from table_2
+INSERT OR REPLACE INTO table_1 SELECT * FROM table_2
 ```
 如果有重复的就REPLACE，合并两张表的方法，注意会覆盖数据，慎重操作。
 
