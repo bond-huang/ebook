@@ -7,16 +7,24 @@
 - 6 GB可用磁盘空间
 - 2 GB RAM
 ### KVM虚拟机监控程序要求
-CPU需要有虚拟功能并开启了，验证方法：
+CPU需要有虚拟功能并开启了，VMware开启步骤：
+- 停机状态选中虚拟机，进入设置选项
+- 选中处理器，在虚拟化选项中勾选：虚拟化Intel VT-x/EPT或AMD-V/RVI(V)
+
+验证方法：
 ```
 [root@redhat8 ~]# grep -E 'svm|vmx' /proc/cpuinfo
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 
+clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon nopl xtopology tsc_reliable nonstop_tsc cpuid pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 invpcid rtm rdseed adx smap xsaveopt arat flush_l1d arch_capabilitiesflags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 
+clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon nopl xtopology tsc_reliable nonstop_tsc cpuid pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 invpcid rtm rdseed adx smap xsaveopt arat flush_l1d arch_capabilities
 ```
-附件检查，验证模块是否已加载到内核中：
+附加检查，验证模块是否已加载到内核中：
 ```
 [root@redhat8 ~]# lsmod | grep kvm
+kvm_intel             245760  0
+kvm                   745472  1 kvm_intel
+irqbypass              16384  1 kvm
 ```
-我的虚拟系统都没输出，跳过。
-
 ### KVM GUEST虚拟机兼容性
 以下URL解释了Red Hat Enterprise Linux的处理器和内存量限制：
 - 对于主机系统：[https://access.redhat.com/articles/rhel-limits](https://access.redhat.com/articles/rhel-limits)
@@ -294,4 +302,36 @@ permitted by applicable law.
 root@debian-amd64:~# hostname
 debian-amd64
 ```
+卡住原因可能是我之前没有开启CPU的虚拟化功能，KVM模块没有加载进去。
 ### 使用VIRT-MANAGER创建虚拟机
+`New Virtual Machine`向导创建虚拟机过程分为五个步骤：
+- 选择系统管理程序和安装类型
+- 查找和配置安装介质
+- 配置内存和CPU选项
+- 配置虚拟机的存储
+- 配置虚拟机名称，网络，体系结构和其他硬件设置
+
+#### 安装RHEL7
+&#8195;&#8195;RHEL7至少需要1GB的存储空间。但是，对于RHEL7安装和本指南中的过程，Red Hat建议至少有5GB的存储空间。我使用版本是RHEL-server-7.8，物理机磁盘空间严重不足，不想把ISO拷贝到虚拟机中，打算直接从虚拟光驱安装试试，选中光驱后，提示找不到operating system，官网有说使用主机CD-ROM或DVD-ROM设备是不行的，放弃了。
+
+安装几种途径和命令行一样，通过镜像步骤如下：
+- 首先把RHEL7镜像拷贝到RHEL8中，默认的文件夹：/var/lib/libvirt/images
+- 打开`Virtual Machine Manager`：
+    - 通过超级用户`virt-manager`执行命令
+    - 图形打开应用程序→系统工具→虚拟机管理器来打开`virt-manager`
+    - 如果用命令的话，并且使用的shell终端没有图形界面，应在本地执行命令开启，我使用Xmanager，有图形终端
+- 点击新建虚拟机图标，或者依次选择：File--New Virtual Machine
+- 弹出`New VM`对话框，选择`Local install media(ISO image or CDROM)`，然后下一步
+- `Choose ISO`输入框边点击`Browse`，选择`RHEL-7.8_Server.x86_64.iso`，回到`New VM`对话框
+- 手动或者自动选择操作系统（我的自动显示None detected，手动也没用RHEL7.8，选了个Generic default)，然后下一步
+- 设置内存和CPU，然后下一步
+- 设置磁盘大小（我设置6G），然后下一步
+- 设置虚拟机名字和网络，网络默认NAT，然后下一步
+- 弹出新的图形界面，选择安装或者测试
+- 开始安装后等待到选择语言对话框，选择语言后下一步
+- 进入自定义设置界面，例如磁盘和软件安装设置，我选择了minmal install
+- 点击`begin install`开始安装，中途可以设置设root密码或者用户
+- Reboot选项出来后重启系统，安装完成
+
+### virt-install和virt-manager安装选项的比较
+参考官方说明：[virt-install和virt-manager安装选项的比较](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-virtual_machine_installation-virt-install-virt-manager-matrix)
