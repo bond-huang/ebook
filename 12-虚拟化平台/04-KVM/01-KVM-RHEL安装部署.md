@@ -333,5 +333,12 @@ debian-amd64
 - 点击`begin install`开始安装，中途可以设置设root密码或者用户
 - Reboot选项出来后重启系统，安装完成
 
+查看：
+```
+[root@redhat8 ~]# virsh list
+ Id    Name                           State
+----------------------------------------------------
+ 2     RHEL78                         running
+```
 ### virt-install和virt-manager安装选项的比较
 参考官方说明：[virt-install和virt-manager安装选项的比较](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-virtual_machine_installation-virt-install-virt-manager-matrix)
