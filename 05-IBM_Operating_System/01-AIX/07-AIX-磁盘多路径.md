@@ -1,11 +1,22 @@
 # AIX-磁盘多路径
+## AIXPCM
+### 简介
+&#8195;&#8195;IBM存储产品对SDDPCM的支持将于2020年6月30日正式终止（EOS）。 AIXPCM全称AIX path control module，是AIX操作系统中替代SDDPCM的默认多路径软件，目前据我了解不需要单独安装，在某个版本后默认在系统里面，如果没有升级到拥有的版本即可。
+### 相关链接
+官方相关链接如下：
+- 各版本对应补丁下载：[Fix pack information for: AIX PCM RAS Enhancements](https://www.ibm.com/support/pages/node/5874489)
+- SDDPCM迁移到AIXPCM说明：[How To Migrate SDDPCM to AIXPCM](https://www.ibm.com/support/pages/node/698075?mhsrc=ibmsearch_a&mhq=sddpcm)
+- 迁移步骤说明：[Migrate to AIXPCM using "Manage_Disk_Drivers" Command](https://www.ibm.com/support/pages/migrate-aixpcm-using-managediskdrivers-command)
+- Spectrum Virtualize存储推荐多路径说明：[Spectrum Virtualize Multipathing Support for AIX and Windows Hosts](https://www.ibm.com/support/pages/node/1106937?myns=s035&mync=E&cm_sp=s035-_-NULL-_-E)
+- AIX和VIOS系统推荐多路径说明：[The Recommended Multi-path Driver to use on IBM AIX and VIOS When Attached to SVC and Storwize storage](https://www.ibm.com/support/pages/node/697363)
+- IBM MPIO多路径说明：[IBM AIX multipath I/O (MPIO) resiliency and problem determination](https://developer.ibm.com/articles/au-aix-multipath-io-mpio/)
 
-### MPIO与SDDPCM
-
-#### 简介
+## MPIO与SDDPCM
+SDDPCM IBM已经EOS。
+### 简介
 &#8195;&#8195;AIX系统默认安装了MPIO Disk Path Control Module,SDDPCM(Subsystem Device Driver Path Control Module)是一个可单独安装的软件包，通过AIX MPIO框架为磁盘提供AIX MPIO支持，当支持的设备配置为MPIO-capable设备时，SDDPCM将被加载并成为AIX MPIO FCP（光纤通道协议）/FCoE（以太网光纤通道）设备驱动程序或SAS设备驱动程序的一部分。带有SDDPCM模块的AIX MPIO设备驱动程序或SAS设备驱动程序可增强数据可用性和I/O负载平衡。
 
-#### MPIO常用命令及示例
+### MPIO常用命令及示例
 查看所有磁盘路径类型（使用了SDDPCM会有所不同）：
 ```
 # lsdev -Cc disk
@@ -85,7 +96,7 @@ return code = 0
 # chdev -l hdisk2 -a algorithm=load_balance_port
 # chdev -l hdisk2 -a algorithm=round_robin
 ```
-#### 路径状态
+### 路径状态
 一共六种状态：
 - Enabled：正常状态
 - Disabled：手动disable
@@ -94,7 +105,7 @@ return code = 0
 - Missing：路径丢失
 - Failed：路径失败
 
-#### SDDPCM命令
+### SDDPCM命令
 SDDPCM重要命令及其功能：
 - pcmpath: 显示和管理 SDDPCM 设备。
 - pcmpath query adapter: 显示适配器配置
@@ -113,8 +124,8 @@ SDDPCM重要命令及其功能：
 - pcmquerypr -ph /dev/hdisk30: 删除暂存保留（如果设备被其他主机保留）
 - pcmgenprkey: 设置或清除所有 SDDPCM 多路径 I/O (MPIO) 设备的 PR_key_value Object Data Manager (ODM) 属性
 
-#### 磁盘重要属性介绍
-##### algorithm（只使用MPIO情况下）       
+### 磁盘重要属性介绍
+#### algorithm（只使用MPIO情况下）       
 algorithm = fail_over：    
 &#8195;&#8195;默认的，某些第三方ODM使用不同的默认值。使用此算法，一次只能将I/O沿一条路径路由；如果用于发送I/O的路径发生故障或被禁用，则会选择列表中的下一个启用的路径，并将I/O路由到该路径。可通过修改每个路径上的path_priority来自定义列表中路径选择的顺序。          
 algorithm = round_robin：     
@@ -122,7 +133,7 @@ algorithm = round_robin：
 algorithm = shortest_queue：     
 &#8195;&#8195;该算法的行为与round_robin轻负载时非常相似。当负载增加时，此算法将优先选择活动I/O操作最少的路径。因此，如果一个路径由于存储区域网络（SAN）的拥塞而变慢，则其他较少拥塞的路径将用于更多的I/O操作。该算法将忽略路径优先级值。    
 
-##### algorithm（使用SDDPCM）  
+#### algorithm（使用SDDPCM）  
 Failover only (fo 故障转移)：    
 &#8195;&#8195;设备的所有I/O操作都将发送到同一（首选）路径，直到该路径由于I/O错误而failed。发生故障后选择一条备用路径用于后续的I/O操作。                
 Load balancing (lb 负载均衡)：    
@@ -134,21 +145,21 @@ Round robin (rr 轮循)：
 Round robin sequential (rrs 轮循顺序)：       
 &#8195;&#8195;该策略与round-robin策略相同，针对顺序 I/O 进行优化。
 
-##### hcheck_mode（路径运行状况检查模式）      
+#### hcheck_mode（路径运行状况检查模式）      
 hcheck_mode = nonactive：   
 &#8195;&#8195;在此模式下，PCM在没有活动I/O的路径上发送运行状况检查命令，其中包括状态为failed的路径。如果选择的算法是故障转移，那么还将在状态为启用但没有活动I/O的每个路径上发送运行状况检查命令；如果选择的算法为round_robin或shortest_queue，则仅在状态为failed的路径上发送运行状况检查命令；如果磁盘处于空闲状态，则在运行状况检查间隔到期时，会在没有挂起I/O的任何路径上发送运行状况检查命令。
 
-hcheck_mode = enabled：     
+hcheck_mode = enabled：      
 &#8195;&#8195;在此模式下，PCM沿所有启用的路径发送健康检查命令，甚至在健康检查时具有其它活动I/O的路径也是如此。
-hcheck_mode = failed：    
+hcheck_mode = failed：         
 &#8195;&#8195;在此模式下，PCM仅向标记为failed的路径发送路径运行状况检查。
 
-##### hcheck_interval（路径运行状况检查间隔）
+#### hcheck_interval（路径运行状况检查间隔）
 &#8195;&#8195;路径运行状况检查间隔是指基于hcheck_mode设置的MPIO路径运行状况检查将探测并检查打开的磁盘的路径可用性的时间间隔（以秒为单位）。当设置`hcheck_interval = 0`表示禁用MPIO的路径健康检查机制，这意味着任何failed的路径需要人工干预，以恢复或重新启用。     
 &#8195;&#8195;大多数情况下，hcheck_interval为默认最好，设置过小会快速检查路径，以便恢复及尽快启用，但是可能会占用SAN上的大量带宽。     
 &#8195;&#8195;AIX实施紧急最后一次健康检查，以在需要时恢复路径。如果设备只有一条非failed路径，并且在最后一条路径上检测到错误，那么AIX会在重试I/O之前在所有其它failed路径上发送运行状况检查命令，而不管hcheck_interval设置如何。      
 
-##### timeout_policy（超时策略）
+#### timeout_policy（超时策略）
 &#8195;&#8195;此属性指示发生命令超时时PCM应该采取的措施。当I/O操作未能rw_timeout在磁盘上的值内完成时，将发生命令超时。timeout_policy共有三个值（如果在设备上可以设置fail_path，推荐设置为此值）：       
 timeout_policy = retry_path：      
 &#8195;&#8195;在刚刚经历命令超时的同一路径上重试，这可能会导致I/O恢复的延迟，因为该命令可能会在此路径上继续失败，在连续几次失败之后，AIX才会使路径failed并在备用路径上尝试I/O。         
@@ -157,11 +168,11 @@ timeout_policy = fail_path：
 timeout_policy = disable_path：         
 &#8195;&#8195;此设置会导致路径被禁用。禁用的路径只能通过手动用户干预，使用chpath命令重新启用路径来恢复。
 
-##### 参考链接
+#### 参考链接
 IBM官方相关参考链接：
 - MPIO介绍：[IBM AIX MPIO](https://developer.ibm.com/articles/au-aix-mpio/)
 - SDDPCM介绍与下载：[Subsystem Device Driver Path Control Module](https://www.ibm.com/support/pages/node/651285)
 - SDDPCM介绍:[Subsystem Device Driver Path Control Module for IBM AIX](https://developer.ibm.com/technologies/systems/articles/au-aix-install-sddpcm/#)
 
-### 其它多路径软件
+## 其它多路径软件
 近期有安装过AIX Host Utilities，但是由于兼容性最后没成功，后期用到了再记录。
