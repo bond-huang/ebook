@@ -10,6 +10,267 @@
 - Spectrum Virtualize存储推荐多路径说明：[Spectrum Virtualize Multipathing Support for AIX and Windows Hosts](https://www.ibm.com/support/pages/node/1106937?myns=s035&mync=E&cm_sp=s035-_-NULL-_-E)
 - AIX和VIOS系统推荐多路径说明：[The Recommended Multi-path Driver to use on IBM AIX and VIOS When Attached to SVC and Storwize storage](https://www.ibm.com/support/pages/node/697363)
 - IBM MPIO多路径说明：[IBM AIX multipath I/O (MPIO) resiliency and problem determination](https://developer.ibm.com/articles/au-aix-multipath-io-mpio/)
+- lsmpio命令:[lsmpio命令](https://www.ibm.com/docs/en/aix/7.2?topic=l-lsmpio-command)
+
+### 从SDDPCM迁移到AIXPCM
+参考官方文档，使用PowerHA环境进行了测试：
+- 操作系统版本：7100-04-05-1720
+- PowerHA版本：7.2.1.4
+- 外置存储类型：IBM SVC
+
+#### 检查准备
+检查AIX PCM 安装包（AIX 7.1）：
+```
+IV33411 Abstract: AIX PCM RAS Enhancements
+    Fileset devices.common.IBM.mpio.rte:7.1.3.0 is applied on the system.
+```
+查看当前使用多路径：
+```
+# manage_disk_drivers -l |grep -i svc
+IBMSVC              NO_OVERRIDE           NO_OVERRIDE,AIX_AAPCM,AIX_non_MPIO
+# manage_disk_drivers -l |grep -i 2107ds8k
+2107DS8K            NO_OVERRIDE           NO_OVERRIDE,AIX_AAPCM,AIX_non_MPIO
+```
+说明：
+- 如果安装了SDDPCM，则值`NO_OVERRIDE`表示SDDPCM用于配置该系列的设备。如果未安装SDDPCM，则使用AIX默认PCM
+- 对于`AIX_AAPCM`选项，即使安装了SDDPCM，管理员也可以指示AIX使用AIX默认PCM，修改后重新引导系统即可
+
+修改默认属性：
+```
+# chdef -a queue_depth=32 -c disk -s fcp -t mpioosdisk
+queue_depth changed
+# chdef -a reserve_policy=no_reserve -c disk -s fcp -t mpioosdisk
+reserve_policy changed
+# chdef -a algorithm=shortest_queue -c PCM -s friend -t fcpother
+algorithm changed
+```
+对于DS8K:
+```
+# chdef -a queue_depth=32 -c disk -s fcp -t aixmpiods8k
+queue_depth changed
+# chdef -a reserve_policy=no_reserve -c disk -s fcp -t aixmpiods8k
+reserve_policy changed
+```
+说明：
+- 当然也不一定要在修改路径模式前修改，如果本来都是使用的默认值的话
+- 此修改根据需求来定，并不会修改当前磁盘的属性，修改后重新引导系统以修改后的值作为默认值
+- AIXPCM的默认路径选择算法是`fail_over`
+- AIXPCM支持`shortest_queue`算法，该算法类似于SDDPCM的`load_balance`算法
+
+#### 确认是否使用SDDPCM
+如果系统中没有SDDPCM设备，直接删除SDDPCM的安装包即可，查看目前系统有：
+```
+# pcmpath query device
+Total Dual Active and Active/Asymmetric Devices : 4
+DEV#:   4  DEVICE NAME: hdisk4  TYPE: 2145  ALGORITHM:  Load Balance
+SERIAL: 600507180120262E3000000000000313
+==========================================================================
+Path#      Adapter/Path Name          State     Mode     Select     Errors
+    0*          fscsi0/path0           OPEN   NORMAL         35          0
+    1           fscsi0/path1           OPEN   NORMAL    2790295          0
+    2*          fscsi1/path2           OPEN   NORMAL         35          0
+    3           fscsi1/path3           OPEN   NORMAL    2765410          0
+```
+上面命令有输出代表使用了SDDPCM，继续查看：
+```
+# lsdev -Cc disk
+hdisk0 Available          Virtual SCSI Disk Drive
+hdisk4 Available 24-T1-01 MPIO FC 2145
+```
+#### 修改步骤
+在PowerHA备机上进行，首先停掉PowerHA，执行下面命令修改：
+```
+# manage_disk_drivers -d IBMSVC -o AIX_AAPCM
+ ********************** ATTENTION *************************
+  For the change to take effect the system must be rebooted
+```
+提示需要重启，重新启动系统。
+#### 检查确认
+系统重新启动后，检查是否还使用SDDPCM：
+```
+# pcmpath query device
+No device file found
+```
+然后使用`lsmpio`命令查看：
+```
+# lsmpio
+name    path_id  status   path_status  parent  connection
+hdisk0  0        Enabled  Sel          vscsi0  810000000000
+hdisk1  0        Enabled  Sel          vscsi1  810000000000
+hdisk4  0        Enabled  Clo          fscsi0  500507180120c1c4,2000000000000
+hdisk4  1        Enabled  Clo          fscsi0  500507180120c5cb,2000000000000
+```
+可以看到NPIV方式过来的存储磁盘没有使用SDDPCM了，继续查看：
+```
+# manage_disk_drivers -l |grep -i svc
+IBMSVC              AIX_AAPCM             NO_OVERRIDE,AIX_AAPCM,AIX_non_MPIO
+# lsmpio -ar
+Adapter Driver: fscsi0 -> AIX PCM
+    Adapter WWPN:  c0507109681e0006
+    Link State:    Up
+                          Paths      Paths      Paths      Paths
+    Remote Ports        Enabled   Disabled     Failed    Missing         ID
+    500507180120c1c4          4          0          0          0   0xc95e00
+    500507180120c5cb          4          0          0          0   0xc95600
+
+Adapter Driver: fscsi1 -> AIX PCM
+    Adapter WWPN:  c0507609688e0004
+    Link State:    Up
+                          Paths      Paths      Paths      Paths
+    Remote Ports        Enabled   Disabled     Failed    Missing         ID
+    500507180110c1c4          4          0          0          0   0xc95400
+    500507180110c5cb          4          0          0          0   0xc95600
+```
+#### 信息对比
+以hdisk4为例进行对比前后属性差别，SDDPCM时候VPD信息：
+```
+# lscfg -vpl hdisk4
+  hdisk4           U8408.E8E.8490ECW-V2-C24-T1-W500507130110C1A4-L2000000000000  MPIO FC 2145
+
+        Manufacturer................IBM
+        Machine Type and Model......2145
+        ROS Level and ID............0000
+        Device Specific.(Z0)........0000063268181002
+        Device Specific.(Z1)........0200602
+        Serial Number...............600507180110821E3000000000000311
+  PLATFORM SPECIFIC
+  Name:  disk
+    Node:  disk
+    Device Type:  block
+```
+修改后VPD信息：
+```
+# lscfg -vpl hdisk4
+  hdisk4           U8408.E8E.8490ECW-V2-C24-T1-W500507110110C1CA4-L2000000000000  MPIO IBM 2145 FC Disk
+        Manufacturer................IBM
+        Machine Type and Model......2145
+        ROS Level and ID............30303030
+        Serial Number...............2145
+        Device Specific.(Z0)........0000063268181002
+        Device Specific.(Z1)........
+        Device Specific.(Z2)........
+        Device Specific.(Z3)........
+  PLATFORM SPECIFIC
+  Name:  disk
+    Node:  disk
+    Device Type:  block
+```
+修改前属性：
+```
+# lsattr -El hdisk4
+PCM             PCM/friend/sddpcm                                   PCM                                     True
+PR_key_value    none                                                Reserve Key                             True
+algorithm       load_balance                                        Algorithm                               True
+clr_q           no                                                  Device CLEARS its Queue on error        True
+dist_err_pcnt   0                                                   Distributed Error Percentage            True
+dist_tw_width   50                                                  Distributed Error Sample Time           True
+flashcpy_tgtvol no                                                  Flashcopy Target Lun                    False
+hcheck_interval 60                                                  Health Check Interval                   True
+hcheck_mode     nonactive                                           Health Check Mode                       True
+location                                                            Location Label                          True
+lun_id          0x2000000000000                                     Logical Unit Number ID                  False
+lun_reset_spt   yes                                                 Support SCSI LUN reset                  True
+max_coalesce    0x40000                                             Maximum COALESCE size                   True
+max_transfer    0x40000                                             Maximum TRANSFER Size                   True
+node_name       0x500507110110c1a4                                  FC Node Name                            False
+pvid            00fa90eee3be28e90000000000000000                    Physical volume identifier              False
+q_err           yes                                                 Use QERR bit                            True
+q_type          simple                                              Queuing TYPE                            True
+qfull_dly       2                                                   delay in seconds for SCSI TASK SET FULL True
+queue_depth     20                                                  Queue DEPTH                             True
+recoverDEDpath  no                                                  Recover DED Failed Path                 True
+reserve_policy  no_reserve                                          Reserve Policy                          True
+retry_timeout   120                                                 Retry Timeout                           True
+rw_timeout      60                                                  READ/WRITE time out value               True
+scbsy_dly       20                                                  delay in seconds for SCSI BUSY          True
+scsi_id         0xc95400                                            SCSI ID                                 False
+start_timeout   180                                                 START unit time out value               True
+svc_sb_ttl      0                                                   IO Time to Live                         True
+timeout_policy  fail_path                                           Timeout Policy                          True
+unique_id       33213600507110180813E50000000000003F304214503IBMfcp Device Unique Identification            False
+ww_name         0x500507110110c1a4                                  FC World Wide Name                      False
+```
+修改后属性：
+```
+# lsattr -El hdisk4
+PCM             PCM/friend/fcpother                                 Path Control Module              False
+PR_key_value    none                                                Persistant Reserve Key Value     True+
+algorithm       shortest_queue                                      Algorithm                        True+
+clr_q           no                                                  Device CLEARS its Queue on error True
+dist_err_pcnt   0                                                   Distributed Error Percentage     True
+dist_tw_width   50                                                  Distributed Error Sample Time    True
+hcheck_cmd      test_unit_rdy                                       Health Check Command             True+
+hcheck_interval 60                                                  Health Check Interval            True+
+hcheck_mode     nonactive                                           Health Check Mode                True+
+location                                                            Location Label                   True+
+lun_id          0x2000000000000                                     Logical Unit Number ID           False
+lun_reset_spt   yes                                                 LUN Reset Supported              True
+max_coalesce    0x40000                                             Maximum Coalesce Size            True
+max_retry_delay 60                                                  Maximum Quiesce Time             True
+max_transfer    0x80000                                             Maximum TRANSFER Size            True
+node_name       0x500507110100c1a4                                  FC Node Name                     False
+pvid            00fa90eee3be28e90000000000000000                    Physical volume identifier       False
+q_err           yes                                                 Use QERR bit                     True
+q_type          simple                                              Queuing TYPE                     True
+queue_depth     20                                                  Queue DEPTH                      True+
+reassign_to     120                                                 REASSIGN time out value          True
+reserve_policy  no_reserve                                          Reserve Policy                   True+
+rw_timeout      30                                                  READ/WRITE time out value        True
+scsi_id         0xc95400                                            SCSI ID                          False
+start_timeout   60                                                  START unit time out value        True
+timeout_policy  fail_path                                           Timeout Policy                   True+
+unique_id       33213600507110180813E50000000000003F304214503IBMfcp Unique device identifier         False
+ww_name         0x500507110110c1a4                                  FC World Wide Name               False
+```
+#### 卸载SDDPCM
+使用`smit deinstall`命令即可：
+```
+                  Remove Installed Software
+Type or select values in entry fields.
+Press Enter AFTER making all desired changes.
+
+                                                        [Entry Fields]
+* SOFTWARE name			[devices.fcp.disk.ibm.mpio.rte]                     +
+  PREVIEW only? (remove operation will NOT occur)     yes                   +
+  REMOVE dependent software?                          yes                   +
+  EXTEND file systems if space needed?                no                    +
+  DETAILED output?                                    no                    +
+
+  WPAR Management
+      Perform Operation in Global Environment         yes                   +
+      Perform Operation on Detached WPARs             no                    +
+          Detached WPAR Names                        [_all_wpars]  
+```
+说明：
+- 卸载`devices.fcp.disk.ibm.mpio.rte`包即可，`REMOVE dependent software?`选`yes`会卸载依赖包
+- 先预览可以看到卸载的三个包，确认后`PREVIEW only?`选`no`开始卸载
+- 卸载完成后建议重启下操作系统
+
+卸载结果示例:
+```
+Installation Summary
+--------------------
+Name                        Level           Part        Event       Result
+-------------------------------------------------------------------------------
+devices.sddpcm.71.rte       2.6.6.0         ROOT        DEINSTALL   SUCCESS
+devices.sddpcm.71.rte       2.6.6.0         USR         DEINSTALL   SUCCESS
+devices.fcp.disk.ibm.mpio.r 1.0.0.24        USR         DEINSTALL   SUCCESS
+
+File /etc/inittab has been modified.
+```
+验证是否卸载：
+```
+# lslpp -l |grep sddpcm
+# pcmpath query device
+ksh: pcmpath:  not found.
+```
+#### 后续操作
+在PowerHA备节点修改成功及卸载SDDPCM后：
+- 启动备节点PowerHA
+- 从主节点切换资源组到备节点
+- 按照之前步骤修改主节点的多路径方式
+
+以上步骤在测试机进行验证，没有报错，没有发现异常，说明对PowerHA没有影响。
 
 ## MPIO与SDDPCM
 SDDPCM IBM已经EOS。
