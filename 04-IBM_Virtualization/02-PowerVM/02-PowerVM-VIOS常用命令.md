@@ -21,10 +21,10 @@ lsvg -lv rootvg|查看rootvg lv情况
 lsmap -all|查看vscsi映射关系
 lsmap -all -npiv|查看npiv映射关系
 lsmap -all -net|查看网络关系
-lsmap ‑vadapter \<vhost>|查看某个vhost映射
-lsdev ‑dev \<device>|查看设备(hdisk,vhost)
-lsdev ‑dev \<device> ‑attr \<attribute>|查看设备指定属性
-entstat -all \<ent>\|grep Active|查看SEA状态
+lsmap ‑vadapter &#60;vhost>|查看某个vhost映射
+lsdev ‑dev &#60;device>|查看设备(hdisk,vhost)
+lsdev ‑dev &#60;device> ‑attr &#60;attribute>|查看设备指定属性
+entstat -all &#60;ent> &#124;grep Active|查看SEA状态
 
 ### 属性修改
 有些命令有点长，换个方式，命令加示例结合。
@@ -40,23 +40,27 @@ chdev -dev hdisk2 -attr reserve_policy=no_reserve -perm
 ### vtopt操作
 创建VMLibrary，例如在rootvg下创建一个10G的：
 ```shell
-mkrep -sp rootvg -size 10G
+$ mkrep -sp rootvg -size 10G
+```
+查看VMLibrary：
+```sh
+$ lsrep
 ```
 删除VMLibrary：
 ```shell
-rmrep -f
+$ rmrep -f
 ```
 创建vtopt，例如在vhost0上创建：
 ```shell
-mkvdev -fbo -vadapter vhost0
+$ mkvdev -fbo -vadapter vhost0
 ```
 将镜像加载到vtopt,例如AIX7231.iso加载到vtopt0：
 ```shell
-loadopt -disk AIX7231.iso -vtd vtopt0
+$ loadopt -disk AIX7231.iso -vtd vtopt0
 ```
 将镜像从vtopt上卸载,例如卸载vtopt0上的镜像：
 ```shell
-unloadopt -vtd vtopt0
+$ unloadopt -vtd vtopt0
 ```
 ### 基础配置
 创建vscsi映射关系：
@@ -99,3 +103,4 @@ chdev -dev <sea_adapter> -attr ha_mode=auto
 
 ### 其它命令
 更多命令可参考官方文档：[Virtual I/O Server and Integrated Virtualization Manager commands listed alphabetically](https://www.ibm.com/support/knowledgecenter/TI0003N/p8hcg/p8hcg_kickoff_alphabetical.htm)
+
