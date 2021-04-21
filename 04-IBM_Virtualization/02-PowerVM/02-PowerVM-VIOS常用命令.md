@@ -31,11 +31,11 @@ entstat -all &#60;ent> &#124;grep Active|查看SEA状态
 
 修改设备属性，例如修改hdisk的queue_depth：
 ```shell
-chdev ‑dev hdisk2 ‑attr queue_depth=20
+$ chdev ‑dev hdisk2 ‑attr queue_depth=20
 ```
 永久修改设备属性，例如hdisk2的reserve_policy属性：
 ```shell
-chdev -dev hdisk2 -attr reserve_policy=no_reserve -perm
+$ chdev -dev hdisk2 -attr reserve_policy=no_reserve -perm
 ```
 ### vtopt操作
 创建VMLibrary，例如在rootvg下创建一个10G的：
@@ -65,41 +65,41 @@ $ unloadopt -vtd vtopt0
 ### 基础配置
 创建vscsi映射关系：
 ```shell
-mkvdev -vdev <disk> -vadapter <vhost> -dev <VTD_name>
+$ mkvdev -vdev <disk> -vadapter <vhost> -dev <VTD_name>
 ```
 创建NPIV映射关系：
 ```shell
-vfcmap -vadapter <vfchost> -fcp <fc_device> 
+$ vfcmap -vadapter <vfchost> -fcp <fc_device> 
 ```
 创建SEA:
 ```shell
-mkvdev -sea <net_device> -vadapter <vnet> -default <vnet> -defaultid <vlan> -attr ha_mode=auto ctl_chan=<ctl_net>
+$ mkvdev -sea <net_device> -vadapter <vnet> -default <vnet> -defaultid <vlan> -attr ha_mode=auto ctl_chan=<ctl_net>
 ```
 取消NPIV映射关系：
 ```shell
-vfcmap -vadapter <vfchost> -fcp
+$ vfcmap -vadapter <vfchost> -fcp
 ```
 取消vscsi映射关系：
 ```shell
-rmvdev -vtd <VTD_name>
+$ rmvdev -vtd <VTD_name>
 ```
 ### SEA切换命令
 有时候由于一些原因需要手动切换SEA。手动切换一种方式就是更改SEA网卡属性，先在每个vios上查看状态：
 ```shell
-entstat -all <sea_adapter> |grep Active
+$ entstat -all <sea_adapter> |grep Active
 ```
 在Active状态值为True的vios中输入如下命令进行切换：
 ```shell
-chdev -dev <sea_adapter> -attr ha_mode=standby
+$ chdev -dev <sea_adapter> -attr ha_mode=standby
 ```
 当维护结束需要恢复时候的时候修改属性回auto：
 ```shell
-chdev -dev <sea_adapter> -attr ha_mode=auto
+$ chdev -dev <sea_adapter> -attr ha_mode=auto
 ```
 ### 系统升级
 ```shell
- updateios -accept -install -dev <directory>
- ```
+$ updateios -accept -install -dev <directory>
+```
 
 ### 其它命令
 更多命令可参考官方文档：[Virtual I/O Server and Integrated Virtualization Manager commands listed alphabetically](https://www.ibm.com/support/knowledgecenter/TI0003N/p8hcg/p8hcg_kickoff_alphabetical.htm)
