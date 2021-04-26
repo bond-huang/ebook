@@ -3,6 +3,7 @@
 - Vue CLI官方文档：[https://cli.vuejs.org/zh/](https://cli.vuejs.org/zh/)
 - CSDN博客(Python之简)：[Flask-Vue前后端分离](https://blog.csdn.net/qq_1290259791/article/details/81174383)
 - node.js官网：[https://nodejs.org/en/](https://nodejs.org/en/)
+- bootcss网站Bootstrap文档：[https://v3.bootcss.com/](https://v3.bootcss.com/)
 
 ## 软件安装
 使用windows环境下的git bash，代码用VS code编写。
@@ -187,15 +188,17 @@ export default router
 保存后刷新页面，可以看到默认的导航后有`Gump`链接，点击进入`http://localhost:8080/#/gump`页面。
 
 ## 连接前后端
+### 安装axios
 安装axios：
 ```
 $ npm install axios --save
 ```
+### 更新组件
 更新gump.vue组件，示例如下：
 ```vue
 <template>
-  <div class="container">
-    <button type="button" class="btn btn-normal">{{ msg }}</button>
+  <div>
+    <p>{{ msg }}</p>
   </div>
 </template>
 <script>
@@ -210,12 +213,12 @@ export default {
   },
   methods: {
       getMessage() {
-          const path = 'http://localhost:5000/gump';
+          const path = 'http://127.0.0.1:5000/gump';
           axios.get(path)
           .then((res) => {
               this.msg = res.data;
           })
-          .cath((error) => {
+          .catch((error) => {
               // eslint-disable-next-line
               console.error(error);
           })
@@ -227,3 +230,67 @@ export default {
 }
 </script>
 ```
+### 运行测试
+启动flask：
+```sh
+$ python app.py
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+启动serve：
+```
+$ npm run serve
+> shm@0.1.0 serve D:\flask-vue-shm\shm
+> vue-cli-service serve
+ INFO  Starting development server...
+98% after emitting CopyPlugin
+ DONE  Compiled successfully in 6519ms                                      下午11:52:57
+  App running at:
+  - Local:   http://localhost:8080/
+  - Network: http://192.168.1.2:8080/
+```
+打开`http://127.0.0.1:5000/gump`可以看到的之前`app.py`返回的json内容：
+```
+Life was like a box of chocolates, you never know what you're gonna get.
+```
+打开`http://localhost:8080`,点击导航跳转到`http://localhost:8080/#/gump`,内容同上，也就是呈现了后端返回的数据，实现了数据交互。
+
+## 引入Bootstrap
+&#8195;&#8195;之前搞这个小项目Flask+Jinja2写了一部分，没有使用Vue.js，HTML代码也写了点，之前用的bootstrap版本是3.3.7，不知道新版有啥差异，这里还是使用3.3.7，安装示例：
+```
+$ npm install jquery@2.2.4
++ jquery@2.2.4
+added 1 package from 1 contributor and audited 1346 packages in 18.735s
+$ npm install bootstrap@3.3.7
++ bootstrap@3.3.7
+added 1 package from 1 contributor and audited 1345 packages in 15.19s
+```
+在app的入口文件`shm/src/main.js`中导入boorstrap：
+```js
+import 'bootstrap/dist/css/bootstrap.css'
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+
+createApp(App).use(router).mount('#app')
+```
+删除`App.vue`中多余的样式，或者在`gump.vue`中添加样式测试：
+```vue
+<template>
+  <div>
+    <button type="button" class="btn btn-default" aria-label="Left Align">
+      <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default">Gump</button>
+    <h2>{{ msg }}</h2>
+  </div>
+</template>
+```
+可以看到网页样式发生了改变。
+
+## 补充
+再次感谢CSDN博客博主的文章(Python之简)：[Flask-Vue前后端分离](https://blog.csdn.net/qq_1290259791/article/details/81174383)
