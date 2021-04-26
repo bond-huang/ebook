@@ -1,4 +1,4 @@
-# SH-基础环境准备
+# SHM-基础环境准备
 边学边做，学习参考文档和链接：
 - Vue CLI官方文档：[https://cli.vuejs.org/zh/](https://cli.vuejs.org/zh/)
 - CSDN博客(Python之简)：[Flask-Vue前后端分离](https://blog.csdn.net/qq_1290259791/article/details/81174383)
