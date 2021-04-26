@@ -15,7 +15,8 @@
 - Vue.js:@vue/cli 4.5.12
 - Node.js:v14.16.1
 - npm:6.14.12
-- bootstrap: 
+- Bootstrap:bootstrap@3.3.7
+- jQuery:jquery@2.2.4
 
 ### 构建虚环境
 构建虚拟环境：
