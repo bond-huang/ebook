@@ -1,10 +1,11 @@
 # SHC-基础环境准备
-边学边做，参考文档：
+边学边做，学习参考文档和链接：
 - Vue CLI官方文档：[https://cli.vuejs.org/zh/](https://cli.vuejs.org/zh/)
 - CSDN博客(Python之简)：[Flask-Vue前后端分离](https://blog.csdn.net/qq_1290259791/article/details/81174383)
 - node.js官网：[https://nodejs.org/en/](https://nodejs.org/en/)
 
 ## 软件安装
+使用windows环境下的git bash，代码用VS code编写。
 ### 软件类型及版本
 需要的软件及版本：
 - Python:Python 3.8.3
@@ -83,6 +84,20 @@ C:\Users\QianHuang>vue --version
 - 等待几分钟后，创建成功，进入`Project dashboard`页面
 - 回到`Vue Project Manager`界面，在项目后面点击`Open in editor`可以打开VS code进行编辑
 
+### 添加插件
+&#8195;&#8195;默认安装了一些插件。在`Vue Project Manager`管理界面`Plugins`菜单中我添加了`cli-plugin-router`插件，在src目录下生成了`router`文件夹和`views`文件夹。启动服务时候报错：
+```
+$ npm run serve
+> shm@0.1.0 serve D:\flask-vue-shm\shm
+> vue-cli-service serve
+ INFO  Starting development server...
+98% after emitting CopyPlugin
+ ERROR  Failed to compile with 1 error                        下午10:24:51
+This dependency was not found:
+* vue-router in ./src/router/index.js
+To install it, you can run: npm install --save vue-router
+```
+根据提示运行命令即可。
 ### 启动项目
 运行下面命令启动项目：
 ```
@@ -103,4 +118,112 @@ $ npm run serve
 $ npm run dev
 npm ERR! missing script: dev
 ```
-打开浏览器可以看到Vue项目默认主页：Welcome to Your Vue.js App
+打开浏览器可以看到Vue项目默认主页：`Welcome to Your Vue.js App`
+
+### 添加组件
+在VS code中添加文件`shm/scr/components/gump.vue`，内容如下：
+```vue
+<template>
+  <div>
+    <p>{{ msg }}</p>
+  </div>
+</template>
+<script>
+export default {
+  name : 'Gump',
+  data() {
+    return {
+      msg: 'Miracles happen every day.'
+    }
+  }
+}
+</script>
+```
+更新`shm/scr/router/index.js`，将/gump映射到Gump组件：
+```js
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Home from '../views/Home.vue'
+import Gump from '../components/gump.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/gump',
+    name: 'Gump',
+    component: Gump
+  },
+  {
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  }
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
+})
+
+export default router
+```
+在`APP.vue`中加入gump内容：
+```vue
+<template>
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> |
+    <router-link to="/gump">Gump</router-link>
+  </div>
+  <router-view/>
+</template>
+```
+保存后刷新页面，可以看到默认的导航后有`Gump`链接，点击进入`http://localhost:8080/#/gump`页面。
+
+## 连接前后端
+安装axios：
+```
+$ npm install axios --save
+```
+更新gump.vue组件，示例如下：
+```vue
+<template>
+  <div class="container">
+    <button type="button" class="btn btn-normal">{{ msg }}</button>
+  </div>
+</template>
+<script>
+import axios from 'axios';
+
+export default {
+  name : 'Gump',
+  data() {
+    return {
+      msg: 'Miracles happen every day.'
+    }
+  },
+  methods: {
+      getMessage() {
+          const path = 'http://localhost:5000/gump';
+          axios.get(path)
+          .then((res) => {
+              this.msg = res.data;
+          })
+          .cath((error) => {
+              // eslint-disable-next-line
+              console.error(error);
+          })
+      }
+  },
+  created() {
+      this.getMessage();
+  }
+}
+</script>
+```
