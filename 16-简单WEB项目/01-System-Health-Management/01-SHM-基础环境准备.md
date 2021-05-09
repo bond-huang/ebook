@@ -276,6 +276,7 @@ added 1 package from 1 contributor and audited 1347 packages in 18.91s
 在app的入口文件`shm/src/main.js`中导入boorstrap：
 ```js
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
