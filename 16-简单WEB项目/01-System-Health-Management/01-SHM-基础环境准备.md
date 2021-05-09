@@ -297,5 +297,180 @@ createApp(App).use(router).mount('#app')
 ```
 可以看到网页样式发生了改变。
 
-## 补充
-再次感谢CSDN博客博主的文章(Python之简)：[Flask-Vue前后端分离](https://blog.csdn.net/qq_1290259791/article/details/81174383)
+## SHM-Vuex及ElementUI组件
+前面内容参考CSDN博客(Python之简)，后面参考hzwy23分享的文档及各官方文档：
+- Vue.js官方中文文档：[https://cn.vuejs.org/v2/guide/syntax.html](https://cn.vuejs.org/v2/guide/syntax.html)
+- Vue CLI官方文档：[https://cli.vuejs.org/zh/](https://cli.vuejs.org/zh/)
+- Vuex官方文档：[https://vuex.vuejs.org/zh/](https://vuex.vuejs.org/zh/)
+- Vue Router官方文档：[https://router.vuejs.org/zh/installation.html](https://router.vuejs.org/zh/installation.html)
+- Element UI官方地址:[https://element-plus.gitee.io/#/zh-CN](https://element-plus.gitee.io/#/zh-CN)
+- Element UI官方中文文档:[https://element-plus.gitee.io/#/zh-CN/component/installation](https://element-plus.gitee.io/#/zh-CN/component/installation)
+- 大佬hzwy23分享文档的github地址：[https://github.com/hzwy23/vue-admin](https://github.com/hzwy23/vue-admin)
+
+### 集成Vuex组件
+&#8195;&#8195;Vuex是一个专为Vue.js应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。模块工作流程图如下：    
+![Vuex 模块工作流程图](https://vuex.vuejs.org/vuex.png)
+
+#### Vuex模块核心概念
+核心概念如下：
+- State：存储状态变量，[https://vuex.vuejs.org/zh/guide/state.html](https://vuex.vuejs.org/zh/guide/state.html)
+- Getter：获取状态变量，接受state作为其第一个参数，[https://vuex.vuejs.org/zh/guide/getters.html](https://vuex.vuejs.org/zh/guide/getters.html)
+- Mutation：更改Vuex的store中的状态的唯一方法是提交mutation，[https://vuex.vuejs.org/zh/guide/mutations.html](https://vuex.vuejs.org/zh/guide/mutations.html)
+- Action：提供入口方法，修改存储状态的值，[https://vuex.vuejs.org/zh/guide/actions.html](https://vuex.vuejs.org/zh/guide/actions.html)
+- Module：状态模块化管理，每个模块拥有自己的state、mutation、action、getter、甚至是嵌套子模块，[https://vuex.vuejs.org/zh/guide/modules.html](https://vuex.vuejs.org/zh/guide/modules.html)
+
+#### 集成Vuex
+使用nmp安装，安装在当前项目node_modules目录下：
+```
+$ npm install vuex --save
++ vuex@3.6.2
+added 1 package from 1 contributor and audited 1348 packages in 17.303s
+```
+&#8195;&#8195;或者在`Vue UI`的`Vue Project Manager`管理界面`Plugins`菜单中添加`cli-plugin-Vuex`插件，在src目录下生成了`store`文件夹，文件夹中包含文件`index.js`。
+
+在main.js中会自动加入或者修改如下内容：
+```js
+import store from './store'
+
+createApp(App).use(store).use(router).mount('#app')
+```
+#### Vuex使用
+##### 设置state值
+示例如下：
+```js
+//格式示例
+this.$store.dispatch('action名称','state新值')
+//使用示例
+this.$store.dispatch('authHeight', '100px')
+```
+说明：
+- 第一个参数是action中定义的方法，第二个参数是state新的值
+- 需要调整`height`这个变量的值为`100px`。假设action中定义了一个方法`autoHeight`
+
+##### 获取state值
+通过`mapGetters`方法获取到`state`中`height`这个变量，或者从`data`中读取`clientHeight`变量:
+```js
+import { mapGetters } from "vuex";
+export devault {
+    computed: {
+        //从vuex中获取浏览器高度，实时更新，保持左侧菜单栏高度与浏览器高度一致
+        ...mapGetters{["height"]}
+    },
+    data(){
+        return {
+            //从vuex读取state状态的第二种方法
+            clientHight: this.$store.getters.hight
+        }
+    }
+}
+```
+### 集成ElementUI组件
+&#8195;&#8195;Element Plus，一套为开发者、设计师和产品经理准备的基于Vue 3.0的桌面端组件库。集成了ElementUI 后，可以方便我们更快的开发出更漂亮的 Web 页面。
+#### 集成ElementUI组件方法
+使用npm安装：
+```
+$ npm install element-plus --save
++ element-plus@1.0.2-beta.41
+added 8 packages from 13 contributors and audited 1344 packages in 41.515s
+```
+&#8195;&#8195;或者在`Vue UI`的`Vue Project Manager`管理界面`Plugins`菜单中查找并添加`vue-cli-plugin-element-plus`插件，下载后记得invoke，然后在src目录下生成了`plugins`文件夹，文件夹中包含文件`element.js`文件。
+
+在main.js中会自动加入或者修改如下内容：
+```js
+import installElementPlus from './plugins/element'
+
+const app = createApp(App)
+installElementPlus(app)
+app.use(store).use(router).mount('#app')
+```
+在App.vue中会加入如下代码：
+```vue
+<template>
+  <img src="./assets/logo.png">
+  <div>
+    <p>
+      If Element Plus is successfully added to this project, you'll see an
+      <code v-text="'<el-button>'"></code>
+      below
+    </p>
+    <el-button type="primary">el-button</el-button>
+  </div>
+  <HelloWorld msg="Welcome to Your Vue.js App"/>
+</template>
+
+<script>
+import HelloWorld from './components/HelloWorld.vue'
+
+export default {
+  name: 'App',
+  components: {
+    HelloWorld
+  }
+}
+</script>
+```
+&#8195;&#8195;运行后打开主页可以看到样式，示例了`Element Plus`的代码片段和按钮样式。
+
+### 页面布局
+&#8195;&#8195;之前做测试引入了bootstrap，使用也比较方便，大佬推荐了element-plus，是基于Vue 3.0的桌面端组件库，配合Vue可能更好，并且看起来比较容易上手，决定后面也没布局采用element-plus。
+#### 页面整体布局
+&#8195;&#8195;整体布局之前是参考bootcss中模板：[https://v3.bootcss.com/examples/dashboard/](https://v3.bootcss.com/examples/dashboard/)，使用`element-plus`后整体布局模式不变：
+- Header:头部logo和导航等
+- Aside:侧边菜单显示
+- Main:主要内容显示区域
+- Footer:底部信息
+
+#### 整体布局示例
+&#8195;&#8195;把之前测试的`Home.vue`修改成了`Vuehome.vue`，然后在`views`目录下新建`Home.vue`文件，作为项目页面主页，将路由添加到`router`文件夹下的`index.js`中。在ElementPlus官方选取了一个模板，写入`Home.vue`中：
+```vue
+<template>
+<div class="common-layout">
+  <el-container>
+    <el-header>Header</el-header>
+    <el-container>
+      <el-aside width="250px">Aside</el-aside>
+      <el-container>
+        <el-main>Main</el-main>
+        <el-footer>Footer</el-footer>
+      </el-container>
+    </el-container>
+  </el-container>
+</div>
+</template>
+
+<style>
+  .el-header, .el-footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
+
+  .el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 300px;
+  }
+
+  .el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    line-height: 440px;
+  }
+  body > .el-container {
+    margin-bottom: 40px;
+  }
+
+  .el-container:nth-child(5) .el-aside,
+  .el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+  }
+
+  .el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+  }
+</style>
+```
+运行查看初步效果，页面布局以次为基准，然后依次设计各模块。
