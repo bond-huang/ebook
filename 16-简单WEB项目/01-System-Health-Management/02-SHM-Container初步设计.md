@@ -195,4 +195,174 @@ export default {
 ```html
 <el-header>Header</el-header>
 ```
+&#8195;&#8195;替换后刷新页面发现布局混乱，原因在官方文档`Container Attributes`中有说明：子元素中有 `el-header`或`el-footer`时为`vertical`，否则为`horizontal`，加上属性`direction="vertical"`即可。
 ## Aside菜单栏设计
+&#8195;&#8195;在`component`目录下新建了`Aside`目录，用于存放侧边导航的相关组件。由两个组件组成，分别是：
+- Side.vue：左侧菜单栏主要布局，建构一个紧靠浏览器左侧，可以通过按钮展开或者收起，垂直方向自适应浏览器高度的区域
+- ChildrenMenu.vue：显示具体的菜单信息，嵌套在Side.vue组件中
+
+### Side.vue设计
+组件`Side.vue`代码示例如下：
+```vue
+<template>
+  <div class="shm-aside">
+    <el-radio-group v-model="isCollapse">
+      <el-button type="text" @click="click()">
+      <i class="bi bi-justify-left"></i></el-button>
+    </el-radio-group>
+  <el-menu 
+    default-active="1-1-1"
+    class="el-menu-vertical-demo"
+    @open="handleOpen" @close="handleClose" 
+    :collapse="isCollapse" 
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b">
+    <el-submenu index="1">
+      <template #title>
+        <i class="el-icon-menu"></i>
+        <span>Managed System</span>
+      </template>
+        <el-scrollbar style="height: 100%">
+        <ChildrenMenu  v-bind:children="sideMenuList" />
+        </el-scrollbar>
+    </el-submenu>
+    <el-submenu index="2">
+      <template #title><i class="el-icon-bank-card"></i><span>System Class</span></template>
+        <el-menu-item-group>
+          <el-menu-item index="2-1">All Systems</el-menu-item>
+          <el-menu-item index="2-2">System Class</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
+    <el-submenu index="3">
+      <template #title><i class="el-icon-setting"></i><span>Setting</span></template>
+      <el-menu-item-group>
+        <el-menu-item index="3-1">User Setting</el-menu-item>
+        <el-menu-item index="3-2">Other Setting</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
+    <el-menu-item index="4">
+      <i class="el-icon-document"></i>
+      <template #title>Document</template>
+    </el-menu-item>
+        <el-menu-item index="5">
+      <i class="el-icon-question"></i>
+      <template #title>Help</template>
+    </el-menu-item>
+  </el-menu>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import { getMenu } from '@/api/menu.js';
+import ChildrenMenu from '@/components/Aside/ChildrenMenu.vue';
+
+export default {
+  name: 'Aside',
+  computed: {
+    ...mapGetters(["height"])
+  },
+  components: {
+    ChildrenMenu
+  },
+  data() {
+    return {
+    sideMenuList: [],
+    isCollapse: true,
+    message:'Expand'
+    };
+  },
+  methods: {
+    openPage(url) {
+      this.$router.push(url);
+    }, 
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+      },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+      },
+    click:function(){
+      if(this.isCollapse){
+        this.message = 'Collapse';
+      }else{
+        this.message = 'Expand';
+        }
+      this.isCollapse = !this.isCollapse;
+    },
+    mounted(){
+      getMenu().then(resp => {
+        this.sideMenuList = resp
+      })
+    },
+  }
+}
+</script>
+
+<style scoped>
+.shm-aside {
+  float: left;
+  text-align: left;
+  padding: 2px 0px;
+  line-height: 30px;
+  background-color: #545c64;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  }
+</style>
+```
+说明：
+- 示例中从vuex中获取浏览器高度，实时更新，保持左侧菜单栏高度与浏览器高度一致
+- 示例中`mounted()`作用是定时获取后台菜单信息
+- 菜单展开收起的按钮比较小，颜色也不顺眼，回头有空再调整
+
+### ChildrenMenu.vue设计
+组件`ChildrenMenu.vue`代码示例如下：
+```vue
+<template>
+<div>
+    <div v-for="(item, index) in children" :key="index">
+          <!-- 目录菜单 -->
+          <el-submenu v-if="item.menuType == 1" :index="index">
+            <!-- 目录菜单名称 -->
+            <template #title>
+              <i :class="item.iconClass"></i>
+              <span>{{item.menuName}}</span>
+            </template>
+            <!-- 目录下子菜单 -->
+            <ChildrenMenu  v-bind:children="item.children" />
+          </el-submenu>
+          <!-- 叶子菜单 -->
+          <el-menu-item v-if="item.menuType == 2" :index="item.menuId" @click="openPage(item.path)">
+            {{item.menuName}}
+          </el-menu-item>
+    </div>
+</div>
+</template>
+
+<script>
+export default {
+    props: ["children"],
+    name: 'ChildrenMenu',
+    methods: {
+        openPage(url) {
+            this.$router.push(url);
+        }
+    }
+}
+</script>
+```
+说明：
+- 目前只是从hzyw23大佬的文档中完全拷贝过来的，仅供参考
+- `ChildrenMenu`组件用来渲染树形层级菜单。树形菜单采用递归渲染的方式实现，即在`ChildrenMenu`组件内嵌套使用组件自身，从而实现递归渲染树形菜单的效果
+- `Vue.js`中组件采用递归时，该组件一定要设置`name`属性，否则递归无效
+- 通过`Axios`组件向后台服务发起请求，获取左侧菜单栏信息
+- 菜单信息数据格式后面内容学习介绍，目前菜单也不符合我的项目设计，后续根据数据格式进行调整
+
+### 主页导入Aside
+参照之前方法导入即可，后面再统一示例代码。
+## Main Content部分设计
