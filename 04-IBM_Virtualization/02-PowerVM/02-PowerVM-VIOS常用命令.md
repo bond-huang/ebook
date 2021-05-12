@@ -100,7 +100,41 @@ $ chdev -dev <sea_adapter> -attr ha_mode=auto
 ```shell
 $ updateios -accept -install -dev <directory>
 ```
+### 配置备份viosbr命令
+&#8195;&#8195;可以在root权限下使用mksysb或者克隆操作进行备份整个系统，也可以使用`viosbr`命令，用途：对`Virtual I/O Server (VIOS)`执行备份虚拟和逻辑配置、列出配置以及复原配置等操作。
+
+#### viosbr命令示例
+`viosbr`命令使用示例示例：
+```
+$ viosbr -backup -file /tmp/vios_backup_190101
+```
+会在`/tmp`目录下生成名为`vios_backup_190101.tar.gz`的备份文件。
+
+查看备份文中的所有内容：
+```
+$ viosbr -view -file /tmp/vios_backup_190101
+```
+仅查看物理磁盘信息：
+```
+$ viosbr -view -file /tmp/vios_backup_190101 -type pv
+```
+复原所有可能的设备并显示关于已部署和未部署设备的摘要：
+```
+$ viosbr -restore -file /tmp/vios_backup_190101
+```
+要每天备份VIOS中的所有设备属性和虚拟设备映射，并保留最后5个备份文件：
+```
+$ viosbr -backup -file mybackup -frequency daily -numfiles 5
+```
+生成的备份文件位于`home/padmin/cfgbackups`下
+
+#### 其它说明
+官方文档链接：[viosbr 命令](https://www.ibm.com/docs/zh/power8?topic=commands-viosbr-command)
+
+说明：
+- viosbr 命令不会备份适配器或驱动程序的父设备、设备驱动程序、虚拟串行适配器、虚拟终端设备、内核扩展、因特网网络扩展 (inet0)、虚拟 I/O 总线、处理器、内存或高速缓存
 
 ### 其它命令
 更多命令可参考官方文档：[Virtual I/O Server and Integrated Virtualization Manager commands listed alphabetically](https://www.ibm.com/support/knowledgecenter/TI0003N/p8hcg/p8hcg_kickoff_alphabetical.htm)
+
 
