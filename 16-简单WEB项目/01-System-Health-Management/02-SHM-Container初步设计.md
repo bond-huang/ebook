@@ -366,3 +366,137 @@ export default {
 ### 主页导入Aside
 参照之前方法导入即可，后面再统一示例代码。
 ## Main Content部分设计
+### Content.vue设计
+组件`Content.vue`代码示例如下：
+```vue
+<template>
+  <div>
+    <el-card>
+      <Breadcrumb></Breadcrumb>
+    </el-card>
+    <div class="shm-content" :style="{height: (height-138)+'px'}">
+      <section style="overflow: auto !important">
+        <transition name="fade" mode="out-in">
+          <keep-alive>
+            <el-card
+              style="overflow: auto !important; text-align: left"
+              :style="{height: (height-140)+'px'}">
+              <el-table :data="tableData">
+                <el-table-column prop="date" label="Date" width="140">
+                </el-table-column>
+                <el-table-column prop="name" label="Name" width="200">
+                </el-table-column>
+                <el-table-column prop="location" label="Location">
+                </el-table-column>
+              </el-table>
+              <router-view></router-view>
+            </el-card>
+          </keep-alive>
+        </transition>
+      </section>
+    </div>
+  </div>
+</template>
+<script>
+import { mapGetters } from "vuex";
+import Breadcrumb from "@/components/Main/Breadcrumb.vue";
+
+export default {
+  name: "Content",
+  components: {
+    Breadcrumb
+  },
+  computed: {
+    ...mapGetters(["height"])
+  },
+  data() {
+    const item = {
+    date: '2021-05-02',
+    name: 'AIXtest_sysbackup',
+    location: '/tmp/AIXtest_sysbackup'
+    };
+    return {
+    tableData: Array(10).fill(item)
+    }
+  }
+};
+</script>
+
+<style scoped>
+.shm-content {
+  border: #f6f3f3 solid 1px;
+  background-color: #f6f3f3;
+  overflow-y: auto;
+  padding: 6px 6px;
+}
+</style>
+```
+说明：
+- 在MaContent中加入了```<router-view></router-view>```DOM元素。当左侧菜单栏点击打开相应页面后，其对应的组件将会在`Main Content`中```<router-view></router-view>```DOM元素内显示
+- 示例中我手动加了一个表格进行演示，表格数据重复了10次，后期删掉
+- 示例中导入了`Breadcrumb`组件，是面包屑导航功能，后面介绍
+
+### Breadcrumb.vue设计
+组件`Breadcrumb.vue`代码示例如下：
+```vue
+<template>
+  <div>
+    <el-breadcrumb separator-class="el-icon-arrow-right" separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
+      <el-breadcrumb-item
+        v-for="(item,index) in breadcrumb"
+        :to="{path: item.path}"
+        :key="index"
+      >{{item.title}}</el-breadcrumb-item>
+    </el-breadcrumb>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      breadcrumb: []
+    };
+  },
+  watch: {
+    $route(to) {
+      const routers = to.matched;
+      this.breadcrumb = [];
+      if (routers && routers.length > 0) {
+        for (let i = 1; i < routers.length; i++) {
+          this.breadcrumb.push({
+            title: routers[i].meta.title,
+            path: routers[i].path
+          });
+        }
+      }
+    }
+  }
+};
+</script>
+```
+说明：
+- 内容基本copy大佬hzwy23内容，个人喜欢使用图标分隔符，后续再根据需要更改内容
+- 前端路由往往由多层路由组成，在页面跳转过程中，引入面包屑导航功能后，可以很方便的知道当下所在的页面
+- `watch`用来监听路由跳转，每次发生路由跳转时，`$route`中的值都会发生变化，`to.matched`用来获取匹配成功的路由信息
+
+## Footer部分设计
+在`component`目录下新建了`Footer`目录，用于存放Footer相关组件，`Footer.vue`内容如下：
+```vue
+<template>
+    <div>Copyright © 2021 @vue/cli+ElementUI</div>
+</template>
+<script>
+export default {
+  name: "Footer"
+};
+</script>
+```
+说明：
+- Footer主要显示一些版权信息等
+- 样式放在主页实现了，主页中`el-footer`样式即是
+- 在此次项目中，演示完Footer后删除了，没什么用，占位置
+
+## 结束
+目前只是根据大佬文档学习了页面设计，后期根据自己的需求调整样式及数据类型。
