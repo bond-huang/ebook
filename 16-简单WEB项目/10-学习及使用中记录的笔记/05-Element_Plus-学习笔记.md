@@ -66,7 +66,6 @@ methods: {
 JavaScript代码：
 ```js
 methods: {
-  },
   arraySpanMethod({ columnIndex }) {
     if (columnIndex === 4) {
       return [1, 2];
