@@ -381,12 +381,35 @@ export default {
             <el-card
               style="overflow: auto !important; text-align: left"
               :style="{height: (height-140)+'px'}">
-              <el-table :data="tableData">
-                <el-table-column prop="date" label="Date" width="140">
+              <el-table 
+               :data="tableData.filter(data => !search || hosttype.hostname.IPadd.toLowerCase().includes(search.toLowerCase()))"
+               :span-method="arraySpanMethod">
+                <el-table-column prop="hosttype" label="Host Type">
                 </el-table-column>
-                <el-table-column prop="name" label="Name" width="200">
+                <el-table-column prop="hostname" label="Host Name">
                 </el-table-column>
-                <el-table-column prop="location" label="Location">
+                <el-table-column prop="IPadd" label="IP Address">
+                </el-table-column>
+                <el-table-column prop="description" label="Description" width="300">
+                </el-table-column>
+                <el-table-column align="right" width="180">
+                  <template #header>
+                    <el-input v-model="search" size="mini" placeholder="Filter keywords"/>
+                  </template>
+                  <template #default="scope">
+                    <el-button size="mini"
+                    @click="handleEdit(scope.$index, scope.row)">View</el-button>
+                    <el-button size="mini"
+                    @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                    <el-button size="mini" type="danger"
+                    @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column align="right" width="70">
+                  <template #header>
+                    <el-button size="mini" type="success"
+                    @click="handleEdit(scope.$index, scope.row)">Add</el-button>
+                  </template>
                 </el-table-column>
               </el-table>
               <router-view></router-view>
@@ -411,14 +434,28 @@ export default {
   },
   data() {
     const item = {
-    date: '2021-05-02',
-    name: 'AIXtest_sysbackup',
-    location: '/tmp/AIXtest_sysbackup'
+    hosttype: 'AIX',
+    hostname: 'aix7236test',
+    IPadd: '192.168.100.100',
+    description: 'IBM AIX test system IBM AIX test system'
     };
     return {
     tableData: Array(10).fill(item)
     }
-  }
+  },
+  methods: {
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+    arraySpanMethod({ columnIndex }) {
+      if (columnIndex === 4) {
+        return [1, 2];
+      }
+    },
+  },
 };
 </script>
 
@@ -433,8 +470,9 @@ export default {
 ```
 说明：
 - 在MaContent中加入了```<router-view></router-view>```DOM元素。当左侧菜单栏点击打开相应页面后，其对应的组件将会在`Main Content`中```<router-view></router-view>```DOM元素内显示
-- 示例中我手动加了一个表格进行演示，表格数据重复了10次，后期删掉
+- 示例中我手动加了一个表格进行演示，表格数据重复了10次，后期放在其它页面
 - 示例中导入了`Breadcrumb`组件，是面包屑导航功能，后面介绍
+- 通过给`table`传入`span-method`方法实现合并行或列，示例中使用`arraySpanMethod`方法合并了行
 
 ### Breadcrumb.vue设计
 组件`Breadcrumb.vue`代码示例如下：
