@@ -74,7 +74,7 @@ methods: {
 }
 ```
 说明：
-- 使用`border`由表格边界，方便查看是否合并了，不需要可以删除
+- 使用`border`后有表格边界，方便查看是否合并了，不需要可以删除
 - 示例中只使用到了`columnIndex`，其它`row, column, rowIndex`等没使用就不用写，写了还会报错：`'row' is declared but its value is never read.Vetur(6133)`
 - 返回`[1, 2]`代表`rowspan`为1，`colspan`为2，代表意思和HTML5中`td`标签一样，用法也一样，此值在HTML基础学习中有相应记录：[HTML-基础学习笔记](https://ebook.big1000.com/08-Python/07-Python_Flask/11-HTML-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html?h=rowspan)
 
