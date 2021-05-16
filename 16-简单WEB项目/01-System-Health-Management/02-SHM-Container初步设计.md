@@ -382,7 +382,11 @@ export default {
               style="overflow: auto !important; text-align: left"
               :style="{height: (height-140)+'px'}">
               <el-table 
-               :data="tableData.filter(data => !search || hosttype.hostname.IPadd.toLowerCase().includes(search.toLowerCase()))"
+               :data="tableData.filter(data => !search 
+               || data.hostname.toLowerCase().includes(search.toLowerCase())
+               || data.IPadd.toLowerCase().includes(search.toLowerCase())
+               || data.hosttype.toLowerCase().includes(search.toLowerCase())
+               || data.description.toLowerCase().includes(search.toLowerCase()))"
                :span-method="arraySpanMethod">
                 <el-table-column prop="hosttype" label="Host Type">
                 </el-table-column>
@@ -440,7 +444,8 @@ export default {
     description: 'IBM AIX test system IBM AIX test system'
     };
     return {
-    tableData: Array(10).fill(item)
+    tableData: Array(10).fill(item),
+    search: ''
     }
   },
   methods: {
