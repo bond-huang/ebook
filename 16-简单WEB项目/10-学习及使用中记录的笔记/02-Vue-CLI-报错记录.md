@@ -4,6 +4,19 @@
 ### 示例一
 报错示例：
 ```
+"export 'default' (imported as 'Vue') was not found in 'vue'
+```
+报错代码行：
+```js
+import Vue from 'vue'
+```
+版本原因，我使用的`@vue/cli 4.5.12`版本格式应该是：
+```js
+import { createApp } from 'vue'
+```
+### 示例二
+报错示例：
+```
 `slot` attributes are deprecated
 ```
 原因是在较新的Vue-CLI版本中使用了`slot-scope`，新版本使用`v-slot`取代了`slot`和`slot-scope`。 
