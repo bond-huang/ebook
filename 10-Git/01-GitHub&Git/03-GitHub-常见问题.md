@@ -117,4 +117,17 @@ nothing to commit, working tree clean
 ```
 &#8195;&#8195;进入GitHub，代码就在master分支下面。如果master不是默认的分支，在图形界面切换一下即可`Switch default branch to another branch`。
 
+## VScode中标记
+&#8195;&#8195;将本地项目连接到远程GitHub仓库时候，使用VScode编辑代码后文件后面会有相应的字母信息，文件名称也会显示对应的颜色，代码中也有标记的代码行，说明如下：
+- M modified
+    - 在github中添加过该文件，然后对在VScode中对文件进行了修改，文件后标记M，并且文件名显示黄色
+    - 在代码中，修改后的代码行前面有个蓝色标记，点开可以查看到修改前后的对比信息
+- U untracked
+    - 在本地新建了文件，还未提交到GitHub上，就会标记U
+- D delete
+    - 删除了的文件，VScode会记录下这个状态
+- 3,M
+    - 表示有3个错误，并且是modified的
+
+参考博客：[vscode-git中的U,M和D文件标记含义](https://blog.csdn.net/qsj0606/article/details/114439860)
 ## 待补充
