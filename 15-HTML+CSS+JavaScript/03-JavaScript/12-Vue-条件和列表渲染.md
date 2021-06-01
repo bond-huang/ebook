@@ -188,5 +188,54 @@ var example2 = new Vue({
 说明：
 - 当前项的索引作为第二个参数是可选的
 - 也可以用`of`替代`in`作为分隔符
-
 ### 在v-for里使用对象
+用`v-for`来遍历一个对象的`property`，示例如下：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue v-for</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <ul id="v-for-object" class="demo">
+        <li v-for="value in object">
+            {{ value }}
+        </li>
+    </ul>
+<script>
+new Vue({
+  el: '#v-for-object',
+  data: {
+    object: {
+      Superhero: 'Batman',
+      Superpower: 'Rich',
+	  Address: 'Gotham ',
+    }
+  }
+})
+</script>
+</body>
+</html>
+```
+输出示例：
+```
+· Batman
+· Rich
+· Gotham 
+```
+也可以提供第二个的参数为`property`名称 (也就是键名),或者索引作为第三个参数：
+```html
+<ul id="v-for-object">
+  <div v-for="(value, name, index) in object">
+    {{ index }}. {{ name }}: {{ value }}
+  </div>
+</ul>
+```
+输出示例：
+```
+0. Superhero: Batman
+1. Superpower: Rich
+2. Address: Gotham 
+```
+### 待补充
