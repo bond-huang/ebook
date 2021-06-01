@@ -127,3 +127,66 @@ var app = new Vue({
 - 此示例参考了CSDN博客：[https://blog.csdn.net/dadada_youzi/article/details/110238197](https://blog.csdn.net/dadada_youzi/article/details/110238197)
 
 ## 列表渲染
+### 用v-for把一个数组对应为一组元素
+可以用`v-for`指令基于一个数组来渲染一个列表，示例如下：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue v-for</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <ul id="example-1">
+        <li v-for="item in items" :key="item.superhero">
+        {{ item.superhero }}
+        </li>
+    </ul>
+<script>
+var example1 = new Vue({
+  el: '#example-1',
+  data: {
+    items: [
+      { superhero: 'Batman' },
+      { superhero: 'Wonder Woman' }
+    ]
+  }
+})
+</script>
+</body>
+</html>
+```
+在`v-for`中，可以访问父作用域的`property`，还支持当前项的索引作为第二个参数，示例如下：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue v-for</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <ul id="example-2">
+        <li v-for="(item, index) in items">
+            {{ parentMessage }} : {{ index }} -- {{ item.superhero }}
+        </li>
+    </ul>
+<script>
+var example2 = new Vue({
+  el: '#example-2',
+  data: {
+	parentMessage:'DC',
+    items: [
+      { superhero:'Batman' },
+      { superhero:'Wonder Woman' }
+    ]
+  }
+})
+</script>
+</body>
+</html>
+```
+说明：
+- 当前项的索引作为第二个参数是可选的
+- 也可以用`of`替代`in`作为分隔符
+
+### 在v-for里使用对象
