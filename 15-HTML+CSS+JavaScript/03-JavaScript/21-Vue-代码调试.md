@@ -54,6 +54,67 @@ $ npm run serve
 #### 故障排查
 &#8195;&#8195;在`Debug`视图的右下方的`DEBUG CONSOLE`中，会有相关的信息，看是否满足代码的需求的数据。如果此处判断不了故障原因，设置其它断点，继续排查。
 
+此次断点看到的内容：
+```
+Array(1) ["1"]
+0:"1"
+length:1
+__proto__:Array(0)
+```
+再次设置断点，运行后感觉卡住不动`DEBUG CONSOLE`中会有如下信息：
+```
+[HMR] Waiting for update signal from WDS...
+```
+找到`node_modules->webpack->hot`文件夹下`log.js`文件，使用`Ctrl+/`注释部分内容，示例：
+```js
+module.exports = function(level, msg) {
+	// if (shouldLog(level)) {
+		// if (level === "info") {
+			// console.log(msg);
+		// } else if (level === "warning") {
+			// console.warn(msg);
+		// } else if (level === "error") {
+			// console.error(msg);
+		// }
+	// }
+};
+```
+参考链接：[[HMR] Waiting for update signal from WDS…](https://stackoverflow.com/questions/59695102/reactjs-console-error-hmr-waiting-for-update-signal-from-wds)
+
+&#8195;&#8195;设置后这条等待信息没有了，运行后有时可以看到输出有时等半天也没结果。后来又查了查，这个不是错误，只是说当您保存文件时它已准备好刷新，因此无需手动刷新。 当然我试了试手动刷新，好像也行。
+
+参考链接：
+- [Waiting for update signal from WDS](https://stackoverflow.com/questions/60192271/waiting-for-update-signal-from-wds)
+- [Vue.js官方文档:runtimeCompiler](https://cli.vuejs.org/zh/config/#runtimecompiler)
+
+获取菜单问题最后排查到了原因，是因为把`mounted()`写到了`methods`里面，错误代码示例：
+```js
+  methods: {
+    openPage(url) {
+      this.$router.push(url);
+    }, 
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+      },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+      },
+    click:function(){
+      if(this.isCollapse){
+        this.foldicon = 'el-icon-s-fold';
+      }else{
+        this.foldicon = 'el-icon-s-unfold';
+        }
+      this.isCollapse = !this.isCollapse;
+    },
+    mounted(){
+      getMenu().then(resp => {
+        this.sideMenuList = resp
+      })
+    }
+  }
+```
+
 ## Vue Devtools
 
 ## 待补充
