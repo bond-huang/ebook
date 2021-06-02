@@ -1,8 +1,8 @@
-# Mock-使用及学习笔记
+# Vue-CLI-数据问题记录
 记录学习和使用过程中知识点和遇到的问题。
-## 数据问题
-### 数据格式问题
-&#8195;&#8195;在项目学习和编写过程中，发现`menu`数据格式始终获取不到，刚开始以为是Vue中获取数据的递归渲染的方式写的有问题，最后发现是Mock数据格式可能有问题，格式本身问题跟Mock关系不大，记录在此先。数据如下所示：
+## 数据获取
+### 数据获取问题
+&#8195;&#8195;在SHM项目学习和编写过程中，发现`menu`数据格式始终获取不到，刚开始以为是Vue中获取数据的递归渲染的方式写的有问题，后来怀疑是Mock数据格式可能有问题，但是测试感觉数据没有问题。数据如下所示：
 ```js
     'GET /test': {
         statusCode: "200", statusMessage: "succcess", data: 
@@ -44,6 +44,7 @@
         }]
     }
 ```
+#### 数据测试
 先把数据简化：
 ```js
     'GET /test': {
@@ -68,7 +69,7 @@
         },
     }
 ```
-使用下面方式获取数据并查看：
+在`Modeller.vue`中使用下面方式获取数据并查看：
 ```html
 <ul>
     <li v-for="(value, index) in testData" :key="index">
@@ -152,3 +153,35 @@
 </template>
 ```
 表格中会获取到`Linux system`那组数据相关信息。
+
+#### 问题原因
+&#8195;&#8195;上面测试说明数据没有问题，数据展示的逻辑也没用问题,回到`Aside.vue`组件和`ChildrenMenu.vue`中，也就是从Mock中获取数据方式有问题，API很简单应该没问题，最后排查到了原因，是因为把`mounted()`写到了`methods`里面，错误代码示例：
+```js
+  methods: {
+    openPage(url) {
+      this.$router.push(url);
+    }, 
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+      },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+      },
+    click:function(){
+      if(this.isCollapse){
+        this.foldicon = 'el-icon-s-fold';
+      }else{
+        this.foldicon = 'el-icon-s-unfold';
+        }
+      this.isCollapse = !this.isCollapse;
+    },
+    mounted(){
+      getMenu().then(resp => {
+        this.sideMenuList = resp
+      })
+    }
+  }
+```
+把`mounted()`写错了位置，导致数据获取不到，后面处理的就都是空的数据。
+
+## 待补充
