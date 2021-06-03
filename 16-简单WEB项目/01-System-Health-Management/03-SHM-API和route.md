@@ -188,27 +188,46 @@ router.beforeEach((to, from, next) => {
 - children 表示目录类型菜单下的子菜单信息。
 
 示例创建一个目录菜单，目录菜单下边挂载两个叶子菜单：
-```
-{
-  menuId: "1-1",
-  menuType: 1,
-  menuName: 'Managed Systems',
-  iconClass: 'el-icon-location',
-  children: [
-     {
-          menuId: "1-1-1",
+```js
+'GET /menu': {
+      statusCode: "200", statusMessage: "succcess", data: 
+      [{
+        menuId: "1-1",
+        menuType: 1,
+        menuName: 'AIX system',
+        children: [
+          {
+            menuId: "1-1-1",
+            menuType: 2,
+            menuName: 'AIXtest1',
+            path: '/allsystems',
+          },
+          {
+            menuId: "1-1-2",
+            menuType: 2,
+            menuName: 'AIXtest2',
+            path: '/allsystems',
+          }]
+      },
+      {
+          menuId: "1-2",
           menuType: 2,
-          menuName: 'AIX Systems',
-          path: '/modeller',
-     },
-     {
-          menuId: "1-1-2",
-          menuType: 2,
-          menuName: 'Redhat Linux',
-          path: '/modeller',
-     }
-  ]
-}
+          menuName: 'Linux system',
+          children: [
+            {
+              menuId: "1-2-1",
+              menuType: 2,
+              menuName: 'Linuxtest1',
+              path: '/allsystems',
+            },
+            {
+              menuId: "1-2-2",
+              menuType: 2,
+              menuName: 'LinuxXtest2',
+              path: '/allsystems',
+            }]
+      }]
+  }
 ```
 在Web中向后台请求菜单信息的方式：
 ```js
@@ -220,3 +239,201 @@ export function getMenu(){
 }
 ```
 ## 前端路由设计
+&#8195;&#8195;在`router`目录下`index.js`文件中，有之前做测试的路由，全段路由一般由下面几个部分组成：
+- path：路由地址
+- name：路由名称
+- component：路由对应的组件
+- meta：路由元数据，如路由标签等
+- children：子路由信息
+
+在程序中便可以调用路由跳转方法进行路由切换操作：
+```js
+// 字符串
+router.push('/foo')
+// 对象
+router.push({ path: '/foo' })
+// 命名的路由
+router.push({ name: 'foo', params: { userId: '123' }})
+// 带查询参数，变成 /register?plan=private
+router.push({ path: '/foo', query: { plan: 'private' }})
+```
+在HTML页面元素中实现路由跳转的方法：
+```html
+<router-link to="/foo">Go to Foo</router-link>
+```
+在浏览历史记录中切换跳转方法：
+```js
+router.go(n)
+// n 表示第几个历史记录，n 必须是整数
+```
+### 基础页面
+&#8195;&#8195;我在组件目录下新建了`layout`目录，里面包含`BaseLayout.vue`和`EmptyLayout.vue`两个组件，`BaseLayout.vue`内容如下：
+```vue
+<template>
+  <div class="common-layout">
+    <el-container direction="vertical">
+      <Header/>
+      <el-container>
+        <Aside/>
+        <el-container style="border: 1px solid #eee">
+          <el-main><Content/></el-main>
+        </el-container>
+      </el-container>
+    </el-container>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/Header/Header.vue'
+import Aside from '@/components/Aside/Aside.vue'
+import Content from '@/components/Main/Content.vue'
+
+export default {
+  name: 'BaseLayout',
+  components: {
+    Header,
+    Aside,
+    Content
+  }
+}
+</script>
+
+<style>
+  .el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+  }
+  body > .el-container {
+    margin-bottom: 40px;
+  }
+
+  .el-container:nth-child(5) .el-aside,
+  .el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+  }
+
+  .el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+  }
+</style>
+```
+即之前测试中`Home.vue`页面中内容，`EmptyLayout.vue`内容如下：
+```vue
+<template>
+  <router-view></router-view>
+</template>
+```
+### 前端路由
+前端路由往往嵌套多层，`router`目录下`index.js`文件写入路由信息，路由信息如下所示：
+```js
+import { createRouter, createWebHashHistory } from 'vue-router'
+import BaseLayout from '@/components/layout/BaseLayout'
+import EmptyLayout from '@/components/layout/EmptyRouter'
+import Dashboard from '@/views/Dashboard'
+import Login from '@/views/Login'
+import Vuehome from '@/views/Vuehome.vue'
+import Gump from '@/views/Gump.vue'
+
+import Allsystems from '@/views/allsystems/AllSystems'
+import HostUpdate from '@/views/allsystems/HostUpdate'
+
+const routes = [{
+  path: '',
+  component: EmptyLayout,
+  redirect: 'dashboard',
+  children: [{
+      path: '/login',
+      component: Login,
+      name: 'login',
+      meta: {
+          title: 'login'
+      }
+  }]
+}, {
+  path: '',
+  component: BaseLayout,
+  redirect: 'dashboard',
+  children: [{
+      path: 'dashboard',
+      component: Dashboard,
+      name: 'dashboard',
+      meta: {
+          title: 'home'
+      }
+  }]
+},
+  {
+    path: '/gump',
+    component: BaseLayout,
+    children: [{
+        path: '/gump',
+        component: Gump,
+        name: 'gump',
+        meta: {
+            title: 'gump'
+        }
+    }]
+  },
+  {
+    path: '/vuehome',
+    component: BaseLayout,
+    children: [{
+        path: '/vuehome',
+        component: Vuehome,
+        name: 'vuehome',
+        meta: {
+            title: 'vuehome'
+        }
+    }]
+  },
+  {
+    path: '/allsystems',
+    component: BaseLayout,
+    children: [{
+        path: '/allsystems',
+        component: Allsystems,
+        name: 'allsystems',
+        meta: {
+            title: 'All Systems'
+        }
+    },
+    {
+        path: '/allsystems',
+        component: EmptyLayout,
+        meta: {
+            title: 'All Systems'
+        }, children: [
+            {
+                path: 'update',
+                name: 'update',
+                component: HostUpdate,
+                meta: {
+                    title: 'Update Host',
+                }
+            },
+        ]
+    }]
+  },
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
+})
+
+export default router
+```
+说明：
+- 首先打开`BaseLayout`组件，然后在这个组件中找到&#60;router-view>&#60;/router-view>
+- 然后打开`EmptyLayout`组件，`EmptyLayout`组件被嵌入`BaseLayout`组件的&#60;router-view>&#60;/router-view>内
+- 最后打开`Allsystems`组件，此时其上级组件`EmptyLayout `组件内查找&#60;router-view>&#60;/router-view>，然后将`Allsystems`组件嵌入到`EmptyLayout`组件的&#60;router-view>&#60;/router-view>内
+- 前端路由定义时，如果路由中包含了`children`属性，那么这个组件内一定带有&#60;router-view>&#60;/router-view> DOM元素 ，否则`children`内的组件无处安放
+
+整个项目的入口组件`App.vue`,里边就是一个&#60;router-view>&#60;/router-view>，代码如下：
+```vue
+<template>
+  <router-view/>
+</template>
+```
+## 结束
