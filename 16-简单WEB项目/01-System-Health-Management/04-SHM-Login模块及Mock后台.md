@@ -83,8 +83,9 @@ export default {
 }
 </style>
 ```
-`api`目录下`login.js`代码如下：
+登录的API代码如下：
 ```js
+// @api/login.js
 import axios from "axios"
 import qs from 'qs'
 
@@ -105,3 +106,208 @@ $ $ npm install mockjs --save
 + mockjs@1.1.0
 updated 1 package and audited 1346 packages in 15.92s
 ```
+### 使用mockjs
+在`src`目录下新建文件夹`mock`，新建文件`mock.js`和`data`文件夹，`mock.js`文件内容代码如下：
+```js
+import Mock from 'mockjs'
+
+const mock_source = ['biz.js', 'sys.js']
+
+function load(mock_source) {
+    for (let i = 0; i < mock_source.length; i++) {
+        let file = import('./data/' + mock_source[i])
+        file.then(content => {
+            if (content && content.default) {
+                initMock(content.default)
+            }
+        })
+    }
+
+}
+
+function initMock(rules) {
+    for (let [rule, resp] of Object.entries(rules)) {
+        const element = rule.split(" ")
+        if (element && element.length == 2) {
+            const rtype = element[0].trim()
+            const rurl = element[1].trim()
+            Mock.mock(rurl, rtype.toLowerCase(), resp)
+        } else {
+            Mock.mock(rule, resp)
+        }
+    }
+}
+
+if (mock_source && mock_source.length > 0) {
+    load(mock_source)
+}
+```
+### Mock数据
+&#8195;&#8195;在`data`文件夹下新建文件`sys.js`和`biz.js`文件，`sys.js`文件中主要是登录信息以及侧边导航的数据，内容如下所示：
+```js
+import qs from 'qs'
+const menu = {
+    'POST /login': function(params){
+        const param = qs.parse(params.body)
+        if (param.username == 'admin' && param.password == '123456') {
+            return {
+              statusCode: "200",
+              statusMessage: 'Successful',
+              data: {
+                accessToken: 'xxx',
+                refreshToken: 'xxx'
+              }
+            }
+        } else {
+          return {
+            statusCode: "403",
+            statusMessage: 'Login failed',
+            data: {
+              accessToken: '-',
+              refreshToken: '-'
+            }
+          }
+        }
+    },
+    'GET /menu': {
+      statusCode: "200", statusMessage: "succcess", data: 
+      [{
+        menuId: "1-1",
+        menuType: 1,
+        menuName: 'AIX system',
+        children: [
+          {
+            menuId: "1-1-1",
+            menuType: 2,
+            menuName: 'AIXtest1',
+            path: '/allsystems',
+          },
+          {
+            menuId: "1-1-2",
+            menuType: 2,
+            menuName: 'AIXtest2',
+            path: '/allsystems',
+          }]
+      },
+      {
+          menuId: "1-2",
+          menuType: 2,
+          menuName: 'Linux system',
+          children: [
+            {
+              menuId: "1-2-1",
+              menuType: 2,
+              menuName: 'Linuxtest1',
+              path: '/allsystems',
+            },
+            {
+              menuId: "1-2-2",
+              menuType: 2,
+              menuName: 'LinuxXtest2',
+              path: '/allsystems',
+            }]
+      }]
+  }
+}
+
+export default menu;
+```
+`biz.js`文件中主要是`Allsystems.vue`组件中需要获取的数据：
+```js
+const modeller = {
+    'GET /allsystems': {
+        statusCode: "200", statusMessage: "succcess", data: {
+            total: 12,
+            pages: 2,
+            content: [{
+                HostId: 1,
+                HostType: "AIX",
+                HostName: "AIXtest1",
+                IPadd: "192.168.100.100",
+                Description: "IBM AIX test system",
+            },
+            {
+                HostId: 2,
+                HostType: "AIX",
+                HostName: "AIXtest2",
+                IPadd: "192.168.100.101",
+                Description: "IBM AIX test system",
+            },
+            {
+                HostId: 3,
+                HostType: "AIX",
+                HostName: "AIXtest3",
+                IPadd: "192.168.100.102",
+                Description: "IBM AIX test system",
+            },
+            {
+                HostId: 4,
+                HostType: "AIX",
+                HostName: "AIXtest4",
+                IPadd: "192.168.100.103",
+                Description: "IBM AIX test system",
+            },
+            {
+                HostId: 5,
+                HostType: "AIX",
+                HostName: "AIXtest5",
+                IPadd: "192.168.100.104",
+                Description: "IBM AIX test system",
+            },
+            {
+                HostId: 6,
+                HostType: "AIX",
+                HostName: "AIXtest6",
+                IPadd: "192.168.100.105",
+                Description: "IBM AIX test system",
+            },
+            {
+                HostId: 7,
+                HostType: "AIX",
+                HostName: "AIXtest7",
+                IPadd: "192.168.100.106",
+                Description: "IBM AIX test system",
+            },
+            {
+                HostId: 8,
+                HostType: "Linux",
+                HostName: "Linuxtest1",
+                IPadd: "192.168.100.107",
+                Description: "Red Hat Enterprise Linux",
+            },
+            {
+                HostId: 9,
+                HostType: "Linux",
+                HostName: "Linuxtest2",
+                IPadd: "192.168.100.108",
+                Description: "Red Hat Enterprise Linux",
+            },
+            {
+                HostId: 10,
+                HostType: "Linux",
+                HostName: "Linuxtest3",
+                IPadd: "192.168.100.109",
+                Description: "Red Hat Enterprise Linux",
+            },
+            {
+                HostId: 11,
+                HostType: "Linux",
+                HostName: "Linuxtest4",
+                IPadd: "192.168.100.110",
+                Description: "Red Hat Enterprise Linux",
+            },
+            {
+                HostId: 12,
+                HostType: "Linux",
+                HostName: "Linuxtest5",
+                IPadd: "192.168.100.111",
+                Description: "Red Hat Enterprise Linux",
+            },]
+        }
+    },
+}
+
+export default modeller;
+```
+## 结束
+&#8195;&#8195;到现在位置i，基本的框架搭建完成，后续主要是功能设计，根据自己的项目需求来添加相应的功能，前端设计完成后，还有后端开发，学习的过程还很漫长。
