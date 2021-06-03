@@ -91,7 +91,7 @@ export default {
 - 暂时没想到用啥logo，只写了项目名称，并加粗显示
 - 靠左对齐，左边空20px，字体为微软雅黑，大小为2rem，颜色为纯白色
 
-### Menu.vueS设计
+### Menu.vue设计
 组件`Menu.vue`代码示例如下：
 ```vue
 <template>
@@ -123,12 +123,21 @@ export default {
 组件`Tools.vue`代码示例如下：
 ```vue
 <template>
-    <div class="shm-tools">
-    <span class="el-dropdown-link">
-    <i class="bi bi-person-circle"></i>
-        Login
-    </span>
-    &nbsp;&nbsp;
+  <div class="shm-tools">
+    <el-dropdown @command="handleCommand">
+      <span class="el-dropdown-link">
+        <i class="bi bi-person-circle"></i>
+        {{userInfo.nickname}}
+        <i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item command="1">User Admin</el-dropdown-item>
+        <el-dropdown-item command="2" divided>Logout</el-dropdown-item>
+      </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+  &nbsp;&nbsp;
     <el-dropdown>
       <span class="el-dropdown-link">
         More<i class="el-icon-arrow-down el-icon--right"></i>
@@ -141,12 +150,12 @@ export default {
               &nbsp;Vuehome</router-link></el-dropdown-item>
           <el-dropdown-item>
             <router-link to="/gump"><i class="bi bi-google"></i>
-              &nbsp;Gump</router-link></el-dropdown-item>
+              Gump</router-link></el-dropdown-item>
           <el-dropdown-item>
-            <a href="https://github.com/bond-huang" target="_blank">
+            <a href="https://github.com/bond-huang" target="_blank"> 
             <i class="bi bi-github"></i>&nbsp;GitHub</a></el-dropdown-item>
           <el-dropdown-item>
-            <a href="https://github.com/bond-huang/System-Health-Check/blob/main/LICENSE" target="_blank">
+            <a href="https://github.com/bond-huang/shm/blob/master/LICENSE" target="_blank">
             <i class="el-icon-s-check"></i>&nbsp;License</a></el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -155,8 +164,34 @@ export default {
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-  name: 'Tools'
+  name: 'Tools',
+  computed: {
+    ...mapGetters(["userInfo"])
+  },
+  methods: {
+    handleCommand(command) {
+      console.log(command)
+      switch(command) {
+        case "1":
+          break;
+        case "2":
+          this.logout();
+      }
+    },
+    logout() {
+        this.$confirm('Are you sure logout?', 'Prompt information', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('loginStatus', false)
+          this.$router.push('/login')
+        });
+    }
+  }
 };
 </script>
 
@@ -176,6 +211,7 @@ export default {
 说明：
 - 在使用超链接时候，刚开始打算用Element-plus的`el-link`，但是我想点击后打开新的页面，`target`属性使用不行，可能有其它的但是我不知道，官方文档找了下没找到，最后还是使用`a`标签
 - 使用`el-link`无下划线的格式示例：`el-link :underline="false" href="https://github.com/bond-huang"`
+- 代码中使用`mapGetters`获取了登录用户信息，后续再添加用户管理界面
 
 ### 主页导入Header
 原本的header样式`el-header`去掉，加入如下内容：
@@ -208,7 +244,7 @@ export default {
   <div class="shm-aside">
     <el-radio-group v-model="isCollapse">
       <el-button type="text" @click="click()">
-      <i class="bi bi-justify-left"></i></el-button>
+      <i v-bind:class="foldicon"></i></el-button>
     </el-radio-group>
   <el-menu 
     default-active="1-1-1"
@@ -221,17 +257,19 @@ export default {
     <el-submenu index="1">
       <template #title>
         <i class="el-icon-menu"></i>
-        <span>Managed System</span>
+        <span>Systems Class</span>
       </template>
-        <el-scrollbar style="height: 100%">
-        <ChildrenMenu  v-bind:children="sideMenuList" />
-        </el-scrollbar>
+        <ChildrenMenu v-bind:menuData="sideMenuList" />
     </el-submenu>
     <el-submenu index="2">
-      <template #title><i class="el-icon-bank-card"></i><span>System Class</span></template>
+      <template #title><i class="el-icon-bank-card"></i><span>System Admin</span></template>
         <el-menu-item-group>
-          <el-menu-item index="2-1">All Systems</el-menu-item>
-          <el-menu-item index="2-2">System Class</el-menu-item>
+          <el-menu-item index="2-1" @click="openPage('/allsystems')">
+            All Systems
+          </el-menu-item>
+          <el-menu-item index="2-2" @click="openPage('/allsystems')">
+            System Class
+          </el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="3">
@@ -245,7 +283,7 @@ export default {
       <i class="el-icon-document"></i>
       <template #title>Document</template>
     </el-menu-item>
-        <el-menu-item index="5">
+    <el-menu-item index="5">
       <i class="el-icon-question"></i>
       <template #title>Help</template>
     </el-menu-item>
@@ -270,7 +308,7 @@ export default {
     return {
     sideMenuList: [],
     isCollapse: true,
-    message:'Expand'
+    foldicon:'el-icon-s-unfold'
     };
   },
   methods: {
@@ -285,17 +323,17 @@ export default {
       },
     click:function(){
       if(this.isCollapse){
-        this.message = 'Collapse';
+        this.foldicon = 'el-icon-s-fold';
       }else{
-        this.message = 'Expand';
+        this.foldicon = 'el-icon-s-unfold';
         }
       this.isCollapse = !this.isCollapse;
-    },
-    mounted(){
-      getMenu().then(resp => {
-        this.sideMenuList = resp
-      })
-    },
+    }
+  },
+  mounted(){
+    getMenu().then(resp => {
+      this.sideMenuList = resp
+    })
   }
 }
 </script>
@@ -324,44 +362,35 @@ export default {
 组件`ChildrenMenu.vue`代码示例如下：
 ```vue
 <template>
-<div>
-    <div v-for="(item, index) in children" :key="index">
-          <!-- 目录菜单 -->
-          <el-submenu v-if="item.menuType == 1" :index="index">
-            <!-- 目录菜单名称 -->
-            <template #title>
-              <i :class="item.iconClass"></i>
-              <span>{{item.menuName}}</span>
-            </template>
-            <!-- 目录下子菜单 -->
-            <ChildrenMenu  v-bind:children="item.children" />
-          </el-submenu>
-          <!-- 叶子菜单 -->
+  <div v-for="(item, index) in menuData" :key="index">
+    <el-submenu :index="item.menuId">
+      <template #title>{{ item.menuName }}</template>
+        <div v-for="(item, index) in item.children" :key="index">
           <el-menu-item v-if="item.menuType == 2" :index="item.menuId" @click="openPage(item.path)">
-            {{item.menuName}}
+            {{ item.menuName }}
           </el-menu-item>
-    </div>
-</div>
+        </div>
+    </el-submenu>
+  </div>
 </template>
 
 <script>
 export default {
-    props: ["children"],
-    name: 'ChildrenMenu',
-    methods: {
-        openPage(url) {
-            this.$router.push(url);
-        }
+  props: ["menuData"],
+  name: 'ChildrenMenu',
+  methods: {
+    openPage(url) {
+      this.$router.push(url);
     }
+  }
 }
 </script>
 ```
 说明：
-- 目前只是从hzyw23大佬的文档中完全拷贝过来的，仅供参考
-- `ChildrenMenu`组件用来渲染树形层级菜单。树形菜单采用递归渲染的方式实现，即在`ChildrenMenu`组件内嵌套使用组件自身，从而实现递归渲染树形菜单的效果
-- `Vue.js`中组件采用递归时，该组件一定要设置`name`属性，否则递归无效
+- `ChildrenMenu`组件用来渲染树形层级菜单
+- 刚开始树形菜单采用递归渲染的方式实现，即在`ChildrenMenu`组件内嵌套使用组件自身，从而实现递归渲染树形菜单的效果，后来改用简单便于理解的两个for循环
+- 如果`Vue.js`中组件采用递归时，该组件一定要设置`name`属性，否则递归无效
 - 通过`Axios`组件向后台服务发起请求，获取左侧菜单栏信息
-- 菜单信息数据格式后面内容学习介绍，目前菜单也不符合我的项目设计，后续根据数据格式进行调整
 
 ### 主页导入Aside
 参照之前方法导入即可，后面再统一示例代码。
@@ -374,48 +403,13 @@ export default {
     <el-card>
       <Breadcrumb></Breadcrumb>
     </el-card>
-    <div class="shm-content" :style="{height: (height-138)+'px'}">
+    <div class="shm-content" :style="{height: (height-120)+'px'}">
       <section style="overflow: auto !important">
         <transition name="fade" mode="out-in">
           <keep-alive>
             <el-card
-              style="overflow: auto !important; text-align: left"
+              style="overflow: auto !important"
               :style="{height: (height-140)+'px'}">
-              <el-table 
-               :data="tableData.filter(data => !search 
-               || data.hostname.toLowerCase().includes(search.toLowerCase())
-               || data.IPadd.toLowerCase().includes(search.toLowerCase())
-               || data.hosttype.toLowerCase().includes(search.toLowerCase())
-               || data.description.toLowerCase().includes(search.toLowerCase()))"
-               :span-method="arraySpanMethod">
-                <el-table-column prop="hosttype" label="Host Type">
-                </el-table-column>
-                <el-table-column prop="hostname" label="Host Name">
-                </el-table-column>
-                <el-table-column prop="IPadd" label="IP Address">
-                </el-table-column>
-                <el-table-column prop="description" label="Description" width="300">
-                </el-table-column>
-                <el-table-column align="right" width="180">
-                  <template #header>
-                    <el-input v-model="search" size="mini" placeholder="Filter keywords"/>
-                  </template>
-                  <template #default="scope">
-                    <el-button size="mini"
-                    @click="handleEdit(scope.$index, scope.row)">View</el-button>
-                    <el-button size="mini"
-                    @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-                    <el-button size="mini" type="danger"
-                    @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
-                  </template>
-                </el-table-column>
-                <el-table-column align="right" width="70">
-                  <template #header>
-                    <el-button size="mini" type="success"
-                    @click="handleEdit(scope.$index, scope.row)">Add</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
               <router-view></router-view>
             </el-card>
           </keep-alive>
@@ -436,32 +430,7 @@ export default {
   computed: {
     ...mapGetters(["height"])
   },
-  data() {
-    const item = {
-    hosttype: 'AIX',
-    hostname: 'aix7236test',
-    IPadd: '192.168.100.100',
-    description: 'IBM AIX test system IBM AIX test system'
-    };
-    return {
-    tableData: Array(10).fill(item),
-    search: ''
-    }
-  },
-  methods: {
-    handleEdit(index, row) {
-      console.log(index, row);
-    },
-    handleDelete(index, row) {
-      console.log(index, row);
-    },
-    arraySpanMethod({ columnIndex }) {
-      if (columnIndex === 4) {
-        return [1, 2];
-      }
-    },
-  },
-};
+}
 </script>
 
 <style scoped>
@@ -484,7 +453,7 @@ export default {
 ```vue
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right" separator="/">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item
         v-for="(item,index) in breadcrumb"
@@ -542,4 +511,4 @@ export default {
 - 在此次项目中，演示完Footer后删除了，没什么用，占位置
 
 ## 结束
-目前只是根据大佬文档学习了页面设计，后期根据自己的需求调整样式及数据类型。
+后期根据自己的需求调整样式及数据类型等。
