@@ -64,6 +64,9 @@ VIOserver1,active,9.200.104.132,1,1,1,1
 ### 实例二
 &#8195;&#8195;A分区安装后，RMC使用的是IP1，后来改成了IP2，但是HMC上记录的还是IP1信息，RMC连接状态就异常，使用命令`chsysstate -m <system name> -o rebuild -r sys`依然是不行，在HMC上重置了此物理机器的FSP连接后，等几分钟就正常了。
 
+### 实例三
+&#8195;&#8195;HMC上列出分区信息后面可以看到AIX操作系统版本，但是当某个系统升级后，上面的信息没有更新，使用命令`chsysstate -m <system name> -o rebuild -r sys`等几分钟后刷新即可。
+
 ## 官方文档
 官方参考文档：[验证移动分区的RMC连接](https://www.ibm.com/support/knowledgecenter/zh/POWER7/p7hc3/iphc3hmcpreprmc.htm)
 
