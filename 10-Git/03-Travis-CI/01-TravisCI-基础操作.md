@@ -68,3 +68,63 @@ no changes added to commit (use "git add" and/or "git commit -a")
 &#8195;&#8195;在GitHub里面`master-->View all branches-->`删掉所有由Travis创建的分支，travis-ci上的缓存也清理了，但是还是不行。后来把出错当天更新的文档删掉了，然后gitbook分支也删了，再重新运行就好了。当天可疑操作就是文件名后缀写重复了，当然不是这个原因；          
 &#8195;&#8195;后来发现，那些SUMMARY.md提示无关紧要，`deploy.sh exited with 1`这个才是关键，检查脚本中有个条件语句判断上一条命令的退出状态码，执行失败脚本就exited with 1，也就是`gitbook build .`执行出现了问题，问题就在最新加的markdown中有html的代码，虽然我使用了代码注释但是估计gitbook还是识别有问题，GitHub识别没什么问题；    
 &#8195;&#8195;最后弄明白了，代码块引用没什么问题，但是在说明描述中单反引号引用html相关代码时候不行，用对应的HTML ASCII码替代即可。
+
+## 构建问题排查
+官方常见构建问题说明：[Common Build Problems](https://docs.travis-ci.com/user/common-build-problems)
+### Branch not included per configuration
+官方描述：
+```
+please make sure your branch is not explicitly excluded or not included in your .travis.yml file. 
+```  
+我遇到的报错：
+```
+Branch "main" not included per configuration
+```
+原因是在`.travis.yml`写错了：
+```yaml
+language: python
+python:
+  - "3.8"
+# command to install dependencies
+install:
+  - pip install Flask
+branches:
+  only:
+    - master
+script:
+  - travis_wait 10 bash start.sh
+```
+主分支应该是main，把master改成main即可。
+
+## 迁移问题
+&#8195;&#8195;2021年6约15号之后，`travis-ci.org`将停止服务，不能进行构建了，转向`travis-ci.com`，需要把仓库迁移到`travis-ci.com`，迁移比较简单，`travis-ci.org`上发起，邮箱确认后在`travis-ci.com`点击迁移即可。
+### error while trying to fetch the log
+#### 问题描述
+迁移完成后，在travis-ci.com上构建，提示或报错如下：
+```
+Oh no! You tried to trigger a build for bond-huang/ebook but the request was rejected. 
+There was an error while trying to fetch the log. 
+```
+&#8195;&#8195;原因是`travis-ci.com`上策略更改了一下，在主页中，有个`Plan`选项，第一个是`Free Plan`,其它都是付费的，当然我选择了`Free`，有10000积分，构建了一次花掉了60积分，看来以后得省着点用了。
+
+#### 解决方案
+&#8195;&#8195;合作伙伴队列解决方案是由Travis-CI的合作伙伴赞助的基础架构解决方案，可以完全免费使用（仅适用于开源软件仓库）。目前有：
+- IBM CPU在IBM Cloud中构建（由 IBM 赞助）
+- ARM64 CPU构建在Equinix Metal（前 Packet）基础架构中（由ARM赞助）
+
+要使用Partner Queue Solution运行作业，在公共仓库中`.travis.yml`使用以下标签：
+```
+os: linux
+arch:
+  - arm64
+  - ppc64le
+  - s390x
+```
+尝试使用了IBM Power平台ppc64le构建了我的`navigator`,用s390x构建了我的`ebook`没有扣积分。
+#### 参考链接
+参考链接：
+- [Oh no! You tried to trigger a build for orgName/project but the request was rejected](https://travis-ci.community/t/oh-no-you-tried-to-trigger-a-build-for-orgname-project-but-the-request-was-rejected/10657)
+- [Travis-CI Billing Overview](https://docs.travis-ci.com/user/billing-overview/#usage---credits)
+- [Building on Multiple CPU Architectures](https://docs.travis-ci.com/user/multi-cpu-architectures/)
+
+## 待补充
