@@ -1,9 +1,9 @@
 os: linux
 arch:
-  - ppc64le
+  - arm64
 language: "node_js"
 node_js:
-  - "9"
+  - "8"
 
 install:
   - "npm install -g gitbook"
