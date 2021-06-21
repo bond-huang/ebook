@@ -3,7 +3,7 @@ arch:
   - s390x
 language: "node_js"
 node_js:
-  - "8"
+  - "9"
 
 install:
   - "npm install -g gitbook"
