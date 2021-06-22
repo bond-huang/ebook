@@ -9,7 +9,6 @@ git add .
 git commit -am "[Travis] Update SUMMARY.md"
 git push -f "https://${GH_TOKEN}@${GH_REF}" gitbook:gitbook
 sed -i 's/fs.*stat = statFix(fs.*stat)/\/\/ &/g' /home/travis/.nvm/versions/node/v14.17.1/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js
-cat /home/travis/.nvm/versions/node/v14.17.1/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js
 gitbook install
 gitbook build .
 if [ $? -ne 0 ];then
