@@ -6,7 +6,7 @@ node_js:
   - "14"
 
 install:
-  - "npm i -D commitlint"
+  - "npm install graceful-fs --save-dev"
   - "npm install -g gitbook"
   - "npm install -g gitbook-cli --force"
 
