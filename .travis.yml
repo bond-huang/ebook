@@ -3,9 +3,10 @@ arch:
   - ppc64le
 language: "node_js"
 node_js:
-  - "10"
+  - "14"
 
 install:
+  - "npm clean cache --force"
   - "npm install -g gitbook"
   - "npm install -g gitbook-cli --force"
 
