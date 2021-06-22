@@ -3,10 +3,10 @@ arch:
   - ppc64le
 language: "node_js"
 node_js:
-  - "12"
+  - "14"
 
 install:
-  - "npm i graceful-fs@4.1.4 --save"
+  - "npm clean cache —force"
   - "npm install -g gitbook"
   - "npm install -g gitbook-cli --force"
 
