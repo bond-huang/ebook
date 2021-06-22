@@ -1,8 +1,14 @@
 os: linux
 
+arch:
+  - ppc64le
+
 language: "node_js"
 node_js:
-  - "8"
+  - "14"
+  
+before_install:
+  - bash sed -i 's/^fs.*stat = statFix(fs.*stat)/\/\/ &/g' /home/travis/.nvm/versions/node/v14.17.1/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js
 
 install:
   - "npm install -g gitbook"
