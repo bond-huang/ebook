@@ -6,7 +6,6 @@ node_js:
   - "8"
 
 install:
-  - "travis_wait 30 mvn install"
   - "npm install -g gitbook"
   - "npm install -g gitbook-cli --force"
 
