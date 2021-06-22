@@ -6,7 +6,7 @@ node_js:
   - "14"
 
 install:
-  - "npm clean cache --force"
+  - "npm install graceful-fs@latest --save"
   - "npm install -g gitbook"
   - "npm install -g gitbook-cli --force"
 
