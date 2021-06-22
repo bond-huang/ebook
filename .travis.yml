@@ -1,12 +1,10 @@
 os: linux
-arch:
-  - ppc64le
+
 language: "node_js"
 node_js:
-  - "14"
+  - "8"
 
 install:
-  - "npm install -g graceful-fs --save-dev"
   - "npm install -g gitbook"
   - "npm install -g gitbook-cli --force"
 
