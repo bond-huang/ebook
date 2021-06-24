@@ -6,7 +6,7 @@ arch:
 language: "node_js"
 
 node_js:
-  - "12.22.1"
+  - "14.17.1"
   
 install:
   - "npm install -g gitbook"
