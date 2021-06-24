@@ -8,6 +8,9 @@ language: "node_js"
 node_js:
   - "12"
   
+before_install:
+  - "npm cache clean --force"
+  
 install:
   - "npm install -g gitbook"
   - "npm install -g gitbook-cli --force"
