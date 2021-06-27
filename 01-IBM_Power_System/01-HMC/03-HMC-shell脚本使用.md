@@ -110,4 +110,76 @@ hscroot@TEST:~> lspartition -ix
 .104.238,0,,AIX,7.1;1,9.200.104.107,3,,AIX,6.1;1,9.200.104.19,0,,AIX,7.1;3,9.200.104.231,0,,AIX,5.3;1,9.200.104.172,0,,AIX,6.1;2,9.200.104.173,0,,AIX,6.1;7,9.200.104.235,0,,AIX,7.
 ```
 输出格式为:`LParID,IPaddress,active,hostname,OStype,OSlevel;`
+### 抓取分区配置信息
+统计所有HMC上受管机器的CPU内存信息，当然也报告Lpar名称和IP等。
+
+首先收集HMC上受管机器的信息：
+```
+# ssh hscroot@10.8.252.150 "lssyscfg -r sys -F" > sysinfo.txt
+```
+抓取受管机器名称：
+```
+# awk 'BEGIN{FS=","}{print $1}' sysinfo.txt > syslist.txt
+```
+抓取受管机器的CPU配置信息：
+```
+for i in `cat syslist.txt`
+do
+ssh hscroot@10.8.252.150 "lshwres -r proc -m $i --level sys" > sysproc.txt
+done
+```
+然后筛选一下：
+```
+# awk 'BEGIN{FS=","}{print $1,$2,$4}' sysproc.txt > procinfo.txt
+```
+抓取受管机器的内存配置信息：
+```
+for i in `cat syslist.txt`
+do
+ssh hscroot@10.8.252.150 "lshwres -r mem -m $i --level sys" > sysmem.txt
+done
+```
+然后筛选一下：
+```
+# awk 'BEGIN{FS=","}{print $1,$2,$4}' sysmem.txt > meminfo.txt
+```
+
+然后获取所有分区profile信息：
+```
+for i in `cat syslist.txt`
+do
+ssh hscroot@10.8.252.150 "lssyscfg -r prof -m $i"
+done > lparprof.txt
+```
+获取分区的名称，内存和CPU配置信息：
+```
+# awk 'BEGIN{FS=","}{print $2,$7,$16} lparprof.txt > lparinfo.txt
+```
+发现用lshwres获取CPU内存信息也可以，并且更加方便，获取CPU信息：
+```
+# for i in `cat syslist.txt`
+do
+ssh hscroot@10.8.252.150 "lshwres -r proc -m $i --level lpar" 
+done > lparproc.txt
+```
+提取出来：
+```
+# awk 'BEGIN{FS=","}{print $1,$7}' lparproc.txt > lparprocinfo.txt
+```
+内存一样：
+```
+# awk 'BEGIN{FS=","}{print $2,$7,$16} lparprof.txt > lparinfo.txt
+```
+发现用lshwres获取CPU内存信息也可以，并且更加方便，获取CPU信息：
+```
+# for i in `cat syslist.txt`
+do
+ssh hscroot@10.8.252.150 "lshwres -r mem -m $i --level lpar" 
+done > lparmem.txt
+# awk 'BEGIN{FS=","}{print $1,$7}' lparmem.txt > lparmeminfo.txt
+```
+说明：
+- 物理Lpar和虚拟的vios的CPU配置信息格式有点不一样
+- 物理Lpar和虚拟的vios内存配置信息格式一样
+
 ## 待补充
