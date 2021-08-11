@@ -140,4 +140,76 @@ id: audit "/usr/sbin/audit start # System Auditing"
 ```
 &#8195;&#8195;检查`/etc/inittab`文件，关于此命令的条目`Aciton`项设置是`respawn`,此设置表示如果进程不存在，启动进程；进程终止后重新启动。结合报错信息:Command is respawning too rapidly,说明执行过于频繁导致其它命令反应比较慢，检查命令是否有问题。
 
-### 待补充
+## 磁盘问题
+### rootvg磁盘missing
+&#8195;&#8195;rootvg有两块磁盘，都是通过vscsi过来的，vios端路径全部丢失，但是已经恢复了，vioc系统中还是现实missing昨天，部分lv处于stale状态。
+
+如果丢失磁盘上有lg_dumplv，需要先修改dump：
+```
+# sysdumpdev -P -p /dev/sysdumpnull
+```
+确认磁盘路径是恢复的，激活一下VG：
+```
+# varyonvg rootvg
+```
+磁盘状态恢复正常，镜像自动同步，等待完成即可，改回dump配置：
+```
+# sysdumpdev -P -p /dev/lg_dumplv
+```
+如果直接修改磁盘状态是不成功的(即使修改了dump配置）：
+- smit chpv
+- Change Characteristics of a Physical Volume
+- Physical volum STATE from not active to active
+
+## 引导问题
+### savebase failed
+当解除rootvg镜像时候报错：
+```
+0516-1734 rmlvcopy:Warning,savebase failed.Please manually run 'savebase' berfore rebooting.
+```
+可能原因引导只在一块盘中，而解除镜像的盘正好是引导所在的盘，把引导添加进去即可：
+```
+# bosboot -ad /dev/hdiskX
+# bootlist -m normal hdiskX
+# savebase
+```
+### 删除磁盘报错
+当`rmdev`删除某个磁盘时候报错:
+```
+rmdev 0514-508 Connot save the base customized infomation on /dev/ipldevice
+```
+原因应该也是hd5里面的boot信息没有了，处理方法：
+```
+# bosboot -ad /dev/hdiskX
+# bootlist -m normal hdiskX
+# synclvodm -P -v rootvg
+```
+
+## 删文件报错
+### rm命令报错
+当使用rm命令删除大量文件时候，会有如下报错：
+```
+# rm testfile* 
+ksh: /usr/bin/rm: 0403-027 The parameter list is too long. 
+```
+#### 报错说明
+&#8195;&#8195;此错误表示已达到ARG_MAX值。 ARG_MAX的值为24,576 字节，`在/usr/include/sys/limits.h`文件中设置。此值无法更改，因为它已编译到列出的命令中。 这是传递给正在运行的命令的字节数，在此实例中表示正在执行的文件的名称。
+
+#### 解决方法一
+先查找然后递归方式删除，示例如下：
+```
+# find . -xdev -exec rm -r {} \;
+```
+#### 解决方法二
+或者修改参数：
+```
+# smitty chgsys 
+ARG/ENV list size in 4K byte blocks  [6] 
+change ARG/ENV list size in 6K byte blocks to 1024 
+```
+或者使用命令：
+```
+chdev -l sys0 -a ncargs=64
+```
+删除完成后，修改回来即可
+## 待补充

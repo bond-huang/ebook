@@ -115,3 +115,17 @@ lv_data:
 - 在reset the NIM State of a machie菜单回车即可reset
 
 如果是想删除machines定义，在reset the NIM State of a machie菜单中将两个选项都改成`yes`。
+
+## mksysb资源定义并分发 
+
+## AIX安装镜像定义并分发
+
+
+## 常见问题
+### host表IP冲突
+当host表里面有一个IPA对应hostA,如果在定义一个host，IPA对应hostB，定义B名字的machine后，分发系统会报错，即使后期删掉了IPA对应主机名A的关系，一样会报错。提示：
+```
+rc=0
+exportfs: hostA:unkonwn host
+warning:warning:0042-006 m_bos_inst:(From_Master) connnetc Connection timed out
+```

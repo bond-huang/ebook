@@ -1,9 +1,36 @@
 # DB2-常见问题
 记录一些日常运维过程中遇到的SQL messages，方便查阅。          
 IBM 官方SQL messages说明网站：[IBM DB2 11.1 SQL messages](https://www.ibm.com/support/knowledgecenter/SSEPGG_10.5.0/com.ibm.db2.luw.messages.sql.doc/doc/rsqlmsg.html)
+
+## DB2 connect常见SQL
+官方参考链接：[DB2 Connect 常见问题](https://www.ibm.com/docs/zh/db2/9.7?topic=connect-common-db2-problems)
 ### SQL6048N
 &#8195;&#8195;在使用db2start命令启动DB2的时候报错SQL6048N，一般是hosts表有问题，检查下`/etc/hosts`，注意大小写。此情况通常出现在数据库在新的操作系统上启动时候发生。当然还可能是其它原因，IBM官方详细描述：[db2start failing with SQL6048N error](https://www.ibm.com/support/pages/db2start-failing-sql6048n-error)
 
+### SQL5043N
+db2start命令启动DB2的时候报错SQL5043N,示例：
+```
+SQL5043N Support for one or more communications protocols specified in the DB2COMM environment variable failed to start successfully. However, core database manager functionality started successfully. Explanation This message can be returned for the following types of reasons: Communication subsystem
+```
+原因：   
+&#8195;&#8195;通常是未定义DB2COMM概要文件变量，或者该变量未正确定义。该问题通常是DB2COMM变量与数据库管理器配置中定义的名称（例如，svcename或nname）之间不匹配的结果。
+
+首先查看db2set：
+```
+$ db2set -all
+```
+如果DB2COMM未配置则配置：
+```
+$ db2set DB2COMM=TCPIP
+```
+需要重启实例生效，如果上面设置了，查看svcname设置：
+```
+$ db2 get dbm cfg | grep -i svc
+```
+如果SVCNAME未设置，设置即可，然后重启数据库。
+
+官方参考链接：[DB2 Connect 常见问题](https://www.ibm.com/docs/zh/db2/9.7?topic=connect-common-db2-problems)
+## 其他SQL
 ### SQL0912N
 官方说明：[DB2 10.5 SQL0912N](https://www.ibm.com/support/knowledgecenter/SSEPGG_10.5.0/com.ibm.db2.luw.messages.sql.doc/com.ibm.db2.luw.messages.sql.doc-gentopic2.html#sql0912n)
 

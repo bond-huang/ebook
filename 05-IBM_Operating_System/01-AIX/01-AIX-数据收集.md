@@ -93,3 +93,5 @@ alog -C -t boot -s 8192|修改boot日志大小为8192字节
 
 更多用法介绍参考官方文档：[alog Command](https://www.ibm.com/support/knowledgecenter/ssw_aix_71/a_commands/alog.html)
 
+## 升级相关日志
+install_all_updates: Log file is /var/adm/ras/install_all_updates.log

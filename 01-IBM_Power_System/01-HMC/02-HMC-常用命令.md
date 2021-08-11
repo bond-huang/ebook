@@ -26,7 +26,10 @@ hscroot@hmc:~> lshmc -r
 hscroot@hmc:~> lshmc -n
 #列出HMC硬件信息
 hscroot@hmc:~> lshmc -h
+#列出HMC NTP server信息
+hscroot@hmc:~> lshmc --ntpserver 
 ```
+lshmc命令官方说明：[https://www.ibm.com/docs/zh/power9/9040-MR9?topic=commands-lshmc](https://www.ibm.com/docs/zh/power9/9040-MR9?topic=commands-lshmc)
 #### bkconsdata
 备份硬件控制台HMC重要数据,示例：
 ```shell

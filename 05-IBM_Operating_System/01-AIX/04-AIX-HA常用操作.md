@@ -131,3 +131,100 @@ Force synchronization if verification fails? [Yes]
 - 执行后发现有操作系统的文件系统umount了，手动mount或者重启即可
 
 ### 节点通信问题
+&#8195;&#8195;通常情况下，节点通信问题原因可能有：网络问题，配置问题等等，配置例如host表，rhost文件，IP配置，wlan配置问题等等，但是有时候问题不是很明显，最近遇到过一个HA配置无问题，网络看起来也是正常的，但是HA同步就同步不了。   
+例如：A节点HA未启动，B节点HA启动了，资源组正在运行，AB节点都是PowerVM环境的VIOC。   
+从B往A同步执行等半天后，发现报错如下：
+```
+ERROR:Comm error found on node:<nodename>
+```
+&#8195;&#8195;在B节点Show Cluster Services菜单中，执行后很慢出结果，等待结果出来后发现A节点Cluster-Aware AIX status是down的状态，在A节点上检查服务状态：
+```
+# lssrc -a |grep inetd
+ inetd            tcpip            2490704      active
+# lssrc -a |grep cthags
+ cthags           cthags                        inoperative
+# lssrc -a |grep clcomd
+ clcomd           caa              6750706      active
+# lssrc -a |grep clconfd
+ clconfd          caa              12911042     active
+# lssrc -ls inetd
+Subsystem         Group            PID          Status
+ inetd            tcpip            2490704      active
+Debug         Not active
+Signal        Purpose
+ SIGALRM      Establishes socket connections for failed services.
+ SIGHUP       Rereads the configuration database and reconfigures services.
+ SIGCHLD      Restarts the service in case the service ends abnormally.
+Service       Command                  Description              Status
+ caa_cfg      /usr/sbin/clusterconf    clusterconf              active
+ ftp          /usr/sbin/ftpd           ftpd                     active
+```
+从B向A或A向B ping都看起来正常：
+```
+$ ping -S nodea nodeb
+PING nodeb: (1.1.253.130): 56 data bytes
+64 bytes from 1.1.253.130: icmp_seq=0 ttl=255 time=0 ms
+64 bytes from 1.1.253.130: icmp_seq=1 ttl=255 time=0 ms
+64 bytes from 1.1.253.130: icmp_seq=2 ttl=255 time=0 ms
+```
+使用`lscluster -m`命令去查看集群状态，可以看到A节点下有如下显示：
+```
+Points of contact for node :0
+```
+在A节点的HA Show Repository Disks菜单中执行后获取不到心跳盘的部分信息，并会有报错（时有时无）：
+```
+ERROR:unable to communicate with "nodeb"(nodeb,ip)
+ERROR:"Repository Disks PVID" was not found in data that you requested.
+```
+在B节点的HA Show Repository Disks菜单可以获取到心跳盘信息，有时也会有：
+```
+Communication error, see logfile
+```
+以上菜单都执行比较慢，但是使用dhb_read命令去测试两个节点间心跳磁盘，测试是正常的。
+
+lspv查看caavg_private VG的状态是active，检查caa日志，会发现如下报错：
+```
+tcpsock_ndd_add2_sendq: Overflow, Dropping packet.
+Could not send lock request message. rc=127
+cluster_utils.c get_cluster_lock...Could not get lock....
+```
+&#8195;&#8195;可能是在节点A上启用了jumbo frames,而B节点无法接收jumbo frames，可以分别在两个node上执行如下命令，如果Jumbo frame启用了，那么MTU size = 9000：
+```
+# netstat -i
+Name   Mtu   Network     Address                 Ipkts     Ierrs        Opkts     Oerrs  Coll
+en1    1500  link#2      ee.37.5f.fc.eb.3        281954049     0         33827048     0     0
+en1    1500  10.8.253    npospdb2-cv             281954049     0         33827048     0     0
+en0    1500  link#3      ee.37.5f.fc.eb.2        901593154     0        586172871     0     0
+en0    1500  192.168.3   node_svc                901593154     0        586172871     0     0
+en0    1500  1.1.253     nodeb                   901593154     0        586172871     0     0
+```
+&#8195;&#8195;此次没有启动jumbo frames，但也是是网络通信问题，检查HA boot ip所在网卡的属性，如果largesend是开启的，在这种情况下，VIOS上的相应适配器也应启用largesend和large_receive，以避免在管理程序中出现碎片。可以使用命令clrsh测试节点连接：
+```
+# clrsh nodea date
+Communication error, see logfile
+# clrsh nodeb date
+Thu Feb 18 11:07:15 CST 2021
+# hostname
+nodea
+# clrsh nodea date
+Thu Feb 18 11:08:24 CST 2021
+# clrsh nodeb date
+Thu Feb 18 11:08:34 CST 2021
+# clrsh nodea date
+Thu Feb 18 11:08:46 CST 2021
+# clrsh nodeb date
+Communication error, see logfile
+```
+可以看到有时候通信异常，有时候能出现命令输出也比较慢。
+
+解决方法可以禁用mtu_bypass：
+```
+# chdev -l enX -a mtu_bypass = off
+```
+或在VEA或中继VEA上禁用PLSO：
+```
+# chdev -l entX -a platform_lso = no 
+```
+IBM相关问题描述链接：
+- [IJ25390: SLOW TCP PERFORMANCE WITH VIRTUAL ETHERNET ADAPTER AND LARGESENDAPPLIES TO AIX 7200-04](https://www.ibm.com/support/pages/apar/IJ25390)
+- [VIOS (Doc Number=6667): High Impact / Highly Pervasive APAR IJ25390](https://www.ibm.com/support/pages/node/6231440)
