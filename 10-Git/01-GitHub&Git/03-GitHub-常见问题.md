@@ -152,6 +152,19 @@ remote: Resolving deltas: 100% (15/15), completed with 15 local objects.
 To https://github.com/bond-huang/ebook.git
    3a23091..2a40d1a  master -> master
 ```
+下次再push时候就不会弹出认证的对话框了：
+```
+$ git push
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 1.53 KiB | 1.53 MiB/s, done.
+Total 6 (delta 5), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To https://github.com/bond-huang/ebook.git
+   2a40d1a..bd14a23  master -> master
+```
 还查到一个方法,下次再遇到试试看，命令如下：
 ```
 $ git config --global http.sslBackend "openssl"
