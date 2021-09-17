@@ -227,4 +227,12 @@ arch:
 - [Travis-CI Billing Overview](https://docs.travis-ci.com/user/billing-overview/#usage---credits)
 - [Building on Multiple CPU Architectures](https://docs.travis-ci.com/user/multi-cpu-architectures/)
 
+## 用户密码问题
+构建时候报错：
+```
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://[secure]@github.com/bond-huang/ebook.git/'
+```
+一般都是GitHub上的Personal access tokens没了，重新创建一个即可。
+
 ## 待补充

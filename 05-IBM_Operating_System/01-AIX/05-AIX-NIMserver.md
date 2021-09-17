@@ -37,7 +37,7 @@ mksysb -e -i -A /tmp/mksysb0312.sysb
 
 IBM 官方介绍：[Creating and Restoring a Mksysb Without Preserving Mirrors](https://www.ibm.com/support/pages/creating-and-restoring-mksysb-without-preserving-mirrors-using-nim-tape-or-disk)
 
-本人写了一个脚本修改image.data文件，参考链接：[Shell-mksysb相关脚本](https://ebook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/03-Shell_AIX%E8%84%9A%E6%9C%AC/02-Shell-mksysb%E7%9B%B8%E5%85%B3%E8%84%9A%E6%9C%AC.html)
+近期写了一个脚本修改image.data文件，参考链接：[Shell-mksysb相关脚本](https://ebook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/03-Shell_AIX%E8%84%9A%E6%9C%AC/02-Shell-mksysb%E7%9B%B8%E5%85%B3%E8%84%9A%E6%9C%AC.html)
 
 新建image.data文件：
 ```
@@ -123,9 +123,19 @@ lv_data:
 
 ## 常见问题
 ### host表IP冲突
-当host表里面有一个IPA对应hostA,如果在定义一个host，IPA对应hostB，定义B名字的machine后，分发系统会报错，即使后期删掉了IPA对应主机名A的关系，一样会报错。提示：
+&#8195;&#8195;当host表里面有一个IPA对应hostA,如果在定义一个host，IPA对应hostB，定义B名字的machine后，分发系统会报错，即使后期删掉了IPA对应主机名A的关系，一样会报错。提示：
 ```
 rc=0
 exportfs: hostA:unkonwn host
 warning:warning:0042-006 m_bos_inst:(From_Master) connnetc Connection timed out
 ```
+
+### NIM恢复系统卡在0608
+&#8195;&#8195;使用NIM恢复AIX系统时候卡在0608代码，终端上显示是在`Welcome to AIX`,卡很久没反应。部分AIX版本有bug，官方发布了相关补丁,IV09250及IV09316：
+- 官方描述：[IV09250: UNABLE TO COMPLETE NIM BOOT, STUCK AT SRC 0608 APPLIES TO AIX 7100-01](https://www.ibm.com/support/pages/apar/IV09250?mhsrc=ibmsearch_a&mhq=stuck%20at%20SRC%200608)
+- 官方补丁：[Fix pack information for: Unable to complete NIM Boot, stuck at SRC 0608](https://www.ibm.com/support/pages/node/5860239)
+
+非上诉版本也会出现此种问题，例如在AIX7.1.5.4版本也遇到过，官方有故障排除说明，参考链接如下：
+- [Troubleshooting NIM LED hangs](https://www.ibm.com/support/pages/troubleshooting-nim-led-hangs#4)
+
+## 待补充
