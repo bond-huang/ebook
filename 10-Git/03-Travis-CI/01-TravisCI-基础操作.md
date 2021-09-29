@@ -235,4 +235,23 @@ fatal: Authentication failed for 'https://[secure]@github.com/bond-huang/ebook.g
 ```
 一般都是GitHub上的Personal access tokens没了，重新创建一个即可。
 
+## 构建超时
+默认构建超过10分钟没有输出，就会超时报错：
+```
+No output has been received in the last 10m0s, this potentially indicates a stalled build or something wrong with the build itself.
+
+Check the details on how to adjust your build configuration on: https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
+
+The build has been terminated
+```
+如果有超过10分钟不产生输出的命令，可以在它前面加上前缀，这travis_wait是构建环境导出的函数。例如：
+```yaml
+install: travis_wait mvn install
+```
+继续上面的示例，将等待时间延长至30分钟：
+```yaml
+install: travis_wait 30 mvn install
+```
+官方参考链接：[Common Build Problems-build-times-out-because-no-output-was-received](https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received)
+
 ## 待补充
