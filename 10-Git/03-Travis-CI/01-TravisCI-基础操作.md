@@ -248,7 +248,7 @@ The build has been terminated
 ```yaml
 install: travis_wait mvn install
 ```
-继续上面的示例，将等待时间延长至30分钟：
+将等待时间延长至30分钟（如果是npm，把mvn改成npm即可）：
 ```yaml
 install: travis_wait 30 mvn install
 ```
