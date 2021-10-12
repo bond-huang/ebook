@@ -254,4 +254,15 @@ install: travis_wait 30 mvn install
 ```
 官方参考链接：[Common Build Problems-build-times-out-because-no-output-was-received](https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received)
 
+## npm版本问题
+构建时候报错示例如下：
+```
+npm WARN deprecated graceful-fs@3.0.5: please upgrade to graceful-fs 4 for compatibility with current and future versions of Node.js
+npm WARN deprecated chokidar@1.0.6: Chokidar 2 will break on node v14+. Upgrade to chokidar 3 with 15x less dependencies.
+npm WARN deprecated nunjucks@2.2.0: potential XSS vulnerability in autoescape mode, and with escape filter was fixed in v2.4.3
+npm WARN deprecated request@2.51.0: request has been deprecated, see https://github.com/request/request/issues/3142
+npm WARN deprecated fsevents@0.3.8: "Please update to latest v2.3 or v2.2"
+npm WARN deprecated minimatch@0.2.14: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
+...
+```
 ## 待补充
