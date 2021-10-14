@@ -265,4 +265,5 @@ npm WARN deprecated fsevents@0.3.8: "Please update to latest v2.3 or v2.2"
 npm WARN deprecated minimatch@0.2.14: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
 ...
 ```
+不知道啥时候开始报的，网上查可能是版本问题，但是多试几次还是可以构建成功。暂时不知道有效解决方法。
 ## 待补充
