@@ -74,6 +74,6 @@ VIOserver1,active,9.200.104.132,1,1,1,1
 
 lsrsrc IBM.MCP
 
-同一个HMC,A机器的a分区rmc使用ip 1，B机器的b分区rmc使用ip 2，现在客户把a分区的业务迁移到b分区了，b分区rmc使用的ip 也改成ip 1，a分区关闭（但是不删除），这样在这台HMC上，用lspartition -dlpar查看a分区rmc ip还是ip 1，那么b分区的rmc连接是不正常的，使用chsysstate -m <system name> -o rebuild -r sys 命令不行，除非删掉a分区然后chsysstate后，b分区的RMC才正常。请问下有没有办法不删除分区，在两个分区配置同样RMC ip时候（其中一个分区关闭了），把关闭分区的rmc 的ip信息删除
+同一个HMC,A机器的a分区rmc使用ip 1，B机器的b分区rmc使用ip 2，现在客户把a分区的业务迁移到b分区了，b分区rmc使用的ip 也改成ip 1，a分区关闭（但是不删除），这样在这台HMC上，用`lspartition -dlpar`查看a分区rmc ip还是ip 1，那么b分区的rmc连接是不正常的，使用`chsysstate -m <system name> -o rebuild -r sys`命令不行，除非删掉a分区然后chsysstate后，b分区的RMC才正常。请问下有没有办法不删除分区，在两个分区配置同样RMC ip时候（其中一个分区关闭了），把关闭分区的rmc 的ip信息删除
 
 http://www-01.ibm.com/support/knowledgecenter/SGVKBA_3.1.5/com.ibm.rsct315.trouble/bl507_diagrmc.htm
