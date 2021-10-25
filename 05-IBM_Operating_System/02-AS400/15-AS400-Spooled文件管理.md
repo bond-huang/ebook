@@ -4,6 +4,21 @@
 - [IBM i 7.3 Managing printing](https://www.ibm.com/docs/zh/i/7.3?topic=printing-managing#rzalumanage)
 - [IBM i 7.3 Spooled files and output queues](https://www.ibm.com/docs/zh/i/7.3?topic=concepts-spooled-files-output-queues)
 - [IBM i 7.3 Managing spooled files](https://www.ibm.com/docs/zh/i/7.3?topic=printing-managing-spooled-files)
+- [IBM i 7.3 保存和恢复假脱机文件](https://www.ibm.com/docs/zh/i/7.3?topic=system-saving-restoring-spooled-files)
+
+## Spooled文件概念
+&#8195;&#8195;假脱机是将数据保存在数据库文件中以供以后处理或打印的系统功能。保存并最终打印的此数据称为假脱机文件（或打印机输出文件）。相关详细说明：
+- Spooled文件是从应用程序、系统程序或通过按打印键创建的，这些文件放在称为输出队列的地方
+- 几乎所有生成打印输出的应用程序都使用IBM i操作系统提供的假脱机支持
+- 打印文件的`SPOOL`参数上的值`SPOOL(*YES)`和`SPOOL(*NO)`确定是否请求Spooled支持
+- 使用`Print`键捕获显示屏的图像一般会创建假脱机文件(必须在工作站设备描述中指定的打印文件中指定`SPOOL =*YES`)。当按下`Print`键时，系统会查看`QSYSPRT`打印文件中的`OUTQ`参数，以确定将Spooled文件发送到哪个输出队列
+- `QSYSPRT`打印文件中`SPOOL`属性的默认值为`*YES`
+
+Spooling`SPOOL=*YES`比直接输出（打印机文件中的`SPOOL=*NO`）有几个优点：
+- 用户的显示站仍可用于工作
+- 其他用户无需等待打印机可用即可请求打印工作
+- 如果需要特殊表格，用户可以将Spooled文件发送到特殊输出队列并在打印机不忙时打印
+- 由于磁盘操作比打印机快得多，因此可以有效地使用系统
 
 ## 显示Spooled文件列表
 使用IBM Navigator for i显示：
@@ -40,5 +55,135 @@ Opt  File        User        Queue       User Data   Sts   Pages    Page  Copy
 - 右键单击带有消息的Printer Output文件，点击`Reply`
 
 ## Navigator中Spooled文件管理操作
+### Navigator中Spooled文件管理选项
+使用IBM Navigator for i中右键打印机输出文件相关操作：
+- Open(O)：显示Spooled文件内容
+- Reply(Y)：如果没有消息是灰色的，有消息可以显示消息并回复
+- Hold(L)：暂时阻止用户选择打印的Spooled文件（打印机输出）
+- Release(A)：释放hold的Spooled文件（打印机输出）
+- Print Next(I)：打印下一个
+- Send(N)：将Spooled文件发送给另一个用户或系统：
+     - Send via TCP/IP：通过TCP/IP发送
+     - Send via SNA：通过SNA发送
+- Move(M)：将Spooled文件（打印机输出）从一个输出队列移动到另一个输出队列
+- Delete(D)：删除Spooled文件（打印机输出）
+- Convert to PDF：将Spooled转换为PDF文件：
+     - 存储为打印机输出
+     - 存储为流文件
+     - 作为电子邮件发送
+- Export(X)：将Spooled文件（打印机输出）导出到用户PC文件系统
+- Cut(T))：剪切Spooled文件（打印机输出）
+- Copy(C)：拷贝Spooled文件（打印机输出）
+- Advanced(V)：
+     - Restart Printing(R)：重新启动打印(命令官方没有介绍，应该是没有)
+     - Manage Output Queue(O)：管理输出队列
+     - Manage Printer(P)：管理打印机
+- Properties(R)：查看及修改Spooled文件（打印机输出）的属性
+
+### 启用Spooled文件通知消息
+&#8195;&#8195;要在Spooled文件(打印机输出)完成打印或被打印机写入程序保留时收到通知，需要启用假脱机文件通知功能。在导航器中开启方法如下(官方没有介绍基于字符界面的方法)：
+- 展开`Users and groups`，单击`Users`
+- 右键单击要更改的用户名，然后选择`Properties`
+- 在`General`面板中，单击用户设置下的`Jobs`
+- 选择选项`Display Session`
+- 勾选`Send message to spooled file owner`
 
 ## 基于字符界面Spooled文件管理操作
+### 字符界面中Spooled文件管理选项
+使用命令`WRKSPLF`进入`Work with All Spooled Files`，示例：
+```
+                         Work with All Spooled Files                          
+Type options, press Enter.                                                    
+  1=Send   2=Change   3=Hold   4=Delete   5=Display   6=Release   7=Messages  
+  8=Attributes        9=Work with printing status                             
+                             Device or                     Total     Cur      
+Opt  File        User        Queue       User Data   Sts   Pages    Page  Copy
+     QSYSPRT     BONDHUANG   BONDHUANG   WRKIT       RDY       1             1
+     QPRTSPLQ    BONDHUANG   BONDHUANG               RDY       2             1
+     QPJOBLOG    BONDHUANG   QEZJOBLOG   QZDASOINIT  RDY      91             1
+```
+选项说明如下：
+- `1=Send`：将Spooled文件发送给另一个用户或系统，方式描述同上
+- `2=Change`：更改Spooled文件的属性
+- `3=Hold`：暂时阻止用户选择打印的Spooled文件
+- `4=Delete`：删除Spooled文件（打印机输出）
+- `5=Display`：显示Spooled文件内容
+- `6=Release`：释放hold的Spooled文件（打印机输出）
+- `7=Messages`：查看并回复Spooled文件的消息
+- `8=Attributes`：查看Spooled文件（打印机输出）的属性
+- `9=Work with printing status`：
+     - `2=Change status`：更改状态
+     - `5=Display detailed description`：显示详细描述
+
+### 将Spooled文件转换为PDF
+使用命令`CPYSPLF`(Copy Spooled File)：
+```
+CPYSPLF FILE(QPRTSPLQ) TOFILE(*TOSTMF) WSCST(*PDF)
+```   
+示例说明：
+- 使用`TOFILE(*TOSTMF)`参数指示用户要将Spooled文件复制到流文件
+- 使用`TOSTMF`和`WSCST`参数指定流文件中输出的位置和格式(PDF)
+
+## 控制Spooled文件数量
+&#8195;&#8195;作业完成后，会保留Spooled文件和内部作业控制信息，直到打印或取消Spooled文件。系统上的作业数和系统已知的Spooled文件数增加了执行IPL和内部搜索所需的时间，并增加了所需的临时存储量。
+### 控制Spooled文件数量方法
+&#8195;&#8195;用户可以使用`CRTJOBD`(Create Job Description)或`CHGJOB`(Change Job)命令上的`LOG`和`LOGOUTPUT`参数：
+- `LOG`(Message logging)：
+     - `Level`,`Severity`,`Text`
+- `LOGOUTPUT`(Job log output)：
+     - `*SAME`,`*SYSVAL`,`*JOBLOGSVR`,`*JOBEND`及`*PND`
+
+&#8195;&#8195;或使用`QLOGOUTPUT`(Job log output)系统值来控制生成的作业日志的数量，可以设置的值有：`*JOBEND`,`*JOBLOGSVR`及`*PND`，示例如下：
+```
+                             Display System Value                  
+System value . . . . . :   QLOGOUTPUT                              
+Description  . . . . . :   Job log output                          
+Job log output . . . . :   *JOBEND        *JOBEND, *JOBLOGSVR, *PND
+```
+&#8195;&#8195;用户还可以通过使用系统清理功能来控制作业日志和其他系统输出在系统上停留的天数。有关详细信息，参考命令[Change Cleanup(CHGCLNUP)](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/chgclnup.htm)。示例：
+```
+CHGCLNUP ALWCLNUP(*YES) USRMSG(*KEEP) STRTIME(0700)
+```
+示例说明：
+- 示例更改了清理选项，以便在执行清理时保留用户消息而不将其删除
+- 示例中将清理开始时间设置为上午7:00
+
+## 删除过期Spooled文件
+&#8195;&#8195;在`CHGPRTF`(Change Printer File)、`CRTPRTF`(Create Printer File)、`CHGSPLFA`(Change Spooled File Attributes)或`OVRPRTF`(Override with Printer File)命令上使用`EXPDATE`或`DAYS`参数，以使Spooled文件符合命令`DLTEXPSPLF`(Delete Expired Spooled files)的删除条件。示例如下：
+```
+ADDJOBSCDE JOB(DLTEXPSPLF) CMD(DLTEXPSPLF ASPDEV(*ALL)) FRQ(*WEEKLY) SCDDATE(*NONE) SCDDAY(*ALL) SCDTIME(010000) JOBQ(QSYS/QSYSNOMAX) TEXT('DELETE EXPIRED SPOOLED FILES SCHEDULE ENTRY')
+```
+示例会创建一个作业计划任务条目，改任务会使用`DLTEXPSPLF`命令每天删除系统上所有过期的Spooled文件。
+
+## 回收Spooled文件存储
+&#8195;&#8195;使用`RCLSPLSTG`(Reclaim Spool Storage)命令或自动清理未使用的打印机输出存储 `QRCLSPLSTG`(Reclaim spool storage)系统值来回收Spooled文件存储。官方参考链接：[IBM i 7.3 Reclaiming spooled file storage](https://www.ibm.com/docs/zh/i/7.3?topic=msf-reclaiming-spooled-file-storage)。
+
+注意事项：这些是从`QSPL`或`QSPLxxxx`库中删除Spooled数据库成员的唯一允许方法，任何其他方式都可能导致严重的问题。
+## 保存及恢复Spooled文件
+&#8195;&#8195;使用`SAVLIB`、`SAVOBJ`、`STLIB`和`RSTOBJ`CL命令上的`SPLFDTA`参数来保存和恢复Spooled文件，并且不会丢失Spooled文件的打印保真度、属性或标识。官方参考链接：
+- [Saving and restoring spooled files](https://www.ibm.com/docs/zh/i/7.3?topic=msf-saving-restoring-spooled-files)
+- [IBM i 7.3 保存和恢复假脱机文件](https://www.ibm.com/docs/zh/i/7.3?topic=system-saving-restoring-spooled-files)
+
+## 通过Spooled文件大小控制打印
+&#8195;&#8195;使用`CRTOUTQ`(Create Output Queue)或`CHGOUTQ`(Change Output Queue)命令上的`MAXPAGES`参数按大小控制Spooled文件的打印。示例：
+```
+CHGOUTQ OUTQ(MYOUTQ) MAXPAGES((40 0800 1600) (10 1200 1300))
+```
+示例说明：
+- 示例要限制在上午8点到下午4点之间在输出队列`MYOUTQ`上打印超过40页的Spooled文件
+- 在中午12点和下午1点之间，打印不超过10页的Spooled文件
+
+## 修复输出队列和Spooled文件
+&#8195;&#8195;使用命令`STRSPLRCL`(Start Spool Reclaim)修复在不可恢复状态的输出队列和spooled文件。示例回收输出队列`BONDHUANG`和驻留在输出队列上的所有Spooled文件：
+```
+STRSPLRCL OUTQ(QUSRSYS/BONDHUANG)
+```
+&#8195;&#8195;修复系统和基本用户ASP中的所有输出队列和Spooled文件。示例将回收在系统辅助存储池(ASP1)和所有定义的基本用户ASP(ASP 2-32)中找到的所有库中的所有输出队列，驻留在输出队列上的Spooled文件也将被回收：
+```
+STRSPLRCL OUTQ(*ALL/*ALL) ASPGRP(*SYSBAS)
+```
+&#8195;&#8195;修复当前用户的ASP组中的输出队列。示例将回收当前用户的ASP组中所有库中名为`PRT01`的输出队列。驻留在选定输出队列上的Spooled文件也将被回收：
+```
+STRSPLRCL OUTQ(*ALL/PRT01) ASPGRP(*CURASPGRP)
+```
+## 待补充
