@@ -11,6 +11,7 @@ error: Failed dependencies:
 
 [root@VM-0-6-centos tmp]# yum install unixODBC.x86_64
 以上是草稿，具体安装回头再试。
+## System i导航器
 
 ## IBM个人通信
 &#8195;&#8195;IBM Personal communication软件可以在官方下载，IBM i Access中也有集成Personal communication，完全一样，二选一即可。
