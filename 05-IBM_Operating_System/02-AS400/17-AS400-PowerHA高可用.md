@@ -42,7 +42,7 @@ DSPCRGINF CLUSTER(MYCLUSTER) CRG(*LIST) OUTPUT(*PRINT)
 ```
 或者使用`WRKCLU`命令。官方参考链接：[IBM i 7.3 监视集群状态](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-monitoring-cluster-status)
 ### 显示集群配置
-官方参考链接：[IBM i 7.3 显示集群配置](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-displaying-cluster-configuration)
+&#8195;&#8195;可以使用IBM Navigator for i或CL命令`DSPCLUINF`(Display Cluster Information)或命令`WRKCLU`(Work with Cluster)。官方参考链接：[IBM i 7.3 显示集群配置](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-displaying-cluster-configuration)
 ### 管理节点
 官方参考链接：[IBM i 7.3 管理节点](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-managing-nodes)
 #### 显示节点属性
