@@ -31,6 +31,18 @@ RMVCRGNODE|Remove CRG Node Entry
 官方参考链接：[IBM i 7.3 配置节点](https://www.ibm.com/docs/zh/i/7.3?topic=infrastructure-configuring-nodes)
 ## 管理集群
 官方参考链接：[IBM i 7.3 管理集群](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-clusters)
+### 监视集群状态
+&#8195;&#8195;可以使用IBM Navigator for i或CL命令，示例使用命令`DSPCLUINF`(Display Cluster Information)打印集群`MYCLUSTER`的详细信息：
+```
+DSPCLUINF CLUSTER(MYCLUSTER) OUTPUT(*PRINT)
+```
+打印集群`MYCLUSTER`中定义的所有集群资源组的基本配置信息： 
+```
+DSPCRGINF CLUSTER(MYCLUSTER) CRG(*LIST) OUTPUT(*PRINT)
+```
+或者使用`WRKCLU`命令。官方参考链接：[IBM i 7.3 监视集群状态](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-monitoring-cluster-status)
+### 显示集群配置
+官方参考链接：[IBM i 7.3 显示集群配置](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-displaying-cluster-configuration)
 ### 管理节点
 官方参考链接：[IBM i 7.3 管理节点](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-managing-nodes)
 #### 显示节点属性
