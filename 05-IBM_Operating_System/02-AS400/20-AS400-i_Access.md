@@ -11,8 +11,19 @@ error: Failed dependencies:
 
 [root@VM-0-6-centos tmp]# yum install unixODBC.x86_64
 以上是草稿，具体安装回头再试。
-## System i导航器
+## System i导航器软件
 
+## WEB Navigator for i
+### WEB界面导航器卡
+&#8195;&#8195;有时候使用WEB登录Navigator for i时候很卡，在登录界面那里卡住进不去，可以重启下HTTP服务相关JOB或子系统，对应子系统是`QHTTPSVR`，首先停止相关作业或子系统(不清楚直接停子系统是否会影响其它相关HTTP服务)，然后启动：
+```
+STRTCPSVR SERVER(*HTTP) HTTPSVR(*ADMIN)
+```
+然后再次登录：
+```
+http://<system_name or IP>:2001/
+```
+官方参考链接：[Configuring an Integrated Web Application Server](https://www.ibm.com/docs/en/i/7.2?topic=browser-configuring-integrated-web-application-server)
 ## IBM个人通信
 &#8195;&#8195;IBM Personal communication软件可以在官方下载，IBM i Access中也有集成Personal communication，完全一样，二选一即可。
 ### 常用功能键
