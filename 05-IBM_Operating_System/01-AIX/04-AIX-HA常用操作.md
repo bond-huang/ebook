@@ -228,3 +228,70 @@ Communication error, see logfile
 IBM相关问题描述链接：
 - [IJ25390: SLOW TCP PERFORMANCE WITH VIRTUAL ETHERNET ADAPTER AND LARGESENDAPPLIES TO AIX 7200-04](https://www.ibm.com/support/pages/apar/IJ25390)
 - [VIOS (Doc Number=6667): High Impact / Highly Pervasive APAR IJ25390](https://www.ibm.com/support/pages/node/6231440)
+
+### 磁盘问题
+#### PVID问题
+&#8195;&#8195;有时候由于某些异常原因导致某一节点的数据磁盘的PVID丢失或者不一致，例如备节点test1磁盘PVID异常，同步时候报错如下：
+```
+ERROR: A disk with PVID 000baf2b911918a40000000000000000 is a part of the volume group datavg participating in resource group test_rg on node test2. Node test1 is also
+part of this resource group, but it does not have this PVID defined as a
+part of this volume group.
+The list of PVIDs per volume group should be consistent for all nodes that
+can require access to this volume group.
+Starting Corrective Action: cl_resource_update_vg_definitions.
+Do you want to change volume group definitions for the volume
+group: datavg participating in resource group test_rg on node: test1 [Yes / No]:
+<01> Updating volume group definitions of shared VG: datavg participating in 
+resource group test_rg so that it will be consistent across all the nodes 
+from this resource group: FAIL   
+```
+如果磁盘`reserve_policy`属性是`single_path`则改成`no_reserve`：
+- 如果PVID不一致，修改PVID为一致，如果磁盘`reserve_policy`属性是`single_path`则改成`no_reserve`,  然后同步，备机test1的VG信息恢复，HA启动正常
+- 如果test1的disk PVID为`NONE`，使用命令`odmdelete -o CuDv -q "name=hdisk3"`删除ODM信息，然后重启操作系统，磁盘PVID和VG信息应该会恢复
+
+修改PVID方法(每两位从十六进制转换成八进制)，示例：
+```sh
+echo "\0000\0013\0257\0053\0231\0030\0030\0244\c" > /tmp/myPVID
+cat /tmp/myPVID |dd of=/dev/hdisk3 bs=1 seek=128
+lquerypv -h /dev/hdisk3 80
+rmdev -dl hdisk3 
+cfgmgr
+lspv
+```
+或者使用写的Python脚本修改：[Python-AIX配置修改-自动修改hdisk的PVID](http://ebook.big1000.com/08-Python/04-Python_AIX%E8%84%9A%E6%9C%AC/03-Python-AIX%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9.html)
+#### 磁盘异常丢失
+&#8195;&#8195;模拟磁盘丢失，断掉备机test1分区的hdisk3磁盘映射，双vios都断开，磁盘开始报路径丢失和磁盘操作错误，但是VG状态不变，磁盘状态看起来正常，主机端test2没有errpt：
+```
+test1:/#lspv
+hdisk0          00f939e23e8ab01a                    rootvg          active      
+hdisk1          000baf2b911815a4                    datavg          concurrent  
+hdisk2          000baf2b9118164a                    caavg_private   active 
+hdisk3          000baf2b9e10273d                    datavg          concurrent      
+```
+在主机test2新建文件系统，备机test1的`datavg`状态从`concurrent`变空，并且主机test2报错：
+```
+test2:/#errpt
+IDENTIFIER TIMESTAMP  T C RESOURCE_NAME  DESCRIPTION
+F7DDA124   1209160521 U H LVDD           PHYSICAL VOLUME DECLARED MISSING
+```
+备机test1报错：
+```test1:/#errpt
+IDENTIFIER TIMESTAMP  T C RESOURCE_NAME  DESCRIPTION
+AEA055D0   1209160521 I S livedump       Live dump complete
+CAD234BE   1209160521 U H LVDD           QUORUM LOST, VOLUME GROUP CLOSING
+52715FA5   1209160521 U H LVDD           FAILED TO WRITE VOLUME GROUP STATUS AREA
+F7DDA124   1209160521 U H LVDD           PHYSICAL VOLUME DECLARED MISSING
+E86653C3   1209160521 P H LVDD           I/O ERROR DETECTED BY LVM
+B6267342   1209160521 P H hdisk3         DISK OPERATION ERROR
+```
+命令`rmdev -Rdl hdisk3`删除不了磁盘，直接`odmdelete -o CuDv -q "name=hdisk3"`删除ODM库，可以删除。然后VIOS重新映射磁盘，报错：
+```
+"hdisk7" is already being used as a backing device.  Specify the -f flag
+to force this device to be used anyway.
+```
+强制映射：
+```
+mkvdev -vdev hdisk7 -vadapter vhost3 -dev vtscsi8 -f
+```
+&#8195;&#8195;磁盘使用命令`cfgmgr`扫描不回来，停掉备机test1的HA，重启系统，重启后hdisk3恢复，并且vg信息也有。再次用命令`rmdev -Rdl hdisk3`删掉磁盘，`cfgmgr`扫描回来后依然正常。
+### 待补充
