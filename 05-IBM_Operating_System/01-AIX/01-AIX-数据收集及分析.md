@@ -95,3 +95,25 @@ alog -C -t boot -s 8192|修改boot日志大小为8192字节
 
 ## 升级相关日志
 install_all_updates: Log file is /var/adm/ras/install_all_updates.log
+
+## 日志分析
+### core dump分析
+使用命令`snap -ac`收集dump，解压文件：
+```
+# ls
+snap.pax.Z
+# uncompress snap.pax.Z
+# ls
+snap.pax
+# pax -r -f snap.pax
+pax: Ready for volume 2
+pax: Type "go" when ready to proceed (or "quit" to abort): go
+pax: [offset 345m+441k+321]: Continuing
+...
+pax: Type "go" when ready to proceed (or "quit" to abort): go
+pax: [offset 2g+24m+599k+902]: Continuing
+pax: snap.pax : 0511-626 An invalid file header has been read.
+pax: snap.pax :          Skipping to the next file...ls
+```
+解压报错了，并且没一会虚拟AIX把我电脑搞蓝屏，以后再示例。
+## 待补充
