@@ -40,5 +40,74 @@ Host Name,WWPN,node_logged_in_count,WWPN,node_logged_in_count,WWPN,node_logged_i
 DB-c99d1-63771951,C050760872FB00CD,1,C050760871FC00AC,1,C050760872EC00DA,1,C050760872FA00A1,1,
 DB-6350d-18064883,C0507608CDF4002A,1,C0507608CDE4001B,1,C0507608CDB1008A,1,C0507608CDD10076,1,
 ```
+## 卷相关
+### vdisk中镜像在同一个池的卷
+&#8195;&#8195;如果vdisk的镜像分布在同一个池，那么意义就不大，一般建议在不同的池，池的外部存储器也不是同一个。
+
+脚本说明：
+- 测试SVC版本是V7.8版本，此版本中没有awk或gawk命令，主要通过sed实现
+- 直接把脚本贴在命令行运行即可，输出的内容复制到一个csv文件，然后通过excel格式优化即可
+- 脚本只用到了lsvdisk命令，不需要superuser等高权限用户
+
+首选筛选了`copy_count`为2的卷ID:
+```sh
+lsvdisk -nohdr -delim : -filtervalue copy_count=2
+lsvdisk -nohdr -delim : -filtervalue copy_count=2 |sed 's/:.*//g'
+```
+通过查找匹配，如果去重后删除第一行为空，说明镜像在同一个池：
+```sh
+lsvdisk -delim , 2 |sed -n '/^mdisk_grp_id/p'
+lsvdisk -delim , 2 |sed -n '/^mdisk_grp_id/p'|sed '1d'
+lsvdisk -delim , 2 |sed -n '/^mdisk_grp_id/p'|sed '1d'|uniq
+lsvdisk -delim , 2 |sed -n '/^mdisk_grp_id/p'|sed '1d'|uniq|sed '1d'
+```
+判断卷name是否一致的脚本：
+```sh
+for id in `lsvdisk -nohdr -delim : -filtervalue copy_count=2 |\
+sed 's/:.*//g'`
+do
+  result=`lsvdisk -delim , $id |sed -n '/^mdisk_grp_id/p'|\
+  sed '1d'|uniq|sed '1d'`
+  if  [ -z $result ]
+  then
+    lsvdisk -delim , $id|\
+    sed -n '/^name\|^capacity\|^mdisk_grp_name/p'
+    fi
+done
+```
+或者判断`mdisk_grp_name,many`这项的值是不是many：
+```sh
+for id in `lsvdisk -nohdr -delim : -filtervalue copy_count=2 |\
+sed 's/:.*//g'`
+do
+  result=`lsvdisk -delim , $id |\
+  sed -n '/^mdisk_grp_name,many/p'`
+  if  [ -z $result ]
+  then
+    lsvdisk -delim , $id|\
+    sed -n '/^name\|^capacity\|^mdisk_grp_name/p'
+    fi	
+done
+```
+### 查找未映射给主机的卷
+首先列所有的卷ID:
+```SH
+lsvdisk -nohdr -delim :|sed 's/:.*//g'
+```
+判断条件看下面命令是否有输出：
+```sh
+result=`lsvdiskhostmap 2`
+```
+脚本如下：
+```sh
+for id in `lsvdisk -nohdr -delim :|sed 's/:.*//g'`
+do
+  result=`lsvdiskhostmap $id`
+  if  [ -z "$result" ]
+  then
+    lsvdisk -nohdr -delim , -filtervalue volume_id=$id
+  fi
+done
+```
 ## 待补充
 
