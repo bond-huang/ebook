@@ -82,3 +82,31 @@ CHGVAR, SNDPGMMSG, OVRDBF, DLTF(部分命令)：CL命令用于源语句操作常
 - Other procedures。如果使用CALLPRC命令，则在运行`CRTBNDCL`(Create Bound CL Program)或`CRTPGM`(Create Program)命令时，调用的procedures必须存在
 
 ### 简单的程序示例
+创建源文件：
+```
+CRTSRCPF FILE(SAVFLIB/SRCPF3)
+```
+添加member：
+```
+ADDPFM FILE(SAVFLIB/SRCPF3) MBR(CLRLOGPHS)
+DSPPFM SAVFLIB/SRCPF3
+```
+使用PDM里面的`Work with members`编辑，或使用SEU编辑：
+```
+STRSEU SRCFILE(SAVFLIB/SRCPF3) SRCMBR(CLRLOGPHS)
+```
+输入命令`GO PROGRAM`进入Programmer Menu：
+```
+PROGRAM                          Programming                        
+Select one of the following:                                           
+     1. Programmer menu                                             
+     2. Programming Development Manager (PDM)                       
+     3. Utilities                                                   
+     4. Programming language debug                                  
+     5. Structured Query Language (SQL) pre-compiler                
+     6. Question and answer                                                      
+     8. Copy screen image                                           
+     9. Cross System Product/Application Execution (CSP/AE)         
+    50. System/36 programming                                                             
+    70. Related commands                                            
+```
