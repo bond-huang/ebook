@@ -11,6 +11,11 @@ CL程序中常用命令或示例。
 [OVRTAPF](https://www.ibm.com/docs/zh/ssw_ibm_i_73/cl/ovrtapf.htm)|Override with Tape File
 [SBMDBJOB](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/sbmdbjob.htm)|Submit Data Base Jobs
 
+### 变量管理
+命令|描述
+:---|:---
+[DCL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/dcl.htm)|Declare CL Variable 
+
 ### 文件处理
 命令|描述
 :---|:---
