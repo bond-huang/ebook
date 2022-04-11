@@ -294,4 +294,19 @@ to force this device to be used anyway.
 mkvdev -vdev hdisk7 -vadapter vhost3 -dev vtscsi8 -f
 ```
 &#8195;&#8195;磁盘使用命令`cfgmgr`扫描不回来，停掉备机test1的HA，重启系统，重启后hdisk3恢复，并且vg信息也有。再次用命令`rmdev -Rdl hdisk3`删掉磁盘，`cfgmgr`扫描回来后依然正常。
+
+### 宕机问题
+宕机原因参考链接：
+- [TWT-如何处理hacmp中dms的问题](https://www.talkwithtrend.com/Article/7729)
+- [Toolbox-LPAR AIX Rebooted Auto](https://www.toolbox.com/tech/operating-systems/question/lpar-aix-rebooted-auto-020915/)
+- [DB2-Diagnosing a host reboot with a restart light](https://www.ibm.com/docs/en/db2/10.1.0?topic=host-diagnosing-reboot-restart-light)
+- [GPFS filesystem outage with a kernel panic](https://www.ibm.com/docs/en/db2/10.5?topic=light-gpfs-filesystem-outage-kernel-panic)
+- [IBM Spectrum Scale filesystem outage with a kernel panic](https://www.ibm.com/docs/en/db2/11.1?topic=light-spectrum-scale-filesystem-outage-kernel-panic)
+- [IV87544: SHUTDOWN -F ON POWERHA MAY PANIC INSTEAD OF HALT](https://www.ibm.com/support/pages/apar/IV87544?mhsrc=ibmsearch_a&mhq=APAR%20IV69760%20)
+- [IV69760: NODE DOWN IN CAA CLUSTER DUE TO CONFIGRM MEMORY LEAK](https://www.ibm.com/support/pages/apar/IV69760?mhsrc=ibmsearch_a&mhq=APAR%20IV69760%20)
+
+PowerHA集群与宕机相关原理等：
+- [RSCT3.2-Action 9: investigate an AIX node crash](https://www.ibm.com/docs/en/rsct/3.2?topic=recoveries-action-investigate-aix-node-crash)
+- [Adjusting Dead Man Switch Timeout for CLUSTER (DMS)](https://www.ibm.com/support/pages/node/519603?mhsrc=ibmsearch_a&mhq=KERNEL_PANIC%20IDENTIFIER%3A%20%20%20%20%20225E3B63)
+
 ### 待补充

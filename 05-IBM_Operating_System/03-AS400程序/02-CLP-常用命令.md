@@ -31,5 +31,8 @@ CL程序中常用命令或示例。
 :---|:---
 [CALL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/call.htm)|Call Program
 [CALLPRC](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/callprc.htm)|Call Bound Procedure
+[ELSE](https://www.ibm.com/docs/en/i/7.4?topic=ssw_ibm_i_74/cl/else.htm)|Else (ELSE)
+[GOTO](https://www.ibm.com/docs/en/i/7.4?topic=ssw_ibm_i_74/cl/goto.htm)|Go To
+[IF](https://www.ibm.com/docs/en/i/7.4?topic=ssw_ibm_i_74/cl/if.htm)|If (IF)
 [RETURN](https://www.ibm.com/docs/zh/ssw_ibm_i_73/cl/return.htm)|Return
 [TFRCTL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/tfrctl.htm)|Transfer Control 
