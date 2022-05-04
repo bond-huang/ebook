@@ -5,6 +5,8 @@
 
 官方网站：[Red Hat Enterprise Linux](https://www.redhat.com/zh/technologies/linux-platforms/enterprise-linux)
 
+下载评估版本来试用红帽企业Linux：[Red Hat Enterprise Linux Server](https://access.redhat.com/products/red-hat-enterprise-linux/evaluation)
+
 本章节是在官网学习RHEL记录的笔记。
 
 ## 内容

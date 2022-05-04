@@ -1,7 +1,7 @@
 # TravisCI-基础操作
 &#8195;&#8195;配置Travis-CI自动构建步骤不难，目前用到的知识也不多，以为后期不会再用到了，就没打算写，结果后来由于一些原因又搞了两次，还是记下来避免忘记。记录一些构建过程中的问题，以及记录我配置好后出现问题后（被GitHub撤销访问）重新配置，对于完整构建可以参考Lyon的分享：[GitHub Pages&Gitbook&Travis CI持续构建博客](https://lyonyang.github.io/blogs/09-Linux/Git/GitHub%20Pages&Gitbook&Travis%20CI%E6%8C%81%E7%BB%AD%E6%9E%84%E5%BB%BA%E5%8D%9A%E5%AE%A2.html)
 ## Travis-CI重新配置
-近期收到GitHub的邮件，主要内容是：As a precautionary measure, we have revoked the OAuth token. A new token will need to be generated in order to continue using OAuth to authenticate to GitHub.
+&#8195;&#8195;近期收到GitHub的邮件，主要内容是：As a precautionary measure, we have revoked the OAuth token. A new token will need to be generated in order to continue using OAuth to authenticate to GitHub.
 
 被GitHub撤销了访问，需要重新配置。
 ### GitHub生成Personal access tokens
@@ -28,10 +28,10 @@
 之前构建成功过的，这次一般都会成功的，因为出问题只是GitHub取消了访问。
 
 ## Travis-CI初始配置问题
-在第一次用Travis-CI配置自动构建的时候，"Trigger build"后各种问题，调试了好久第32次才通过。忘了作详细记录，目前记得的简单记录下。
+&#8195;&#8195;在第一次用Travis-CI配置自动构建的时候，"Trigger build"后各种问题，调试了好久第32次才通过。忘了作详细记录，目前记得的简单记录下。
 
 ### gitbook版本问题
-在.travis.yml中，有安装gitbook版本，但是试了好几个版本在那一项都过不了，提示内容忘了截取，最后没有指定版本并且强制安装：
+&#8195;&#8195;在`.travis.yml`中，有安装gitbook版本，但是试了好几个版本在那一项都过不了，提示内容忘了截取，最后没有指定版本并且强制安装：
 ```
 install:
   - "npm install -g gitbook"
