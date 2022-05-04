@@ -266,4 +266,21 @@ npm WARN deprecated minimatch@0.2.14: Please update to minimatch 3.0.2 or higher
 ...
 ```
 不知道啥时候开始报的，网上查可能是版本问题，但是多试几次还是可以构建成功。暂时不知道有效解决方法。
+## 平台切换
+### ppc64le切换
+在`.travis.yml`中删掉：
+```yaml
+arch:
+  - ppc64le
+```
+报错：
+```
+remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+fatal: Authentication failed for 'https://github.com/bond-huang/ebook.git/'
+/home/travis/.travis/functions: line 611:  5754 Terminated              travis_jigger "${!}" "${timeout}" "${cmd[@]}"
+The command "travis_wait 100 bash deploy.sh" exited with 128.
+```
+可能是GitHub上的Personal access tokens不行了，重新创建一个即可。此次失败扣了70credits。ppc64le不用扣除credits，但经常失败，credits有限，日常小更新继续使用ppc64le。
+
 ## 待补充
