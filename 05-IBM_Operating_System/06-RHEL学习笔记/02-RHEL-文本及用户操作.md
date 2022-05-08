@@ -3,7 +3,8 @@
 ### 标准输入、标准输出及标准错误
 &#8195;&#8195;一个运行的程序（或称为进程）需要从某位置读取输入并将输出写入某位置。从shell提示符运行的命令通常会从键盘读取其输入，并将输出发送到其终端窗口。进程使用称为文件描述符的编号通道来获取输入并发送输出。所有进程在开始时至少要有三个文件描述符。`标准输入`（通道 0）从键盘读取输入。`标准输出`（通道 1）将正常输出发送到终端。`标准错误`（通道 2）将错误消息发送到终端。如果程序打开连接至其他文件的单独连接，则可能要使用更大编号的文件描述符。
 
-通道（文件描述符）:   
+通道（文件描述符）:
+   
 编号|通道名称|描述|默认连接|用法
 :---:|:---:|:---:|:---:|:---:
 0|stdin|标准输入|键盘|仅读取
@@ -12,7 +13,8 @@
 3 +|filename|其他文件|无|读取和/或写入
 
 ### 将输出重定向到文件
-输出重定向操作符:  
+输出重定向操作符:
+
 用法|说明
 :---:|:---
 \> file|重定向stdout以覆盖文件
@@ -337,8 +339,77 @@ Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 Defaults      secure_path = /usr/local/bin:/usr/bin
 Defaults>root secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 ```
-### 
+### 创建用户
+从命令行创建用户：
+- `useradd username`命令将创建名为`username`的新用户。会设置用户的主目录和帐户信息，并为用户创建一个专用组。默认未设置有效的密码，需要设置了后才能登录，可以通过root用户`su`过去
+- `useradd --help`命令将显示可用于覆盖默认值的基本选项。大多数情形中，可以将相同的选项用于`usermod`命令，以修改现有的用户
+- 一些默认值从`/etc/login.defs`文件中读取，如有效`UID`编号的范围和默认密码过期规则。此文件中的值仅在创建新用户时使用，更改此文件对现有用户毫无影响
 
+示例：
+```
+[root@redhat8 ~]# useradd testuser1
+[root@redhat8 ~]# su - testuser1
+[testuser1@redhat8 root]$ exit
+[root@redhat8 ~]# su - testuser1
+[testuser1@redhat8 ~]$ 
+```
+### 从命令行修改现有的用户
+`usermod --help`命令常见选项包括：
 
+选项|用法
+:---:|:---
+-c, --comment COMMENT|将用户的真实姓名添加到注释字段
+-g, --gid GROUP|为用户帐户指定主要组
+-G, --groups GROUPS|为用户帐户指定补充组的逗号分隔列表
+-a, --append|利用-G选项将补充组添加到用户当前的组成员集合中，而不是将补充组集合替换为新的集合
+-d, --home HOME_DIR|为用户帐户指定特定的主目录
+-m, --move-home|将用户的主目录移到新的位置。必须与-d选项搭配使用
+-s, --shell SHELL|为用户帐户指定特定的登录shell
+-L, --lock|锁定用户帐户
+-U, --unlock|解锁用户帐户
 
+### 从命令行删除用户
+从命令行删除用户：
+- `userdel username`命令从`/etc/passwd`中删除`username`的详细信息，但保留用户的主目录不变
+- `userdel -r username`命令删除`username`的详细信息，同时删除用户的主目录
+- 在未指定`-r`选项的情况下使用`userdel`删除某一用户，系统将具有未分配`UID`所拥有的文件。如果创建新用户，旧用户的`UID`将被重新分配给新用户，为新用户提供旧用户剩余文件的所有权，除非使用`-u`选项指定了UID
 
+示例如下：
+```
+[testuser1@redhat8 ~]$ ls -l /home
+drwx------.  3 testuser1 testuser1   99 May  5 00:30 testuser1
+[root@redhat8 ~]# ls -l /home
+drwx------.  3    1007   1007   99 May  5 00:30 testuser1
+[root@redhat8 ~]# useradd testuser2
+[root@redhat8 ~]# ls -l /home
+drwx------.  3 testuser2 testuser2   99 May  5 00:30 testuser1
+drwx------.  3 testuser2 testuser2   78 May  5 00:42 testuser2
+```
+解决这一问题的方案有：
+- 在删除创建了文件的用户时，同时从系统删除所有这些无人拥有的文件
+- 另一种方案是手动为不同用户分配无人拥有的文件。root用户可以使用`find / -nouser -o -nogroup`命令来查找所有无人拥有的文件和目录
+
+### 从命令行设置密码
+&#8195;&#8195;`passwd username`命令可为`username`设置初始密码，或更改其现有的密码。root 用户可以将密码设为任何值。如果密码不符合最低建议标准，系统将显示消息。示例如下：
+```
+[root@redhat8 ~]# passwd testuser2
+Changing password for user testuser2.
+New password: 
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: 
+passwd: all authentication tokens updated successfully.
+[root@redhat8 ~]# passwd testuser2
+Changing password for user testuser2.
+New password: 
+BAD PASSWORD: The password contains the user name in some form
+Retype new password: 
+passwd: all authentication tokens updated successfully.
+```
+### UID范围
+RHEL中UID编号和编号范围及目的：
+- `UID 0`始终分配至超级用户帐户root
+- `UID 1-200`是一系列`系统用户`，由红帽静态分配给系统进程
+- `UID 201-999`是一系列`系统用户`，供文件系统中没有自己的文件的系统进程使用。通常在安装需要它们的软件时，从可用池中动态分配它们
+- `UID 1000+`是可供分配给普通用户的范围
+
+### 从命令行创建组

@@ -33,6 +33,8 @@ DMSTRSWO|Start switchover for a group
 DMCHGROLE|Change a group's primary node
 
 #### Status and history monitor
+命令|描述
+:---|:---
 WRKHASMON|Work with the iCluster primary status monitor
 WRKHATMON|Work with the iCluster backup status monitor
 DSPHASMON|Display the iCluster primary status monitor
@@ -40,7 +42,9 @@ CHGHASMON|Change the iCluster primary history monitor
 PRGHASMON|Purge the iCluster primary monitor history
 WRKCSMON|Work with the full cluster status monitor
 
-#### Journal management and analysis                                             
+#### Journal management and analysis
+命令|描述
+:---|:---                                             
 DMWRKJRN|Work with journals for iCluster
 CHGHAJRN|iCluster change journal receiver
 DLTHAJRCV|Delete journal receivers

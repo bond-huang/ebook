@@ -281,6 +281,6 @@ fatal: Authentication failed for 'https://github.com/bond-huang/ebook.git/'
 /home/travis/.travis/functions: line 611:  5754 Terminated              travis_jigger "${!}" "${timeout}" "${cmd[@]}"
 The command "travis_wait 100 bash deploy.sh" exited with 128.
 ```
-可能是GitHub上的Personal access tokens不行了，重新创建一个即可。此次失败扣了70credits。ppc64le不用扣除credits，但经常失败，credits有限，日常小更新继续使用ppc64le。
+&#8195;&#8195;应该是GitHub上的`Personal access tokens`不行了，重新创建一个即可。此次失败扣了70 credits。ppc64le不用扣除credits，但经常失败，credits有限，日常小更新继续使用ppc64le。
 
 ## 待补充
