@@ -552,6 +552,235 @@ link files test file
 change the source file
 ```
 ### LVM环境下扩容
-&#8195;&#8195;对于在VG中的逻辑卷扩容，如果VG容量足够，使用`lvextend`命令进行扩容，如果VG容量不够，划分新磁盘过来，创建新的分区，然后用`vgextend`命令先对VG进行扩容，然后再扩容逻辑卷。
+&#8195;&#8195;对于在VG中的逻辑卷扩容，如果VG容量足够，使用`lvextend`命令进行扩容，如果VG容量不够，划分新磁盘过来，创建新的分区，然后用`vgextend`命令先对VG进行扩容，然后再扩容逻辑卷。参考文档:[https://blog.csdn.net/chongxin1/article/details/76072071/](https://blog.csdn.net/chongxin1/article/details/76072071/)。
+#### 扩展物理磁盘
+VMware上将`/dev/nvme0n1`原本只有20G的磁盘扩展到40G：
+```
+[root@redhat8 ~]# fdisk -l
+Disk /dev/nvme0n1: 40 GiB, 42949672960 bytes, 83886080 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x8b66746c
 
-参考文档:[https://blog.csdn.net/chongxin1/article/details/76072071/](https://blog.csdn.net/chongxin1/article/details/76072071/)
+Device         Boot   Start      End  Sectors Size Id Type
+/dev/nvme0n1p1 *       2048  2099199  2097152   1G 83 Linux
+/dev/nvme0n1p2      2099200 41943039 39843840  19G 8e Linux LVM
+
+Disk /dev/nvme0n2: 3 GiB, 3221225472 bytes, 6291456 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x9711dc11
+
+Device         Boot   Start     End Sectors  Size Id Type
+/dev/nvme0n2p1         2048 2099199 2097152    1G 83 Linux
+/dev/nvme0n2p2      2099200 4196351 2097152    1G  b W95 FAT32
+/dev/nvme0n2p3      4196352 6244351 2048000 1000M  5 Extended
+/dev/nvme0n2p5      4198400 5631999 1433600  700M 83 Linux
+/dev/nvme0n2p6      5634048 5838847  204800  100M 83 Linux
+
+Disk /dev/mapper/rhel-root: 17 GiB, 18249416704 bytes, 35643392 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+Disk /dev/mapper/rhel-swap: 2 GiB, 2147483648 bytes, 4194304 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+```
+#### 新建扩展分区
+新建示例如下：
+```
+[root@redhat8 ~]# fdisk /dev/nvme0n1
+Welcome to fdisk (util-linux 2.32.1).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+Command (m for help): n
+Partition type
+   p   primary (2 primary, 0 extended, 2 free)
+   e   extended (container for logical partitions)
+Select (default p): e
+Partition number (3,4, default 3): 
+First sector (41943040-83886079, default 41943040): 
+Last sector, +sectors or +size{K,M,G,T,P} (41943040-83886079, default 83886079): 
+
+Created a new partition 3 of type 'Extended' and of size 20 GiB.
+Command (m for help): p
+Disk /dev/nvme0n1: 40 GiB, 42949672960 bytes, 83886080 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x8b66746c
+Device         Boot    Start      End  Sectors Size Id Type
+/dev/nvme0n1p1 *        2048  2099199  2097152   1G 83 Linux
+/dev/nvme0n1p2       2099200 41943039 39843840  19G 8e Linux LVM
+/dev/nvme0n1p3      41943040 83886079 41943040  20G  5 Extended
+Command (m for help): 
+```
+#### 新建逻辑分区
+继续上面的配置：
+```
+Command (m for help): n
+All space for primary partitions is in use.
+Adding logical partition 5
+First sector (41945088-83886079, default 41945088): 
+Last sector, +sectors or +size{K,M,G,T,P} (41945088-83886079, default 83886079): 
+
+Created a new partition 5 of type 'Linux' and of size 20 GiB.
+
+Command (m for help): p
+Disk /dev/nvme0n1: 40 GiB, 42949672960 bytes, 83886080 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x8b66746c
+
+Device         Boot    Start      End  Sectors Size Id Type
+/dev/nvme0n1p1 *        2048  2099199  2097152   1G 83 Linux
+/dev/nvme0n1p2       2099200 41943039 39843840  19G 8e Linux LVM
+/dev/nvme0n1p3      41943040 83886079 41943040  20G  5 Extended
+/dev/nvme0n1p5      41945088 83886079 41940992  20G 83 Linux
+Command (m for help): w
+The partition table has been altered.
+Failed to add partition 5 to system: Device or resource busy
+
+The kernel still uses the old partitions. The new table will be used at the next reboot. 
+Syncing disks.
+```
+保存退出，重启生效。
+#### 创建PV
+创建PV示例如下：
+```
+[root@redhat8 ~]# pvcreate /dev/nvme0n1p5
+  Physical volume "/dev/nvme0n1p5" successfully created.
+[root@redhat8 ~]# pvdisplay /dev/nvme0n1p5
+  "/dev/nvme0n1p5" is a new physical volume of "<20.00 GiB"
+  --- NEW Physical volume ---
+  PV Name               /dev/nvme0n1p5
+  VG Name               
+  PV Size               <20.00 GiB
+  Allocatable           NO
+  PE Size               0   
+  Total PE              0
+  Free PE               0
+  Allocated PE          0
+  PV UUID               0RcVoT-1YY2-HOZ2-jXAd-BKdK-OJTP-SUOFaf
+```
+#### 扩容VG
+查看VG信息：
+```
+[root@redhat8 ~]# vgdisplay
+  --- Volume group ---
+  VG Name               rhel
+  System ID             
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  3
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                2
+  Open LV               2
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <19.00 GiB
+  PE Size               4.00 MiB
+  Total PE              4863
+  Alloc PE / Size       4863 / <19.00 GiB
+  Free  PE / Size       0 / 0   
+  VG UUID               SXS9jc-QoZb-u7xe-dMrn-q1CM-pgws-2FHpb9
+```
+扩容VG：
+```
+[root@redhat8 ~]# vgextend rhel /dev/nvme0n1p5
+  Volume group "rhel" successfully extended
+[root@redhat8 ~]# vgdisplay /dev/nvme0n1p5
+  Volume group "nvme0n1p5" not found
+  Cannot process volume group nvme0n1p5
+[root@redhat8 ~]# vgdisplay rhel
+  --- Volume group ---
+  VG Name               rhel
+  System ID             
+  Format                lvm2
+  Metadata Areas        2
+  Metadata Sequence No  4
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                2
+  Open LV               2
+  Max PV                0
+  Cur PV                2
+  Act PV                2
+  VG Size               38.99 GiB
+  PE Size               4.00 MiB
+  Total PE              9982
+  Alloc PE / Size       4863 / <19.00 GiB
+  Free  PE / Size       5119 / <20.00 GiB
+  VG UUID               SXS9jc-QoZb-u7xe-dMrn-q1CM-pgws-2FHpb9
+```
+#### LV扩容
+查看LV信息：
+```
+[root@redhat8 ~]# lvdisplay /dev/mapper/rhel-root
+  --- Logical volume ---
+  LV Path                /dev/rhel/root
+  LV Name                root
+  VG Name                rhel
+  LV UUID                loJnjf-uQzE-xiMJ-CC18-pox2-Af8J-KItLXi
+  LV Write Access        read/write
+  LV Creation host, time redhat8, 2020-07-19 12:12:10 -0400
+  LV Status              available
+  # open                 1
+  LV Size                <17.00 GiB
+  Current LE             4351
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     8192
+  Block device           253:0
+```
+扩容LV：
+```
+[root@redhat8 ~]# lvextend -L +19G /dev/mapper/rhel-root
+  Size of logical volume rhel/root changed from <17.00 GiB (4351 extents) to <36.00 GiB (9215 extents).
+  Logical volume rhel/root successfully resized.
+```
+#### 扩容文件系统
+扩容文件系统：
+```
+[root@redhat8 ~]# xfs_growfs /
+meta-data=/dev/mapper/rhel-root  isize=512    agcount=4, agsize=1113856 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=0
+         =                       reflink=1
+data     =                       bsize=4096   blocks=4455424, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+data blocks changed from 4455424 to 9436160
+```
+查看确认：
+```
+[root@redhat8 ~]# df -h
+Filesystem             Size  Used Avail Use% Mounted on
+devtmpfs               889M     0  889M   0% /dev
+tmpfs                  904M     0  904M   0% /dev/shm
+tmpfs                  904M  9.4M  894M   2% /run
+tmpfs                  904M     0  904M   0% /sys/fs/cgroup
+/dev/mapper/rhel-root   36G  8.0G   29G  23% /
+/dev/nvme0n1p1        1014M  169M  846M  17% /boot
+/dev/nvme0n2p5         672M  568K  637M   1% /testfs
+tmpfs                  181M   16K  181M   1% /run/user/42
+tmpfs                  181M  4.0K  181M   1% /run/user/1000
+```
+## 待补充

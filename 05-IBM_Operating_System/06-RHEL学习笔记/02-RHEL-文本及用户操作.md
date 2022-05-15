@@ -12,7 +12,7 @@
 2|stderr|标准错误|终端|仅写入
 3 +|filename|其他文件|无|读取和/或写入
 
-### 将输出重定向到文件
+#### 将输出重定向到文件
 输出重定向操作符:
 
 用法|说明
@@ -55,7 +55,7 @@ find /etc -name paswd >> /tmp/save-both 2>&1
 find: ‘/etc/pki/rsyslog’: Permission denied
 ......
 ```
-### 构建管道
+#### 构建管道
 &#8195;&#8195;管道是一个或多个命令的序列，用竖线字符`|`分隔。管道将第一个命令的标准输出连接到下一个命令的标准输入。示例如下：
 ```
 [huang@redhat8 ~]$ ls -l /usr/bin |less
@@ -64,7 +64,7 @@ find: ‘/etc/pki/rsyslog’: Permission denied
 11
 [huang@redhat8 ~]$ ls -l |head -n 5 > /tmp/five-last-files
 ``` 
-### 管道、重定向和tee命令
+#### 管道、重定向和tee命令
 &#8195;&#8195;当重定向与管道组合时，shell会首先设置整个管道，然后重定向输入/输出。如果在管道的中间使用了输出重定向，则输出将转至文件，而不是前往管道中的下一个命令。下面示例不会在终端上显示任何内容：
 ```
 [huang@redhat8 ~]$ ls -al > /tmp/saved-output | less
@@ -138,7 +138,7 @@ Repeat
 [root@redhat8 ~]# echo Repeat ${COUNT}x
 Repeat 100x
 ```
-### 使用Shell变量配置Bash
+#### 使用Shell变量配置Bash
 &#8195;&#8195;一些shell变量在Bash启动时设置，但可以进行修改来调整shell的行为。例如，两个影响shell历史记录和`history`命令的变量是`HISTFILE`和`HISTFILESIZE`：
 - 如果设置了`HISTFILE`，将指定文件的位置，以便在退出时保存shell历史记录
 - `HISTFILE`默认情况下是用户的`~/.bash_history`文件
@@ -150,7 +150,7 @@ Repeat 100x
 mybash$ PS1="[\u@\h \W]# "
 [root@redhat8 ~]# 
 ```
-### 使用环境变量配置程序
+#### 使用环境变量配置程序
 &#8195;&#8195;shell提供了一个环境，供用户从该shell中运行程序。例如，此环境包括有关文件系统上当前工作目录的信息、传递给程序的命令行选项，以及环境变量的值。程序可以使用这些环境变量来更改其行为或其默认设置。
 ```
 [root@redhat8 ~]# EDITOR=vim
@@ -186,7 +186,7 @@ EDITOR=vim
 [root@redhat8 ~]# echo $EDITOR
 nano
 ```
-### 自动设置变量
+#### 自动设置变量
 &#8195;&#8195;如果希望在shell启动时自动设置shell或环境变量，可以编辑Bash启动脚本。运行的确切脚本取决于 shell的启动方式，是交互式登录shell、交互式非登录shell 还是shell脚本。假设是默认的`/etc/profile`、`/etc/bashrc`和`~/.bash_profile`文件，如要更改启动时影响所有交互式shell提示符的用户帐户，编辑`~/.bashrc`文件。例如，可以通过编辑要读取的文件，将该帐户的默认编辑器设置为`nano`：
 ```
 [root@redhat8 ~]# vi ~/.bashrc
@@ -203,7 +203,7 @@ fi
 export EDITOR=nano
 ```
 &#8195;&#8195;调整影响所有用户帐户的设置的最佳方式是添加名称以`.sh`结尾的文件，并在该文件中包含对`/etc/profile.d`目录的更改，并需要以root用户身份登录。
-### 取消设置和取消导出变量
+#### 取消设置和取消导出变量
 &#8195;&#8195;要完全取消设置和取消导出变量，使用`unset`命令。要取消导出变量但不取消设置它，使用`export -n`命令。示例如下：
 ```
 [root@redhat8 ~]# echo $fileX
@@ -295,10 +295,10 @@ sliceMay  4 09:12:07 redhat8 su[6852]: pam_unix(su-l:session): session opened fo
 May  4 09:12:20 redhat8 sudo[6879]: huang : user NOT in sudoers ; TTY=pts/0 ; PWD=/home/huang ; USER=root ; COMMAND=/sbin
 ```
 &#8195;&#8195;在红帽企业Linux 7和红帽企业Linux 8中，wheel组的所有成员都可以使用sudo以任何用户身份运行命令，包括 root 在内。系统将提示用户输入其自己的密码。
-### 通过Sudo获取交互式Root Shell
+#### 通过Sudo获取交互式Root Shell
 &#8195;&#8195;如果系统上的非管理员用户帐户能够使用`sudo`来运行`su`命令，则可以从该帐户运行`sudo su -`来获取root用户的交互式shell。这是因为sudo将以root用户身份运行`su -`，而root用户无需输入密码即可使用su。
 通过sudo访问root帐户的另一种方式是使用`sudo -i`命令。这将切换到root帐户并运行该用户的默认shell（通常为 bash）及关联的shell登录脚本。如果只想运行shell，可使用`sudo -s`命令。`sudo su -`命令与`sudo -i`的行为不完全相同。
-### 配置sudo
+#### 配置sudo
 &#8195;&#8195;sudo的主配置文件为`/etc/sudoers`。如果多个管理员试图同时编辑该文件，为了避免出现问题，只应使用特殊的`visudo`命令进行编辑：
 ```
 [root@redhat8 ~]# cat /etc/sudoers
@@ -325,7 +325,7 @@ ansible  ALL=(ALL)  NOPASSWD:ALL
 - 第二个示例为组`ftpusers`启用完整的sudo访问权限
 - 第三个示例设置sudo，允许`ansible`用户在不输入密码的前提下以其他用户身份运行命令
 
-### sudo中两个命令区别
+#### sudo中两个命令区别
 `sudo su -`和`sudo -i`这两个命令之间存在一些细微差别：
 - `sudo su -`命令可以完全像正常登录那样设置root环境，因为`su -`命令会忽略sudo所做的设置并从头开始设置环境
 - `sudo -i`命令的默认配置实际上会设置在一些细节上与正常登录不同的root用户环境。例如，它设置的PATH环境变量便略有不同，这会影响shell查找命令的位置
@@ -339,7 +339,8 @@ Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 Defaults      secure_path = /usr/local/bin:/usr/bin
 Defaults>root secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 ```
-### 创建用户
+### 管理本地用户
+#### 创建用户
 从命令行创建用户：
 - `useradd username`命令将创建名为`username`的新用户。会设置用户的主目录和帐户信息，并为用户创建一个专用组。默认未设置有效的密码，需要设置了后才能登录，可以通过root用户`su`过去
 - `useradd --help`命令将显示可用于覆盖默认值的基本选项。大多数情形中，可以将相同的选项用于`usermod`命令，以修改现有的用户
@@ -353,11 +354,11 @@ Defaults>root secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 [root@redhat8 ~]# su - testuser1
 [testuser1@redhat8 ~]$ 
 ```
-### 从命令行修改现有的用户
+#### 从命令行修改现有的用户
 `usermod --help`命令常见选项包括：
 
 选项|用法
-:---:|:---
+:---|:---
 -c, --comment COMMENT|将用户的真实姓名添加到注释字段
 -g, --gid GROUP|为用户帐户指定主要组
 -G, --groups GROUPS|为用户帐户指定补充组的逗号分隔列表
@@ -368,7 +369,7 @@ Defaults>root secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 -L, --lock|锁定用户帐户
 -U, --unlock|解锁用户帐户
 
-### 从命令行删除用户
+#### 从命令行删除用户
 从命令行删除用户：
 - `userdel username`命令从`/etc/passwd`中删除`username`的详细信息，但保留用户的主目录不变
 - `userdel -r username`命令删除`username`的详细信息，同时删除用户的主目录
@@ -389,7 +390,7 @@ drwx------.  3 testuser2 testuser2   78 May  5 00:42 testuser2
 - 在删除创建了文件的用户时，同时从系统删除所有这些无人拥有的文件
 - 另一种方案是手动为不同用户分配无人拥有的文件。root用户可以使用`find / -nouser -o -nogroup`命令来查找所有无人拥有的文件和目录
 
-### 从命令行设置密码
+#### 从命令行设置密码
 &#8195;&#8195;`passwd username`命令可为`username`设置初始密码，或更改其现有的密码。root 用户可以将密码设为任何值。如果密码不符合最低建议标准，系统将显示消息。示例如下：
 ```
 [root@redhat8 ~]# passwd testuser2
@@ -405,11 +406,180 @@ BAD PASSWORD: The password contains the user name in some form
 Retype new password: 
 passwd: all authentication tokens updated successfully.
 ```
-### UID范围
+#### UID范围
 RHEL中UID编号和编号范围及目的：
 - `UID 0`始终分配至超级用户帐户root
 - `UID 1-200`是一系列`系统用户`，由红帽静态分配给系统进程
 - `UID 201-999`是一系列`系统用户`，供文件系统中没有自己的文件的系统进程使用。通常在安装需要它们的软件时，从可用池中动态分配它们
 - `UID 1000+`是可供分配给普通用户的范围
 
-### 从命令行创建组
+### 管理本地组
+#### 从命令行创建组
+&#8195;&#8195;`groupadd`命令用于创建组。不带选项时，命令会在创建组时使用`/etc/login.defs`文件中指定范围内的下一个可用GID。`-g`选项指定GID。`-r`选项使用`/etc/login.defs`文件中(SYS_GID_MIN和SYS_GID_MAX配置项定义系统GID的范围)所列有效系统GID范围内的GID。示例如下：
+```
+[root@redhat8 ~]# groupadd -g 10000 group1
+[root@redhat8 ~]# groupadd -r group2
+[root@redhat8 ~]# tail /etc/group
+...output omitted...
+group1:x:10000:
+group2:x:975:
+```
+#### 从命令行修改现有的组
+&#8195;&#8195;`groupmod`命令可更改现有组的属性。`-n`指定组的新名称，`-g`选项指定新的GID。修改现有组示例如下：
+```
+[root@redhat8 ~]# groupmod -n group02 group2
+[root@redhat8 ~]# groupmod -g 20000 group02
+[root@redhat8 ~]# tail /etc/group
+...output omitted...
+group02:x:20000:
+```
+#### 从命令行删除组
+使用`groupdel`命令删除组，示例：
+```
+[root@redhat8 ~]# groupdel group02
+[root@redhat8 ~]# cat /etc/group |grep group02
+[root@redhat8 ~]# 
+```
+#### 从命令行更改组成员资格
+&#8195;&#8195;使用`usermod -g`命令来更改用户的主要组；使用`usermod -aG`命令，将用户添加到某一补充组。示例如下：
+```
+[root@redhat8 ~]# id Tony
+uid=1002(Tony) gid=1002(Tony) groups=1002(Tony)
+[root@redhat8 ~]# usermod -g group1 Tony
+[root@redhat8 ~]# id Tony
+uid=1002(Tony) gid=10000(group1) groups=10000(group1)
+[root@redhat8 ~]# id testuser2
+uid=1007(testuser2) gid=1007(testuser2) groups=1007(testuser2)
+[root@redhat8 ~]# usermod -aG group1 testuser2
+[root@redhat8 ~]# id testuser2
+uid=1007(testuser2) gid=1007(testuser2) groups=1007(testuser2),10000(group1)
+```
+### 管理用户密码
+#### shadow密码和密码策略
+&#8195;&#8195;早期加密的密码存储在全局可读的`/etc/passwd`文件中。目前一般存储到只有root用户才能读取的独立`/etc/shadow`文件中。并且允许实施密码期限和到期功能。每个用户在`/etc/shadow`文件中都有对应的一行。使用九个冒号分隔字段，示例：
+```
+huang:$6$TwYrj0gr3EMjRAlU$N3aIbs/Dq7cT4hGMavXQjgCY9w/QmhFXlnZDs0vXLM3YlHdyPBKjqpqyR6G86wu9APHoVvvf31ffPULETrXO7/::0:99999
+:7:::
+```
+九个字段说明依次如下：
+-  此密码所属帐户的用户名
+- 此用户的加密密码。字段中存储了三段信息：所用的哈希算法、salt及加密哈希值。每段信息由`$`符号分隔，三个字段依次说明：
+    - 此密码所用的哈希算法。数字`6`表示`SHA-512`哈希算法，这是RHEL8中的默认算法。`1`表示`MD5`哈希算法，`5`表示`SHA-256`哈希算法
+    - 用于加密密码的`salt`。这原先是随机选取的
+    - 用户密码的加密哈希值。`salt`和未加密密码组合并加密，生成加密的密码哈希 
+- 上次更改密码的日期。自1970年1月1日起的天数，并按UTC时区计算
+- 自用户上次更改密码以来到可以再次更改之前必须经过的最短天数
+- 在密码过期之前不进行密码更改可以经过的最长天数。空字段表示它不会根据上次更改以来的时间失效
+- 警告期。当用户在截止日期之前登录达到该天数时，会收到有关密码过期的警告
+- 非活动期。一旦密码过期，在这些天内仍可以接受登录。过了这一时期后，帐户将被锁定
+- 帐户过期日。自1970年1月1日起的天数，并按UTC时区计算。空字段表示它不会在特定的日期失效
+- 最后一个字段通常为空，预留字段
+
+&#8195;&#8195;用户尝试登录时，系统在`/etc/shadow`中查询用户的条目，将用户的`salt`和键入的未加密密码组合，再使用指定的哈希算法加密：
+- 如果结果与已加密哈希匹配，则用户键入了正确的密码
+- 如果结果与已加密密码不符，则用户键入了错误的密码，登录尝试也会失败
+
+#### 配置密码期限
+&#8195;&#8195;通过`chage`命令调整密码期限策略。`chage`命令`-m`、`-M`、`-W`和`-I`选项分别用于设置用户密码的最短期限、最长期限、警告周期和失效期限。示例如下：
+```
+[root@redhat8 ~]# chage -m 0 -M 60 -W 7 -I 14 Tony
+[root@redhat8 ~]# cat /etc/shadow
+...output omitted...
+Tony:!!:18475:0:60:7:14::
+```
+强制用户Tony在下一次登录时更新其密码：
+```
+[root@redhat8 ~]# chage -d O Tony
+```
+设置Tony用户的帐户于2022-10-01到期：
+```
+[root@redhat8 ~]# chage -E 2022-10-01 Tony
+```
+显示用户Tony的密码期限详细信息：
+```
+[root@redhat8 ~]# chage -l Tony
+Last password change					: May 05, 2022
+Password expires					: Jul 04, 2022
+Password inactive					: Jul 18, 2022
+Account expires						: Oct 01, 2022
+Minimum number of days between password change		: 0
+Maximum number of days between password change		: 60
+Number of days of warning before password expires	: 7
+```
+&#8195;&#8195;可以编辑`/etc/login.defs`文件中的密码期限配置项，以设置默认的密码期限策略。默认密码期限策略的任何更改都仅对新用户有效。现有用户将继续使用旧密码期限设置。配置项说明：
+- `PASS_MAX_DAYS`设置密码的默认最长期限
+- `PASS_MIN_DAYS`设置密码的默认最短期限
+- `PASS_WARN_AGE`设置密码的默认警告周期
+
+#### 限制访问
+&#8195;&#8195;可以用`chage`命令来设置帐户到期日期。限制访问通过`usermod`命令的`-L`选项锁定帐户。`-e`选项来设置给定用户帐户的帐户到期日期。示例如下：
+```
+[root@redhat8 ~]# usermod -L Tony
+[root@redhat8 ~]# su - huang
+[huang@redhat8 ~]$ su - Tony
+Password: 
+su: Authentication failure
+[root@redhat8 ~]# usermod -L -e 2022-10-01 Tony
+```
+&#8195;&#8195;对应锁定的用户，其帐户可通过`usermod -U`解锁。如果帐户也已到期，还需要更改到期日期。还有种限制登录方法是将用户的登录shell设为`/sbin/nologin`，以限制交互方式登录用户帐户，示例：
+```
+[root@redhat8 ~]# usermod -s /sbin/nologin testuser2
+[root@redhat8 ~]# su - testuser2
+This account is currently not available.
+```
+&#8195;&#8195;`nologin shell`可以防止以交互方式使用系统，但不会阻止所有访问。如果用户使用用户密码进行身份验证，有时可以通过身份验证，并使用Web应用、文件传输程序或邮件读取程序等应用上传或检索文件。
+
+## 练习
+&#8195;&#8195;通过编辑文件`/etc/login.defs`中`PASS_MAX_DAYS`选项，确保新建的用户具有必须每30天更改一次的密码，文件示例如下：
+```
+[root@redhat8 ~]# cat /etc/login.defs
+...output omitted...
+# Password aging controls:
+#
+#	PASS_MAX_DAYS	Maximum number of days a password may be used.
+#	PASS_MIN_DAYS	Minimum number of days allowed between password changes.
+#	PASS_MIN_LEN	Minimum acceptable password length.
+#	PASS_WARN_AGE	Number of days warning given before a password expires.
+#
+PASS_MAX_DAYS	30
+PASS_MIN_DAYS	0
+PASS_MIN_LEN	5
+PASS_WARN_AGE	7
+...output omitted...
+```
+创建新组`consultants`，GID设为35000：
+```
+[root@redhat8 ~]# groupadd -g 35000 consultants
+[root@redhat8 ~]# cat /etc/group
+...output omitted...
+consultants:x:35000:
+```
+为`consultants`的所有成员配置管理权限，使其能够以任何用户身份执行任何命令：
+```
+[root@redhat8 ~]# touch /etc/sudoers.d/consultants
+[root@redhat8 ~]# echo "%consultants ALL=(ALL) ALL" > /etc/sudoers.d/consultants
+[root@redhat8 ~]# cat /etc/sudoers.d/consultants
+%consultants ALL=(ALL) ALL
+```
+创建consultant1、consultant2和consultant3用户，并使consultants作为它们的补充组：
+```
+[root@redhat8 ~]# useradd -G consultants consultant1
+[root@redhat8 ~]# useradd -G consultants consultant2
+[root@redhat8 ~]# useradd -G consultants consultant3
+```
+将consultant1、consultant2和consultant3帐户设为从当天起60天后过期：
+```
+[root@redhat8 ~]# date -d "+60 days" +%F
+2022-07-04
+[root@redhat8 ~]# chage -E 2022-07-04 consultant1
+[root@redhat8 ~]# chage -E 2022-07-04 consultant2
+[root@redhat8 ~]# chage -E 2022-07-04 consultant3
+```
+更改consultant2帐户的密码策略，使其每30天要求创建新密码：
+```
+[root@redhat8 ~]# chage -M 30 consultant2
+```
+强制consultant1用户在第一次登录时更改密码：
+```
+[root@redhat8 ~]# chage -d O consultant1
+```

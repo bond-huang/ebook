@@ -77,6 +77,7 @@ Ctrl+RightArrow|跳到命令行中下一字的末尾
 Ctrl+R|在历史记录列表中搜索某一模式的命令
 
 ### 基础命令
+#### date命令
 &#8195;&#8195;`date`命令可显示当前的日期和时间，也可以用它来设置系统时钟。以加号`+`开头的参数可指定日期命令的格式字符串：
 ```
 [root@redhat8 ~]# date
@@ -90,11 +91,19 @@ Sun May  1 07:48:59 EDT 2022
 [root@redhat8 ~]# date +%s
 1651512964
 ```
+`date`命令还可用于计算未来的日期，示例：
+```
+[root@redhat8 ~]# date -d "+100 days" -u
+Sat Aug 13 08:23:57 UTC 2022
+```
+示例中，`-u`选项报告UTC时间。
+#### passwd命令
 `passwd`命令更改用户自己的密码。必须指定该帐户的原始密码，之后才允许进行更改：
 - 默认情况下，需要强密码，其包含小写字母、大写字母、数字和符号，
 - 并且不以字典中的单词为基础
 - 超级用户可以使用`passwd`命令更改其他用户的密码
 
+#### file命令
 &#8195;&#8195;Linux不需要文件扩展名来根据类型分类文件。`file`命令可以扫描文件内容的开头，显示该文件的类型。要分类的文件作为参数传递至该命令：
 ```
 [root@redhat8 ~]# file /etc/passwd
@@ -104,6 +113,7 @@ Sun May  1 07:48:59 EDT 2022
 lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=a3637110e27e9a48dced9f38b4ae43388d32d0e4, stripped[root@redhat8 ~]# file /var
 /var: directory
 ```
+#### cat命令
 &#8195;&#8195;命令`cat`可以创建单个或多个文件，查看文件内容，串联多个文件中的内容，以及将文件内容重定向到终端或文件。查看多个文件时候使用空格间隔，示例如下：
 ```
 [root@redhat8 ~]# cat /etc/hosts
@@ -116,7 +126,9 @@ root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/bin:/sbin/nologin
   ...output omitted...
 ```
-&#8195;&#8195;`less`命令允许在篇幅超过一个终端窗口适合大小的文件中向前和向后翻页。使用UpArrow键和DownArrow键可向上和向下滚动显示。按`q`键退出该命令。    
+#### less命令
+&#8195;&#8195;`less`命令允许在篇幅超过一个终端窗口适合大小的文件中向前和向后翻页。使用UpArrow键和DownArrow键可向上和向下滚动显示。按`q`键退出该命令。
+#### head及tail命令 
 &#8195;&#8195;`head`和`tail`命令分别显示文件的开头和结尾部分。默认情况下显示文件的10行，都有`-n`选项用来指定不同的行数。要显示的文件作为参数传递至这些命令：
 ```
 [root@redhat8 ~]# head -n 3 /etc/passwd
@@ -126,7 +138,8 @@ daemon:x:2:2:daemon:/sbin:/sbin/nologin
 [root@redhat8 ~]# tail -n 2 /etc/passwd
 harry:x:1005:1005::/home/harry:/bin/bash
 sarah:x:1006:1006::/home/sarah:/sbin/nologin
-```  
+```
+#### wc命令
 &#8195;&#8195;`wc`命令可计算文件中行、字和字符的数量。它接受`-l`、`-w`或`-c`选项，分别用于仅显示行数、字数或字符数：
 ```
 [root@redhat8 ~]# wc /etc/passwd
@@ -139,6 +152,7 @@ sarah:x:1006:1006::/home/sarah:/sbin/nologin
 1087 /etc/group
 1245 total
 ```
+#### history命令
 &#8195;&#8195;`history`命令显示之前执行的命令的列表，带有命令编号作为前缀。感叹号字符`!`是元字符，用于扩展之前的命令而不必重新键入它们。`!number`命令扩展至与指定编号匹配的命令。`!string`命令扩展至最近一个以指定字符串开头的命令：
 ```
 [user@host ~]$ history
