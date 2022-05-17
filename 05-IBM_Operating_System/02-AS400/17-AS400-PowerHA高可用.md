@@ -161,4 +161,41 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 - [Change Cluster Resource Group(CHGCRG)](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/chgcrg.htm)
 - [Remove CRG Node Entry(RMVCRGNODE)](https://www.ibm.com/docs/en/ssw_ibm_i_73/cl/rmvcrgnode.htm)
 
-### 待补充
+## iASP数据复制
+### 从集群系统到独立分区
+&#8195;&#8195;Attach IASP操作(通常称为ASP assigner process)是从连接到独立分区的IASP中定位磁盘单元，并更新分区以将IASP接受到配置中. 然后可以改变IASP，允许程序访问IASP中的数据。附加IASP操作强制执行以下限制：
+- 分区必须在单一系统环境中。这意味着分区不能是设备域中的节点
+- 该分区不能有任何IASP，这些独立的辅助存储池是在执行附加IASP操作时配置的
+- 除非是磁盘池组，否则不能将多个IASP附加到分区。磁盘池组是单个主磁盘池以及与主磁盘池关联的所有辅助磁盘池
+
+将独立辅助存储池(IASP)从集群节点复制到非集群节点的步骤：
+- 接收IASP副本的独立分区正常运行，且当前没有将IASP副本的磁盘映射到此独立分区
+- 通过外部存储操作，对IASP中的所有磁盘单元执行复制操作。例如FlashCopy、全局复制、克隆、快照等
+- 在接收IASP副本的独立分区上，如果存在IASP，使用命令`CFGDEVASP`将其删除，示例：`CFGDEVASP ASPDEV(IASPNAME) ACTION(*DELETE)`
+- 然后运行`CFGDEVASP ASPDEV(*ALL) ACTION(*PREPARE)`命令为连接包​​含IASP副本的磁盘单元准备系统配置。说明及注意事项：
+    - 此命令删除并清理当前配置的所有IASP
+    - 此时不应将存储LUN映射到接收IASP的目标独立分区
+- `IPL`独立复制目标系统完成准备工作
+- 将复制的磁盘单元分配给独立复制目标系统（将卷从存储映射到主机）
+- 从专用服务工具(DST) 或系统服务工具 (SST) 运行Attach IASP操作：
+    - 运行命令`STRSST`
+    - 选择选项`3. Work with disk units`
+    - 选择选项`3. Work with disk unit recovery`
+    - 选择选项`8. Detect attached IASP disk units`
+    - 进入`Confirm attach IASP disk units`屏幕，显示独立磁盘池和磁盘池中的单元，如果显示的磁盘池和单元正确，回车确认运行配置
+- 运行高级分析命令`MULTIPATHRESETTER`(尝试过没成功，官网提到需要做)：
+    - `STRSST`进入SST
+    - 选择选项`1. Start a service tool`
+    - 选择选项`4. Display/Alter/Dump`
+    - 选择选项`·. Display/Alter storage`
+    - 选择选项`2. Licensed Internal Code (LIC) data`
+    - 选择选项`14. Advanced analysis`
+- 进入`Select Advanced Analysis Command`屏幕，在`Option`第一行中输入`1`(Select)，然后在后面输入命令`MULTIPATHRESETTER`
+- 回车确认，进入`Specify Advanced Analysis Options`屏幕，`Option`中`-RESETMP -ALL`，回车确认
+- 阅读并按照屏幕上显示的说明确认应重置路径（这一步和官方描述有点不一样）
+- Vary-on IASP。如果IASP设备描述不存在，先使用`CRTDEVASP`命令创建它
+- 验证IASP中的数据，是否能够运行使用独立磁盘池中的数据的作业
+
+官方参考链接：[PowerHA: How to Copy an Independent Auxiliary Storage Pool From a Cluster Node to a Non-Cluster Node](https://www.ibm.com/support/pages/powerha-how-copy-independent-auxiliary-storage-pool-cluster-node-non-cluster-node)
+
+## 待补充

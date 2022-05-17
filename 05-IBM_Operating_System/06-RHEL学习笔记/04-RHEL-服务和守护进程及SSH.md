@@ -1,5 +1,21 @@
 # RHEL-服务和守护进程及SSH
 ## 控制服务和守护进程
+### systemctl命令摘要
+&#8195;&#8195;`systemct`l命令可以在运行中的系统上启动和停止服务，也可启用或禁用服务在系统引导时自动启动。下表是服务管理实用命令：
+
+命令|任务描述
+:---|:---
+systemctl status UNIT|查看有关单元状态的详细信息
+systemctl stop UNIT|在运行中的系统上停止一项服务
+systemctl start UNIT|在运行中的系统上启动一项服务	
+systemctl restart UNIT|在运行中的系统上重新启动一项服务
+systemctl reload UNIT|重新加载运行中服务的配置文件
+systemctl mask UNIT|彻底禁用服务，使其无法手动启动或在系统引导时启动
+systemctl unmask UNIT|使屏蔽的服务变为可用
+systemctl enable UNIT|将服务配置为在系统引导时启动
+systemctl disable UNIT|禁止服务在系统引导时启动
+systemctl list-dependencies UNIT|列出指定单元需要的单元
+
 ### 识别自动启动的系统进程
 #### systemd进程
 &#8195;&#8195;`systemd`守护进程管理Linux的启动，一般包括服务启动和服务管理。它可在系统引导时以及运行中的系统上激活系统资源、服务器守护进程和其他进程。守护进程是在执行各种任务的后台等待或运行的进程：
@@ -195,4 +211,92 @@ To show all installed unit files use 'systemctl list-unit-files'.
 ...output omitted...
 ```
 #### 列出单元依赖项
-&#8195;&#8195;某些服务要求首先运行其他服务，从而创建对其他服务的依赖项。其他服务并不在系统引导时启动，而是仅在需要时启动。在这两种情况下，`systemd`和`systemctl`根据需要启动服务，不论是解决依赖项，还是启动不经常使用的服务。例如，如果`CUPS`打印服务未在运行，并有文件被放入打印假脱机目录，则系统将启动`CUPS`相关的守护进程或命令来满足打印请求。 
+&#8195;&#8195;某些服务要求首先运行其他服务，从而创建对其他服务的依赖项。其他服务并不在系统引导时启动，而是仅在需要时启动。在这两种情况下，`systemd`和`systemctl`根据需要启动服务，不论是解决依赖项，还是启动不经常使用的服务。`systemctl list-dependencies UNIT`命令显示启动服务单元所需的依赖项的层次结构映射，使用`--reverse`选项列出反向依赖项。示例：
+```
+[root@redhat8 ~]# systemctl list-dependencies sshd.service
+sshd.service
+● ├─system.slice
+● ├─sshd-keygen.target
+● │ ├─sshd-keygen@ecdsa.service
+● │ ├─sshd-keygen@ed25519.service
+● │ └─sshd-keygen@rsa.service
+● └─sysinit.target
+●   ├─dev-hugepages.mount
+...output omitted...
+[root@redhat8 ~]# systemctl list-dependencies sshd.service --reverse
+sshd.service
+● └─multi-user.target
+●   └─graphical.target
+```
+#### 屏蔽未屏蔽的服务
+&#8195;&#8195;有时系统中安装的不同服务之间可能彼此冲突，屏蔽服务可防止管理员意外启动与其他服务冲突的服务。例如，有多种方法可以管理邮件服务器（如postfix和sendmail等）。示例如下：
+```
+[root@redhat8 ~]# systemctl mask sendmail.service
+Created symlink /etc/systemd/system/sendmail.service → /dev/null.
+[root@redhat8 ~]# systemctl list-unit-files --type=service
+UNIT FILE                                        STATE       
+sendmail.service                                 masked   
+[root@redhat8 ~]# systemctl start sendmail.service
+Failed to start sendmail.service: Unit sendmail.service is masked.
+[root@redhat8 ~]# systemctl unmask sendmail.service
+Removed /etc/systemd/system/sendmail.service.
+```
+示例说明及注意事项：
+- 使用`systemctl mask`命令执行屏蔽服务单元
+- 屏蔽操作会在配置目录中创建指向`/dev/null`文件的链接，该文件可阻止服务启动
+- 尝试启动已屏蔽的服务单元会失败
+- 使用`systemctl unmask`命令可取消屏蔽服务单元
+- 禁用的服务可以手动启动，或通过其他单元文件启动，但不会在系统引导时自动启动。屏蔽的服务无法手动启动，也不会自动启动
+
+#### 使服务在系统引导时启动或停止
+&#8195;&#8195;在`systemd`配置目录中创建链接，使服务在系统引导时启动。`systemctl`命令可以创建和删除这些链接。示例命令如下：
+```
+[root@redhat8 ~]# systemctl enable cups.service
+Created symlink /etc/systemd/system/printer.target.wants/cups.service → /usr/lib/sy
+stemd/system/cups.service.Created symlink /etc/systemd/system/sockets.target.wants/cups.socket → /usr/lib/sys
+temd/system/cups.socket.Created symlink /etc/systemd/system/multi-user.target.wants/cups.path → /usr/lib/sy
+stemd/system/cups.path.
+[root@redhat8 ~]# systemctl disable cups.service
+Removed /etc/systemd/system/multi-user.target.wants/cups.path.
+Removed /etc/systemd/system/sockets.target.wants/cups.socket.
+Removed /etc/systemd/system/printer.target.wants/cups.service.
+[root@redhat8 ~]# systemctl is-enabled cups.service
+disabled
+```
+示例说明及注意事项：
+- 在系统引导时启动服务，使用`systemctl enable`命令
+- 执行引导启动命令后，会从服务单元文件（通常位于`/usr/lib/systemd/system`目录）创建一个符号链接，指向磁盘上供`systemd`寻找文件的位置，即`/etc/systemd/system/TARGETNAME.target.wants`目录
+- 要禁用服务自动启动，使用`systemctl disable`命令，该命令将删除在启用服务时创建的符号链接。请注意禁用服务不会停止该服务
+- 要验证服务是启用还是禁用状态，使用`systemctl is-enabled`命令
+
+## 配置和保护SSH
+### 使用SSH访问远程命令行
+&#8195;&#8195;OpenSSH在RHEL系统上实施Secure Shell或SSh协议。SSH协议使系统能够通过不安全的网络以加密和安全的方式进行通信：
+- 可以使用ssh命令来创建与远程系统的安全连接、以特定用户身份进行身份验证，并以该用户身份在远程系统上获取交互式shell会话
+- 也可以使用ssh命令在远程系统上运行单个命令，而不运行交互式shell 
+
+#### 安全Shell示例
+使用与当前本地用户相同的用户名登录远程服务器`remotehost`，会提示进行身份验证：
+```
+[root@redhat8 ~]# ssh remotehost
+```
+使用用户名`huang`登录远程服务器`remotehost`。会提示进行身份验证：
+```
+[root@redhat8 ~]# ssh huang@remotehost
+```
+在`remotehost`远程系统上以`huang`用户身份运行`hostname`命令，而不访问远程交互式shell：
+```
+[root@redhat8 ~]# ssh huang@remotehost hostname
+```
+使用`exit`命令来注销远程系统。 
+#### 识别远程用户
+&#8195;&#8195;`w`命令可显示当前登录到计算机的用户列表。这对于显示哪些用户使用`ssh`从哪些远程位置进行了登录以及执行了何种操作等内容特别有用。示例：
+```
+[root@redhat8 ~]# w
+ 21:25:35 up 22:20,  3 users,  load average: 0.06, 0.02, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+huang    tty2     tty2             18:12   22:20m 36.18s  0.12s /usr/libexec/tracke
+root     pts/2    192.168.100.1    20:13    0.00s  0.22s  0.02s w
+huang    pts/3    192.168.100.1    21:02   23:28   0.02s  0.02s -bash
+```
+#### SSH主机密匙
