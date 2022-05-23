@@ -300,3 +300,158 @@ root     pts/2    192.168.100.1    20:13    0.00s  0.22s  0.02s w
 huang    pts/3    192.168.100.1    21:02   23:28   0.02s  0.02s -bash
 ```
 #### SSH主机密匙
+&#8195;&#8195;SSH通过公钥加密的方式保持通信安全。当用户使用`ssh`命令连接到SSH服务器时，该命令会检查它在本地已知主机文件中是否有该服务器的公钥副本：
+- 系统管理员可能在`/etc/ssh/ssh_known_hosts`中已进行预配置，或者用户的主目录中可能有包含公钥的`~/.ssh/known_hosts`文件
+- 在特定于用户的`~/.ssh/config`文件或系统范围的`/etc/ssh/ssh_config`中将`StrictHostKeyChecking`参数设为`yes`，使得`ssh`命令在公钥不匹配时始终中断SSH连接。
+- 如果客户端的已知主机文件中没有公钥的副本，`ssh`命令会询问是否仍要登录。如果仍进行登录，公钥的副本就会保存到`~/.ssh/known_hosts`文件中，以便将来能自动确认服务器的身份
+
+&#8195;&#8195;如果由于硬盘驱动器故障而导致公钥丢失或由于某些正当理由而导致公钥被更换，并由此更改了服务器的公钥，用户需要编辑已知的主机文件以确保将旧公钥条目替换为新公钥条目。公钥存储在`/etc/ssh/ssh_known_hosts`及SSH客户端上每个用户的`~/.ssh/known_hosts`文件中。示例：
+```
+[root@redhat8 ~]# cat ~/.ssh/known_hosts
+192.168.122.106 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYA
+AABBBNPBB8DiAz6yrGleDV5/py/heyo9is/Ym0mvyvZ4Ivx0+NfxP4T3jBG18mdf7cVKJROhdjH49204YB2MbJ7/UKM=
+```
+每个公钥各占一行，字段说明：
+- 第一个字段是共享该公钥的主机名和IP地址的列表
+- 第二个字段是公钥的加密算法
+- 最后一个字段是公钥本身 
+
+&#8195;&#8195;用户所连接的每个远程SSH服务器都将其公钥存储在`/etc/ssh`目录下扩展名为`.pub`的文件中。文件查看示例如下：
+```
+[root@redhat8 ~]# ls /etc/ssh/*key.pub
+/etc/ssh/ssh_host_ecdsa_key.pub    /etc/ssh/ssh_host_rsa_key.pub
+/etc/ssh/ssh_host_ed25519_key.pub
+```
+### 配置基于SSH密钥的身份验证
+#### 基于SSH密钥的身份验证
+&#8195;&#8195;用户可以配置SSH服务器，以便能通过基于密钥的身份验证在不使用密码的情况下进行身份验证。这种身份验证基于私钥-公钥方案。用户需要生成加密密钥文件的一个匹配对，一个是私钥，另一个是匹配的公钥：
+- 私钥文件用作身份验证凭据，像密码一样，必须妥善保管
+- 公钥复制到用户希望连接到的系统，用于验证私钥。公钥并不需要保密
+
+&#8195;&#8195;使用`ssh-keygen`命令创建用于进行身份验证的私钥和匹配的公钥。默认情况下，私钥和公钥分别保存` ~/.ssh/id_rsa`和`~/.ssh/id_rsa.pub`文件中：
+```
+[root@redhat8 ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:3sVt/1S1jOf72M4GvoERmWoo/LwaN8CuQPuA0c/lDvI root@redhat8
+The key's randomart image is:
++---[RSA 2048]----+
+|                 |
+|             o   |
+|            +   .|
+| .   o   . o oo o|
+|. o   * S o +.o+.|
+| + + + * o . ++..|
+|. = + + * . ...oo|
+|   * + o o    .*+|
+|    E o..     o=B|
++----[SHA256]-----+
+```
+&#8195;&#8195;如果未在`ssh-keygen`提示时指定密语，则生成的私钥不受保护。在这种情况下，任何拥有此私钥文件的人都可以使用它进行身份验证。如果设置了密码，则在使用私钥进行身份验证时需要输入此密语。下例中的`ssh-keygen`命令显示创建受密语保护的私钥及其公钥：
+```
+[root@redhat8 ~]# ssh-keygen -f .ssh/key-with-pass
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in .ssh/key-with-pass.
+Your public key has been saved in .ssh/key-with-pass.pub.
+The key fingerprint is:
+SHA256:R7lppczeSK/cUd7vHlqzz1md2RT27OdsMQLQfmG2Fd8 root@redhat8
+The key's randomart image is:
++---[RSA 2048]----+
+|          .    ..|
+|         . o + .o|
+|          = + +oE|
+|         + B o..o|
+|        S X o . +|
+|         = + + *=|
+|          o + o*X|
+|         . o .o+X|
+|          o .. *X|
++----[SHA256]-----+
+```
+示例说明：
+- `-f`选项与`ssh-keygen`命令配合可用来确定保存密钥的文件。在示例中，私钥和公钥分别保存在`/home/user/.ssh/key-with-pass`及`/home/user/.ssh/key-with-pass.pub`文件中。
+- 在进一步生成SSH密钥对期间，除非指定唯一的文件名，否则系统会询问您是否允许覆盖现有的`id_rsa`和 `id_rsa.pub`文件。如果覆盖现有的`id_rsa`和`id_rsa.pub`文件，那么必须在具有旧公钥的所有SSH服务器上使用新公钥替换旧公钥
+- 生成SSH密钥后，密钥将默认存储在用户主目录下的`.ssh/`目录中。私钥和公钥的权限模式必须分别为`600`和 `644`
+
+#### 共享公钥
+&#8195;&#8195;在可以使用基于密钥的身份验证之前，需要将公钥复制到目标系统上。`ssh-copy-id`命令可将 SSH密钥对的公钥复制到目标系统。如果在运行`ssh-copy-id`时省略了公钥文件的路径，会使用默认的`/home/user/.ssh/id_rsa.pub`文件。命令示例：
+```
+[root@redhat8 ~]# ssh-copy-id -i .ssh/key-with-pass huang@remotehost
+```
+&#8195;&#8195;将公钥成功传输到远程系统后，可以使用对应的私钥对远程系统进行身份验证，同时通过SSH登录远程系统。如果在运行`ssh`命令时省略了私钥文件的路径 ，会使用默认的`/home/user/.ssh/id_rsa`文件。命令示例：
+```
+[root@redhat8 ~]# ssh -i .ssh/key-with-pass huang@remotehost
+```
+#### 使用ssh-agent进行非交互式身份验证
+&#8195;&#8195;如果用户的SSH私钥受密语保护，通常必须输入密语才能使用私钥进行身份验证。可以使用名为`ssh-agent`的程序临时将密语缓存到内存中，当使用SSH通过私钥登录另一个系统时，`ssh-agent`会自动提供密语：
+- 如果是初始登录GNOME图形桌面环境，可能会自动启动并配置`ssh-agent`程序，具体取决于您本地系统的配置
+- 如果是在文本控制台上进行登录，使用ssh进行登录，或者使用`sudo`或`su`，可能需要为该会话手动启动 `ssh-agent`
+- 当用户注销启动了`ssh-agent`的会话时，将退出进程，并且用户的私钥密语也将从内存中清除 
+
+使用以下命令手动启动： 
+```
+[root@redhat8 ~]# eval $(ssh-agent)
+Agent pid 3812
+```
+&#8195;&#8195;`ssh-agent`开始运行后，需要告诉它用户的私钥密语或密钥。使用`ssh-add`命令。示例使用`ssh-add`命令添加分别来自`/home/user/.ssh/id_rsa`（默认）和`/home/user/.ssh/key-with-pass`文件的私钥：
+```
+[root@redhat8 ~]# ssh-add
+Identity added: /root/.ssh/id_rsa (root@redhat8)
+[root@redhat8 ~]# ssh-add .ssh/key-with-pass
+Enter passphrase for .ssh/key-with-pass: 
+Identity added: .ssh/key-with-pass (root@redhat8)
+```
+### 自定义OpenSSH服务配置
+#### 配置OpenSSH服务器
+&#8195;&#8195;`sshd`守护进程提供OpenSSH服务。主配置文件为`/etc/ssh/sshd_config`。OpenSSH服务器的默认配置也能良好运行。用户可能希望进行一些更改以增强系统的安全性。例如可能希望禁止直接远程登录root帐户，或者可能希望禁止使用基于密码的身份验证（偏向于使用SSH私钥身份验证）。 
+#### 禁止超级用户使用SSH登录
+最好禁止从远程系统直接登录root用户帐户。允许以root直接登录的一些风险包括：
+- 所有Linux系统上都默认存在用户名root，因此潜在的攻击者只需要猜测其密码，而不必猜测有效的用户名与密码组合。这为攻击者降低了复杂度
+- root用户具有不受限制的特权，因此它的泄露可能会给系统造成最大的损坏
+- 从审核的角度看，很难跟踪是哪个授权用户以root的身份登录并做出了更改。如果用户必须以普通用户身份登录并切换到root帐户，则会生成一个日志事件，可用于帮助确定责任
+
+&#8195;&#8195;OpenSSH服务使用`/etc/ssh/sshd_config`配置文件中的`PermitRootLogin`配置设置，以允许或禁止用户以root身份登录系统。查看示例如下：
+```
+[root@redhat8 ~]# cat /etc/ssh/sshd_config |grep PermitRootLogin
+PermitRootLogin yes
+# the setting of "PermitRootLogin without-password".
+```
+参数配置说明：
+- 当`PermitRootLogin`参数默认设为`yes`，用户被允许以root身份登录系统。
+- 要防止用户以root身份登录系统，可将该值设为`no`。
+- 若要禁止基于密码的身份验证，但允许对root执行基于私钥的身份验证，可将`PermitRootLogin`参数设为 `without-password`
+
+SSH服务(sshd)必须重新加载才能使更改生效。示例如下：
+```
+[root@host ~]# systemctl reload sshd
+```
+#### 禁止对SSH进行基于密码的身份验证
+仅允许基于私钥登录远程命令行有诸多优点：
+- 攻击者无法使用密码猜测攻击来远程入侵系统上的已知帐户
+- 对于受密语保护的私钥而言，攻击者同时需要密语和私钥的副本。对于密码而言，攻击者则只需要密码
+- 通过将受密语保护的私钥与`ssh-agent`配合使用，由于密语的输入频率较低，因此被泄露的几率会较小，而且对用户来说会更便于登录
+
+&#8195;&#8195;OpenSSH服务使用`/etc/ssh/sshd_config`配置文件中的`PasswordAuthentication`参数，用于控制用户在登录系统时能否使用基于密码的身份验证。查看示例如下：
+```
+[root@redhat8 ~]# cat /etc/ssh/sshd_config |grep PasswordAuthentication
+#PasswordAuthentication yes
+PasswordAuthentication yes
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication, then enable this but set PasswordAuthentication
+```
+参数配置说明：
+- 配置文件中`PasswordAuthentication`参数的默认值是`yes`，`SSH`服务允许用户在登录系统时使用基于密码的身份验证
+- `PasswordAuthentication`的值为`no`时禁止用户使用基于密码的身份验证
+
+注意事项
+- 用户每当更改`/etc/ssh/sshd_config`文件时，都必须重新加载`sshd`服务让更改生效
+- 如果为`ssh`关闭基于密码的身份验证，则需要有一种办法来确保用户在远程服务器上的`~/.ssh/authorized_keys`文件中有公钥，以便可以登录
+
+## 练习
