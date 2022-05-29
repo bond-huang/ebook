@@ -1,4 +1,20 @@
 # Redhat-常用命令
+## 系统管理
+### 网络相关命令
+`nmcli`命令常用命令列表：
+
+命令|用途
+:---|:---
+nmcli dev status|显示所有网络接口的NetworkManager状态
+nmcli con show|列出所有连接
+nmcli con show name|列出name连接的当前设置
+nmcli con add con-name name|添加一个名为name的新连接
+nmcli con mod name|修改name连接
+nmcli con reload|重新加载配置文件(在手动编辑配置文件之后使用)
+nmcli con up name|激活name连接
+nmcli dev dis dev|在网络接口dev上停用并断开当前连接
+nmcli con del name|删除name连接及其配置文件
+
 ## 硬件相关
 ### cpu相关
 #### 查看CPU信息

@@ -202,3 +202,465 @@ rtt min/avg/max/mdev = 0.080/0.219/0.358/0.139 ms
     - 为使名称服务起作用，主机需要指向某一个名称服务器。该名称服务器只需可供主机访问即可。这通常通过`DHCP`或`/etc/resolv.conf`文件中的静态设置来配置
 
 ## 验证网络配置
+### 收集网络接口信息
+#### 识别网络接口
+`ip link`命令将列出系统上可用的所有网络接口：
+```
+[root@redhat8 ~]# ip link show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT gro
+up default qlen 1000    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT
+ group default qlen 1000    link/ether 00:0c:29:ee:ed:0e brd ff:ff:ff:ff:ff:ff
+```
+示例中，服务器有两个网络接口：
+- `lo`：这是连接到服务器本身的环回设备
+- `ens160`：一个以太网接口
+
+#### 显示IP地址
+使用`ip`命令来查看设备和地址信息，`ip add show ens160`命令输出示例：
+```shell
+# 1
+2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group defaul
+t qlen 1000    
+# 2
+link/ether 00:0c:29:ee:ed:0e brd ff:ff:ff:ff:ff:ff
+# 3
+    inet 192.168.100.131/24 brd 192.168.100.255 scope global dynamic noprefixroute e
+ns160       valid_lft 900sec preferred_lft 900sec
+# 4
+    inet6 fe80::69af:c449:76d3:770/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+```
+单个网络接口可以具有多个IPv4或IPv6地址。示例中四个部分说明：
+- 1：活动接口为UP
+- 2：link/ether行指定设备的硬件(MAC)地址
+- 3：inet行显示IPv4地址、其网络前缀长度和作用域
+- 4：该inet6行显示接口具有链路作用域的IPv6地址，并且只能用于本地以太网链路上的通信：
+    - 如果为`scope global`,此inet6行显示IPv6地址、其网络前缀长度和作用域。此地址属于全局作用域，通常使用此地址
+
+#### 显示性能统计信息
+&#8195;&#8195;`ip`命令也可用于显示关于网络性能的统计信息。每个网络接口的计数器可用于识别网络问题的存在。计时器记录的统计信息包括收到(RX)和传出(TX)的数据包数、数据包错误数，以及丢弃的数据包数。示例如下：
+```
+[root@redhat8 ~]# ip -s link show ens160
+2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT
+ group default qlen 1000    link/ether 00:0c:29:ee:ed:0e brd ff:ff:ff:ff:ff:ff
+    RX: bytes  packets  errors  dropped overrun mcast   
+    382475257  278554   0       0       0       3614    
+    TX: bytes  packets  errors  dropped carrier collsns 
+    2884634    36418    0       0       0       0  
+```
+### 检查主机之间的连接
+&#8195;&#8195;`ping`命令可用于测试连接。该命令将持续运行，直到按下`Ctrl+c`（除非已指定了限制发送数据包数量的选项）。示例如下：
+```
+PING 192.168.100.131 (192.168.100.131) 56(84) bytes of data.
+64 bytes from 192.168.100.131: icmp_seq=1 ttl=64 time=0.050 ms
+64 bytes from 192.168.100.131: icmp_seq=2 ttl=64 time=0.144 ms
+^C
+--- 192.168.100.131 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 28ms
+rtt min/avg/max/mdev = 0.050/0.097/0.144/0.047 ms
+```
+&#8195;&#8195;`ping6`命令是RHEL中ping的`IPv6`版本。它通过`IPv6`进行通信，并且采用`IPv6`地址，但是其他工作方式类似于`ping`。示例如下：
+```
+[root@redhat8 ~]# ping6 fe80::69af:c449:76d3:770
+PING fe80::69af:c449:76d3:770(fe80::69af:c449:76d3:770) 56 data bytes
+64 bytes from fe80::69af:c449:76d3:770%ens160: icmp_seq=1 ttl=64 time=0.089 ms
+64 bytes from fe80::69af:c449:76d3:770%ens160: icmp_seq=2 ttl=64 time=0.092 ms
+^C
+--- fe80::69af:c449:76d3:770 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 19ms
+rtt min/avg/max/mdev = 0.089/0.090/0.092/0.009 ms
+```
+&#8195;&#8195;当`ping`本地链路地址和本地链路全节点多播组(ff02::1) 时，必须使用作用域标识符（如 `ff02::1%ens3`）来显式指定要使用的网络接口。如果遗漏，则将显示错误`connect: Invalid argument`。示例如下：
+```
+[root@redhat8 ~]# ping6 ff02::1%ens160
+PING ff02::1%ens160(ff02::1%ens160) 56 data bytes
+64 bytes from fe80::69af:c449:76d3:770%ens160: icmp_seq=1 ttl=64 time=0.084 ms
+64 bytes from fe80::69af:c449:76d3:770%ens160: icmp_seq=2 ttl=64 time=0.198 ms
+^C
+--- ff02::1%ens160 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 56ms
+rtt min/avg/max/mdev = 0.084/0.141/0.198/0.057 ms
+```
+跟普通地址一样，`IPv6`本地链路地址可以由同一链路上的其他主机使用：
+```
+[root@redhat8 ~]# ssh fe80::69af:c449:76d3:770%ens160
+The authenticity of host 'fe80::69af:c449:76d3:770%ens160 (fe80::69af:c449:76d3:770%
+ens160)' can't be established.ECDSA key fingerprint is SHA256:pCN6N5A3ex61KwcBYkR8sUiNKBE/hPO5c4FJkvGIJhY.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'fe80::69af:c449:76d3:770%ens160' (ECDSA) to the list of 
+known hosts.root@fe80::69af:c449:76d3:770%ens160's password: 
+Activate the web console with: systemctl enable --now cockpit.socket
+
+Last login: Wed May 25 01:29:25 2022 from 192.168.100.1
+```
+### 路由故障排除
+#### 显示路由表
+使用`ip`命令及`route`选项来显示路由信息：
+```
+Connection to fe80::69af:c449:76d3:770%ens160 closed.
+[root@redhat8 ~]# ip route
+default via 192.168.100.2 dev ens160 proto dhcp metric 100 
+192.168.100.0/24 dev ens160 proto kernel scope link src 192.168.100.131 metric 100 
+```
+示例说明：
+- 示例显示`IPv4`路由表
+- 目标为`192.168.100.0/24`网络的所有数据包将通过设备`ens160`直接发送到该目标位置
+- 所有其他数据包将发送到位于`192.168.100.2`的默认路由器，而且也通过设备`ens160`传输
+
+添加`-6`选项可显示`IPv6`路由表，示例如下：
+```
+[root@redhat8 ~]# ip -6 route
+::1 dev lo proto kernel metric 256 pref medium
+fe80::/64 dev ens160 proto kernel metric 100 pref medium
+```
+#### 追踪流量采用的路由
+&#8195;&#8195;要追踪网络流量通过多个路由器到达远程主机而采用的路径，可使用`traceroute`或`tracepath`命令。这可以识别用户的某个路由器或中间路由器是否存在问题：
+- 默认情况下，两个命令都使用UDP数据包来追踪路径；
+- 许多网络阻止`UDP`和`ICMP`流量。`traceroute`命令拥有可以跟踪`UDP`（默认）、`ICMP`(-I) 或`TCP` (-T)数据包路径的选项
+- 默认情况下通常不安装`traceroute`命令
+
+示例如下：
+```
+[root@redhat8 ~]# tracepath 115.152.254.112
+ 1?: [LOCALHOST]                      pmtu 1500
+ 1:  localhost                                             0.474ms 
+ 1:  localhost                                             0.307ms 
+ 2:  no reply
+...output omitted...
+30:  no reply
+     Too many hops: pmtu 1500
+     Resume: pmtu 1500 
+```
+命令及示例说明：
+- `tracepath`输出中的每一行表示数据包在来源和最终目标位置之间所经过的路由器或跃点
+- 命令也提供了其他信息，如往返用时(RTT)和最大传输单元(MTU)大小中的任何变化等
+- `asymm`表示流量使用了不同的(非对称)路由到达该路由器的流量和从该路由器返回
+- 显示的路由器是用于出站流量的路由器，而不是返回流量
+- `tracepath6`和`traceroute -6`命令等效于`IPv6`版本的`tracepath`和`traceroute`
+
+### 端口和服务故障排除
+&#8195;&#8195;TCP服务使用套接字作为通信的端点，其由IP地址、协议和端口号组成。服务通常侦听标准端口，而客户端则使用随机的可用端口。`/etc/services`文件中列出了标准端口的常用名称。    
+&#8195;&#8195;`ss`命令可用于显示套接字统计信息。`ss`命令旨在替换`net-tools`软件包中所含的较旧工具 `netstat`（这个工具可能更为某些系统管理员所熟知，但未必始终安装在系统中）。示例如下：
+```
+[root@redhat8 ~]# ss -ta
+State  Recv-Q   Send-Q        Local Address:Port                Peer Address:Port   
+LISTEN 0        128                 0.0.0.0:ssh                      0.0.0.0:*      
+LISTEN 0        128               127.0.0.1:x11-ssh-offset           0.0.0.0:*      
+LISTEN 0        128                 0.0.0.0:sunrpc                   0.0.0.0:*      
+ESTAB  0        0           192.168.100.131:ssh                192.168.100.1:52684  
+LISTEN 0        32                        *:ftp                            *:*      
+LISTEN 0        128                    [::]:ssh                         [::]:*      
+LISTEN 0        128                   [::1]:x11-ssh-offset              [::]:*      
+LISTEN 0        128                    [::]:sunrpc                      [::]:*  
+```
+
+命令`ss`和`netstat`的选项：
+
+选项|描述
+:---:|:---
+-n|显示接口和端口的编号，而不显示名称
+-t|显示TCP套接字
+-u|显示UDP套接字
+-l|仅显示侦听中的套接字
+-a|显示所有（侦听中和已建立的）套接字
+-p|显示使用套接字的进程
+-A inet|对于inet地址系列，显示活动的连接(但不显示侦听套接字)，忽略本地UNIX域套接字。对于ss，同时显示IPv4和IPv6连接。对于netstat ，仅显示IPv4连接(netstat -A inet6显示IPv6连接，netstat -46则同时显示IPv4和IPv6)
+
+## 从命令行配置网络
+### NetworkManager概念
+&#8195;&#8195;`NetworkManager`是监控和管理网络设置的守护进程。除了该守护进程外，还有一个提供网络状态信息的`GNOME`通知区域小程序。命令行和图形工具与`NetworkManager`通信，并将配置文件保存在`/etc/sysconfig/network-scripts`目录中：
+- 设备是网络接口
+- 连接是可以为设备配置的设置的集合
+- 对于任何一个设备，在同一时间只能有一个连接处于活动状态。可能存在多个连接，以供不同设备使用或者以便为同一设备更改配置。如果需要临时更改网络设置，而不是更改连接的配置，可以更改设备的哪个连接处于活动状态
+- 每个连接具有一个用于标识自身的名称或ID
+- `nmcli`实用程序可用于从命令行创建和编辑连接文件
+
+### 查看联网信息
+`nmcli dev status`命令可显示所有网络设备的状态：
+```
+[root@redhat8 ~]# nmcli dev status
+DEVICE  TYPE      STATE      CONNECTION 
+ens160  ethernet  connected  ens160     
+lo      loopback  unmanaged  --   
+```
+`nmcli con show`命令可显示所有连接的列表。使用`--active`列出活动的连接：
+```
+[root@redhat8 ~]# nmcli con show
+NAME    UUID                                  TYPE      DEVICE 
+ens160  b561c316-1e2c-4f92-9f28-fb4cc66f0c40  ethernet  ens160 
+[root@redhat8 ~]# nmcli con show --active
+NAME    UUID                                  TYPE      DEVICE 
+ens160  b561c316-1e2c-4f92-9f28-fb4cc66f0c40  ethernet  ens160 
+```
+### 添加网络连接
+`nmcli con add`命令用于添加新的网络连接。示例：
+```
+[root@redhat8 ~]# nmcli con add con-name ens160 type ethernet ifname ens160
+Connection 'ens160' (09521237-47ec-484f-8df8-db071b8ccd7a) successfully added.
+```
+示例说明：
+- 示例将为接口`ens160`添加一个新连接`ens160`，此连接将使用`DHCP`获取`IPv4`联网信息并在系统启动后自动连接
+- 示例还将通过侦听本地链路上的路由器播发来获取`IPv6`联网设置
+- 配置文件的名称基于的`con-name`选项的值`ens160`，并保存到`/etc/sysconfig/network-scripts/ifcfg-ens160`文件
+
+&#8195;&#8195;下面示例使用静态`IPv4`地址为`ens160`设备创建`ens160`连接，使用`IPv4`地址和网络前缀`192.168.100.131/24`及默认网关`192.168.100.254`，仍在启动时自动连接并将其配置保存到相同文件中：
+```
+[root@redhat8 ~]# nmcli con add con-name ens160 type ethernet \
+ifname ens160 ipv4.address 192.168.100.131/24 ipv4.gateway 192.168.100.254
+Connection 'ens160' (ff73ccde-8a3c-42aa-a2c1-8a60a01c1a9c) successfully added.
+[root@redhat8 ~]# nmcli con show
+NAME    UUID                                  TYPE      DEVICE 
+ens160  ff73ccde-8a3c-42aa-a2c1-8a60a01c1a9c  ethernet  ens160 
+```
+&#8195;&#8195;示例使用静态`IPv6`和`IPv4`地址为`eno2`设备创建`eno2`连接，且使用`IPv6`地址和网络前缀`2001:db8:0:1::c000:207/64`及默认`IPv6`网关`2001:db8:0:1::1`，以及`IPv4`地址和网络前缀`192.0.2.7/24`及默认`IPv4`网关`192.0.2.1`，在启动时自动连接，并将其配置保存到`/etc/sysconfig/network-scripts/ifcfg-eno2`：
+```
+nmcli con add con-name eno2 type ethernet ifname eno2 \
+ipv6.address 2001:db8:0:1::c000:207/64 ipv6.gateway 2001:db8:0:1::1 \
+ipv4.address 192.0.2.7/24 ipv4.gateway 192.0.2.1
+```
+### 控制网络连接
+&#8195;&#8195;`nmcli con up name`命令将在其绑定到的网络接口上激活`name`连接。注意，命令采用连接的名称，而非网络接口的名称。`nmcli con show`命令显示所有可用连接的名称。示例：
+```
+[root@redhat8 ~]# nmcli con up ens160
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManage
+r/ActiveConnection/6)
+```
+&#8195;&#8195;`nmcli dev disconnect device`命令将断开与网络接口`device`的连接并将其关闭。此命令可以缩写为`nmcli dev dis device`。示例如下：
+```
+[root@redhat8 ~]# nmcli dev dis ens160
+Device 'ens160' successfully disconnected.
+```
+&#8195;&#8195;使用`nmcli dev dis device`可停用网络接口。`nmcli con down name`命令可以关闭连接，但通常并非是停用网络接口的最佳方法。示例如下：
+```
+[root@redhat8 ~]# nmcli con down ens160
+Connection 'ens160' successfully deactivated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/8)
+[root@redhat8 ~]# nmcli con show
+NAME    UUID                                  TYPE      DEVICE 
+ens160  ff73ccde-8a3c-42aa-a2c1-8a60a01c1a9c  ethernet  --   
+```
+说明：
+- 默认情况下，大部分有线系统连接是在启用了`autoconnect`的情况下配置的。这将在其网络接口可用后立即激活连接
+- 由于连接的网络接口仍可用，因此`nmcli con down name`将关闭接口，但是`NetworkManager`会立即将其重新开启，除非连接完全与接口断开
+
+### 修改网络连接设置
+`NetworkManager`连接具有两种类型的设置。有静态连接属性，它们是由管理员配置并存储在`/etc/sysconfig/network-scripts/ifcfg-*`中的配置文件中。还可能有活动连接数据，这些数据是连接从`DHCP`服务器获取的，不会持久存储。`nmcli con show name`命令列出某个连接的当前设置，小写的设置是静态属性，管理员可以更改全大写的设置是活动设置，临时用于此连接实例：
+```
+[root@redhat8 ~]# nmcli con show ens160
+connection.id:                          ens160
+connection.uuid:                        ff73ccde-8a3c-42aa-a2c1-8a60a01c1a9c
+connection.stable-id:                   --
+connection.type:                        802-3-ethernet
+connection.interface-name:              ens160
+connection.autoconnect:                 yes
+connection.autoconnect-priority:        0
+...output omitted...
+GENERAL.NAME:                           ens160
+GENERAL.UUID:                           ff73ccde-8a3c-42aa-a2c1-8a60a01c1a9c
+GENERAL.DEVICES:                        ens160
+GENERAL.STATE:                          activated
+GENERAL.DEFAULT:                        yes
+GENERAL.DEFAULT6:                       no
+GENERAL.SPEC-OBJECT:                    --
+GENERAL.VPN:                            no
+...output omitted...
+```
+&#8195;&#8195;`nmcli con mod name`命令可用于更改连接的设置，更改保存在对应的`/etc/sysconfig/network-scripts/ifcfg-name`文件中。示例将`ens160`连接将`IPv4`地址设置为`192.160.100.130/24`：
+```
+[root@redhat8 ~]# nmcli con mod ens160 ipv4.address 192.160.100.130/24
+[root@redhat8 ~]# ip add show ens160
+2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group defaul
+t qlen 1000    link/ether 00:0c:29:ee:ed:0e brd ff:ff:ff:ff:ff:ff
+    inet 192.168.100.130/24 brd 192.168.100.255 scope global dynamic noprefixroute e
+ns160       valid_lft 1491sec preferred_lft 1491sec
+    inet 192.168.100.131/24 brd 192.168.100.255 scope global secondary noprefixroute
+ ens160       valid_lft forever preferred_lft forever
+    inet6 fe80::78cd:cdad:d838:916f/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+```
+&#8195;&#8195;更改后，之前`192.168.100.131`的连接未断开，`down`关闭接口后再`up`，`192.168.100.131`的连接就断开，更改完成。示例更改`IPv6`地址设置：
+```
+nmcli con mod static-ens3 ipv6.address 2001:db8:0:1::a00:1/64 \
+ipv6.gateway 2001:db8:0:1::1
+```
+重要说明：
+-  如果某个连接之前通过`DHCPv4`服务器获取其`IPv4`信息，而现在更改为仅通过静态配置文件来获取，那么设置`ipv4.method`也应从`auto`更改为`manual`
+- 如果某个连接之前通过`SLAAC`或`DHCPv6`服务器获取其`IPv6`信息，而现在更改为仅通过静态配置文件来获取，那么`ipv6.method`设置也应从`auto`或`dhcp`更改为`manual`
+- 如果不更改，连接在激活后可能挂起或者无法成功完成，或者除了静态地址外还从`DHCP`获取`IPv4`地址或从 `SLAAC`或`DHCPv6`获取`IPv6`地址
+- 很多设置可能具有多个值。通过向设置名称的开头添加`+`或`-`符号，可以在列表中添加或从列表中删除特定值
+
+### 删除网络连接
+&#8195;&#8195;`nmcli con del name`命令将从系统中删除名为 name 的连接，同时断开它与设备的连接并删除文件`/etc/sysconfig/network-scripts/ifcfg-name`。示例如下：
+```
+[root@redhat8 ~]# nmcli con del ens160
+Connection 'ens160' (ff73ccde-8a3c-42aa-a2c1-8a60a01c1a9c) successfully deleted.
+[root@redhat8 ~]# ls -l /etc/sysconfig/network-scripts/
+total 0
+```
+### 修改网络设置权限
+修改网络设置说明：
+- `root`用户可以使用`nmcli`对网络配置进行任何必要的更改
+- 在本地控制台上登录的普通用户也可以对系统进行多项网络配置更改。要获得此控制权，必须在系统键盘上登录基于文本的虚拟控制台或图形桌面环境。背后的逻辑是：
+    - 如果某人实际出现在计算机控制台上，就说明该计算机可能被用作工作站或笔记本电脑，因此他们可能需要随意配置、激活和停用无线或有线网络接口
+    - 反之，如果系统是数据中心中的服务器，则通常以本地方式登录到计算机本身的用户只能是管理员
+- 使用`ssh`登录的普通用户在成为`root`之前无权更改网络权限
+- 可以使用`nmcli gen permissions`命令来查看自己的当前权限
+
+### 命令摘要
+下表是此次学习中关键`nmcli`命令的列表：
+
+命令|用途
+:---|:---
+nmcli dev status|显示所有网络接口的NetworkManager状态
+nmcli con show|列出所有连接
+nmcli con show name|列出name连接的当前设置
+nmcli con add con-name name|添加一个名为name的新连接
+nmcli con mod name|修改name连接
+nmcli con reload|重新加载配置文件(在手动编辑配置文件之后使用)
+nmcli con up name|激活name连接
+nmcli dev dis dev|在网络接口dev上停用并断开当前连接
+nmcli con del name|删除name连接及其配置文件
+
+## 编辑网络配置文件
+### 描述连接配置文件
+&#8195;&#8195;默认情况下，通过`nmcli con mod name`进行的更改会自动保存到`/etc/sysconfig/network-scripts/ifcfg-name`。还可以使用文本编辑器手动编辑此文件。执行此操作后，运行`nmcli con reload`以便`NetworkManager`读取配置更改。出于向后兼容性的原因，此文件中保存的指令具有不同于 `nm-settings`名称的名称和语法。下表将部分关键设置名称映射到`ifcfg-*`指令。`nm-settings`与 `ifcfg-*`指令的比较：
+
+nmcli con mod|ifcfg-* file|影响
+:---|:---|:---
+ipv4.method manual|BOOTPROTO=none|IPv4以静态方式配置
+ipv4.method auto|BOOTPROTO=dhcp|从DHCPv4服务器中查找配置设置。如果还设置了静态地址，则在从DHCPv4中获取信息之前，将不会激活这些静态地址
+ipv4.addresses 192.0.2.1/24|IPADDR=192.0.2.1 PREFIX=24|设置静态IPv4地址和网络前缀。如果为连接设置了多个地址，则第二个地址由IPADDR1和PREFIX1指令定义，以此类推
+ipv4.gateway 192.0.2.254|GATEWAY=192.0.2.254|设置默认网关
+ipv4.dns 8.8.8.8|DNS1=8.8.8.8|修改/etc/resolv.conf以使用此nameserver
+ipv4.dns-search example.com|DOMAIN=example.com|修改/etc/resolv.conf，以在search指令中使用这个域
+ipv4.ignore-auto-dns true|PEERDNS=no|忽略来自DHCP服务器的DNS服务器信息
+ipv6.method manual|IPV6_AUTOCONF=no|IPv6 地址以静态方式配置
+ipv6.method auto|IPV6_AUTOCONF=yes|使用路由器播发中的SLAAC来配置网络设置
+ipv6.method dhcp|IPV6_AUTOCONF=no DHCPV6C=yes|使用DHCPv6（而不使用 SLAAC）来配置网络设置
+ipv6.addresses 2001:db8::a/64|IPV6ADDR=2001:db8::a/64|设置静态IPv6地址和网络前缀。如果为连接设置了多个地址，IPV6ADDR_SECONDARIES将采用空格分隔的地址/前缀定义的双引号列表
+ipv6.gateway 2001:db8::1|IPV6_DEFAULTGW=2001:...|设置默认网关。
+ipv6.dns fde2:6494:1e09:2::d|DNS1=fde2:6494:...|修改/etc/resolv.conf以使用此名称服务器。与IPv4完全相同
+ipv6.dns-search example.com|IPV6_DOMAIN=example.com|修改/etc/resolv.conf，以在search指令中使用这个域
+ipv6.ignore-auto-dns true|IPV6_PEERDNS=no|忽略来自DHCP服务器的DNS服务器信息
+connection.autoconnect yes|ONBOOT=yes|在系统引导时自动激活此连接
+connection.id ens3|NAME=ens3|此连接的名称
+connection.interface-name ens3|DEVICE=ens3|连接与具有此名称的网络接口绑定
+802-3-ethernet.mac-address ...|HWADDR=...|连接与具有此MAC地址的网络接口绑定
+
+### 修改网络配置
+&#8195;&#8195;可以通过直接编辑连接配置文件来配置网络。连接配置文件控制单个网络设备的软件接口，这些文件通常命名为`/etc/sysconfig/network-scripts/ifcfg-name`。以下是在用于静态或动态 IPv4 配置的文件中找到的标准变量：
+- 静态：
+    - BOOTPROTO=none
+    - IPADDR0=172.25.250.10
+    - PREFIX0=24
+    - GATEWAY0=172.25.250.254
+    - DEFROUTE=yes
+    - DNS1=172.25.254.254
+- 动态灵活：BOOTPROTO=dhcp
+- 任意：
+    - DEVICE=ens3
+    - NAME="static-ens3"
+    - ONBOOT=yes
+    - UUID=f3e8(...)ad3e
+    - USERCTL=yes
+
+&#8195;&#8195;在静态设置中，IP地址、前缀和网关等变量的末尾都是数字。这允许将多组值指定到该接口。DNS 变量也有一个数字，用于在指定了多个服务器时指定查询的顺序。在修改了配置文件后，运行`nmcli con reload`使`NetworkManager`读取配置更改。接口依然需要重新启动，以便更改生效。示例如下：
+```
+[root@redhat8 ~]# nmcli con reload
+[root@redhat8 ~]# nmcli con down ens160
+Connection 'ens160' successfully deactivated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/13)
+[root@redhat8 ~]# nmcli con up ens160
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/14)
+```
+## 配置主机名和名称解析
+### 更改系统主机名
+`hostname`命令显示或临时修改系统的完全限定主机名：
+```
+[root@redhat8 ~]# hostname
+redhat8
+```
+&#8195;&#8195;可以在`/etc/hostname`文件中指定静态主机名。`hostnamectl`命令用于修改此文件，也可用于查看系统的完全限定主机名的状态。如果此文件不存在，则主机名在接口被分配了`IP`地址时由反向`DNS`查询设定。示例如下：
+```
+[root@redhat8 ~]# hostnamectl status
+   Static hostname: redhat8
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 0d4f35dc451749ecad3ae466d7cbf09a
+           Boot ID: 6d74b4812217402dadc582db9d479dd0
+    Virtualization: vmware
+  Operating System: Red Hat Enterprise Linux 8.0 (Ootpa)
+       CPE OS Name: cpe:/o:redhat:enterprise_linux:8.0:GA
+            Kernel: Linux 4.18.0-80.el8.x86_64
+      Architecture: x86-64
+[root@redhat8 ~]# hostnamectl set-hostname redhat8
+```
+### 配置名称解析
+&#8195;&#8195;根解析器用于将主机名称转换为`IP`地址，反之亦可。它将根据`/etc/nsswitch.conf`文件的配置来确定查找位置。默认情况下，先检查`/etc/hosts`文件的内容。 示例如下：
+```
+[root@redhat8 ~]# cat /etc/hosts
+[root@redhat8 ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+115.152.254.112	access.redhat.com
+```
+&#8195;&#8195;可以通过`getent hosts hostname`命令，利用`/etc/hosts`文件测试主机名解析。使用`ping`命令尝试解析。示例如下：
+```
+[root@redhat8 ~]# getent hosts access.redhat.com
+115.152.254.112 access.redhat.com
+[root@redhat8 ~]# ping access.redhat.com
+PING access.redhat.com (115.152.254.112) 56(84) bytes of data.
+64 bytes from access.redhat.com (115.152.254.112): icmp_seq=1 ttl=128 time=8.16 ms
+64 bytes from access.redhat.com (115.152.254.112): icmp_seq=2 ttl=128 time=8.66 ms
+^C
+--- access.redhat.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 3ms
+rtt min/avg/max/mdev = 8.158/8.410/8.663/0.268 ms
+```
+&#8195;&#8195;如果在`/etc/hosts`文件中未找到条目，默认情况下，根解析器会尝试使用`DNS`名称服务器来查询主机名。`/etc/resolv.conf`文件控制如何执行这一查询：
+- `search`：对于较短主机名尝试搜索的域名列表。不应在同一文件中设置此参数和`domain`，如果在同一文件中设置它们，将使用最后一个实例
+- `nameserver`：要查询的名称服务器的`IP`地址。可以指定最多三个名称服务器指令，以在其中一个名称服务器停机时提供备用名称服务器
+
+`/etc/resolv.conf`文件示例如下：
+```
+[root@redhat8 ~]# cat /etc/resolv.conf
+# Generated by NetworkManager
+search localdomain
+nameserver 192.168.100.2
+```
+&#8195;&#8195;`NetworkManager`将使用连接配置文件中的DNS设置更新`/etc/resolv.conf`文件。使用 `nmcli`命令修改连接。示例如下：
+```
+[root@redhat8 ~]# nmcli con mod ens160 ipv4.dns 8.8.8.8
+[root@redhat8 ~]# nmcli con down ens160
+Connection 'ens160' successfully deactivated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/14)
+[root@redhat8 ~]# nmcli con up ens160
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/15)
+[root@redhat8 ~]# cat /etc/sysconfig/network-scripts/ifcfg-ens160 |grep -i dns
+DNS1=8.8.8.8
+```
+&#8195;&#8195;`nmcli con mod ID ipv4.dns IP`的默认行为是将任何旧的`DNS`设置替换为提供的新`IP`列表。`ipv4.dns`参数前面的`+`或`-`符号可添加或删除个别条目。示例如下：
+```
+[root@redhat8 ~]# nmcli con mod ens160 -ipv4.dns 8.8.8.8
+[root@redhat8 ~]# cat /etc/sysconfig/network-scripts/ifcfg-ens160 |grep -i dns
+[root@redhat8 ~]# 
+```
+&#8195;&#8195;要将`IPv6`地址为`2001:4860:4860::8888`的`DNS`服务器添加到要与 `static-ens3`连接一起使用的名称服务器的列表：
+```
+nmcli con mod static-ens3 +ipv6.dns 2001:4860:4860::8888
+```
+#### 测试DNS名称解析
+&#8195;&#8195;通过`Ping`可以测试DNS服务器连接，也可以使用`host HOSTNAME`命令测试`DNS`服务器连接。示例如下：
+```
+[root@redhat8 ~]# host access.redhat.com
+access.redhat.com is an alias for access.redhat.com2.edgekey.net.
+access.redhat.com2.edgekey.net is an alias for access.redhat.com2.edgekey.net.global
+redir.akadns.net.access.redhat.com2.edgekey.net.globalredir.akadns.net is an alias for e40408.ca2.s.t
+l88.net.e40408.ca2.s.tl88.net has address 115.152.254.112
+e40408.ca2.s.tl88.net has address 115.152.254.98
+[root@redhat8 ~]# host 115.152.254.112
+Host 112.254.152.115.in-addr.arpa. not found: 3(NXDOMAIN)
+```
+&#8195;&#8195;`DHCP`会在接口启动时自动重写`/etc/resolv.conf`文件，除非在相关的接口配置文件中指定了`PEERDNS=no`。使用`nmcli`命令设置此项，示例：
+```
+nmcli con mod "ens160" ipv4.ignore-auto-dns yes
+```
+## 练习

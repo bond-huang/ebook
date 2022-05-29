@@ -166,4 +166,36 @@ tmpfs                  181M  4.0K  181M   1% /run/user/1000
 - [在线扩容CentOS 8系统盘报“xfs_growfs:is not a mounted XFS filesystem”错误](https://help.aliyun.com/document_detail/155936.html#:~:text=xfs_growfs%3A%2Fdev%2Fvda1%20is%20not%20a%20mounted,XFS%20filesystem%20%E9%97%AE%E9%A2%98%E5%8E%9F%E5%9B%A0%20%E6%96%B0%E6%97%A7%E7%89%88%E6%9C%AC%E7%9A%84%20xfs_growfs%20%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E3%80%82)
 - [Bug 1885875 - xfs_growfs: /dev/mapper/rhel-root is not a mounted XFS filesystem ](https://bugzilla.redhat.com/show_bug.cgi?id=1885875)
 
+## 网络问题
+### 误删网卡
+使用如下命令不小心删除了网口：
+```
+[root@redhat8 ~]# nmcli con del ens160
+
+Connection closed by foreign host.
+```
+检查在`/etc/sysconfig/network-scripts/`下面已经没有配置文件，如果有备份，可以尝试直接恢复配置文件。最简单有效方法是在线重新配置，示例如下：
+```
+[root@redhat8 network-scripts]# nmcli con add con-name ens160 type ethernet \
+ifname ens160 ipv4.address 192.168.100.131/24 
+Connection 'ens160' (7bd7a46c-0bdb-485d-a80f-f27f1efc5799) successfully added.
+```
+检查网络配置：
+```
+[root@redhat8 ~]# ip add show ens160
+2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group defaul
+t qlen 1000    link/ether 00:0c:29:ee:ed:0e brd ff:ff:ff:ff:ff:ff
+    inet 192.168.100.130/24 brd 192.168.100.255 scope global dynamic noprefixroute e
+ns160       valid_lft 1748sec preferred_lft 1748sec
+    inet 192.168.100.131/24 brd 192.168.100.255 scope global secondary noprefixroute
+ ens160       valid_lft forever preferred_lft forever
+    inet6 fe80::e79e:afd7:7aa5:8207/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+```
+检查配置文件也恢复了：
+```
+[root@redhat8 ~]# ls -l /etc/sysconfig/network-scripts/
+total 4
+-rw-r--r--. 1 root root 315 May 29 14:11 ifcfg-ens160
+```
 ## 待补充
