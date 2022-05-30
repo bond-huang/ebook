@@ -354,7 +354,6 @@ LISTEN 0        128                    [::]:ssh                         [::]:*
 LISTEN 0        128                   [::1]:x11-ssh-offset              [::]:*      
 LISTEN 0        128                    [::]:sunrpc                      [::]:*  
 ```
-
 命令`ss`和`netstat`的选项：
 
 选项|描述

@@ -1,6 +1,17 @@
 # Redhat-常用命令
 ## 系统管理
 ### 网络相关命令
+#### IP命令
+`IP`命令常用命令列表：
+
+命令|用途
+:---|:---
+ip add show name|查看设备name和地址信息
+ip -s link show name|显示关于网络性能的统计信息
+ip route|显示IPv4路由信息
+ip -6 route|显示IPv6路由信息
+
+#### nmcli命令
 `nmcli`命令常用命令列表：
 
 命令|用途
