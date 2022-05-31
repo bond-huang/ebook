@@ -175,3 +175,165 @@ etc/resolv.conf
 
 ## 在系统之间安全地传输文件
 ### 使用Secure Copy传输文件
+&#8195;&#8195;Secure Copy命令`scp`是OpenSSH套件的一部分，可将文件从远程系统复制到本地系统或从本地系统复制到远程系统。此命令利用`SSH`服务进行身份验证，并在数据传输之前对其进行加密。    
+&#8195;&#8195;用户可以为所要复制的文件的源或目标指定一个远程位置。远程位置的格式为 `[user@]host:/path`。命令说明如下：
+- 该参数的`user@`部分是可选的，如果不指定该部分，则使用用户当前的本地用户名
+- 运行此命令时，`scp`客户端将使用基于密钥的身份验证或以提示用户输入密码的方式向远程`SSH`服务器进行身份验证，像`ssh`一样
+
+&#8195;&#8195;示例将本地文件`/root/etcbackup.tar.gz`复制到`192.168.100.131`远程系统的`/home/huang`目录，并指定用户为`huang`：
+```
+[root@redhat8 ~]# scp /root/etcbackup.tar.gz huang@192.168.100.131:/home/huang
+huang@192.168.100.131's password: 
+etcbackup.tar.gz                                  100% 6249KB 205.8MB/s   00:00  
+```
+&#8195;&#8195;还可以沿另一个方向复制文件，即从远程系统复制到本地文件系统。示例`192.168.100.131`上的文件`/home/huang/umask.test`复制到本地目录`/root`：
+```
+[root@redhat8 ~]# scp huang@192.168.100.131:/home/huang/umask.test /root
+huang@192.168.100.131's password: 
+umask.test                                        100%    0     0.0KB/s   00:00    
+[root@redhat8 ~]# ls -l umask.test
+-rwx---r-x. 1 root root 0 May 30 10:36 umask.test
+```
+&#8195;&#8195;要以递归方式复制整个目录树，可使用`-r`选项。示例`192.168.100.131`上的远程目录`/home/huang/test`以递归方式复制到`host`上的本地目录`/tmp/`：
+```
+[root@redhat8 ~]# scp -r huang@192.168.100.131:/home/huang/test /tmp
+huang@192.168.100.131's password: 
+cltopinfo                                         100%  274    56.3KB/s   00:00      
+clshowsrv                                         100%  846     1.0MB/s   00:00       
+cldump                                            100% 1486     1.3MB/s   00:00        
+df.log                                            100%  539   481.8KB/s   00:00      
+```
+### 使用安全文件传输程序传输文件
+&#8195;&#8195;以交互方式从`SSH`服务器上传或下载文件，使用安全文件传输程序`sftp`。`sftp`命令的会话使用安全身份验证机制，并将数据加密后再与`SSH`服务器来回传输。与`scp`命令一样，`sftp`使用`[user@]host`来标识目标系统和用户名。如果未指定用户，该命令将尝试使用本地用户名作为远程用户名进行登录。随后会显示`sftp>`提示符。示例如下：
+```
+[root@redhat8 ~]# sftp huang@192.168.100.131
+huang@192.168.100.131's password: 
+Connected to huang@192.168.100.131.
+sftp> quit
+[root@redhat8 ~]# 
+```
+&#8195;&#8195;交互式`sftp`会话接受各种命令，这些命令在远程文件系统上运行的方式与在本地文件系统上相同，如`ls`、`cd`、`mkdir`、`rmdir`和`pwd`。传输相关常用命令：
+- `put`命令将文件上载到远程系统
+- `get`命令从远程系统下载文件
+- `exit`命令可退出`sftp`会话
+
+&#8195;&#8195;示例将本地系统上的`/root/scripts.tar`文件上传到`192.168.100.131`上新建的目录 `/home/huang/hostbackup`。`sftp`会话始终假设`put`命令后跟的是本地文件系统上的文件，并且首先连接用户的主目录（此例中为`/home/huang`）：
+```
+[root@redhat8 ~]# sftp huang@192.168.100.131
+huang@192.168.100.131's password: 
+Connected to huang@192.168.100.131.
+sftp> mkdir hostbackup
+sftp> cd hostbackup
+sftp> put /root/scripts.tar
+Uploading /root/scripts.tar to /home/huang/hostbackup/scripts.tar
+/root/scripts.tar                                 100%   10KB   1.1MB/s   00:00 
+```
+&#8195;&#8195;示例从远程主机下载`/etc/yum.conf`到本地系统上的当前目录，可执行 get /etc/yum.conf 命令，然后使用 exit 命令退出 sftp 会话：
+```
+huang@192.168.100.131's password: 
+Connected to huang@192.168.100.131.
+sftp> get /etc/yum.conf
+Fetching /etc/yum.conf to yum.conf
+/etc/yum.conf                                     100%   82    48.7KB/s   00:00    
+sftp> exit
+[root@redhat8 ~]# ls -l yum.conf
+-rw-r--r--. 1 root root 82 May 30 11:05 yum.conf
+```
+## 在系统间安全地同步文件
+### 使用rsync同步文件和目录
+&#8195;&#8195;`rsync`命令是在系统之间安全复制文件的另一种方式。此工具采用的算法可通过仅同步已更改的文件部分来将复制的数据量最小化：
+- 它与`scp`的区别在于，如果两个服务器间的两个文件或目录相似，`rsync`将仅复制文件系统间的差异部分，而`scp`仍复制所有内容。
+- `rsync`的优点是它能够在本地系统和远程系统之间安全而高效地复制文件。虽然首次目录同步的用时与复制操作大致相同，但之后的同步只需通过网络复制差异部分，从而会大幅加快更新的速度
+
+命令`rsync`选项说明：
+- `rsync`的一个重要选项是`-n`选项，它用于执行空运行：
+    - 空运行是对执行命令时所发生情况的模拟
+    - 空运行显示了在命令正常运行时 `rsync`所要进行的更改。
+    - 在进行实际`rsync`操作前先执行空运行，以确保重要的文件不会被覆盖或删除
+- 使用`rsync`进行同步时，两个常用的选项为`-v`和`-a`选项：
+    - `-v`或`--verbose`选项可提供更详细的输出。这对于故障排除和查看实时进度非常有用
+    - `-a`或`--archive`选项将启用“存档模式”。这样可实现递归复制并开启很多有用的选项，以保留文件的大部分特征
+- 存档模式不会保留硬链接，因为这会大幅增加同步时间。如果想保留硬链接，使用`-H`选项
+-  如果使用的是高级权限，则可能还需要另外两个选项：
+    - `-A`用于保留ACL
+    - `-X`用于保留SELinux上下文 
+
+存档模式与指定以下选项的作用相同，通过`rsync -a`启用的选项： 
+
+选项|描述
+:---|:---
+-r、--recursive|以递归方式同步整个目录树
+-l、--links|同步符号链接
+-p、--perms|保留权限
+-t、--times|保留时间戳
+-g、--group|保留组所有权
+-o、--owner|保留文件所有者
+-D、--devices|同步设备文件
+
+&#8195;&#8195;可以使用`rsync`将本地文件或目录的内容与远程计算机上的文件或目录进行同步（使用任一计算机作为源）。也可以同步两个本地文件或目录的内容。例如让`/home/huang/hostbackup`目录的内容与`/home/huang/rsynctmp`目录保持同步：
+```
+[root@redhat8 ~]# ls /home/huang/hostbackup
+scripts.tar
+[root@redhat8 ~]# ls /home/huang/rsynctmp
+[root@redhat8 ~]# rsync -av /home/huang/hostbackup /home/huang/rsynctmp
+sending incremental file list
+hostbackup/
+hostbackup/scripts.tar
+
+sent 10,389 bytes  received 39 bytes  20,856.00 bytes/sec
+total size is 10,240  speedup is 0.98
+[root@redhat8 ~]# ls /home/huang/rsynctmp
+hostbackup
+[root@redhat8 ~]# cd /home/huang/rsynctmp/hostbackup
+[root@redhat8 hostbackup]# ls
+scripts.tar
+```
+&#8195;&#8195;通过为源目录加上尾随斜杠，可以同步该目录的内容，而不在目标目录中新建子目录。在下面示例，`hostbackup`目录不是在`/home/huang/rsynctmp`目录中创建的，仅`/home/huang/hostbackup`的内容同步：
+```
+[root@redhat8 ~]# rsync -av /home/huang/hostbackup/ /home/huang/rsynctmp
+sending incremental file list
+./
+scripts.tar
+
+sent 10,370 bytes  received 38 bytes  20,816.00 bytes/sec
+total size is 10,240  speedup is 0.98
+[root@redhat8 ~]# ls /home/huang/rsynctmp
+scripts.tar
+```
+注意事项：
+- 为`rsync`命令键入源目录时，目录名称中是否存在尾随斜杠至关重要。它将决定同步到目标中的是目录还是仅目录中的内容
+- `Tab`补全可自动在目录名称中添加尾随斜杠
+
+&#8195;&#8195;同`scp`和`sftp`命令一样，`rsync`使用`[user@]host:/path`格式来指定远程位置。远程位置可以是源或目标系统，但两台计算机中的一台必须是本地计算机：
+- 要保留文件所有权，需要是目标系统上的root用户
+- 如果目标为远程目标，则以root身份进行验证
+- 如果目标为本地目标，则必须以root身份运行`rsync`
+
+&#8195;&#8195;示例将本地的`/home/huang/hostbackup`目录同步到`192.168.100.131`远程系统上的`/home/huang/rsynctest`目录：
+```
+[root@redhat8 ~]# rsync -av /home/huang/hostbackup \
+192.168.100.131:/home/huang/rsync
+testroot@192.168.100.131's password: 
+sending incremental file list
+created directory /home/huang/rsynctest
+hostbackup/
+hostbackup/scripts.tar
+
+sent 10,389 bytes  received 83 bytes  2,327.11 bytes/sec
+total size is 10,240  speedup is 0.98
+```
+&#8195;&#8195;同样，`192.168.100.131`远程系统上的`/home/huang/rsynctest`远程目录也可同步到host上的`/home/huang/hostbackup`本地目录：
+```
+[root@redhat8 ~]# rsync -av 192.168.100.131:/home/huang/rsynctest \
+/home/huang/hostba
+ckup
+root@192.168.100.131's password: 
+receiving incremental file list
+rsynctest/
+rsynctest/hostbackup/
+rsynctest/hostbackup/scripts.tar
+
+sent 55 bytes  received 10,432 bytes  2,996.29 bytes/sec
+total size is 10,240  speedup is 0.98
+```
+## 练习

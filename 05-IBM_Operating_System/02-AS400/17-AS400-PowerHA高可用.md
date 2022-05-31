@@ -26,6 +26,24 @@ DLTCRGCLU|Delete CRG Cluster
 ENDCRG|End Cluster Resource Group
 RMVCRGNODE|Remove CRG Node Entry
 
+命令`WRKCLU`示例：
+```
+                               Work with Cluster                              
+                                                             System:   LPAR110
+ Cluster  . . . . . . . . . . . . . . . . :   TESTCLU                       
+ Select one of the following:                                                 
+                                                                              
+      1. Display cluster information                                          
+      2. Display cluster configuration information                            
+           
+      6. Work with cluster nodes                                              
+      7. Work with device domains                                             
+      8. Work with administrative domains                                     
+      9. Work with cluster resource groups                                    
+     10. Work with ASP copy descriptions                                      
+                                                                              
+     20. Dump cluster trace     
+```
 ## 配置PowerHA
 ### 配置节点
 官方参考链接：[IBM i 7.3 配置节点](https://www.ibm.com/docs/zh/i/7.3?topic=infrastructure-configuring-nodes)
@@ -197,5 +215,54 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 - 验证IASP中的数据，是否能够运行使用独立磁盘池中的数据的作业
 
 官方参考链接：[PowerHA: How to Copy an Independent Auxiliary Storage Pool From a Cluster Node to a Non-Cluster Node](https://www.ibm.com/support/pages/powerha-how-copy-independent-auxiliary-storage-pool-cluster-node-non-cluster-node)
+## PowerHA数据复制技术
+&#8195;&#8195;PowerHA提供了几种不同的数据复制技术。这些技术可以单独使用，有时也可以组合使用，以提供更高级别的中断保护：
+- `Geographic mirroring`是一种 IBM复制技术，可用于任何存储。数据在独立 ASP 的两个副本之间复制，同时支持同步和异步复制。`Geographic mirroring`可以防止服务器和存储中断
+- 对于具有外部存储的客户，有多种技术可用：
+  - `Switched logical units`允许将数据的一个副本从一个系统切换到另一个系统，并防止服务器中断
+  - `Metro Mirror`和 `Global Mirror`是用于外部存储的同步和异步复制技术，通过将数据从 IASP 的主副本复制到备份副本来防止服务器和存储中断。
+  - `HyperSwap`是一种`DS8000`技术，可在存储中断的情况下提供近乎零的中断
+  - `FlashCopy`是一种时间点复制机制，它可以与任何技术结合使用，用于备份和其他用途
+
+官方参考链接：[PowerHA data replication technologies](https://www.ibm.com/docs/zh/i/7.3?topic=technologies-powerha-data-replication)
+### Geographic mirroring
+&#8195;&#8195;`Geographic mirroring`使用IBM i 集群技术提供高可用性解决方案，其中存储在生产系统独立磁盘池中的一致数据副本在镜像副本上维护。`Geographic mirroring`通过使用内部或外部存储来维护独立磁盘池的一致备份副本：
+- 如果生产站点发生中断，生产将切换到备份站点，其中包含数据的镜像副本，通常位于另一个位置：
+  - 在同步交付模式下，数据在生产系统上完成写入操作之前被镜像，通常用于在发生故障时不会遭受任何数据丢失的应用程序
+  - 在异步交付模式下，数据仍会在写入操作完成之前发送到镜像副本，但是，在镜像写入实际到达镜像副本之前，控制权会返回给应用程序
+  - 使用现有同步交付模式的一个很好的原因是，如果应用程序想要确保生产端所有已完成的写入都已到达镜像副本端
+  - 使用异步交付模式，应用程序响应时间不会像同步交付模式那样受到影响。大量延迟可能会导致异步交付模式所需的额外主存储和 CPU 资源
+- `Geographic mirroring`通过使用数据端口服务在独立磁盘池之间提供逻辑页面级镜像。数据端口服务管理多个 IP 地址的连接，从而在`Geographic mirroring`环境中提供冗余和更大的带宽
+- `Geographic mirroring`允许生产副本和镜像副本在Geographic上分开，这样可以在发生站点范围的中断时提供保护：
+  - 在规划`Geographic mirroring`解决方案时，生产和镜像独立磁盘池之间的距离可能会影响应用程序响应时间
+  - 生产副本和镜像副本之间的距离越远，可能会导致响应时间越长
+  - 在实施使用`Geographic mirroring`的高可用性解决方案之前，必须了解用户的距离要求以及对应用程序的相关性能影响
+- 具有异步交付模式的`Geographic mirroring`仅适用于 PowerHA 2.0 及更高版本
+
+官方参考链接：
+- [IBM i 7.3 Geographic mirroring](https://www.ibm.com/docs/zh/i/7.3?topic=pdrt-geographic-mirroring)
+- [Planning geographic mirroring](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-planning-geographic-mirroring)
+- [Configuring geographic mirroring](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-configuring-geographic-mirroring)
+- [Managing geographic mirroring](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-geographic-mirroring)
+- [Scenario: Geographic mirroring](https://www.ibm.com/docs/zh/i/7.3?topic=availability-scenario-geographic-mirroring)
+
+### Metro Mirror
+&#8195;&#8195;`Metro Mirror`在两个IBM System Storage外部存储单元之间维护一致的数据副本，卷的目标副本不断更新以匹配对源卷所做的更改；`Metro Mirror`与集群技术一起使用时，可提供高可用性和灾难恢复解决方案。
+- 与`Geographic mirroring`一样，也可以镜像存储在独立磁盘池中的数据，但是对于`Metro Mirror`，磁盘位于IBM System Storage的外部存储单元上
+- 镜像从通常位于生产站点的源外部存储单元到通常位于备份站点的一组目标存储单元发生
+- 数据在外部存储单元之间复制，为计划内和计划外中断提供可用性
+- 它通常用于在发生故障时不会遭受任何数据丢失的应用程序
+- 源卷和目标卷可以位于同一外部存储单元上，也可以位于单独的外部存储单元上
+- 在独立单元的情况下，目标存储单元可以位于最远300公里（186 英里）以外的另一个站点但是，在此距离上使用同步通信时可能会对性能产生影响，考虑使用更短的同步通信以最大限度地减少性能影响可能更实际
+
+官方参考链接：
+- [IBM i 7.3 Metro Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=pdrt-metro-mirror)
+- [Planning Metro Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-planning-metro-mirror)
+- [Configuring Metro Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-configuring-metro-mirror)
+- [Managing Metro Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-metro-mirror)
+- [Scenario: Metro Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=availability-scenario-metro-mirror)
+- [PowerHA supported storage servers](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-powerha-supported-storage-servers)
+
+### Global Mirror
 
 ## 待补充
