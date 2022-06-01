@@ -1,6 +1,13 @@
 # CLP-常用命令
 CL程序中常用命令或示例。
 ## 常用命令
+官方命令查找链接：
+- [IBM i 命令](https://www.ibm.com/docs/zh/i/7.3?topic=concepts-i-commands)
+- [IBM i 7.3 CL command finder-Alphabetic list](https://www.ibm.com/docs/zh/i/7.3?topic=language-alphabetic-list-cl-commands-by-command-name)
+- [IBM i 7.3 CL command finder](https://www.ibm.com/docs/zh/i/7.3?topic=language-cl-command-finder)
+- [IBM i 7.3 CL commands by product](https://www.ibm.com/docs/zh/i/7.3?topic=language-cl-commands-by-product)
+- [IBM i 7.3 CL concepts](https://www.ibm.com/docs/zh/i/7.3?topic=language-cl-concepts)
+
 ### 常规命令
 命令|描述
 :---|:---
@@ -14,7 +21,8 @@ CL程序中常用命令或示例。
 ### 变量管理
 命令|描述
 :---|:---
-[DCL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/dcl.htm)|Declare CL Variable 
+[CHGVAR](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/chgvar.htm)|Change Variable
+[DCL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/dcl.htm)|Declare CL Variable
 
 ### 文件处理
 命令|描述

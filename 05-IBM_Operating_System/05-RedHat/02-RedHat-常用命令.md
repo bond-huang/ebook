@@ -26,6 +26,21 @@ nmcli con up name|激活name连接
 nmcli dev dis dev|在网络接口dev上停用并断开当前连接
 nmcli con del name|删除name连接及其配置文件
 
+## 软件管理
+### RPM相关命令
+`RPM`查询命令摘要如下表所示：
+
+命令|任务
+:---|:---
+rpm -qa|列出当前安装的所有RPM软件包
+rpm -q NAME|显示系统上安装的NAME版本
+rpm -qi NAME|显示有关软件包的详细信息
+rpm -ql NAME|列出软件包中含有的所有文件
+rpm -qc NAME|列出软件包中含有的配置文件
+rpm -qd NAME|列出软件包中含有的文档文件
+rpm -q --changelog NAME|显示软件包新发行版的简短原因摘要
+rpm -q --scripts NAME|显示在软件包安装、升级或删除时运行的shell脚本
+
 ## 硬件相关
 ### cpu相关
 #### 查看CPU信息

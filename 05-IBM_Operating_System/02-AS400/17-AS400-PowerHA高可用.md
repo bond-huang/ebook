@@ -264,5 +264,99 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 - [PowerHA supported storage servers](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-powerha-supported-storage-servers)
 
 ### Global Mirror
+&#8195;&#8195;`Global Mirror`在两个 IBM System Storage外部存储单元之间维护一致的数据副本。`Global Mirror`在两个外部存储单元之间提供磁盘 I/O 子系统级别的镜像：
+- 这种异步解决方案通过允许目标站点落后于源站点几秒钟，在无限距离上提供更好的性能，将数据中心分开更远的距离有助于防止区域中断
+- `Global Mirror`使用异步技术提供跨两个站点的远程远程复制。通过高速光纤通道通信链路运行，旨在以几乎无限的距离异步维护完整且一致的远程数据镜像，对应用程序响应时间几乎没有影响
+- 使用`Global Mirror`，复制到备份站点的数据在几秒钟内就可以与生产站点保持同步
+
+官方参考链接：
+- [IBM i 7.3 Global Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=pdrt-global-mirror)
+- [Planning Global Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-planning-global-mirror)
+- [Configuring Global Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-configuring-global-mirror)
+- [Managing Global Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-global-mirror)
+- [Scenario: Global Mirror](https://www.ibm.com/docs/zh/i/7.3?topic=availability-scenario-global-mirror)
+
+### Switched logical units
+&#8195;&#8195;`Switched logical units`是一个独立的磁盘池。当交换逻辑单元与IBM i集群技术相结合时，可以为计划内和一些计划外中断创建简单且经济高效的高可用性解决方案：
+- 设备集群资源组(CRG)控制独立磁盘池，可以在计划外中断的情况下自动切换，也可以通过切换手动切换
+- 集群中的一组系统可以利用切换功能将对切换逻辑单元池的访问从一个系统转移到另一个系统
+- 可切换逻辑单元必须位于通过存储区域网络连接的IBM System Storage中
+- 当切换独立磁盘池时，IBM System Storage单元内的逻辑单元会从一个系统重新分配到另一个系统
+
+官方参考链接：
+- [IBM i 7.3 Switched logical units](https://www.ibm.com/docs/zh/i/7.3?topic=technologies-switched-logical-units)
+- [Planning switched logical units (LUNs)](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-planning-switched-logical-units-luns)
+- [Configuring switched logical units (LUNs)](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-configuring-switched-logical-units-luns)
+- [Managing switched logical units (LUNs)](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-switched-logical-units-luns)
+- [PowerHA supported storage servers](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-powerha-supported-storage-servers)
+
+### FlashCopy
+&#8195;&#8195;在使用IBM System Storage外部存储单元的IBM i 高可用性环境中，可以使用`FlashCopy`。`FlashCopy`为外部存储上的独立磁盘池提供几乎即时的时间点副本，这可以减少完成日常备份所需的时间：
+- 时间点复制功能可让用户即时复制或查看原始数据在特定时间点的样子
+- 目标副本完全独立于与源无关的磁盘池，并且在`FlashCopy`命令被处理后即可进行读写访问
+
+#### 配置示例
+系统中查看`FlashCopy`描述示例：
+```
+                          Display ASP Copy Description                 E980PRD 
+                                                             05/21/21  14:56:21
+ ASP copy description . . . . . . . . . :   E980PRD                            
+ Device description . . . . . . . . . . :   CBSIASP                            
+ Cluster resource group . . . . . . . . :   *NONE                              
+ Cluster resource group site  . . . . . :   *NONE                              
+ Location . . . . . . . . . . . . . . . :   E980PRD                            
+ Sessions . . . . . . . . . . . . . . . :   IASPFC1                         
+ IBM System Storage device  . . . . . . :   IBM.2107-75HAT61                   
+   User . . . . . . . . . . . . . . . . :     qlpar                            
+   Internet address . . . . . . . . . . :     10.22.168.66                      
+                                                                               
+   Alternate internet address . . . . . :     10.22.168.67 
+```
+对应的I/O资源查看示例：
+```
+                           Display ASP I/O Resources                   E980PRD 
+                                                             05/21/21  14:56:32
+                                   LUN ranges                                  
+                                                                               
+ Storage                            Consistency                                
+ Identifier           Range         group range                                
+ IBM.2107-75HAT61     1100-12A4      3100-32A4                                 
+                      1100-13A4      3100-33A4  
+```
+官方参考链接：
+- [IBM i 7.3 FlashCopy](https://www.ibm.com/docs/zh/i/7.3?topic=pdrt-flashcopy)
+- [Planning FlashCopy](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-planning-flashcopy-feature)
+- [Configuring a FlashCopy session](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-configuring-flashcopy-session)
+- [Managing the FlashCopy technology](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-flashcopy-technology)
+- [Scenario: Performing a FlashCopy function](https://www.ibm.com/docs/zh/i/7.3?topic=environment-scenario-performing-flashcopy-function)
+
+### DS8000 Full System HyperSwap
+&#8195;&#8195;在 IBM i 高可用性环境中，使用HyperSwap作为一种方法来帮助减少或消除由于存储和SAN相关的中断而导致的中断：
+- `Full System HyperSwap`是一个单系统IBM i 存储硬件高可用性解决方案，它使用IBM Systems Storage DS8000 设备上的`Metro Mirror`来维护两个IBM Systems Storage外部存储单元之间的一致数据副本
+- `Full System HyperSwap`允许进行计划内或计划外的IBM Systems Storage外部存储设备切换，而无需使应用程序脱机以进行切换
+- `Full System HyperSwap`仅支持全系统 (SYSBAS) 复制，不支持独立磁盘池复制
+- `Full System HyperSwap` 具有与传统 Metro Mirror 跨站点镜像解决方案相同的距离限制
+- 源卷和目标卷可以位于同一个外部存储单元上，也可以位于不同的外部存储单元上
+- 在独立单元的情况下，目标存储单元可以位于最远300公里（186 英里）以外的另一个站点。但是，在此距离上使用同步通信时可能会对性能产生影响，考虑使用更短的同步通信以最大限度地减少性能影响可能更实际
+- 使用`Full System HyperSwap`必须在系统上安装`IBM PowerHA for i Express Edition`
+- 使用`Full System HyperSwap`不需要集群，也不使用集群技术
+
+官方参考链接：
+- [DS8000 Full System HyperSwap](https://www.ibm.com/docs/zh/i/7.3?topic=pdrt-ds8000-full-system-hyperswap)
+- [Planning for DS8000 Full System HyperSwap](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-planning-ds8000-full-system-hyperswap)
+- [Configuring DS8000 Full System HyperSwap](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-configuring-ds8000-full-system-hyperswap)
+- [Managing DS8000 Full System HyperSwap](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-ds8000-full-system-hyperswap)
+
+### DS8000 HyperSwap with IASPs
+&#8195;&#8195;在 IBM i高可用性环境中，使用HyperSwap作为一种方法来帮助减少或消除由于存储和SAN相关的中断而导致的中断。`HyperSwap`是一种存储高可用性解决方案，允许在两个 IBM System Storage DS8000单元之间镜像的逻辑单元以接近零的中断时间进行切换：
+- 当`HyperSwap`在`IASP`级别实施时，可以与其他PowerHA技术相结合，为计划内和计划外存储中断提供最短停机时间解决方案，并为服务器计划内和计划外中断提供最短停机时间解决方案
+- 要使用`HyperSwap`，必须在系统上安装`IBM PowerHA for i Enterprise Edition`
+- 要将`DS8000 HyperSwap`与`IASP`一起使用，需要一个集群并且确实使用了PowerHA 技术
+
+官方参考链接：
+- [DS8000 HyperSwap with independent auxiliary storage pools (IASPs)](https://www.ibm.com/docs/zh/i/7.3?topic=pdrt-ds8000-hyperswap-independent-auxiliary-storage-pools-iasps)
+- [Planning DS8000 HyperSwap with independent auxiliary storage pools (IASPs)](https://www.ibm.com/docs/zh/i/7.3?topic=pdr-planning-ds8000-hyperswap-independent-auxiliary-storage-pools-iasps)
+- [Configuring DS8000 HyperSwap with independent auxiliary storage pools (IASPs)](https://www.ibm.com/docs/zh/i/7.3?topic=ip-configuring-ds8000-hyperswap-independent-auxiliary-storage-pools-iasps)
+- [Managing DS8000 HyperSwap with independent auxiliary storage pools (IASPs)](https://www.ibm.com/docs/zh/i/7.3?topic=mp-managing-ds8000-hyperswap-independent-auxiliary-storage-pools-iasps)
 
 ## 待补充

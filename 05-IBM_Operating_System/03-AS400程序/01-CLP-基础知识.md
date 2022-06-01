@@ -7,6 +7,42 @@
 - [IBM i 7.3 CL concepts](https://www.ibm.com/docs/zh/i/7.3?topic=language-cl-concepts)
 - [IBM i 7.3 CL programming](https://www.ibm.com/docs/zh/i/7.3?topic=language-cl-programming)
 
+## 在CL程序中编写注释
+在`CL`程序中的命令编写注释或添加注释使用字符对`/*`和`*/`，注释写在这些符号之间：
+- 起始注释定界符`/*`需要三个字符，除非这些`/*`字符出现在命令字符串的前两个位置
+- 在后一种情况下，`/*`可以在命令前不带空格的情况下使用
+- 注意：注释中不能嵌入注释
+
+可以通过以下任意一种方式输入三字符的起始注释分隔符（b 表示空白）：
+```
+  /*b
+  b/*
+  /**
+```
+可以以不同的方式输入起始注释分隔符。起始注释分隔符`/*`可以：
+- 从命令字符串的第一个位置开始
+- 前面有一个空格
+- 后跟一个空格
+- 后跟一个星号`/**`
+
+官方示例如下：
+```
+        PGM        /* ORD040C ORDER DEPT GENERAL MENU */               
+        DCLF       FILE(ORD040CD)                                      
+ START: SNDRCVF    RCDFMT(MENU)                                        
+        SELECT                                                         
+          WHEN (&RESP=1) THEN(CALL CUS210)   /* CUSTOMER INQUIRY     */
+          WHEN (&RESP=2) THEN(CALL ITM210)   /* ITEM INQUIRY         */
+          WHEN (&RESP=3) THEN(CALL CUS210)   /* CUSTOMER NAME SEARCH */
+          WHEN (&RESP=4) THEN(CALL ORD215)   /* ORDERS BY CUST       */
+          WHEN (&RESP=5) THEN(CALL ORD220)   /* EXISTING ORDER       */
+          WHEN (&RESP=6) THEN(CALL ORD410C)  /* ORDER ENTRY          */
+          WHEN (&RESP=7) THEN(RETURN)                                  
+        ENDSELECT                                                      
+        GOTO START                                                     
+        ENDPGM                            
+```
+官方参考链接：[Writing comments in CL programs or procedures](https://www.ibm.com/docs/zh/i/7.3?topic=commands-writing-comments-in-cl-programs-procedures)
 ## 创建CL程序过程
 所有程序都是分步骤创建的：源代码创建、模块创建和程序创建:
 - Source creation：CL源语句由CL命令组成，源语句按应用程序设计确定的逻辑顺序输入到数据库文件或IFS流文件中
@@ -21,7 +57,7 @@
 IBM i操作系统提供了很多菜单和屏幕进行交互式输入：
 - 包括编程器的菜单，命令输入显示屏，显示命令提示符和编程开发管理器（PDM）菜单。
 - 经常使用的源输入方法是源输入实用程序 (SEU:source entry utility)，它是WebSphere Development Studio的一部分
-- 还可以使用`EDTF`(Edit File)命令在数据库源文件中输入或更改CL命令。但是EDTF不提供内置于SEU的集成CL命令提示支持
+- 还可以使用`EDTF`(Edit File)命令在数据库源文件中输入或更改CL命令。但是`EDTF`不提供内置于SEU的集成CL命令提示支持
 
 ### 批量输入
 &#8195;&#8195;可以在一个批处理输入流中创建CL源、一个CL模块和一个程序。使用`SBMDBJOB`(Submit Data Base Jobs)命令将输入提交到作业队列。输入流应遵循以下格式：
