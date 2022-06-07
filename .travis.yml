@@ -1,6 +1,7 @@
 os: linux
 
-
+arch:
+  - s390x
   
 language: "node_js"
 

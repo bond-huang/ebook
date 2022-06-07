@@ -218,4 +218,457 @@ rpm -q --scripts NAME|显示在软件包安装、升级或删除时运行的shel
 
 ## 使用Yum安装和更新软件包
 `yum`目前已被`dnf`命令取代，用法大同小异。
+### Yum命令摘要
+可以根据名称或软件包组，查找、安装、更新和删除软件包：
+
+命令|任务
+:---|:---
+yum list \[NAME-PATTERN]|按名称列出已安装和可用的软件包
+yum group list|列出已安装和可用的组
+yum search KEYWORD|按关键字搜索软件包
+yum info PACKAGENAME|显示软件包的详细信息
+yum install PACKAGENAME|安装软件包
+yum group install GROUPNAME|安装软件包组
+yum update|更新所有软件包
+yum remove PACKAGENAME|删除软件包
+yum history|显示事务历史记录
+
 ### 使用Yum管理软件包
+&#8195;&#8195;`Yum`设计目标是在管理基于RPM的软件安装和更新方面成为一个更理想的系统。`yum`命令允许安装、更新、删除和获取有关软件包及其依赖项的信息。可以获取已执行事务的历史记录并使用多个红帽及第三方软件存储库。
+#### 使用Yum查找软件
+`yum help`显示用法信息：
+```
+[root@redhat8 ~]# yum help
+Updating Subscription Management repositories.
+You can use subscr iption-manager to register.usage: dnf [options] COMMAND
+
+List of Main Commands:
+alias                     List or create command aliases
+autoremove                remove all unneeded packages that were originally installe
+d as dependenciescheck                     check for problems in the packagedb
+check-update              check for available package upgrades
+clean                     remove cached data
+...output omitted...
+```
+`yum list`显示已安装和可用的软件包，示例：
+```
+[root@redhat8 ~]# yum list 'http*'
+httpd.x86_64                     2.4.37-10.module+el8+2764+7127e69e     @redhat8_app
+httpd-filesystem.noarch          2.4.37-10.module+el8+2764+7127e69e     @redhat8_app
+httpd-tools.x86_64               2.4.37-10.module+el8+2764+7127e69e     @redhat8_app
+Available Packages
+http-parser.i686                 2.7.1-9.el7                            ol7_latest  
+http-parser.src                  2.7.1-9.el7                            ol7_latest  
+...output omitted...
+```
+`yum search KEYWORD`根据仅在名称和摘要字段中找到的关键字列出软件包：
+```
+[root@redhat8 ~]# yum search 'python'
+========================= Name Exactly Matched: python =========================
+python.src : An interpreted, interactive, object-oriented programming language
+python.x86_64 : An interpreted, interactive, object-oriented programming
+              : language
+======================== Name & Summary Matched: python ========================
+python-ply.noarch : Python Lex-Yacc
+python-ply.src : Python Lex-Yacc
+...output omitted...
+```
+搜索名称、摘要和描述字段中包含`web server`的软件包，使用`search all`：
+```
+eyboardInterrupt: Terminated.
+[root@redhat8 ~]# yum search all 'web server'
+==================== Description & Summary Matched: web server =====================
+yawn-server.noarch : Standalone web server for yawn
+erlang-inets.x86_64 : A set of services such as a Web server and a ftp client etc
+...output omitted...
+```
+`yum info PACKAGENAME`返回与软件包相关的详细信息，包括安装所需的磁盘空间：
+```
+[root@redhat8 ~]# yum info httpd
+Available Packages
+Name         : httpd
+Version      : 2.4.6
+Release      : 97.0.5.el7_9.5
+Arch         : src
+Size         : 5.0 M
+Source       : None
+Repo         : ol7_latest
+Summary      : Apache HTTP Server
+URL          : http://httpd.apache.org/
+License      : ASL 2.0
+Description  : The Apache HTTP Server is a powerful, efficient, and extensible
+             : web server.
+```
+`yum provides PATHNAME`显示与指定的路径名（通常包含通配符）匹配的软件包：
+```
+[root@redhat8 ~]# yum provides /var/www/html
+httpd-filesystem-2.4.37-10.module+el8+2764+7127e69e.noarch : The basic directory
+     ...: layout for the Apache HTTP server
+Repo        : @System
+Matched from:
+Filename    : /var/www/html
+
+httpd-2.4.6-80.0.1.el7.x86_64 : Apache HTTP Server
+Repo        : ol7_latest
+Matched from:
+Filename    : /var/www/html
+...output omitted...
+```
+#### 使用yum安装和删除软件
+`yum install PACKAGENAME`获取并安装软件包，包括所有依赖项：
+```
+[root@redhat8 ~]# yum install python3
+...output omitted...
+Running transaction
+  Installing : libtirpc-0.2.4-0.16.el7.x86_64                                         1/5 
+  Installing : python3-setuptools-39.2.0-10.el7.noarch                                2/5 
+  Installing : python3-pip-9.0.3-8.el7.noarch                                         3/5 
+  Installing : python3-3.6.8-18.el7.x86_64                                            4/5 
+  Installing : python3-libs-3.6.8-18.el7.x86_64                                       5/5
+...output omitted...
+```
+&#8195;&#8195;`yum update PACKAGENAME`获取并安装指定软件包的较新版本，包括所有依赖项。通常，该进程尝试适当保留配置文件，但是在某些情况下，如果打包商认为旧文件在更新后将无法使用，则可能对其进行重命名。如果未指定 `PACKAGENAME`，将安装所有相关更新：
+```
+[root@redhat8 ~]# yum update python
+``` 
+&#8195;&#8195;由于新的内核只有通过启动至该内核才能进行测试，该软件包进行了特殊设计，以便一次能够安装多个版本。如果新内核启动失败，则依然可以使用旧的内核。使用`yum update kernel`实际上会安装新的内核。配置文件中保存一份软件包列表，即使在管理员要求更新时也始终安装这些软件包。使用`yum list kernel`可列出所有已安装和可用的内核：
+```
+[root@redhat8 ~]# yum list kernel
+Installed Packages
+kernel.x86_64                    4.18.0-80.el8                            @anaconda 
+Available Packages
+kernel.src                       3.10.0-1160.66.1.el7                     ol7_lates
+```
+&#8195;&#8195;若要查看当前运行中的内核，请使用`uname`命令。`-r`选项仅显示内核的版本和发行版本，而`-a`选项显示内核发行版和其他信息。示例如下：
+```
+[root@redhat8 ~]# uname -r
+4.18.0-80.el8.x86_64
+[root@redhat8 ~]# uname -a
+Linux redhat8 4.18.0-80.el8.x86_64 #1 SMP Wed Mar 13 12:02:46 UTC 2019 x86_64 x86_64
+ x86_64 GNU/Linux
+```
+`yum remove PACKAGENAME`删除安装的软件包，包括所有受支持的软件包：
+```
+[root@redhat8 ~]# yum remove python3
+Updating Subscription Management repositories.
+Unable to read consumer identity
+This system is not registered to Red Hat Subscription Management. You can use subscr
+iption-manager to register.Dependencies resolved.
+====================================================================================
+ Package             Arch    Version                              Repository   Size
+====================================================================================
+Removing:
+ python36            x86_64  3.6.8-1.module+el8+2710+846623d6     @AppStream   13 k
+Removing unused dependencies:
+ python3-pip         noarch  9.0.3-13.el8                         @AppStream  2.5 k
+ python3-setuptools  noarch  39.2.0-4.el8                         @anaconda   450 k
+Transaction Summary
+====================================================================================
+Remove  3 Packages
+Freed space: 466 k
+Is this ok [y/N]: n
+Operation aborted.
+```
+#### 使用yum安装和删除各组软件
+&#8195;&#8195;`yum`也具有组的概念，即针对特定目的而一起安装的相关软件集合。在RHEL8中，有两种类型的组。常规组是软件包的集合。环境组是常规组的集合。一个组提供的软件包或组可能为：
+- `mandatory`（安装该组时必须予以安装）
+- `default`（安装该组时通常会安装）
+- `optional`（安装该组时不予以安装，除非特别要求）
+
+&#8195;&#8195;`yum group list`命令可显示已安装和可用的组的名称(有些组一般通过环境组安装，默认为隐藏。可通过`yum group list hidden`命令列出这些隐藏组)：
+```
+[root@redhat8 ~]# yum group list
+Available Environment Groups:
+   Minimal Install
+   Infrastructure Server
+   ...output omitted...
+Installed Environment Groups:
+   Server with GUI
+Available Groups:
+   Cinnamon
+   Educational Software
+   ...output omitted...
+```
+`yum group info`显示组的相关信息。它将列出必选、默认和可选软件包名称：
+```
+[root@redhat8 ~]# yum group info "Internet Applications"
+Group: Internet Applications
+ Description: Email, chat, and video conferencing software.
+ Optional Packages:
+   checkgmail
+   konversation
+   mail-notification
+```
+`yum group install`将安装一个组，同时安装其必选和默认的软件包，以及它们依赖的软件包：
+```
+[root@redhat8 ~]# yum group install "RPM Development Tools"
+```
+#### 查看事务历史记录
+所有安装和删除事务的日志记录在`/var/log/dnf.rpm.log`中：
+```
+[root@redhat8 ~]# tail -5 /var/log/dnf.rpm.log
+2022-06-07T14:14:19Z INFO --- logging initialized ---
+2022-06-07T14:17:13Z INFO --- logging initialized ---
+2022-06-07T14:19:18Z INFO --- logging initialized ---
+2022-06-07T14:19:39Z INFO --- logging initialized ---
+2022-06-07T14:20:38Z INFO --- logging initialized ---
+```
+`history undo`选项可以撤销事务：
+```
+[root@redhat8 ~]# yum history undo 5
+```
+## 启用Yum软件存储库
+### 启用红帽软件存储库
+查看所有可用的存储库：
+```
+[root@redhat8 ~]# yum repolist all
+repo id                  repo name                                   status
+*epel                    Extra Packages for Enterprise Linux 7 - x86 enabled: 13,753
+epel-debuginfo           Extra Packages for Enterprise Linux 7 - x86 disabled
+...output omitted...
+ol7_developer_php72      Oracle Linux 8 PHP 7.2 Packages for Develop disabled
+ol7_gluster312           Oracle Linux 8 Gluster 3.12 Packages (x86_6 disabled
+ol7_latest               Oracle Linux 8 Latest (x86_64)              enabled: 24,399
+ol7_latest_archive       Oracle Linux 8 Archive (x86_64)             disabled
+...output omitted...
+```
+&#8195;&#8195;`yum config-manager`命令可用于启用或禁用存储库。为启用存储库，该命令将`enabled`参数设为`1`。示例如下：
+```
+[root@redhat8 ~]# yum config-manager --enable rhel-8-server-debug-rpms
+```
+&#8195;&#8195;要启用对新的第三方存储库的支持，可在`/etc/yum.repos.d/`目录中创建一个文件。存储库配置文件必须以`.repo`扩展名结尾。存储库定义包含存储库的`URL`和名称，也定义是否使用`GPG`检查软件包签名；如果是，则还检查`URL`是否指向受信任的`GPG`密钥。示例：
+```
+[root@redhat8 ~]# ls -l /etc/yum.repos.d
+total 80
+-rw-r--r--. 1 root root  1355 May 14 16:58 epel.repo
+-rw-r--r--. 1 root root 16402 Aug 26  2019 public-yum-ol7.repo
+-rw-r--r--. 1 root root   358 Jul 19  2020 redhat.repo
+```
+#### 创建Yum存储库
+使用`yum config-manager`命令来创建Yum存储库。示例：
+```
+# yum config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+Loaded plugins: fastestmirror, langpacks
+adding repo from: https://download.docker.com/linux/centos/docker-ce.repo
+grabbing file https://download.docker.com/linux/centos/docker-ce.repo to /etc/yum.repos.d/
+docker-ce.reporepo saved to /etc/yum.repos.d/docker-ce.repo
+```
+&#8195;&#8195;修改此文件，以提供`GPG`密钥的自定义值和位置所示。密钥存储在远程存储库站点上的不同位置，如`http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8`。管理员应将该密钥下载到本地文件，而不是让`yum`从外部来源检索该密钥。例如：
+```
+[EPEL]
+name=EPEL 8
+baseurl=https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8
+```
+#### 本地存储库的RPM配置软件包
+&#8195;&#8195;一些存储库将一个配置文件和`GPG`公钥作为`RPM`软件包的一部分提供，该软件包可以使用`yum localinstall`命令来下载和安装。例如，`Extra Packages for Enterprise Linux (EPEL)`提供红帽不支持的、但与RHEL兼容的软件。以下命令将安装RHEL8 EPEL存储库软件包：
+```
+[root@redhat8 ~]# rpm --import \
+> http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+[root@redhat8 ~]# yum install \
+> https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+Updating Subscription Management repositories.
+Unable to read consumer identity
+This system is not registered to Red Hat Subscription Management. You can use subscr
+iption-manager to register.Extra Packages for Enterprise Linux 7 - x86_64      3.0 kB/s | 7.6 kB     00:02    
+Latest Unbreakable Enterprise Kernel Release 5 for  1.5 kB/s | 3.0 kB     00:01    
+Oracle Linux 8 Latest (x86_64)                      1.5 kB/s | 3.6 kB     00:02    
+epel-release-latest-8.noarch.rpm                    5.4 kB/s |  23 kB     00:04    
+Dependencies resolved.
+====================================================================================
+ Package              Arch           Version             Repository            Size
+====================================================================================
+Upgrading:
+ epel-release         noarch         8-15.el8            @commandline          23 k
+Transaction Summary
+====================================================================================
+Upgrade  1 Package
+
+Total size: 23 k
+Is this ok [y/N]: Y
+Downloading Packages:
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                            1/1 
+  Running scriptlet: epel-release-8-15.el8.noarch                               1/1 
+  Upgrading        : epel-release-8-15.el8.noarch                               1/2 
+warning: /etc/yum.repos.d/epel.repo created as /etc/yum.repos.d/epel.repo.rpmnew
+  Cleanup          : epel-release-7-14.noarch                                   2/2 
+  Running scriptlet: epel-release-7-14.noarch                                   2/2 
+  Verifying        : epel-release-8-15.el8.noarch                               1/2 
+  Verifying        : epel-release-7-14.noarch                                   2/2 
+Installed products updated.
+Upgraded:
+  epel-release-8-15.el8.noarch                                                      
+Complete!
+```
+&#8195;&#8195;配置文件通常在一个文件中列举多个存储库引用。每一存储库引用的开头为包含在方括号里的单一词语名称。示例如下：
+```
+[root@redhat8 ~]# cat /etc/yum.repos.d/epel.repo
+[epel]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+# It is much more secure to use the metalink, but if you wish to use a local mirror
+# place its address here.
+baseurl=http://download.example/pub/epel/7/$basearch
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch&infra
+=$infra&content=$contentdirfailovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+...output omitted...
+```
+&#8195;&#8195;先安装`RPM GPG`密钥，再安装签名的软件包。这将验证软件包是否属于已经导入的密钥。否则，`yum`命令会因为缺少密钥而失败。可以通过`--nogpgcheck`选项忽略缺少的`GPG`密钥，但这可能会导致伪造或不安全的软件包被安装到系统上。
+## 管理软件包模块流
+### 应用流简介
+&#8195;&#8195;RHEL8引入了应用流的概念。现在可同时提供发行版随附的多个版本的用户空间组件。它们可能比核心操作系统软件包更新得更频繁。这可以更灵活地自定义RHEL，而不会影响平台或特定部署的底层稳定性。    
+&#8195;&#8195;从传统上看，管理应用软件包的备用版本及其相关软件包意味着为每个不同版本维护不同的存储库。如果开发人员想要最新版本的应用，而管理员希望获得该应用的最稳定版本，便会造成一种难以管理的繁琐局面。RHEL8中运用一种称为模块化的新技术简化了这个过程。模块化允许单个存储库承载应用软件包及其依赖项的多个版本。RHEL8内容通过两个主要的软件存储库进行分发，分别为`BaseOS`和`AppStream`(应用流)：
+- `BaseOS`存储库以`RPM`软件包的形式为RHEL提供核心操作系统内容。BaseOS组件的生命周期与之前RHEL发行版中的内容相同
+- 应用流存储库提供具有不同生命周期的内容，作为模块和传统软件包。应用流包含系统的必要部分，以及以前作为红帽软件集合的一部分以及其他产品和程序提供的各种应用。应用流存储库包含两种类型的内容：
+    - 模块和传统的`RPM`软件包。模块描述了属于一个整体的一组`RPM`软件包。模块可以包含多个流，使多个版本的应用可供安装。启用模块流后，系统能够访问该模块流中的`RPM`软件包 
+
+### 模块
+&#8195;&#8195;模块是一组属于一个整体的、协调一致的 RPM 软件包。通常，这是围绕软件应用或编程语言的特定版本进行组织的。典型的模块可以包含应用的软件包、应用特定依赖库的软件包、应用文档的软件包，以及帮助器实用程序的软件包。
+#### 模块流
+&#8195;&#8195;每个模块可以具有一个或多个模块流，其包含不同版本的内容。每个流独立接收更新。模块流可以视为应用流物理存储库中的虚拟存储库。对于每个模块，只能启用其中一个流并提供它的软件包。
+#### 模块配置文件
+&#8195;&#8195;每个模块可以有一个或多个配置文件。配置文件是要为特定用例一起安装的某些软件包的列表，这些用例包括服务器、客户端、开发或最小安装等。安装特定的模块配置文件只是从模块流安装一组特定的软件包。可以随后正常安装或卸载软件包。如果未指定配置文件，模块将安装它的默认配置文件。
+### 使用Yum管理模块
+&#8195;&#8195;Yum版本4是RHEL8的增加了对应用流新模块化功能的支持。为处理模块化内容，添加了`yum module`命令。否则，`yum`很大程度上会像常规软件包一样处理模块。
+#### 列出模块
+使用`yum module list`显示可用模块的列表：
+```
+[root@redhat8 ~]# yum module list
+Extra Packages for Enterprise Linux Modular 8 - x86_64
+Name                 Stream           Profiles Summary                              
+389-directory-server next             minimal, 389 Directory Server                 
+                                       default 
+389-directory-server stable           minimal, 389 Directory Server                 
+                                       legacy, 
+                                       default 
+                                       [d]     
+...output omitted...
+```
+列出特定模块的模块流并检索其状态：
+```
+[root@redhat8 ~]# yum module list nodejs
+Extra Packages for Enterprise Linux Modular 8 - x86_64
+Name         Stream       Profiles                           Summary                
+nodejs       13           development, minimal, default      Javascript runtime     
+nodejs       16-epel      development, minimal, default      Javascript runtime     
+
+Hint: [d]efault, [e]nabled, [x]disabled, [i]nstalled
+```
+显示模块的详细信息：
+```
+[root@redhat8 ~]# yum module info nodejs
+Name        : nodejs
+Stream      : 13
+Version     : 820200419230336
+Context     : 9edba152
+Profiles    : development, minimal, default
+Repo        : epel-modular
+Summary     : Javascript runtime
+Description : Node.js is a platform built on Chrome''s JavaScript runtime for easily
+ building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.            : This is the 13.x development stream and may not be suitible for produc
+tion workloads.Artifacts   : c-ares-0:1.16.0-1.module_el8+8692+52300fb6.src
+            : c-ares-0:1.16.0-1.module_el8+8692+52300fb6.x86_64
+            : c-ares-debuginfo-0:1.16.0-1.module_el8+8692+52300fb6.x86_64
+            ...output omitted...
+...output omitted...
+```
+&#8195;&#8195;若不指定模块流，`yum module info`将显示使用默认流的模块的默认配置文件所安装的软件包列表。使用`module-name:stream`格式来查看特定的模块流。添加`--profile`选项可显示有关各个模块的配置文件所安装的软件包的信息。例如：
+```
+[root@redhat8 ~]# yum module info --profile perl:5.24
+```
+#### 启用模块流和安装模块
+&#8195;&#8195;必须启用模块流才能安装其模块。为了简化此过程，在安装模块时，它将根据需要启用其模块流。可以使用`yum module enable`并提供模块流的名称来手动启用模块流。对于给定的模块，仅可启用一个模块流。启用其他模块流将禁用原始的模块流。
+
+&#8195;&#8195;使用默认流和配置文件安装模块(运行`yum install @perl`效果一样。`@`表示法告知`yum`参数是模块名称而非软件包名称)：
+```
+[root@redhat8 ~]# yum module install zabbix
+```
+验证模块流和已安装配置文件的状态：
+```
+[root@redhat8 ~]# yum module list nginx
+Extra Packages for Enterprise Linux Modular 8 - x86_64
+Name              Stream              Profiles            Summary                   
+nginx             1.20                common              nginx webserver           
+nginx             mainline            common              nginx webserver           
+
+Hint: [d]efault, [e]nabled, [x]disabled, [i]nstalled
+```
+#### 删除模块和禁用模块流
+&#8195;&#8195;删除模块会删除当前启用的模块流的配置集所安装的所有软件包，以及依赖于这些软件包的任何其他软件包和模块。从此模块流安装的软件包如果未在其配置文件中列出，则会保持安装在系统上，可以手动删除。注意事项：
+-  删除模块和切换模块流可能会有点棘手。切换为模块启用的流相当于重置当前流并启用新流。它不会自动更改任何已安装的软件包，必须手动来完成。
+- 建议不要直接安装与当前所安装的模块流不同的模块流，因为升级脚本可能会在安装期间运行，从而破坏原始模块流。这可能会导致数据丢失或其他配置问题
+
+要删除已安装的模块：
+```
+[root@redhat8 ~]# yum module remove nginx
+```
+&#8195;&#8195;删除模块后，其模块流仍然为启用状态。使用命令`yum module list`验证模块流是否仍处于启用状态。要禁用模块流： 
+```
+[root@redhat8 ~]# yum module disable nginx
+Dependencies resolved.
+====================================================================================
+ Package            Arch              Version              Repository          Size
+====================================================================================
+Disabling module streams:
+ nginx                                                                             
+Transaction Summary
+====================================================================================
+Is this ok [y/N]: y
+Complete!
+[root@redhat8 ~]# yum module list nginx
+Extra Packages for Enterprise Linux Modular 8 - x86_64
+Name             Stream                 Profiles           Summary                  
+nginx            1.20 [x]               common             nginx webserver          
+nginx            mainline [x]           common             nginx webserver          
+
+Hint: [d]efault, [e]nabled, [x]disabled, [i]nstalled
+```
+#### 切换模块流
+&#8195;&#8195;切换模块流通常需要将内容升级或降级到不同版本。为确保顺利切换，应首先删除模块流提供的模块。这将删除模块的配置文件所安装的所有软件包，以及这些软件包依赖的任何模块和软件包。
+
+为列出从模块安装的软件包，在下面的示例中安装了`postgresql:9.6`模块(官方示例)：
+```
+[user@host ~]$ sudo yum module info postgresql | grep module+el8 | \
+sed 's/.*: //g;s/\n/ /g' | xargs yum list installed
+Installed Packages
+postgresql.x86_64          9.6.10-1.module+el8+2470+d1bafa0e   @rhel-8.0-for-x86_64-appstream-rpms
+postgresql-server.x86_64   9.6.10-1.module+el8+2470+d1bafa0e   @rhel-8.0-for-x86_64-appstream-rpms
+```
+删除在上一个命令中列出的软件包。标记要卸载的模块配置文件(官方示例)：
+```
+[user@host ~]$ sudo yum module remove postgresql
+...output omitted...
+Is this ok [y/N]: y
+...output omitted...
+Removed:
+  postgresql-server-9.6.10-1.module+el8+2470+d1bafa0e.x86_64   libpq-10.5-1.el8.x86_64  postgresql-9.6.10-1.module+el8+2470+d1bafa0e.x86_64
+Complete
+```
+删除模块配置文件后，重置模块流。使用`yum module reset`命令重置模块流(官方示例)：
+```
+[user@host ~]$ sudo yum module reset postgresql
+=================================================================
+ Package       Arch             Version     Repository      Size
+=================================================================
+Resetting module streams:
+postgresql                      9.6
+Transaction Summary
+=================================================================
+Is this ok [y/N]: y
+Complete!
+```
+要启用其他模块流并安装模块(官方示例)：
+```
+[user@host ~]$ sudo yum module install postgresql:10
+```
+&#8195;&#8195;将启用新的模块流，并禁用当前的流。可能需要更新或降级先前模块流中未在新配置文件中列出的软件包。必要时，可使用`yum distro-sync`来执行此任务。此外，也可能会有从先前模块流中保持安装的软件包，可通过`yum remove`删除它们。
+## 练习

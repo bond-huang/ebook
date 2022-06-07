@@ -1,5 +1,22 @@
 # Redhat-常用命令
 ## 系统管理
+### 服务管理
+#### systemctl命令
+下表是服务管理实用命令：
+
+命令|任务描述
+:---|:---
+systemctl status UNIT|查看有关单元状态的详细信息
+systemctl stop UNIT|在运行中的系统上停止一项服务
+systemctl start UNIT|在运行中的系统上启动一项服务	
+systemctl restart UNIT|在运行中的系统上重新启动一项服务
+systemctl reload UNIT|重新加载运行中服务的配置文件
+systemctl mask UNIT|彻底禁用服务，使其无法手动启动或在系统引导时启动
+systemctl unmask UNIT|使屏蔽的服务变为可用
+systemctl enable UNIT|将服务配置为在系统引导时启动
+systemctl disable UNIT|禁止服务在系统引导时启动
+systemctl list-dependencies UNIT|列出指定单元需要的单元
+
 ### 网络相关命令
 #### IP命令
 `IP`命令常用命令列表：
@@ -40,6 +57,21 @@ rpm -qc NAME|列出软件包中含有的配置文件
 rpm -qd NAME|列出软件包中含有的文档文件
 rpm -q --changelog NAME|显示软件包新发行版的简短原因摘要
 rpm -q --scripts NAME|显示在软件包安装、升级或删除时运行的shell脚本
+
+### Yum命令
+可以根据名称或软件包组，查找、安装、更新和删除软件包：
+
+命令|任务
+:---|:---
+yum list \[NAME-PATTERN]|按名称列出已安装和可用的软件包
+yum group list|列出已安装和可用的组
+yum search KEYWORD|按关键字搜索软件包
+yum info PACKAGENAME|显示软件包的详细信息
+yum install PACKAGENAME|安装软件包
+yum group install GROUPNAME|安装软件包组
+yum update|更新所有软件包
+yum remove PACKAGENAME|删除软件包
+yum history|显示事务历史记录
 
 ## 硬件相关
 ### cpu相关
