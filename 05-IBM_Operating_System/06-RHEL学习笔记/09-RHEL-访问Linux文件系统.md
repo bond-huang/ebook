@@ -22,3 +22,86 @@ NVMe附加存储（很多 SSD）|/dev/nvme0, /dev/nvme1 ...
 SD/MMC/eMMC存储（SD卡）|/dev/mmcblk0, /dev/mmcblk1 ... 
 
 #### 磁盘分区
+&#8195;&#8195;通常不会将整个存储设备设为一个文件系统。存储设备通常划分为更小的区块，称为分区。分区用于划分硬盘：
+- 不同的部分可以通过不同的文件系统进行格式化或用于不同的用途
+- 例如，一个分区可以包含用户主目录，另一个分区则可包含系统数据和日志
+- 如果用户在主目录分区中填满了数据，系统分区可能依然有可用的空间
+
+分区本身就是块设备：
+- 在`SATA`附加存储中，
+    - 第一磁盘上的第一个分区是`/dev/sda1`
+    - 第二磁盘上的第三个分区是`/dev/sdb3`，以此类推
+    - 超虚拟化存储设备采用了类似的命名体系
+- `NVMe`附加 SSD 设备命名分区的方式却有所不同：
+    - 其第一磁盘上的第一个分区是`/dev/nvme0p1`
+    - 第二磁盘上的第三个分区是`/dev/nvme1p3`，以此类推
+    - `SD`或`MMC`卡采用了类似的命名体系
+
+host上`/dev/nvme0n2p1`设备文件的长列表显示其特殊文件类型为`b`，代表块设备：
+```
+[root@redhat8 ~]# ls -l /dev/nvme0n2p1
+brw-rw----. 1 root disk 259, 6 Jun  6 21:43 /dev/nvme0n2p1
+```
+#### 逻辑卷
+&#8195;&#8195;整理磁盘和分区的另一种方式是通过逻辑卷管理(LVM)。通过`LVM`，一个或多个块设备可以汇集为一个存储池，称为卷组。然后，卷组中的磁盘空间被分配到一个或多个逻辑卷，它们的功能等同于驻留在物理磁盘上的分区。`LVM`系统在创建时为卷组和逻辑卷分配名称：
+- `LVM`在`/dev`中创建一个名称与组名匹配的目录，然后在该新目录中创建一个与逻辑卷同名的符号链接。之后，可以挂载该逻辑卷文件
+- 例如，如果一个卷组名为`myvg`，其中有一个名为`mylv`的逻辑卷，那么其逻辑卷设备文件的完整路径名为`/dev/myvg/mylv`
+
+### 检查文件系统
+&#8195;&#8195;若要对本地和远程文件系统设备及可用空间大小有个简略了解，可以运行`df`命令。不带参数运行`df`时，它会报告所有已挂载的普通文件系统的总磁盘空间、已用磁盘空间、可用磁盘空间，以及已用磁盘空间占总磁盘空间的百分比。它会同时报告本地和远程文件系统。示例：
+```
+[root@redhat8 ~]# df
+Filesystem            1K-blocks     Used Available Use% Mounted on
+devtmpfs                 909368        0    909368   0% /dev
+tmpfs                    924716        0    924716   0% /dev/shm
+tmpfs                    924716     1372    923344   1% /run
+tmpfs                    924716        0    924716   0% /sys/fs/cgroup
+/dev/mapper/rhel-root  37734400 13701212  24033188  37% /
+/dev/nvme0n1p1          1038336   172968    865368  17% /boot
+/dev/nvme0n2p5           688048      568    651644   1% /testfs
+tmpfs                    184940       16    184924   1% /run/user/42
+tmpfs                    184940        4    184936   1% /run/user/0
+```
+文件系统说明：
+- 示例host系统上的分区显示了两个物理文件系统，它们挂载于`/`和`/boot`。这对于虚拟机而言很常见
+- `tmpfs`和`devtmpfs`设备是系统内存中的文件系统。在系统重启后，写入`tmpfs`或`devtmpfs`的文件都会消失
+
+&#8195;&#8195;若要改善输出大小的可读性，可以使用两个不同的用户可读选项，即`-h`或`-H`。这两个选项的区别是：
+- 使用`-h`时报告单位是`KiB`、`MiB`或`GiB`，分别是2的10、20及30次方
+- 使用`-H`选项时报告单位是`SI`单位，即`KB`、`MB`或`GB`分别是10的3、6及9次方
+- 硬盘驱动器制造商在广告其产品时通常使用`SI`单位
+
+示例如下：
+```
+[root@redhat8 ~]# df -h
+Filesystem             Size  Used Avail Use% Mounted on
+devtmpfs               889M     0  889M   0% /dev
+tmpfs                  904M     0  904M   0% /dev/shm
+tmpfs                  904M  1.4M  902M   1% /run
+tmpfs                  904M     0  904M   0% /sys/fs/cgroup
+/dev/mapper/rhel-root   36G   14G   23G  37% /
+/dev/nvme0n1p1        1014M  169M  846M  17% /boot
+/dev/nvme0n2p5         672M  568K  637M   1% /testfs
+tmpfs                  181M   16K  181M   1% /run/user/42
+tmpfs                  181M  4.0K  181M   1% /run/user/0
+```
+&#8195;&#8195;如需有关某一特定目录树使用的空间的详细信息，可以使用`du`命令。du 命令具有`-h`和`-H`选项，可以将输出转换为可读的格式。`du`命令以递归方式显示当前目录树中所有文件的大小。示例：
+```
+[root@redhat8 ~]# du /home/huang
+...output omitted...
+9080	/home/huang/.pyenv
+0	/home/huang/umasktest
+0	/home/huang/rsyctest
+57660	/home/huang
+```
+以可读的格式显示上面示例目录的磁盘使用报告：
+```
+[root@redhat8 ~]# du -h /home/huang
+...output omitted...
+8.9M	/home/huang/.pyenv
+0	/home/huang/umasktest
+0	/home/huang/rsyctest
+57M	/home/huang
+```
+## 挂载和卸载文件系统
+### 手动挂载文件系统
