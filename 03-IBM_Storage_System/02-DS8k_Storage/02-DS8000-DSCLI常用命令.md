@@ -1,5 +1,7 @@
 # DS8000-DSCLI常用命令
-&#8195;&#8195;DSCLI全称DS command-line interface，是管理DS8000系列存储的常用工具，DS8000的MC系统上有集成，也可以下载到个人终端上，在IBM fixcentral中有下载。
+&#8195;&#8195;DSCLI全称DS command-line interface，是管理DS8000系列存储的常用工具，DS8000的MC系统上有集成，也可以下载到个人终端上，在IBM fixcentral中有下载。DSCLI命令官方说明链接：
+- [DS8880 8.5.4 CLI commands](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=interface-cli-commands)
+
 ## 登录使用
 ### MC上使用
 在MC上的空白处右键，既有打开DSCLI选项，点击打开输入用户密码即可管理此DS8000存储。
@@ -102,3 +104,19 @@ All Fixed Block-512 V20 SCSI All
 All Fixed Block-520 V30 OS400 All
 ```
 ### 修改类命令
+
+### Copy Services命令
+#### FlashCopy命令
+FlashCopy命令：
+
+命令|说明
+:---|:---
+[commitflash](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_clicommitflash_1vd000.html)|用于灾难恢复，完成部分形成的全局镜像一致性组
+[resyncflash](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_cliincflash_1vd004.html)|使用`-record`和`-persist`参数建立的现有FlashCopy对的时间点副本
+[lsflash](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_clilsflash_1kz82u.html)|显示FlashCopy关系列表以及列表中每个FlashCopy关系的状态信息
+[mkflash](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_climkflash_1kz8nz.html)|启动从源卷到目标卷的时间点复制
+[reverseflash](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_clireverseflash_1kz8m0.html)|反转FlashCopy关系
+[revertflash](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_clirevertflash_1kz8m1.html)|用户灾难恢复，从当前正在形成的全局镜像一致性组中恢复以前的全局镜像一致性组
+[rmflash ](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_clirmflash_1kz7xe.html)|删除FlashCopy关系
+[unfreezeflash ](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_clirmflashconsistency_1vd00b.html)|重置一个 FlashCopy 一致性组，该组以前在发出`mkflash`或`resyncflash`命令时使用`-freeze`参数建立
+[setflashrevertible](https://www.ibm.com/docs/en/ST5GLJ_8.5.4/com.ibm.storage.ssic.help.doc/f2c_clisetflashrevertible_1kz8m2.html)|作为FlashCopy关系一部分的FlashCopy卷对修改为`revertible`

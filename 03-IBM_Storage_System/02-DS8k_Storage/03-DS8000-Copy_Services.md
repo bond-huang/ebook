@@ -3,6 +3,7 @@
 - [DS8870 7.3 Copy Services](https://www.ibm.com/docs/en/ds8870/7.3?topic=managing-copy-services)
 - [DS8880 8.5.4 Copy Services](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=help-copy-services)
 - [DS8880 8.5.4 Copy Services commands](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=commands-copy-services)
+- [DS8880 8.5.4 Copy Services functions](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=interface-copy-services-functions)
 
 官方参考红皮书：
 - IBM DS8000 Copy Services Updated for IBM DS8000 Release 9.1
