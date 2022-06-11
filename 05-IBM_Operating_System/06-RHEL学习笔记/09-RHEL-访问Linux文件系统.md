@@ -258,4 +258,251 @@ bash    7487 root  cwd    DIR  259,9     4096    2 /testfs
 lsof    8021 root  cwd    DIR  259,9     4096    2 /testfs
 lsof    8022 root  cwd    DIR  259,9     4096    2 /testfs
 ```
-## 待补充
+## 查找系统中的文件
+### 搜索文件
+&#8195;&#8195;系统管理员需要使用工具来搜索文件系统中符合特定条件的文件。可以在文件系统层次结构中搜索文件的两个常用命令：
+- `locate`命令搜索预生成索引中的文件名或文件路径，并即时返回结果
+- `find`命令通过爬取整个文件系统层次结构来实时搜索文件
+
+### 根据名称查找文件
+&#8195;&#8195;`locate`命令根据文件的名称或路径查找文件。这种方式速度比较快，是从`mlocate`数据库中查找这些信息。但是，该数据库不会实时更新（每日自动更新），意味着`locate`将找不到自上次数据库更新以来创建的文件。`root`用户可在任何时候通过发出`updatedb`命令来强制即时更新：
+```
+[root@redhat8 ~]# updatedb
+```
+&#8195;&#8195;`locate`命令限制非特权用户的结果。若要查看生成的文件名，用户必须对文件所在的目录具有搜索权限。示例可由`huang`读取的目录树中，搜索名称或路径中包含`passwd`的文件：
+```
+[huang@redhat8 ~]$ locate passwd
+/etc/passwd
+/etc/passwd-
+/etc/pam.d/passwd
+/etc/security/opasswd
+...output omitted...
+```
+即使文件名或路径仅部分匹配搜索查询，也会返回结果：
+```
+[root@redhat8 ~]# locate image
+/images
+/etc/selinux/targeted/contexts/virtual_image_context
+/home/huang/.local/share/libvirt/images
+/images/debian_wheezy_amd64_standard.qcow2
+...output omitted...
+```
+`-i`选项执行不区分大小写的搜索：
+```
+[huang@redhat8 ~]$ locate -i message |more
+...output omitted...
+/usr/share/vim/vim80/lang/zh_TW.UTF-8/LC_MESSAGES
+/usr/share/vim/vim80/lang/zh_TW.UTF-8/LC_MESSAGES/vim.mo
+/usr/share/vim/vim80/syntax/messages.vim
+/var/log/messages
+/var/log/messages-20220515
+```
+`-n`选项限制`locate`返回的搜索结果数量，返回的搜索结果限制为前五个匹配项：
+```
+[huang@redhat8 ~]$ locate -n 3 snow.png
+/usr/share/icons/Adwaita/16x16/status/weather-snow.png
+/usr/share/icons/Adwaita/22x22/status/weather-snow.png
+/usr/share/icons/Adwaita/24x24/status/weather-snow.png
+```
+### 实时搜索文件
+&#8195;&#8195;`find`命令通过在文件系统层次结构中执行实时搜索来查找文件。比`locate`慢，但准确度更高。此外，它还可以根据文件名以外的条件搜索文件，例如文件权限、文件类型、文件大小或修改时间：
+- `find`命令使用执行搜索的用户帐户查看文件系统中的文件
+- 调用`find`命令的用户必须具有要查看其内容的目录的读取和执行权限
+- `find`命令的第一个参数是要搜索的目录。如果省略了目录参数，则`find`将从当前目录中开始搜索，并在任何子目录中查找匹配项
+- 若要按文件名搜索文件，可使用`-name FILENAME`选项。使用此选项时，`find`将返回与`FILENAME`完全匹配的文件的路径
+- 对于`find`命令，完整词语选项使用单个短划线，选项跟在路径名参数后
+
+例如从`/`目录开始搜索名为`sshd_config`的文件：
+```
+[root@redhat8 ~]# find / -name sshd_config
+/etc/ssh/sshd_config
+/root/etcbackup/etc/ssh/sshd_config
+```
+&#8195;&#8195;可以使用通配符搜索文件名，并返回部分匹配的所有结果。使用通配符时，请务必将要查找的文件名用引号括起，以防止终端对通配符进行解译。示例从`/`目录开始搜索名称以`.sh`结尾的文件：
+```
+[root@redhat8 ~]# find / -name '*.sh'
+/boot/grub2/i386-pc/modinfo.sh
+/etc/X11/xinit/xinitrc.d/50-systemd-user.sh
+/etc/X11/xinit/xinitrc.d/localuser.sh
+/etc/profile.d/lang.sh
+/etc/profile.d/colorgrep.sh
+...output omitted...
+```
+示例在`/etc/`目录中搜索名称的任何位置上含有词语`pass`的文件：
+```
+[root@redhat8 ~]# find /etc -name '*pass*'
+/etc/security/opasswd
+/etc/pam.d/passwd
+/etc/pam.d/gdm-password
+/etc/pam.d/password-auth
+/etc/passwd-
+/etc/passwd
+/etc/authselect/password-auth
+```
+&#8195;&#8195;要对所给文件名执行不区分大小写的搜索，可使用`-iname`选项，后面加上要搜索的文件名。示例如下：
+```
+[root@redhat8 ~]# find / -iname '*message*'
+/proc/sys/net/core/message_burst
+/proc/sys/net/core/message_cost
+/python/git-2.29.2/po/build/locale/de/LC_MESSAGES
+/python/git-2.29.2/po/build/locale/tr/LC_MESSAGES
+...output omitted...
+```
+#### 根据所有权或权限搜索文件
+&#8195;&#8195;`find`可以根据所有权或权限搜索文件。按所有者搜索时的有用选项为`-user`和`-group`（按名称搜索），以及 `-uid`和`-giz`（按ID搜索）。示例在`/home/huang`目录中搜索由`root`拥有的文件：
+```
+[huang@redhat8 ~]$ find -user root
+./Downloads/usr
+./Downloads/usr/include
+./Downloads/usr/include/c++
+./Downloads/usr/include/c++/8
+...output omitted...
+```
+示例在`/home/huang`目录中搜索由`root`组拥有的文件：
+```
+[huang@redhat8 ~]$ find -group root |more
+./Downloads/usr
+./Downloads/usr/include
+./Downloads/usr/include/c++
+./Downloads/usr/include/c++/8
+...output omitted...
+```
+&#8195;&#8195;`-user`和`-group`选项可以一起使用，以搜索文件所有者和组所有者不同的文件。示例列出由用户`root`所有并且附属于`mail`组的文件：
+```
+[root@redhat8 ~]# find / -user root -group mail
+/var/spool/mail
+```
+&#8195;&#8195;`-perm`选项用于查找具有特定权限集的文件。权限可以描述为八进制值，包含代表读取、写入和执行的`4`、`2`和`1`的某些组合。权限前面可以加上`/`或`-`符号：
+- 前面带有`/`的数字权限将匹配文件的用户、组、其他人权限集中的至少一位
+- 权限为`r--r--r--`的文件并不匹配`/222`，权限为`rw-r--r--`的文件才匹配
+- 权限前带有`-`符号表示该位的所有三个实例都必须存在，因此前面的两个示例都不匹配，但诸如`rw-rw-rw-` 的对象则匹配
+
+&#8195;&#8195;示例命令将匹配用户具有读取、写入和执行权限，组成员具有读取和写入权限且其他人具有只读权限的任何文件：
+```
+[root@redhat8 ~]# find /home -perm 764
+```
+&#8195;&#8195;示例匹配用户至少具有写入和执行权限，并且组至少具有写入权限，并且其他人至少具有读取权限的文件：
+```
+[root@redhat8 ~]# find /home -perm -324
+/home/huang/.config/libvirt/storage/autostart/default.xml
+```
+&#8195;&#8195;示例匹配用户具有读取权限，或者组至少具有读取权限，或者其他人至少具有写入权限的文件：
+```
+[root@redhat8 ~]# find /home -perm /442
+/home
+/home/huang
+/home/huang/.mozilla
+...output omitted...
+```
+&#8195;&#8195;与`/`或`-`一起使用时，`0`值类似于通配符，因为其表示至少无任何内容的权限。示例匹配`/home/huang`目录中其他人至少具有读取权限的任何文件：
+```
+[huang@redhat8 ~]$ find -perm -004 |more
+.
+./.mozilla
+./.mozilla/extensions
+...output omitted...
+```
+示例在`/home/huang`目录中查找其他人拥有写入权限的所有文件：
+```
+[huang@redhat8 ~]$ find -perm -002 |more
+.
+./.mozilla
+./.mozilla/extensions
+./.mozilla/plugins
+./.bash_logout
+...output omitted...
+```
+#### 根据大小搜索文件
+&#8195;&#8195;`find`命令可以查找与指定的大小相符的文件，该大小是通过`-size`选项加上数字值与单位来指定的。作`-size`选项的单位：
+- `k`，表示千字节
+- `M`，表示兆字节
+- `G`，表示千兆字节 
+
+示例显示如何搜索大小为`3`兆字节（向上取整）的文件：
+```
+[huang@redhat8 ~]$ find -size 3M
+./Downloads/libstdc++-devel-8.2.1-3.5.el8.x86_64.rpm
+```
+搜索大小超过`1`千兆字节的文件：
+```
+[root@redhat8 ~]# find / -size +1G
+/proc/kcore
+```
+列出大小不到`10KB`的所有文件：
+```
+[huang@redhat8 ~]$ find -size -10k
+.
+./.mozilla
+./.mozilla/extensions
+./.mozilla/plugins
+...output omitted...
+```
+&#8195;&#8195;`-size`选项单位修饰符将所有内容向上取整为一个单位。例如，`find -size 1M`命令将显示小于`1MB`的文件，因为它将所有文件都向上取整为`1MB`。
+#### 根据修改时间搜索文件
+&#8195;&#8195;`-mmin`选项加上以分钟表示的时间，将搜索内容在过去`n`分钟前更改的所有文件。文件的时间戳始终向下舍入。与范围（`+n`和`-`）一起使用时支持分数值。示例查找文件内容在`180`分钟以前更改的所有文件：
+```
+[huang@redhat8 ~]$ find ./test -mmin 180
+```
+分钟数前加上`+`修饰符将查找在`n`分钟以前修改过的所有文件。示例：
+```
+[huang@redhat8 ~]$ find ./test -mmin +10
+./test/cltopinfo
+./test/test1
+./test/clshowsrv
+./test/clshowsrv1
+...output omitted...
+```
+&#8195;&#8195;`-`修饰符则将搜索改为查找目录中在过去`n`分钟内更改的所有文件。示例过去十分钟内修改文件：
+```
+[huang@redhat8 ~]$ find ./test -mmin -10
+./test
+./test/testfind
+```
+#### 根据文件类型搜索文件
+&#8195;&#8195;`find`命令中的`-type`选项将搜索范围限制为给定的文件类型。使用以下列表传递所需的标志以限制搜索范围：
+- `f`，表示普通文件
+- `d`，表示目录
+- `l`，表示软链接
+- `b`，表示块设备 
+
+示例搜索`/home/huang`目录中的所有目录：
+```
+[huang@redhat8 ~]$ find -type d
+.
+./.mozilla
+./.mozilla/extensions
+./.mozilla/plugins
+...output omitted...
+```
+搜索所有软连接：
+```
+[huang@redhat8 ~]$ find -type l
+./.config/libvirt/storage/autostart/default.xml
+```
+`/dev`目录中所有块设备的列表：
+```
+[root@redhat8 ~]# find /dev -type b
+/dev/dm-1
+/dev/dm-0
+/dev/sr0
+/dev/nvme0n2p6
+/dev/nvme0n2p5
+...output omitted...
+```
+`-links`选项加上数字将查找具有特定硬链接数的所有文件：
+- 数字前面带有`+`修饰符将查找硬链接数超过所给数目的文件
+- 如果数字前面是`-`修饰符，则搜索将限制为硬链接数小于所给数目的所有文件
+
+示例搜索硬链接数大于`3`的所有普通文件：
+```
+[root@redhat8 ~]# find / -type f -links +3 |more
+/usr/bin/sha1hmac
+/usr/bin/sha224hmac
+/usr/bin/sha256hmac
+/usr/bin/sha384hmac
+/usr/bin/sha512hmac
+/usr/sbin/e2fsck
+/usr/sbin/fsck.ext2
+...output omitted...
+```
+## 练习
