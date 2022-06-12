@@ -39,8 +39,17 @@ CL程序中常用命令或示例。
 :---|:---
 [CALL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/call.htm)|Call Program
 [CALLPRC](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/callprc.htm)|Call Bound Procedure
+[CALLSUBR](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/callsubr.htm)|Call Subroutine
+[DO](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/do.htm)|Do Group
+[DOFOR](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/dofor.htm)|Do For
+[DOUNTIL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/dountil.htm)|Do Until
+[DOWHILE](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/dowhile.htm)|Do While
 [ELSE](https://www.ibm.com/docs/en/i/7.4?topic=ssw_ibm_i_74/cl/else.htm)|Else (ELSE)
 [GOTO](https://www.ibm.com/docs/en/i/7.4?topic=ssw_ibm_i_74/cl/goto.htm)|Go To
 [IF](https://www.ibm.com/docs/en/i/7.4?topic=ssw_ibm_i_74/cl/if.htm)|If (IF)
+[ITERATE](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/iterate.htm)|Iterate
+[LEAVE](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/leave.htm)|Leave
 [RETURN](https://www.ibm.com/docs/zh/ssw_ibm_i_73/cl/return.htm)|Return
-[TFRCTL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/tfrctl.htm)|Transfer Control 
+[SELECT](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/select.htm)|Select
+[SUBR](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/subr.htm)|Subroutine
+[TFRCTL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/tfrctl.htm)|Transfer Control
