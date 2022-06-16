@@ -125,6 +125,60 @@ WRKCLU OPTION(*CRG)
 - [IBM i 7.3 显示CRG状态](https://www.ibm.com/docs/zh/i/7.3?topic=crgs-displaying-crg-status)
 - [Display CRG Information(DSPCRGINF)](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/dspcrginf.htm)
 
+#### CRG类型
+CRG类型如下：
+- `*APP`：应用程序集群资源组
+- `*DATA`：数据集群资源组
+- `*DEV`：设备集群资源组
+- `*PEER`：对等集群资源组
+
+#### CRG状态
+CRG状态及描述如下：
+- `Active`：集群资源组管理的资源当前是`resilient`状态
+- `Inactive`：集群资源组管理的资源目前是非`resilient`状态
+- `Indoubt`：集群资源组对象中包含的信息可能不准确：
+  - 当使用`Undo`操作代码调用退出程序但未能成功完成时，会出现此状态
+- `Restored`：集群资源组对象已在此节点上恢复，并且尚未复制到恢复域中的其他节点：
+  - 在此节点上启动集群资源服务时，集群资源组将与恢复域中的其他节点同步，并将其状态设置为`Inactive` 
+- `Add Pending`：Add Node Pending，新节点正在添加到集群资源组的恢复域中：
+  - 如果退出程序成功，则状态将重置为其调用命令时的值
+  - 如果退出程序失败且无法恢复原始状态，则状态设置为`Indoubt`
+- `Delete Pending`：集群资源组对象正在被删除：
+  - 当退出程序完成时，集群资源组将从恢复域中的所有节点中删除
+- `Change Pending`：正在更改群集资源组：
+  - 如果退出程序成功，则状态将重置为调用命令时的值
+  - 如果退出程序失败并且无法恢复原始状态，则将状态设置为`Indoubt`
+- `End Pending`：集群资源组的`Resilience`正在结束：
+  - 如果退出程序成功，则状态设置为`Inactive`
+  - 如果退出程序失败且无法恢复原始状态，则状态设置为`Indoubt`
+- `Initialize Pending`：正在创建集群资源组，并且正在初始化：
+  - 如果退出程序成功，则状态设置为`Inactive`
+  - 如果退出程序失败，集群资源组将从所有节点中删除
+- `Remove Pending`：Remove Node Pending。一个节点正在从集群资源组的恢复域中删除：
+  - 如果退出程序成功，则状态将重置为调用命令时的值
+  - 如果退出程序失败且无法恢复原始状态，则状态设置为`Indoubt`
+- `Start Pending`：`Resilience`正在为集群资源组启动
+  - 如果退出程序成功，则状态设置为`Active`
+  - 如果退出程序失败且无法恢复原始状态，则状态设置为`Indoubt`
+- `Switchover Pending`：`CHGCRGPRI`(Change Cluster Resource Group Primary)命令调用，出现集群资源组故障或节点故障，导致切换或故障开始，第一备用节点正在成为主节点：
+  - 如果退出程序成功，则状态设置为`Active`
+  - 如果退出程序失败且无法恢复原始状态，则状态设置为`Indoubt`
+- `Delete Pending`：Delete Cmd Pending。`DLTCRG`(Delete Cluster Resource Group)命令正在删除集群资源组对象。集群资源组对象仅从运行该命令的节点中删除：
+  - 这不是分布式请求。命令完成后，集群资源组将从节点中删除
+- `Add Device Pending`：Add Device Entry Pending。正在将设备条目添加到群集资源组：
+  - 如果退出程序成功，则状态将重置为其调用命令时的值
+  - 如果退出程序失败并且无法恢复原始状态，则将状态设置为`Indoubt`
+- `Remove Device Pending`：Remove Device Entry Pending。正在将设备条目从群集资源组中移除：
+  - 如果退出程序成功，则状态将重置为其调用命令时的值
+  - 如果退出程序失败并且无法恢复原始状态，则将状态设置为`Indoubt`
+- `Change Device Pending`：Change Device Entry Pending。正在更改群集资源组中的设备条目：
+  - 如果退出程序成功，则状态将重置为其调用命令时的值
+  - 如果退出程序失败并且无法恢复原始状态，则将状态设置为`Indoubt`
+- `Change Status Pending`：Change Node Status Pending。正在更改群集资源组的当前恢复域中节点的状态：
+  - 如果更改成功，则状态将重置为其调用`CHGCLUNODE`(Change Cluster Node Entry)命令时的值
+  - 退出程序失败会导致集群资源组的状态设置为`Indoubt`
+  - 如果备份节点被重新分配为`Resilience`设备集群资源组的主节点，并且设备的所有权无法转移到新的主节点，则状态设置为`Indoubt`
+
 #### 停止CRG
 &#8195;&#8195;可以使用IBM Navigator for i或CL命令`ENDCRG`(End Cluster Resource Group)。示例结束`MYCLUSTER`集群中`MYCRG`集群资源组(当集群资源组退出程序被调用时，会向其传递恢复域中所有活动节点的退出程序数据“important information”)：
 ```
@@ -217,7 +271,7 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 官方参考链接：[PowerHA: How to Copy an Independent Auxiliary Storage Pool From a Cluster Node to a Non-Cluster Node](https://www.ibm.com/support/pages/powerha-how-copy-independent-auxiliary-storage-pool-cluster-node-non-cluster-node)
 ## PowerHA数据复制技术
 &#8195;&#8195;PowerHA提供了几种不同的数据复制技术。这些技术可以单独使用，有时也可以组合使用，以提供更高级别的中断保护：
-- `Geographic mirroring`是一种 IBM复制技术，可用于任何存储。数据在独立 ASP 的两个副本之间复制，同时支持同步和异步复制。`Geographic mirroring`可以防止服务器和存储中断
+- `Geographic mirroring`是一种IBM复制技术，可用于任何存储。数据在独立ASP的两个副本之间复制，同时支持同步和异步复制。`Geographic mirroring`可以防止服务器和存储中断
 - 对于具有外部存储的客户，有多种技术可用：
   - `Switched logical units`允许将数据的一个副本从一个系统切换到另一个系统，并防止服务器中断
   - `Metro Mirror`和 `Global Mirror`是用于外部存储的同步和异步复制技术，通过将数据从 IASP 的主副本复制到备份副本来防止服务器和存储中断。
@@ -226,7 +280,7 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 
 官方参考链接：[PowerHA data replication technologies](https://www.ibm.com/docs/zh/i/7.3?topic=technologies-powerha-data-replication)
 ### Geographic mirroring
-&#8195;&#8195;`Geographic mirroring`使用IBM i 集群技术提供高可用性解决方案，其中存储在生产系统独立磁盘池中的一致数据副本在镜像副本上维护。`Geographic mirroring`通过使用内部或外部存储来维护独立磁盘池的一致备份副本：
+&#8195;&#8195;`Geographic mirroring`使用IBM i集群技术提供高可用性解决方案，其中存储在生产系统独立磁盘池中的一致数据副本在镜像副本上维护。`Geographic mirroring`通过使用内部或外部存储来维护独立磁盘池的一致备份副本：
 - 如果生产站点发生中断，生产将切换到备份站点，其中包含数据的镜像副本，通常位于另一个位置：
   - 在同步交付模式下，数据在生产系统上完成写入操作之前被镜像，通常用于在发生故障时不会遭受任何数据丢失的应用程序
   - 在异步交付模式下，数据仍会在写入操作完成之前发送到镜像副本，但是，在镜像写入实际到达镜像副本之前，控制权会返回给应用程序
@@ -264,7 +318,7 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 - [PowerHA supported storage servers](https://www.ibm.com/docs/zh/i/7.3?topic=resiliency-powerha-supported-storage-servers)
 
 ### Global Mirror
-&#8195;&#8195;`Global Mirror`在两个 IBM System Storage外部存储单元之间维护一致的数据副本。`Global Mirror`在两个外部存储单元之间提供磁盘 I/O 子系统级别的镜像：
+&#8195;&#8195;`Global Mirror`在两个IBM System Storage外部存储单元之间维护一致的数据副本。`Global Mirror`在两个外部存储单元之间提供磁盘 I/O 子系统级别的镜像：
 - 这种异步解决方案通过允许目标站点落后于源站点几秒钟，在无限距离上提供更好的性能，将数据中心分开更远的距离有助于防止区域中断
 - `Global Mirror`使用异步技术提供跨两个站点的远程远程复制。通过高速光纤通道通信链路运行，旨在以几乎无限的距离异步维护完整且一致的远程数据镜像，对应用程序响应时间几乎没有影响
 - 使用`Global Mirror`，复制到备份站点的数据在几秒钟内就可以与生产站点保持同步
@@ -348,10 +402,10 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 - [Managing DS8000 Full System HyperSwap](https://www.ibm.com/docs/zh/i/7.3?topic=powerha-managing-ds8000-full-system-hyperswap)
 
 ### DS8000 HyperSwap with IASPs
-&#8195;&#8195;在 IBM i高可用性环境中，使用HyperSwap作为一种方法来帮助减少或消除由于存储和SAN相关的中断而导致的中断。`HyperSwap`是一种存储高可用性解决方案，允许在两个 IBM System Storage DS8000单元之间镜像的逻辑单元以接近零的中断时间进行切换：
+&#8195;&#8195;在 IBM i高可用性环境中，使用HyperSwap作为一种方法来帮助减少或消除由于存储和SAN相关的中断而导致的中断。`HyperSwap`是一种存储高可用性解决方案，允许在两个IBM System Storage DS8000单元之间镜像的逻辑单元以接近零的中断时间进行切换：
 - 当`HyperSwap`在`IASP`级别实施时，可以与其他PowerHA技术相结合，为计划内和计划外存储中断提供最短停机时间解决方案，并为服务器计划内和计划外中断提供最短停机时间解决方案
 - 要使用`HyperSwap`，必须在系统上安装`IBM PowerHA for i Enterprise Edition`
-- 要将`DS8000 HyperSwap`与`IASP`一起使用，需要一个集群并且确实使用了PowerHA 技术
+- 要将`DS8000 HyperSwap`与`IASP`一起使用，需要一个集群并且确实使用了PowerHA技术
 
 官方参考链接：
 - [DS8000 HyperSwap with independent auxiliary storage pools (IASPs)](https://www.ibm.com/docs/zh/i/7.3?topic=pdrt-ds8000-hyperswap-independent-auxiliary-storage-pools-iasps)
