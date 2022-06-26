@@ -360,7 +360,7 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
  Cluster resource group site  . . . . . :   *NONE                              
  Location . . . . . . . . . . . . . . . :   E980PRD                            
  Sessions . . . . . . . . . . . . . . . :   IASPFC1                         
- IBM System Storage device  . . . . . . :   IBM.2107-75HAT61                   
+ IBM System Storage device  . . . . . . :   IBM.2107-75HBT61                   
    User . . . . . . . . . . . . . . . . :     qlpar                            
    Internet address . . . . . . . . . . :     10.22.168.66                      
                                                                                
@@ -413,4 +413,65 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 - [Configuring DS8000 HyperSwap with independent auxiliary storage pools (IASPs)](https://www.ibm.com/docs/zh/i/7.3?topic=ip-configuring-ds8000-hyperswap-independent-auxiliary-storage-pools-iasps)
 - [Managing DS8000 HyperSwap with independent auxiliary storage pools (IASPs)](https://www.ibm.com/docs/zh/i/7.3?topic=mp-managing-ds8000-hyperswap-independent-auxiliary-storage-pools-iasps)
 
-## 待补充
+## PowerHA Tools for IBM i - IASP Manager
+&#8195;&#8195;PowerHA Tools IASP Manager是IBM Lab Services编写的高可用性产品。它专为使用IBM存储和/或将PowerHA与独立辅助存储池(IASP)解决方案结合使用的IBM i客户而设计。官方参考链接：[PowerHA Tools for IBM i - IASP Manager](https://www.ibm.com/support/pages/node/1126029)
+
+### Multi-Target Copy简介
+&#8195;&#8195;`Multi-Target Copy`需要DS8000和IBM Copy Services Manager (CSM)。支持使用多达四个站点的多目标解决方案，包括：
+- `Metro Mirror - Metro Mirror (MM/MM)`：来自同一生产（源）节点的两个`Metro Mirror`目标
+- `Metro Mirror - Global Mirror (MM/GM)`：来自同一生产（源）节点的一个`Metro Mirror`目标和一个`Global Mirror`目标
+- `Metro Mirror - Global Mirror + GCP (MM/GM)`：来自同一源的一个`Metro Mirror`目标，一个`Global Mirror`目标 ，加一个从`Global Mirror`节点级联的`Global Copy`目标
+
+PowerHA Tools IASP Manager为`Multi-Target`环境提供完全自动化，包括：
+- 检查环境是否准备好切换
+- 在切换期间关闭生产中的`IASP`
+- `Metro Mirror`或`Global Mirror`环境的计划内或计划外切换的自动化
+- 切换到拥有生产副本的新节点后将`IASP`进行`Vary on`
+
+### Multi-target解决方案
+&#8195;&#8195;IASP Manager不再支持`Metro-Global Mirror`，取而代之的是`multi-target`支持。需要使用单独的许可程序Copy Services Manager(CSM)。`multi-target`解决方案支持来自生产节点的两个目标： 
+- 对于 MMIR：
+  - `H1->H2` PPRC对被命名为`MMIR`
+  - `H1->H3`PPRC对被命名为 `MMIR2` 
+  - `H2->H3`PPRC对被命名为`MMIR3`
+- 对于GMIR：
+  - `H1->H2`PPRC对也称为`MMIR`
+  - ` H1->H3` PPRC对称为`GMIR`
+  - `H2->H3` PPRC对称为`GMIR2`
+
+### Metro Mirror-Metro Mirror概述
+&#8195;&#8195;三个节点中的任何一个都可以作为两个高速镜像关系的源。两个`Metro Mirror`目标之间还创建了隐式关系，这称为`Multi Target Incremental Resync`(MTIR)关系。关系表如下：
+
+源|活动目标|PPRC方向|*MTIR对
+:---:|:---:|:---:|:---:
+H1|H2, H3|Both Normal|H2->H3(MMIR3)
+H2|H1, H3|H2->H1(MMIR)Reversed;H2->H3(MMIR3)Normal|H1->H3(MMIR2)
+H3|H1, H2|H3->H1(MMIR2)Reversed;H3->H2(MMIR3)Reversed|H1->H2(MMIR)
+
+`SWPPRC`(Switch PPRC)命令可以在任何活动目标上运行。
+### Metro Mirror-Global Mirror概述
+&#8195;&#8195;`Metro Mirror-Global Mirror`结合了`Metro Mirror`的同步可用性和`Global Mirror`的远距离可用性。需要三个系统或分区：`Metro Mirror Source`, `Metro Mirror Target`和`Global Mirror Target`。关系如下表：
+
+源|活动目标/PPRC方向|未激活PPRC对/状态
+:---:|:---:|:---:|:---:
+H1|H2(MMIR)/Normal;H3(GMIR)/Normal|H2->H3(GMIR2 *MTIR)
+H2|H1(MMIR)/Reversed;H3(GMIR2)/Normal|H1->H2(GMIR *MTIR)
+H3(GMIR Reversed)|H1|H3->H2(GMIR2 *INELIGIBLE);H1->H2(MMIR *GCP *NORMAL)
+H3(GMIR2 Reversed)|H2|H3->H1(GMIR *INELIGIBLE)|H2->H1(MMIR *GCP *REVERSED)
+
+说明及注意事项：
+- 同样`SWPPRC`(Switch PPRC)命令可以在任何活动目标上运行
+- 当`H3`是源（`GMIR`或`GMIR2 *REVERSED`）时，`MMIR PPRC`对正在执行全局复制 `*GCP`功能。扇区更改正在发送到`MMIR`目标，但没有一致性。这意味着此节点无法切换到作为`Global Copy`目标
+
+#### Metro Mirror-Global Mirror(MG)其他注意事项
+注意事项：
+- `CHKPPRC`应针对以下两种环境执行：`MMIR`和`GMIR`
+- Metro Mirror-Global Mirror中的`GMIR`部分允许命令`SWPPRC`中使用`SCHEDULED`和`*UNSCHEDULED` 
+- 如果`GMIR`(或`GMIR2`)是对称的，则支持`SWPPRC`返回正常方向。否则，需要手动执行步骤 
+
+#### 从对称环境的故障转移中恢复
+&#8195;&#8195;如果由于站点丢失或生产DS丢失而在对称环境中发生故障转移，则在DS恢复运行后，应使用 `SWPPRC *complete`重新启动复制。
+
+#### 在GMIR切换到反向后将非对称MG恢复到生产
+&#8195;&#8195;如果`MM/GM`环境中的`GMIR`对被切换并且没有为反向配置的一致性组卷，则切换回`GMIR`源的唯一方法是执行计划切换。不允许计划外的切换，因为目标上的数据将不一致。
+
