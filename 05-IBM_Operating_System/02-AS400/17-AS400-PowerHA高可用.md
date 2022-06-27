@@ -431,7 +431,7 @@ PowerHA Tools IASP Manager为`Multi-Target`环境提供完全自动化，包括�
 ### Multi-target解决方案
 &#8195;&#8195;IASP Manager不再支持`Metro-Global Mirror`，取而代之的是`multi-target`支持。需要使用单独的许可程序Copy Services Manager(CSM)。`multi-target`解决方案支持来自生产节点的两个目标： 
 - 对于 MMIR：
-  - `H1->H2` PPRC对被命名为`MMIR`
+  - `H1->H2`PPRC对被命名为`MMIR`
   - `H1->H3`PPRC对被命名为 `MMIR2` 
   - `H2->H3`PPRC对被命名为`MMIR3`
 - 对于GMIR：
@@ -475,3 +475,28 @@ H3(GMIR2 Reversed)|H2|H3->H1(GMIR *INELIGIBLE)|H2->H1(MMIR *GCP *REVERSED)
 #### 在GMIR切换到反向后将非对称MG恢复到生产
 &#8195;&#8195;如果`MM/GM`环境中的`GMIR`对被切换并且没有为反向配置的一致性组卷，则切换回`GMIR`源的唯一方法是执行计划切换。不允许计划外的切换，因为目标上的数据将不一致。
 
+### CHKPPRC命令
+### SWPPRC命令
+`SWPPRC`(Switch PPRC)命令用于切换PPRC。
+#### 命令示例
+例如计划性切换`*GMIR`，运行`SWPPRC`命令执行切换，按F4选择参数：
+- `Environment name`：填入切换环境名称
+- `Switch type`选项为`*SCHEDULED`
+- `Type`选项为`*GMIR`
+- `Auto Vary on`选项默认为`*YES`
+- `Auto replicate`选项默认为`*DFT`
+- `Switch paused MMIR`选项默认为`*NO`
+
+#### 命令选项说明
+&#8195;&#8195;`Type`表示IBM i Copy Services环境的类型。此可选参数可用于指定要切换的`PRC`环境的类型。具体选项说明如下：
+- `*`：默认选项。具体类型(GMIR、GMIR2、LUN、MMIR、MMIR2或MMIR3)将由命令处理程序解析。只能在此环境名称中配置这些类型中的一种
+- `*GMIR`：将切换具有此环境名称的`PPRC`全局镜像环境。此环境可以是单个镜像环境，也可以是具有`GMIR2`和`MMIR`环境的多目标复制配置的一部分
+- `*GMIR2`：将切换具有此环境名称的多目标`PPRC`全局镜像环境。此环境必须是具有`GMIR`和`MMIR`环境的多目标复制配置的一部分
+- `*LUN`：将切换具有此环境名称的`LUN`级别连接切换环境
+- `*MMIR`：将切换具有此环境名称的`PPRC Metro Mirroring`环境：
+  - 此环境可以是单个镜像环境，也可以是多目标复制配置的一部分
+  - 如果它用于多目标复制，则必须同时存在`GMIR`和`GMIR2`环境，或者同时存在`MMIR2`和`MMIR3`环境
+- `*MMIR2`：将切换具有此环境名称的多目标`PPRC Metro Mirroring`环境。此环境必须是具有`MMIR`和 `MMIR3`环境的多目标复制环境的一部分
+- `*MMIR3`：将切换具有此环境名称的多目标`PPRC Metro Mirroring`环境。此环境必须是具有`MMIR`和 `MMIR2`环境的多目标复制环境的一部分
+
+## 待补充
