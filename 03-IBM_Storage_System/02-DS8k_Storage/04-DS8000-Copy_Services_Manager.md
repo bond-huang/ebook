@@ -8,5 +8,5 @@ https://xxx.xxx.xxx.xxx:9559/CSM/
 ```
 用户: `csmadmin`, 默认密码: `passw0rd`
 ### CSM CLI
-Copy Services Manager command-line  interface.
+Copy Services Manager command-line interface.
 ## 待补充
