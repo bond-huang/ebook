@@ -1,5 +1,15 @@
 # PowerHA Tools for IBM i - IASP Manager
 &#8195;&#8195;PowerHA Tools IASP Manager是IBM Lab Services编写的高可用性产品。它专为使用IBM存储和/或将PowerHA与独立辅助存储池(IASP)解决方案结合使用的IBM i客户而设计。官方参考链接：[PowerHA Tools for IBM i - IASP Manager](https://www.ibm.com/support/pages/node/1126029)。
+## 常用命令
+常用命令如下：
+命令|描述
+:---|:---
+CHKFLASH|Check FlashCopy
+STRFLASH|Start a FlashCopy Backup
+CHKPPRC|Check PPRC
+SWPPRC|Switch PPRC
+WRKCSE|Work with Copy Services Environments
+
 ## Multi-Target Copy简介
 &#8195;&#8195;`Multi-Target Copy`需要DS8000和IBM Copy Services Manager (CSM)。支持使用多达四个站点的多目标解决方案，包括：
 - `Metro Mirror - Metro Mirror(MM/MM)`：来自同一生产（源）节点的两个`Metro Mirror`目标
@@ -11,6 +21,42 @@ PowerHA Tools IASP Manager为`Multi-Target`环境提供完全自动化，包括�
 - 在切换期间关闭生产中的`IASP`
 - `Metro Mirror`或`Global Mirror`环境的计划内或计划外切换的自动化
 - 切换到拥有生产副本的新节点后将`IASP`进行`Vary on`
+
+## Flash Copy
+### CHKFLASH命令
+&#8195;&#8195;`CHKFLASH`(Check FlashCopy)命令检查`CSE CRG`、节点和硬件资源的状态，以确定可以启动 FlashCopy(STRFLASH)。在`CHKFLASH`期间发现的所有错误都记录在`qzrdhasm.log`文件中，该文件位于运行命令分区上的`/qibm/qzrdhasm`目录中。
+### STRFLASH命令
+&#8195;&#8195;执行必要的步骤，将当前生产分区`IASP`快速复制到FlashCopy(备份)分区`IASP`，并使FlashCopy(备份)分区 `IASP`可用：
+- 此命令可以在`cluster/recovery`中的任何节点上运行，以执行使指定`IASP`的第二个副本可用所需的步骤
+- 副本将从指定的源节点获取，该源节点也可能参与`Metro Mirror`或`Global Mirror`关系，无论复制方向如何
+- 对于冷FlashCopy，生产分区`IASP`将自动关闭，FlashCopy数据将是生产数据的精确副本
+- 对于热FlashCopy，生产分区`IASP`保持开启，因此FlashCopy可能会丢失一些尚未刷新到生产分区磁盘的数据
+
+`STRFLASH`命令属性描述：
+- `Environment name`：要使用的`FLASH CSE`环境的名称
+- `Flash Target Node Name`：FlashCopy目标节点的名称，`*LOCAL`或`FC node`
+- `Vary on after flash`：是否在`FlashCopy node`上`Vary on`，`*YES`或`*NO`
+- `Quiesce Action`：`*ENV`或下面一种：
+  - `*QUIESCE`：将内存刷新到磁盘并在闪存期间暂时挂起`PPRC`
+  - `*FRCWRT`：将内存刷新到磁盘，但不在闪存期间暂停`PPRC`
+  - `*NONE`：在启动闪存之前不要将内存刷新到磁盘
+- `Cluster Resource Group`：
+  - `*ENV`
+  - `CRG name`：如果与环境名称不同
+- `Preflashed`：
+  - `*NO`
+  - `*YES`：如果FlashCopy已经完成
+- `Connect hosts`：`*ENV`或下面一种：
+  - `*CURRENT`：假设当前连接正确
+  - `*REQUIRED`：需要修改主机连接。如果未分配卷组，请继续并在适当时运行添加脚本。如果已分配卷组，请验证它们是否适用于此环境。如果没有，终止STRFLASH
+  - `*ATTEMPT`：与`*REQUIRED`相同，但如果分配了不正确的卷组，则不要`Vary on` IASP
+  - `*NO`：对主机连接不执行任何操作，但仍将环境标记为`*FLASHED`
+- `Wait for completion`：`*ENV`, `*YES`或`*NO`。由于IASP的`Vary on`现在是异步完成的，因此必须等待`Vary on`完成才能开始保存
+- `Completion timeout`：`1-600`,`*ENV`。在向`QSYSOPR`发送失败消息之前等待改变完成的分钟数
+- `Vary on Source`：`*YES`或`*NO`。用于生产节点上的IASP
+- `Exit program and library`：
+  - `*ENV` 
+  - `<name>`：IASP为`AVAILABLE`时要提交的程序名称
 
 ## Metro Mirror
 ### Metro Mirror概述

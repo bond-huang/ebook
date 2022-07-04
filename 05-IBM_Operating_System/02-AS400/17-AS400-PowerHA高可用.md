@@ -28,8 +28,7 @@ RMVCRGNODE|Remove CRG Node Entry
 
 命令`WRKCLU`示例：
 ```
-                               Work with Cluster                              
-                                                             System:   LPAR110
+                               Work with Cluster        
  Cluster  . . . . . . . . . . . . . . . . :   TESTCLU                       
  Select one of the following:                                                 
                                                                               
@@ -232,6 +231,34 @@ RMVCRGNODE CLUSTER(MYCLUSTER) CRG(MYCRG) NODE(NODE03)
 - [Add CRG Node Entry(ADDCRGNODE)](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/addcrgnode.htm)
 - [Change Cluster Resource Group(CHGCRG)](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/chgcrg.htm)
 - [Remove CRG Node Entry(RMVCRGNODE)](https://www.ibm.com/docs/en/ssw_ibm_i_73/cl/rmvcrgnode.htm)
+
+### 管理集群管理域
+参考链接：[IBM i 7.3 管理集群管理域](https://www.ibm.com/docs/zh/i/7.3?topic=clusters-managing-cluster-administrative-domains)
+#### 显示集群管理域
+使用`WRKCADMRE`命令：[IBM i 7.3 Work with Monitored Resources](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/wrkcadmre.htm)
+#### Monitored Resources Global Status
+&#8195;&#8195;在`Work with Monitored Resources`显示受监视资源中的`Global Status`项显示的状态详细说明如下：
+- `Added`：受监控资源条目及其属性已添加到集群管理域中的受监控资源目录中，但尚未同步，因为该域未处于活动状态
+- `Consistent`：系统监视的所有资源属性的值在活动集群管理域中是相同的
+- `Failed`：该资源不再受集群管理域的监视，应删除受监视的资源条目
+- `Inconsistent`：受监视资源条目的一个或多个受监视属性未设置为域中一个或多个节点上的集群管理域已知的值
+- `Pending`：受监视属性的值正在跨集群管理域同步
+- `Unknown`：无法确定受监视资源条目的状态
+
+#### Monitored Resources Local Status
+&#8195;&#8195;在`Display Monitored Resource Details`显示Node中的`Local Status`项显示本地节点上资源的状态详细说明如下：
+- `Current`：此节点上的受监视资源没有挂起的更新
+- `Delete fail`：集群中的某个节点上的资源已被删除，管理员需要完成该过程
+- `Delete pending`：已在集群中的某个节点上删除了受监视的资源，但该过程尚未在所有节点完全完成
+- `Move fail`：资源已在集群中的某个节点上移动，管理员需要完成该过程
+- `Move pending`：受监控的资源已在集群中的某个节点上移动，但所有节点的进程尚未完全完成
+- `Rename fail`：资源已在集群中的某个节点上重命名，管理员需要完成该过程
+- `Rename pending`：受监控的资源已在集群中的某个节点上重命名，但所有节点的进程尚未完全完成
+- `Restore fail`：资源已在集群中的某个节点上恢复，管理员需要完成该过程
+- `Restore pending`：受监控的资源已在集群中的某个节点上恢复，所有节点的进程尚未完全完成
+- `Update fail`：此节点上的资源更新失败
+- `Update pending`：此节点上的受监视资源有挂起的更新
+- `Unknown`：无法确定受监视资源条目的状态
 
 ## iASP数据复制
 ### 从集群系统到独立分区
