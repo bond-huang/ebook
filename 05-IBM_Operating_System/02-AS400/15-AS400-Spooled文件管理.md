@@ -186,4 +186,39 @@ STRSPLRCL OUTQ(*ALL/*ALL) ASPGRP(*SYSBAS)
 ```
 STRSPLRCL OUTQ(*ALL/PRT01) ASPGRP(*CURASPGRP)
 ```
+## Spool Performance
+### 可能遇到锁争用的Spool对象
+#### Output queue (OUTQ)
+&#8195;&#8195;此对象是Spooled文件的存储库。在内部，这个对象被实现为一个独立的索引（类型0E子类型 02）。输出队列上的Spooled文件都表示为`Output queue`索引上的一个条目：
+- 当前的内部设计不允许在不影响数据完整性的情况下共享对输出队列对象的访问。对于在Spooled文件上执行的每个操作，都会在Spooled文件所在的输出队列上获得一个排他锁
+- 这些操作包括在输出队列上添加(CRTSPLF)、删除(DLTSPLF)、保留(HLDSPLF)、释放(RLSPLF)、更改(CHGSPLFA)或列出(WRKOUTQ)Spooled文件
+- 这意味着使用`WRKOUTQ`(Work with Output Queue)命令将与创建Spooled文件冲突，与删除Spooled文件等冲突
+
+#### 内部打印队列(PRTQ)
+&#8195;&#8195;内部打印队列包括：QSPUSRQ、QSPALLQ、QSPDEVQ、QSPFRMQ、QSPUDTQ、QSPASPQ、QSPQJBQ。这些内部对象使用`WRKSPLF`命令有效地列出Spooled文件：
+- 在内部，这些对象被实现为独立的索引（类型0E子类型C7）
+- 系统上的每个Spooled文件都表示为每个索引上的一个条目
+- 每个索引都有一个不同的键，用于对Spooled文件列表进行子集化。例如：
+     - 如果交互式用户执行`WRKSPLF USER(QSYS)`，将锁定`QSPUSRQ`索引，该索引与用户名无关。仅列出用户`QSYS`拥有的那些Spooled文件
+     - 如果用户执行`WRKSPLF DEV(PRT01)`，将锁定`QSPDEVQ`索引，该索引与设备名称无关。仅列出设备输出队列`PRT01`上的那些Spooled文件
+     - 这样就无需检查系统上的所有Spooled文件以确定它是否与`WRKSPLF`命令上的过滤条件匹配
+- 与输出队列一样，内部打印队列设计的主要缺点是在系统上添加(CRTSPLF)、删除(DLTSPLF)、保留(HLDSPLF)、释放(RLSPLF)、更改(CHGSPLFA)或读取(WRKSPLF)Spooled文件时需要独占锁
+- 这意味着，`WRKSPLF USER(QSYS)`命令将与创建Spooled文件冲突，与删除Spooled文件等冲突
+
+#### Output file control block(OFCB)
+&#8195;&#8195;`OFCB`或Spooled数据库成员是为Spooled文件存储数据和属性的位置Spooled文件属性存储在与数据库成员关联的空间中：
+- 在数据库成员上获得一个独占空间位置锁，以同步对Spooled文件属性的访问
+- 此对象上的锁争用通常不是问题，因为多个作业通常不会尝试同时访问同一个Spooled文件
+
+#### Spool control block(SCB)
+&#8195;&#8195;系统上的每个作业都存在一个`spool control block`（类型19子类型C2）。此对象挂在工作控制块表条目之外，主要用于保存作业的Spooled文件数量和某些作业属性的计数器：
+- 在为特定作业添加(CRTSPLF)或删除(DLTSPLF)Spooled文件时，或者如果作业的属性正在更改而影响Spooled文件，则需要在SCB上使用排他锁
+- 从在V5R1M0中将Spooled文件的属性从SCB移到数据库成员中后，该对象就不再是争用的主要来源
+- 但是，由于交换或网络Spooled文件活动(SNDNETSPLF或SNDTCPSPLF)，代表其他用户创建许多Spooled文件的客户会遇到争用问题。通常会在附加到`QPRTJOB`作业的SCB上看到这一点
+
+#### Reader writer control block(RWCB)
+&#8195;&#8195;每个系统上存在一个`RWCB`对象（类型19子类型C5）。此对象包含系统上每个活动写入器的一个条目。 列出(WRKWTR)、启动(STRPRTWTR)、结束(ENDWTR)或更改(CHGWTR)写入器时，`RWCB`需要排他锁。在启动或结束所有或多个写入器时，更有可能发生对该对象的争用。
+
+### 可指示Spooled锁争用的消息
+#### MCH5802-对象&1的锁定操作不满足
 ## 待补充
