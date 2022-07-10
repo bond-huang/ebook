@@ -5,8 +5,10 @@
 命令|描述
 :---|:---
 CHKFLASH|Check FlashCopy
-STRFLASH|Start a FlashCopy Backup
 CHKPPRC|Check PPRC
+CHGPPRC|Change PPRC
+DSPCSEDTA|Display Copy Services Environment exit data
+STRFLASH|Start a FlashCopy Backup
 SWPPRC|Switch PPRC
 WRKCSE|Work with Copy Services Environments
 
@@ -199,6 +201,11 @@ CHKPPRC ENV(<name of IASP>) TYPE(*)
 - `Release/Reset`HA/DR分区上的`IOP/IOA`资源，并使磁盘正确注册为IASP
 - 如果需要，在当前`HA/DR`节点（将成为生产节点）上将IASP进行`vary on`。默认值为`*YES`
 
+### GMIR复制关系属性
+GMIR重要属性选项`D-Copy Flash`：`D-Copy Flash normal`和`D-Copy Flash reversed`：
+- 指定同名的单独FlashCopy环境可用于此首选目标或此首选源节点的目标节点
+- 当`GMIR`方向为正常或反向时，两个此类FlashCopy环境允许`D-Copy Flash`在当前目标上运行
+
 ## Multi-target解决方案
 &#8195;&#8195;IASP Manager不再支持`Metro-Global Mirror`，取而代之的是`multi-target`支持。需要使用单独的许可程序Copy Services Manager(CSM)。`multi-target`解决方案支持来自生产节点的两个目标： 
 - 对于 MMIR：
@@ -247,6 +254,34 @@ H3(GMIR2 Reversed)|H2|H3->H1(GMIR *INELIGIBLE)|H2->H1(MMIR *GCP *REVERSED)
 &#8195;&#8195;如果`MM/GM`环境中的`GMIR`对被切换并且没有为反向配置的一致性组卷，则切换回`GMIR`源的唯一方法是执行计划切换。不允许计划外的切换，因为目标上的数据将不一致。
 
 ## 常用命令
+#### CHGPPRC命令
+命令示例：
+```
+                             Change PPRC (CHGPPRC)                         
+Type choices, press Enter.                                                
+Environment name . . . . . . . .                 Name                     
+Type . . . . . . . . . . . . . .                 *GMIR, *GMIR2, *MMIR...  
+Option . . . . . . . . . . . . .                 *DETACH, *REATTACH...    
+Auto Vary On . . . . . . . . . .   *YES          *YES, *NO       
+```
+命令选项说明：
+- `Environment name`：指定要更改的环境的名称。也指` Independent ASP CRG `名称
+- `Type`：Copy Service环境的类型。 此可选参数可用于指定要更改的PPRC环境的类型：
+  - `*GMIR` ：具有此环境名称的`PPRC Global Mirroring`环境将被更改
+  - `*GMIR2`：作为多目标复制的一部分，具有此环境名称的`PPRC Global Mirroring`环境将被更改
+  - `*MMIR`：具有此环境名称的`PPRC Metro Mirroring`环境将被更改
+  - `*MMIR2`：作为多目标复制的一部分，具有此环境名称的`PPRC Metro Mirroring`环境将被更改
+  - `*MMIR3`：作为多目标复制的一部分，具有此环境名称的`PPRC Metro Mirroring`环境将被更改
+  - `*ALL`：该选项将在环境中活动复制对上执行。此值仅对`OPTION(*SUSPEND)`或 `OPTION(*RESUME)`有效
+- `Option`：要执行的更改类型：
+  - `*SUSPEND`：暂停复制。 仅当两个节点之间的复制由`CSM`(TPC)服务器管理时，此选项才有效
+  - `*RESUME`：暂停的复制将恢复。 仅当两个节点之间的复制由`CSM`(TPC)服务器管理时，此选项才有效
+  - `*DETACH`：复制将暂停，备份节点将获得对LUN的`read/write`访问权限。仅当复制由`CSM` (TPC) 服务器管理时，此选项才对`MMIR`复制有效
+  - `*REATTACH`：对磁盘的`Read/write`访问将被重置，复制将再次开始。仅当复制由`CSM` (TPC) 服务器管理时，此选项才对`MMIR`复制有效
+- `Vary`：此可选参数可用于控制在`DETACH`操作成功完成后是否要将`*ASP`设备描述改为`varied on`：
+  - `*YES ` ：`*ASP`设备将`varied on`
+  - `*NO`：`*ASP`设备将不会`varied on`
+
 ### SWPPRC命令
 `SWPPRC`(Switch PPRC)命令用于切换PPRC。
 #### 命令示例
@@ -320,4 +355,3 @@ CHKPPRC ENV(<name of IASP>) TYPE(*)
   - 监视`CHKPPRC`功能时，CL程序应区分`IAS0070`(failed)和`IAS00AE`
 
 ## 待补充
-

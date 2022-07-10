@@ -5,6 +5,7 @@
 - [PowerHA data replication technologies](https://www.ibm.com/docs/zh/i/7.3?topic=technologies-powerha-data-replication)
 - [IBM i 7.3 管理PowerHA](https://www.ibm.com/docs/zh/i/7.3?topic=availability-managing-powerha)
 - [IBM i 7.3 实现高可用性](https://www.ibm.com/docs/zh/i/7.3?topic=availability-implementing-high)
+- [IBM i 7.3 Comparison of PowerHA data resiliency technologies](https://www.ibm.com/docs/en/i/7.3?topic=overview-comparison-powerha-data-resiliency-technologies)
 
 ## 常用命令
 ### 集群节点命令

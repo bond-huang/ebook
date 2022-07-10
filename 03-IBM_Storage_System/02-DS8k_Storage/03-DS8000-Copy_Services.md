@@ -2,8 +2,10 @@
 官方参考链接：
 - [DS8870 7.3 Copy Services](https://www.ibm.com/docs/en/ds8870/7.3?topic=managing-copy-services)
 - [DS8880 8.5.4 Copy Services](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=help-copy-services)
+- [DS8880 8.5.4 IBM Copy Services Manager](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=interfaces-copy-services-manager)
 - [DS8880 8.5.4 Copy Services commands](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=commands-copy-services)
 - [DS8880 8.5.4 Copy Services functions](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=interface-copy-services-functions)
+- [DS8880 8.5.4 Copy Services functions with IBM i operating system](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=services-copy-functions-i-operating-system)
 
 官方参考红皮书：
 - IBM DS8000 Copy Services Updated for IBM DS8000 Release 9.1
@@ -74,6 +76,10 @@
 - 改进了级联`Metro/Global Mirror`配置并简化了一些过程
 - 在多目标`PPRC`之前，主卷可以仅将数据镜像到一个辅助卷。使用多目标`PPRC`，同一个主卷可以有多个目标，从而允许将数据从单个主站点镜像到两个目标站点
 
+IBM官方参考链接：
+- [DS8880 8.5.4 How Metro/Global Mirror works](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=mirror-how-metroglobal-works)
+- [DS8880 8.5.4 Metro/Global Mirror planning considerations](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=mirror-metroglobal-planning-considerations)
+
 #### SafeGuarded Copy
 &#8195;&#8195;`SafeGuarded Copy`(SGC)是从DS8880开始提供的一项功能，可为关键数据提供逻辑损坏保护。`SafeGuarded Copy`功能提供了多个备份副本，可以在恶意软件、黑客攻击、恶意破坏以及任何可能导致逻辑损坏或破坏主数据的操作的情况下恢复：
 - 主机无法访问受保护的副本
@@ -82,4 +88,4 @@
 - 受保护的备份副本可用于诊断从验证到恢复的生产问题
 
 &#8195;&#8195;`SafeGuarded Copy`通过IBM Copy Services Manager(CSM)6.2.3及更高版本或GDPS 4.2及更高版本进行管理。通过任一管理工具，都可以定义`SG`备份的过期规则、创建和恢复。
-##
+## 待补充

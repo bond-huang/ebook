@@ -1,6 +1,7 @@
 # DS8000-DSCLI常用命令
 &#8195;&#8195;DSCLI全称DS command-line interface，是管理DS8000系列存储的常用工具，DS8000的MC系统上有集成，也可以下载到个人终端上，在IBM fixcentral中有下载。DSCLI命令官方说明链接：
 - [DS8880 8.5.4 CLI commands](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=interface-cli-commands)
+- [DS8880 Command-line interface](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=reference-command-line-interface)
 
 ## 登录使用
 ### MC上使用
