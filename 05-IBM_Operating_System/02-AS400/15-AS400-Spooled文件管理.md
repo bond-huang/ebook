@@ -330,4 +330,26 @@ STRSPLRCL OUTQ(*ALL/PRT01) ASPGRP(*CURASPGRP)
 - 如果瓶颈足够严重，可能会出现消息`CPF4235 RC1`和`MCH5802/CPF3330`
 
 ##### 场景一
+在高峰运行时间，在具有`300000`个Spooled文件的系统上，用户执行`WRKSPLF USER(*ALL)`。
+
+结果：
+- `WRKSPLF USER(*ALL)`将在持有排他锁的同时拍摄`QSPALLQ`索引的快照
+- 这可能需要几秒钟或几分钟，具体取决于专用于该作业的资源
+- 在快照完成之前，不能在系统上创建、保留、释放、删除或更改任何Spooled文件
+
+症状：
+- 尝试创建、保留、释放、删除、更改或列出Spooled文件的作业将在`LCKW`状态下挂起
+- 可能会产生消息`MCH5802/CPF3330`和`CPF4235 RC1`
+- 由于这是一个内部对象，因此不能使用`WRKOBJLCK`命令来确定持有锁的作业
+- 在`QSPTLIB`库(可通过PTF获得)中提供的`DSPLCKSTS`命令，可用于确定锁持有者
+- 一旦`WRKSPLF USER(*ALL)`的用户完成了索引的快照，瓶颈就会消失
+
+建议：
+- 减少系统上Spooled文件的数量。使用`SAVOBJ/RSTOBJ`命令保存Spooled文件数据。 保存后将它们从系统中删除。Spooled文件`EXPDATE`属性与`DLTEXPSPLF`命令一起可用于自动从系统中删除Spooled文件
+- 确保系统资源调配正确。对于`WRKOUTQ`和`WRKSPLF`之类的操作，分页吞吐量是一个重要的门控因素。增加分配给作业处理Spooled文件列表的内存等资源
+- 使用`WRKSPLF USER(*ALL)`以外的其他内容来对Spooled文件列表进行子集化。过滤用户、表单类型或用户数据可能更合适。使用`WRKJOB OPTION(*SPLF)`或`WRKOUTQ`获取Spooled文件列表
+- V5R3M0中添加支持将Spooled文件存储在`IASP`中。这种新设计用键控数据库逻辑文件替换了内部打印队列对象。这种方法允许共享访问数据库逻辑文件
+
+##### 场景二
+
 ## 待补充
