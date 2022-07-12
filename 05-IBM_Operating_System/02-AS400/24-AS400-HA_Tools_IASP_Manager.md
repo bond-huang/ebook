@@ -8,6 +8,7 @@ CHKFLASH|Check FlashCopy
 CHKPPRC|Check PPRC
 CHGPPRC|Change PPRC
 DSPCSEDTA|Display Copy Services Environment exit data
+ENDFLASH|End a FlashCopy Backup
 STRFLASH|Start a FlashCopy Backup
 SWPPRC|Switch PPRC
 WRKCSE|Work with Copy Services Environments
@@ -59,6 +60,45 @@ PowerHA Tools IASP Manager为`Multi-Target`环境提供完全自动化，包括�
 - `Exit program and library`：
   - `*ENV` 
   - `<name>`：IASP为`AVAILABLE`时要提交的程序名称
+
+### FlashCopy过程
+FlashCopy处理过程如下：
+- 对集群、设备域、与DS的连接等进行基本检查
+- 激活`FlashCopy`节点上的退出程序以执行其他检查：
+  - `IASP`是否`varied off`
+  - 是否正确安装了`DSCLI`
+  - 发现主机连接
+  - 确认`Metro Mirror`还是`Golbal Mirror`的源或目标。如果是，检查`FlashCopy`继续进行的情况下复制是否会处于正确状态
+- 如果在命令或环境中请求，`STRFLASH`程序会向生产节点发出`quiesce/frcwrt/vary off`
+- `STRFLASH`程序向`FlashCopy`节点提交作业以执行以下任务：
+  - 将`Flash`状态设置为`20`以允许在不同节点上运行的`STRFLASH`命令知道`Flash`作业已成功提交。如果作业在60秒内未启动，则`STRFLASH`命令将出错
+  - 根据IBM i的级别执行`mkflash`脚本或启动`ASP`会话
+  - 将`Flash`状态设置为`90`以允许在不同节点上运行的`STRFLASH`命令在需要时继续处理生产系统的恢复并成功结束，如果等待完成是`*NO`
+  - 如果需要，将`IASP`进行`Vary on`(包括相关资源的释放、重置和多路径重置)
+  - 将`Flash`状态设置为`100`(`*FLASHED`)，如果等待完成为`*YES`，则允许`STRFLASH`成功结束
+- 当`FlashCopy`状态变为`90`时，`STRFLASH`程序继续：
+  - 如果生产节点被停顿或`varied off`，则提交退出程序以恢复或`vary on.`
+  - 如果`Wait for completion`设置为`*YES`，则`STRFLASH`程序将保持活动状态，直到`FlashCopy`完成，并且状态更改为`100`
+  - 如果`Wait for completion`设置为`*NO`，则`STRFLASH`程序成功结束
+### FlashCopy过程中注意事项
+FlashCopy过程中注意事项如下：
+- 如果使用所有默认值，则有效进程将与ACS 2.1 FlashCopy进程(`wait for completion` = `*YES`并且`connect hosts`=`*CURRENT`)相同
+- 该进程的日志现在分布在最多三个系统中，问题确定需要查看所有相关系统的日志
+- `FlashCopy`程序与`FlashCopy`进程分开运行。应对其进行监控以确保其正常运行
+- 成功的`STRFLASH`命令并不意味着`IASP`已成功连接并`varied on`。必须在`FlashCopy`过程结束时检查 `IASP`状态
+
+### ENDFLASH命令
+命令`ENDFLASH`说明：
+- 执行从分区中删除所有FlashCopy `IASP`所需的步骤，并使它们为将来任何 `IASP`环境的`FlashCopy`操作做好准备
+- `ENDFLASH`命令不会结束ACS 3.0或IASP Manager 4.0中的多个FlashCopie。只有在集群中只配置了一个 FlashCopy环境时，才能使用默认值`*ONLY`
+
+`end flash`执行的步骤是：
+- 属性`*YES`强制`Vary off`所有FlashCopy `IASPs`
+- 如果不使用增量`FlashCopy`，移除DS8000上的`flash`
+- 修改`CSEDTA`以指示没有Flash `Active`：如果使用增量，表示准备好进行下一次闪存
+
+注意事项：
+- `FlashCopy Status`字段必须为`*FLASHED`才能使用此命令
 
 ## Metro Mirror
 ### Metro Mirror概述

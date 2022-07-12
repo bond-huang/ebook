@@ -263,7 +263,7 @@ STRSPLRCL OUTQ(*ALL/PRT01) ASPGRP(*CURASPGRP)
 - 一些客户将全部或大部分Spooled输出集中到一个或几个输出队列。这可能导致比`QEZJOBLOG`更糟糕的瓶颈
 
 ##### 场景一
-数千个作业同时结束，并尝试将作业日志切到输出队列QEZJOBLOG。
+数千个作业同时结束，并尝试将作业日志切到输出队列`QEZJOBLOG`。
 
 结果：
 - 在这种类型的环境中，可能会导致`QEZJOBLOG`出现严重的瓶颈
@@ -316,7 +316,7 @@ STRSPLRCL OUTQ(*ALL/PRT01) ASPGRP(*CURASPGRP)
 - 使用`SAVOBJ/RSTOBJ`命令保存Spooled文件数据。保存Spooled文件后，将其从系统中删除
 - Spooled文件到期日期`EXPDATE`属性与`DLTEXPSPLF`命令一起可用于自动从系统中删除Spooled文件
 - 确保系统资源调配正确。对于`WRKOUTQ`和`WRKSPLF`之类的操作，分页吞吐量是一个重要的门控因素。增加分配给作业处理Spooled文件列表的内存等资源
-- 验证是否确实需要输出队列上的所有Spooled文件。许多客户和业务合作伙伴应用程序创建临时Spooled文件并立即删除它们的案例。建议尽可能避免使用Spooled文件作为存储临时数据的工具。Spooled文件审计可以帮助确定这是否是一个问题，因为大多数客户都没有意识到这种情况正在发生
+- 验证是否确实需要输出队列上的所有Spooled文件。许多客户应用程序创建临时Spooled文件并立即删除它们的案例。建议尽可能避免使用Spooled文件作为存储临时数据的工具。Spooled文件审计可以帮助确定这是否是一个问题
 - 在不使用输出队列的非高峰时间，将Spooled文件移动到备用输出队列。`DLTOLDSPLF`之类的应用程序使用`CHGSPLFA`命令(非DLTSPLF)修改以移动超过`X`天的Spooled文件
 - 要减少具有数千个Spooled文件的输出队列的争用，使用`WRKSPLF`或`WRKJOB OPTION(*SPLF)`来访问Spooled文件，而不是`WRKOUTQ`
 - 确保将作业日志和系统转储生成到专用输出队列
@@ -345,11 +345,73 @@ STRSPLRCL OUTQ(*ALL/PRT01) ASPGRP(*CURASPGRP)
 - 一旦`WRKSPLF USER(*ALL)`的用户完成了索引的快照，瓶颈就会消失
 
 建议：
-- 减少系统上Spooled文件的数量。使用`SAVOBJ/RSTOBJ`命令保存Spooled文件数据。 保存后将它们从系统中删除。Spooled文件`EXPDATE`属性与`DLTEXPSPLF`命令一起可用于自动从系统中删除Spooled文件
+- 减少系统上Spooled文件的数量。使用`SAVOBJ/RSTOBJ`命令保存Spooled文件数据。保存后将它们从系统中删除。Spooled文件`EXPDATE`属性与`DLTEXPSPLF`命令一起可用于自动从系统中删除Spooled文件
 - 确保系统资源调配正确。对于`WRKOUTQ`和`WRKSPLF`之类的操作，分页吞吐量是一个重要的门控因素。增加分配给作业处理Spooled文件列表的内存等资源
 - 使用`WRKSPLF USER(*ALL)`以外的其他内容来对Spooled文件列表进行子集化。过滤用户、表单类型或用户数据可能更合适。使用`WRKJOB OPTION(*SPLF)`或`WRKOUTQ`获取Spooled文件列表
-- V5R3M0中添加支持将Spooled文件存储在`IASP`中。这种新设计用键控数据库逻辑文件替换了内部打印队列对象。这种方法允许共享访问数据库逻辑文件
+- 从V5R3M0版本开始添加支持将Spooled文件存储在`IASP`中。这种新设计用键控数据库逻辑文件替换了内部打印队列对象。这种方法允许共享访问数据库逻辑文件
 
 ##### 场景二
+&#8195;&#8195;在高峰运行时间，系统上有`300000`个Spooled文件，用户执行`WRKSPLF USER(USERX)`，但是，`USERX`拥有`290000`个Spooled文件。
+
+结果：
+- `WRKSPLF USER(USERX)`将拍摄`QSPUSRQ`索引的快照，同时持有一个排他锁
+- 快照将仅包括用户`USERX`拥有的那些Spooled文件，但是数量较多，与执行`WRKSPLF USER(*ALL)`一样效果。
+- 这可能需要几秒钟或几分钟，具体取决于专用于该作业的资源
+- 在快照完成之前，不能在系统上创建、保留、释放、删除或更改任何Spooled文件
+
+症状：
+- 尝试创建、保留、释放、删除、更改或列出Spooled文件的作业将在`LCKW`状态下挂起 
+- 可能会产生消息`MCH5802/CPF3330`和`CPF4235 RC1`
+- 由于这是一个内部对象，因此不能使用`WRKOBJLCK`命令来确定持有锁的作业
+- 在`QSPTLIB`库(可通过PTF获得)中提供的`DSPLCKSTS`命令，可用于确定锁持有者
+- 一旦`WRKSPLF USER(USERX)`的用户完成索引的快照，瓶颈就会解决
+
+建议：
+- 将Spooled文件分布在更多用户中
+- 减少系统上Spooled文件的数量。使用`SAVOBJ/RSTOBJ`命令保存Spooled文件数据。保存后将它们删除。Spooled文件`EXPDATE`属性与`DLTEXPSPLF`命令一起可用于自动从系统中删除Spooled文件
+- 确保系统资源调配正确。对于`WRKOUTQ`和`WRKSPLF`之类的操作，分页吞吐量是一个重要的门控因素。增加分配给作业处理Spooled文件列表的内存等资源
+- 使用`WRKSPLF USER(USERX)`以外的其他内容来对Spooled文件列表进行子集化。过滤用户、表单类型或用户数据可能更合适。使用`WRKJOB OPTION(*SPLF)`或`WRKOUTQ`获取Spooled文件列表
+- 从V5R3M0版本开始添加支持将Spooled文件存储在`IASP`中
+
+##### 场景三
+&#8195;&#8195;在高峰运行时间，系统上有`300000`个Spooled文件，用户执行`WRKSPLF SELECT(*ALL *ALL *STD)`，但是，系统上的`290,000`个Spooled文件的表单类型值为`*STD`。
+
+结果：
+- `WRKSPLF SELECT(*ALL *ALL *STD)`将拍摄`QSPUSRQ`索引的快照，同时持有一个排他锁
+- 快照将仅包含表单类型为`*STD`的Spooled文件，与执行`WRKSPLF USER(*ALL)`一样。 
+- 这可能需要几秒钟，具体取决于专用于该作业的资源
+- 在快照完成之前，不能在系统上创建、保留、释放、删除或更改任何Spooled文件
+
+症状：
+- 尝试创建、保留、释放、删除、更改或列出Spooled文件的作业将在`LCKW`状态下挂起
+- 可能会产生消息`MCH5802/CPF3330`和`CPF4235 RC1`
+- 由于这是一个内部对象，因此不能使用`WRKOBJLCK`命令来确定持有锁的作业
+- 在`QSPTLIB`库(可通过PTF获得)中提供的`DSPLCKSTS`命令，可用于确定锁持有者
+- 一旦`WRKSPLF SELECT(*ALL *ALL *STD)`的用户完成索引的快照，瓶颈就会消失
+
+建议：
+- 减少系统上Spooled文件的数量。使用`SAVOBJ/RSTOBJ`命令保存Spooled文件数据。保存后将它们删除。Spooled文件`EXPDATE`属性与`DLTEXPSPLF`命令一起可用于自动从系统中删除Spooled文件
+- 确保系统资源调配正确。对于`WRKOUTQ`和`WRKSPLF`之类的操作，分页吞吐量是一个重要的门控因素。增加分配给作业处理Spooled文件列表的内存等资源
+- 使用`WRKSPLF SELECT(*ALL *ALL *STD)`以外的其他内容来对Spooled文件列表进行子集化。过滤用户、表单类型或用户数据可能更合适。使用`WRKJOB OPTION(*SPLF)`或`WRKOUTQ`获取Spooled文件列表
+- 从V5R3M0版本开始添加支持将Spooled文件存储在`IASP`中
+
+#### Spool控制块锁定争用
+&#8195;&#8195;`Spool Control Block`(SCB)对象争用的主要原因是服务器作业在交换给单个应用程序用户时创建Spooled文件。这可能会导致`QPRTJOB`作业的`SCB`争用。如果瓶颈足够严重，可能会出现消息`MCH5802/CPF3330`。
+##### 场景一
+&#8195;&#8195;在系统高峰运行时间，数百个服务作业被提交给创建、更改和删除Spooled文件的同一用户。
+
+结果：
+- 在这种情况下，所有Spooled文件都将在与服务器作业交换到的用户关联的同一`QPRTJOB`作业下创建。这可能会导致附加到`QPRTJOB`的`SCB`对象发生争用
+
+症状：
+- 尝试为该`QPRTJOB`创建、删除或更改Spooled文件的作业可能会进入`LCKW`
+- 可能会产生消息`MCH5802/CPF3330`
+- 由于这是一个内部对象，因此不能使用`WRKOBJLCK`命令来确定持有锁的作业
+- 在`QSPTLIB`库(可通过PTF获得)中提供的`DSPLCKSTS`命令，可用于确定锁持有者
+
+建议：
+- 减少交换给该特定用户的服务作业的数量
+- 如果可能，增加服务作业要交换到的用户数
+- 确保系统资源调配正确。增加分配给访问`QPRTJOB`作业的Spooled文件的作业的资源，例如内存
 
 ## 待补充
