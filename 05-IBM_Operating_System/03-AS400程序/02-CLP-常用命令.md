@@ -53,3 +53,9 @@ CL程序中常用命令或示例。
 [SELECT](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/select.htm)|Select
 [SUBR](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/subr.htm)|Subroutine
 [TFRCTL](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/tfrctl.htm)|Transfer Control
+
+### 检索可用做变量的值
+命令|描述
+:---|:---
+[CVTDAT](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/cvtdat.htm)|Convert Date
+[RTVSYSVAL](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/rtvsysval.htm)|Retrieve System Value
