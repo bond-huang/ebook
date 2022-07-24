@@ -59,3 +59,5 @@ CL程序中常用命令或示例。
 :---|:---
 [CVTDAT](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/cvtdat.htm)|Convert Date
 [RTVSYSVAL](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/rtvsysval.htm)|Retrieve System Value
+[RTVCFGSRC](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/rtvcfgsrc.htm)|Retrieve Configuration Source
+[RTVCFGSTS)](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/rtvcfgsts.htm)|Retrieve Configuration Status
