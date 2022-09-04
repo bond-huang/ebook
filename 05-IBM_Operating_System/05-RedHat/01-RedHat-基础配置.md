@@ -112,7 +112,7 @@ yum remove &#60;Program name&#62;|卸载程序
 yum history|查看yum安装的历史
 
 ## 设置Python3为默认
-RHEL8中自带了Python3，RHEL7.8中自带Python2，Python3会成为趋势，但是每次运行Python都要输入`python3`命令，会很不习惯，可以修改下。
+&#8195;&#8195;RHEL8中自带了Python3，RHEL7.8中自带Python2，Python3会成为趋势，但是每次运行Python都要输入`python3`命令，会很不习惯，可以修改下。
 输入如下命令查看`python3`命令的位置：
 ```
 [root@redhat8 bin]# whereis python3

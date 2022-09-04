@@ -198,4 +198,32 @@ ns160       valid_lft 1748sec preferred_lft 1748sec
 total 4
 -rw-r--r--. 1 root root 315 May 29 14:11 ifcfg-ens160
 ```
+## 用户问题
+### 用户登录问题
+#### SSH服务器拒绝了密码
+&#8195;&#8195;新安装系统，SSHD服务正常开启，但是SSH登录不了，需要修改`/etc/ssh/sshd_config`文件相关配置，首先打开22端口监听：
+```
+Port 22
+#AddressFamily any
+ListenAddress 0.0.0.0
+ListenAddress ::
+```
+允许远程登录：
+```
+PermitRootLogin yes
+```
+密码认证开启：
+```
+PasswordAuthentication yes
+#PermitEmptyPasswords no
+```
+#### 找不到匹配的host key算法
+&#8195;&#8195;OpenSSH版本过高，而shell终端上没有对应的加密算法。例如RHEL9.0默认是OpenSSH_8.7p1版本。需要升级shell终端，例如使用Xshell6版本，或者使用其它版本shell终端。
+## 登录问题
+#### ssh-copy-id命令报错
+报错如下：
+```
+/usr/bin/ssh-copy-id: ERROR: No identities found
+```
+使用`ssh-keygen -t dsa`生成公钥后即可。
 ## 待补充
