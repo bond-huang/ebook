@@ -13,6 +13,8 @@ RHEL开发主页：[Red Hat Developer](https://developers.redhat.com/)
 
 RHEL官方下载链接：[Download Red Hat Enterprise Linux](https://developers.redhat.com/products/rhel/download)
 
+Ansible模块文档：[Ansible Module ](https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html)
+
 本章节是在官网学习RHEL记录的笔记。
 
 ## 内容
