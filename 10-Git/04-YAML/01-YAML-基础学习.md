@@ -1,6 +1,7 @@
 # YAML-基础学习
 学习参考链接：
 - [YAML version 1.2](https://yaml.org/spec/1.2.2/)
+- [YAML Syntax](https://docs.ansible.com/ansible/2.9/reference_appendices/YAMLSyntax.html)
 - [runoob.com YAML入门教程](https://www.runoob.com/w3cnote/yaml-intro.html)
 
 ## 基本语法

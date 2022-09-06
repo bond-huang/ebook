@@ -184,7 +184,49 @@ rmdev 0514-508 Connot save the base customized infomation on /dev/ipldevice
 # bootlist -m normal hdiskX
 # synclvodm -P -v rootvg
 ```
-
+### hd5丢失
+执行某些命令时候可能有报错如下：
+```
+0514-508 Cannot save the base customized information on /dev/ipldevice.
+0514-609 Unable to save the base customized information on /dev/ipldevice.
+```
+检查LV，可能是hd5引导lv被删掉了，重建lv命令：
+```
+# mklv -y hd5 -t boot -a e rootvg 1
+```
+如果创建失败，先删掉odm库信息：
+```
+# odmdelete -q name=hd5 -o CuDv
+# odmdelete -q name=hd5 -o CuAt
+```
+创建成功后同步lv：
+```
+# synclvodm -P -v rootvg
+```
+然后查看lv信息：
+```
+# lslv -m hd5
+```
+查看引导盘信息：
+```
+# bootinfo -b 
+```
+里面会现实hd5所在在盘hdiskX，往里面写入引导信息：
+```
+# bosboot -ad /dev/hdiskX
+```
+如果写入失败，加入lv名称：
+```
+# bosboot -ad hdiskX -l hd5  
+```
+如果rootvg是双盘镜像，镜像lv到另外一个块盘，写入引导信息：
+```
+# bosboot -ad hdiskXX -l hd5  
+```
+最后添加引导列表信息：
+```
+# bootlist -m normal hdiskX hdiskXX
+```
 ## 删文件报错
 ### rm命令报错
 当使用rm命令删除大量文件时候，会有如下报错：
@@ -212,4 +254,11 @@ change ARG/ENV list size in 6K byte blocks to 1024
 chdev -l sys0 -a ncargs=64
 ```
 删除完成后，修改回来即可
+## 其它问题
+### 错误代码0403-059
+执行某些命令时候会收到`0403-059`报错，示例如下：
+```
+/etc/reducevg[436]: Mb_pending:0403-059 There cannot be more than 9 levels of recursion
+```
+&#8195;&#8195;这不是AIX问题，是如何获取`.profile`的问题，如果是要到root用户，使用`su root`而不是使用`su - root`可以解决问题。官方参考链接：[Receive 0403-059 There cannot be more than 9 levels of recursion during Informix Install.](https://www.ibm.com/support/pages/receive-0403-059-there-cannot-be-more-9-levels-recursion-during-informix-install)
 ## 待补充

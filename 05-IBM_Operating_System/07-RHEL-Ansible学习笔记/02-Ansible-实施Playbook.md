@@ -542,3 +542,213 @@ redhat8                    : ok=3    changed=1    unreachable=0    failed=0    s
 ```
 &#8195;&#8195;演示了一个`playbook`的空运行，它包含单项任务，可确保在受管主机上安装了最新版本的 `httpd`软件包。该空运行报告此任务会对受管主机产生的更改。
 ## 实施多个Play
+### 编写多个Play
+&#8195;&#8195;`Playbook`是一个YAML文件，由一个或多个`play`组成的列表。`play`按顺序列出了要对清单中的选定主机执行的任务。因此，如果一个`playbook`中含有多个`play`，每个`play`可以将其任务应用到单独的一组主机。
+- 在编排可能涉及对不同主机执行不同任务的复杂部署时很方便。可以对一组主机运行一个`play`，完成后再对另一组主机运行另一个`play`
+- `Playbook`中的各个`play`编写为`playbook`中的顶级列表项。各个`play`是含有常用`play`关键字的列表项
+
+&#8195;&#8195;示例含有两个`play`的简单`playbook`。第一个`play`针对`redhat8`运行，第二个`play`则针对`192.168.100.131`运行：
+```yaml
+---
+# This is a simple playbook with two plays
+- name: first play
+  hosts: redhat8
+  tasks:
+    - name: first task
+      yum:
+        name: httpd
+        status: present
+
+    - name: second task
+      service:
+        name: httpd
+        enabled: true
+
+- name: second play
+  hosts: 192.168.100.131
+  tasks:
+    - name: first task
+      service:
+        name: sshd
+        enabled: true
+```
+### Play中的远程用户和特权升级
+&#8195;&#8195;`Play`可以将不同的远程用户或特权升级设置用于`play`，取代配置文件中指定的默认设置。这些都在`play`本身中与`hosts`或`tasks`关键字相同的级别上设置。
+#### 用户属性
+&#8195;&#8195;`Playbook`中的任务与临时命令相同，用于任务执行的用户帐户取决于`Ansible`配置文件`/etc/ansible/ansible.cfg`中的不同关键字。运行任务的用户可以通过`remote_user`关键字来定义。如果启用了特权升级，`become_user`等其他关键字也会发生作用。可以在`play`中使用`remote_user`关键字来覆盖`Ansible`配置中定义的远程用户：
+```yaml
+remote_user: remoteuser
+```
+#### 特权升级属性
+&#8195;&#8195;可以提供额外的关键字，从而在`playbook`内定义特权升级参数。`become`布尔值关键字可用于启用或禁用特权升级，无论它在`Ansible`配置文件中的定义为何。可以取`yes`或`true`值来启用特权升级，或者取`no`或`false`值来禁用它：
+```yaml
+become: true
+```
+&#8195;&#8195;如果启用了特权升级，则可以使用`become_method`关键字来定义特定`play`期间要使用的特权升级方法。示例指定`sudo`用于特权升级：
+```yaml
+become_method: sudo
+```
+&#8195;&#8195;启用了特权升级时，`become_user`关键字可定义特定`play`上下文内要用于特权升级的用户帐户。示例如下：
+```yaml
+become_user: privileged_user
+```
+示例在`play`中使用这些关键字：
+```yaml
+- name: /etc/hosts is up to date
+  hosts: redhat8
+  remote_user: ansible
+  become: yes
+
+  tasks:
+    - name: redhat9 in /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: '192.168.100.133 redhat9 server'
+        state: present
+```
+### 查找用于任务的模块
+#### 模块文档
+&#8195;&#8195;Ansible随附打包的大量模块为管理员提供了许多用于常见管理任务的工具。使用`ansible-doc`命令来查找关于本地系统上安装的模块的信息。使用`ansible-doc -l`命令查看控制节点上可用模块的列表，将显示模块名称列表以及其功能的概要。示例如下：
+```
+[ansible@redhat9 ~]$ ansible-doc -l
+apt                                            Manages apt-packages
+apt_key                                        Add or remove an apt key
+apt_repository                                 Add and remove APT repositories
+assemble                                       Assemble configuration files from fragments
+...output omitted...
+```
+&#8195;&#8195;使用`ansible-doc [模块名称]`命令来显示模块的详细文档。与Ansible文档网站一样，该命令提供模块功能的概要、其不同选项的详细信息，以及示例。命令示例如下：
+```
+[ansible@redhat9 ~]$ ansible-doc git
+> ANSIBLE.BUILTIN.GIT    (/usr/lib/python3.9/site-packages/ansible/modules/git.py)
+        Manage `git' checkouts of repositories to deploy files or software.
+
+ADDED IN: version 0.0.1 of ansible-core
+OPTIONS (= is mandatory):
+
+- accept_hostkey
+        If `yes', ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
+        [Default: no]
+        type: bool
+        added in: version 1.5 of ansible-core
+...output omitted...
+```
+&#8195;&#8195;`ansible-doc`命令的`-s`选项会生成示例输出，可以充当如何在`playbook`中使用特定模块的示范。输出中包含的注释，提醒管理员各个选项的用法。示例如下：
+```
+[ansible@redhat9 ~]$ ansible-doc -s git
+- name: Deploy software (or files) from git checkouts
+  git:
+      accept_hostkey:        # If `yes', ......
+      accept_newhostkey:     # As of OpenSSH 7.5, ......
+      archive:               # Specify archive file path with extension......
+      archive_prefix:        # Specify a prefix to add to each file path......
+      bare:                  # If `yes', repository will be created ......
+      clone:                 # If `no', do not clone the repository even ......
+...output omitted...
+```
+#### 模块维护
+&#8195;&#8195;`Ansible`随附了大量模块，它们可用于执行许多任务。这在该模块的 `ansible-doc`输出末尾的`METADATA`部分中指明上游`Ansible `社区中维护该模块的人。`status`字段记录模块的开发状态：
+- `stableinterface`：模块的关键字稳定，将尽力确保不删除关键字或更改其含义
+- `preview`：模块处于技术预览阶段，可能不稳定，其关键字可能会更改，或者它可能需要本身会受到不兼容更改的库或Web服务
+- `deprecated`：模块已被弃用，未来某一发行版中将不再提供
+- `removed`：模块已从发行版中移除，但因文档需要存在存根，以帮助之前的用户迁移到新的模块
+
+`supported_by`字段记录上游Ansible社区中维护该模块的人。可能的值包括：
+- `core`：由上游核心Ansible开发人员维护，始终随Ansible提供
+- `curated`：模块由社区中的合作伙伴或公司提交并维护
+- `community`：模块不受到核心上游开发人员、合作伙伴或公司的支持，完全由一般开源社区维护
+
+&#8195;&#8195;可以自己编写私有的模块，或者从第三方获取模块。Ansible会在`ANSIBLE_LIBRARY`环境变量指定的位置查找自定义模块；未设置此变量时由当前Ansible配置文件中的`library`关键字指定。Ansible也在相对于当前运行的`playbook`的`./library`目录中搜索自定义模块。示例：
+```ini
+library = /home/ansible/my_modules
+```
+相关文档参考：
+- 有关编写方法的文档链接：[Ansible Modules](https://docs.ansible.com/ansible/2.9/dev_guide/developing_modules.html)
+- 上游Ansible社区有用于Ansible的问题跟踪器及其集成模块，链接为：[https://github.com/ansible/ansible/issues](https://github.com/ansible/ansible/issues)
+
+#### 注意事项
+&#8195;&#8195;使用`ansible-doc`命令可以查找和了解如何为用户的任务使用模块。`command`、`shell`和`raw`模块的用法可能看似简单，应尽量避免在`playbook`中使用它们。因为它们可以取用任意命令，因此使用这些模块时很容易写出非幂等的`playbook`。示例如下：
+```yaml
+- name: Non-idempotent approach with shell module
+  shell: echo "nameserver 192.168.100.1" > /etc/resolv.conf
+```
+示例说明；
+- 示例为使用`shell`模块的任务为非幂等
+- 每次运行`play`时，它都会重写`/etc/resolv.conf`，即使它已经包含了行`nameserver 192.168.100.1`
+
+&#8195;&#8195;可以通过多种方式编写以幂等方式使用`shell`模块的任务，而且有时候进行这些更改并使用 `shell`是最佳的做法。使用`copy`模块是更快的方案。示例如果`/etc/resolv.conf`文件已包含正确的内容，则不会重写该文件：
+```yaml
+- name: Idempotent approach with copy module
+  copy:
+    dest: /etc/resolv.conf
+    content: "nameserver 192.168.100.1\n"
+```
+&#8195;&#8195;`copy`模块可以测试来了解是否达到了需要的状态，如果已达到，则不进行任何更改。`shell`模块容许非常大的灵活性，但需要注意，确保它以幂等方式运行。幂等的`playbook`可以重复运行，确保系统处于特定的状态，而不会破坏状态已经正确的系统。
+### Playbook语法变化
+#### YAML注释
+&#8195;&#8195;注释可以用于提高可读性。在YAML中，编号或井号符号`#`右侧的所有内容都是注释。如果注释的左侧有内容，请在该编号符号的前面加一个空格。示例：
+```yaml
+# This is a YAML comment
+- Name: Thor # This is also a YAML comment
+```
+#### YAML字符串
+&#8195;&#8195;YAML中的字符串通常不需要放在引号里，即使字符串中包含空格。字符串可以用双引号或单引号括起。三个示例分别如下：
+```yaml
+this is a string
+'this is another string'
+"this is yet another a string"
+```
+编写多行字符串一种方式是使用竖线`|`字符表示要保留字符串中的换行字符：
+```yaml
+include_newlines: |
+        Example Company
+        123 Main Street
+        Atlanta, GA 30303
+```
+&#8195;&#8195;编写多行字符串，也可以使用大于号`>`字符来表示换行字符转换成空格并且行内的引导空白将被删除。这种方法通常用于将很长的字符串在空格字符处断行，使它们跨占多行来提高可读性。示例：
+```yaml
+fold_newlines: >
+        This is an example
+        of a long string,
+        that will become
+        a single sentence once folded.
+```
+#### YAML字典
+以缩进块的形式编写的键值对集合，示例：
+```yaml
+  name: America Captain
+  from: New York
+  power: 9999
+```
+字典也可以使用以花括号括起的内联块格式编写，示例：
+```yaml
+ { name: Wonder Woman,from: Amazon,power: 9998}
+```
+#### YAML列表
+使用普通单破折号语法编写的列表：
+```yaml
+  hosts:
+    - hosta
+    - hostb
+    - hostc
+```
+也有以方括号括起的内联格式：
+```yaml
+superhero: [Wonder Woman, Amazon, 9998]
+```
+#### 过时的“键=值”Playbook简写
+&#8195;&#8195;某些`playbook`可能使用较旧的简写方法，通过将模块的键值对放在与模块名称相同的行上来定义任务。示例：
+```yaml
+  tasks:
+    - name: shorthand form
+      service: name=httpd enabled=true state=started
+```
+通常避免简写，使用下面格式：
+```yaml
+  tasks:
+    - name: normal form
+      service:
+        name: httpd
+        enabled: true
+        state: started
+```
