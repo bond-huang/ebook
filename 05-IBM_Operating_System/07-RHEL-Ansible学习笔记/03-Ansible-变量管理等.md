@@ -463,4 +463,237 @@ ok: [redhat8] => {
 PLAY RECAP **************************************************************
 redhat8                    : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
-&#8195;&#8195;`Playbook`以`JSON`格式显示`ansible_facts`变量的内容，作为变量的散列/字典。可以浏览输出来查看收集了哪些事实，并查找可能要在`play`中使用的事实。
+&#8195;&#8195;`Playbook`以`JSON`格式显示`ansible_facts`变量的内容，作为变量的散列/字典。可以浏览输出来查看收集了哪些事实，并查找可能要在`play`中使用的事实。下表是可能从受管节点收集的并可在`playbook`中使用的一些事实：
+
+事实|变量
+:---|:---
+短主机名|`ansible_facts['主机名称']`
+完全限定的域名|`ansible_facts['fqdn']`
+主要IPv4地址(基于路由)|`ansible_facts['default_ipv4']['address']`
+所有网络接口的名称列表|`ansible_facts['interfaces']`
+`/dev/vda1`磁盘分区的大小|`ansible_facts['devices']['vda']['partitions']['vda1']['size']`
+DNS服务器列表|`ansible_facts['dns']['nameservers']`
+当前运行的内核的版本|`ansible_facts['kernel']`
+
+如果变量的值为散列/字典，则可使用两种语法来检索该值。从上表中举两例：
+- `ansible_facts['default_ipv4']['address']`也可写成`ansible_facts.default_ipv4.address`
+- `ansible_facts['dns']['nameservers']`也可写成`ansible_facts.dns.nameservers`
+
+在`playbook`中使用事实时，Ansible将事实的变量名动态替换为对应的值：
+```yaml
+---
+- hosts: all
+  tasks:
+  - name: Prints various Ansible facts
+    debug:
+      msg: >
+        The default IPv4 address of {{ ansible_facts.fqdn }}
+        is {{ ansible_facts.default_ipv4.address }}
+```
+&#8195;&#8195;下面示例演示了Ansible如何查询受管节点，并且动态使用系统信息来更新变量。也可使用事实来创建符合特定标准的动态主机组：
+```
+PLAY ***********************************************************************
+
+TASK [Gathering Facts] *****************************************************
+ok: [demo1.example.com]
+
+TASK [Prints various Ansible facts] ****************************************
+ok: [demo1.example.com] => {
+    "msg": "The default IPv4 address of demo1.example.com is
+            172.25.250.10"
+}
+
+PLAY RECAP *****************************************************************
+demo1.example.com    : ok=2    changed=0    unreachable=0    failed=0
+```
+### Ansible事实作为变量注入
+&#8195;&#8195;在Ansible2.5之前，事实是作为前缀为字符串`ansible_`的单个变量注入，而不是作为`ansible_facts`变量的一部分注入。例如`ansible_facts['distribution']`事实可以称为`ansible_distribution`。    
+&#8195;&#8195;较旧的`playbook`仍然使用作为变量注入的事实，而不是在`ansible_facts`变量下创建命名空间的新语法。可以使用临时命令来运行`setup`模块，以此形式显示所有事实的值。以下示例中使用一个临时命令在受管主机`redhat8`上运行`setup`模块：
+```
+[ansible@redhat9 ~]$ ansible redhat8 -m setup
+redhat8 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "192.168.100.130",
+            "192.168.100.131"
+        ],
+        "ansible_all_ipv6_addresses": [
+            "fe80::bcd7:31a:c4ac:9c09"
+        ],
+        "ansible_apparmor": {
+            "status": "disabled"
+        },
+    ...output omitted...
+    },
+    "changed": false
+}
+```
+旧的和新的事实名称对比如下表：
+
+ansible_facts形式|旧事实变量形式
+:---|:---
+`ansible_facts['主机名称']`|ansible_hostname
+`ansible_facts['fqdn']`|ansible_fqdn
+`ansible_facts['default_ipv4']['address']`|`ansible_default_ipv4['address']`
+`ansible_facts['interfaces']`|ansible_interfaces
+`ansible_facts['devices']['vda']['partitions']['vda1']['size']`|`ansible_devices['vda']['partitions']['vda1']['size']`
+`ansible_facts['dns']['nameservers']`|`ansible_dns['nameservers']`
+`ansible_facts['kernel']`|ansible_kernel
+
+&#8195;&#8195;目前Ansible同时识别新的事实命名系统和旧的命名系统。将Ansible配置文件的`[default]`部分中的 `inject_facts_as_vars`参数设置为`false`，可关闭旧命名系统。默认设置目前为`true`。如果更改为`false`，尝试通过旧命名空间引用事实将导致以下错误：
+```
+...output omitted...
+TASK [Show me the facts] *************************************************
+fatal: [demo.example.com]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'ansible_distribution' is undefined\n\nThe error appears to have been in
+ '/home/student/demo/playbook.yml': line 5, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: Show me the facts\n      ^ here\n"}
+...output omitted...
+```
+### 关闭事实收集
+不想为`play`收集事实的原因可能有：
+- 不准备使用任何事实，并且希望加快`play`速度或减小`play`在受管主机上造成的负载
+- 受管主机因为某种原因而无法运行`setup`模块，或者需要安装一些必备软件后再收集事实
+
+为`play`禁用事实收集可将`gather_facts`关键字设为`no`：
+```yaml
+---
+- name: This play gathers no facts automatically
+  hosts: large_farm
+  gather_facts: no
+```
+&#8195;&#8195;即使`play`设置了`gather_facts: no`，也可以随时使用`setup`模块的任务来手动收集事实。示例如下：
+```
+  tasks:
+    - name: Manually gather facts
+      setup:
+...output omitted...
+```
+### 创建自定义事实
+&#8195;&#8195;管理员可以创建自定义事实，将其本地存储在每个受管主机上。这些事实整合到`setup`模块在受管主机上运行时收集的标准事实列表中。它们让受管主机能够向Ansible提供任意变量，以用于调整`play`的行为。
+- 自定义事实可以在静态文件中定义，格式可为`INI`文件或采用`JSON`。它们也可以是生成`JSON`输出的可执行脚本
+- 借助自定义事实，管理员可以为受管主机定义特定的值，供`play`用于填充配置文件或有条件地运行任务。动态自定义事实允许在`play`运行时以编程方式确定这些事实的值，甚至还可以确定提供哪些事实
+- 默认情况下，`setup`模块从各受管主机的`/etc/ansible/facts.d`目录下的文件和脚本中加载自定义事实：
+    - 各个文件或脚本的名称必须以`.fact`结尾才能被使用
+    - 动态自定义事实脚本必须输出`JSON`格式的事实，而且必须是可执行文件
+
+&#8195;&#8195;示例采用`INI`格式编写的静态自定义事实文件。`INI`格式的自定义事实文件包含由一个部分定义的顶层值，后跟用于待定义的事实的键值对：
+```ini
+[packages]
+web_package = httpd
+db_package = mariadb-server
+
+[users]
+user1 = huang
+user2 = ansible
+```
+&#8195;&#8195;也以`JSON`格式提供同样事实。以下`JSON`事实等同于以上示例中`INI`格式指定的事实。`JSON`数据可以存储在静态文本文件中，或者通过可执行脚本输出到标准输出：
+```json
+{
+  "packages": {
+    "web_package": "httpd",
+    "db_package": "mariadb-server"
+  },
+  "users": {
+    "user1": "huang",
+    "user2": "ansible"
+  }
+}
+```
+&#8195;&#8195;自定义事实由`setup`模块存储在`ansible_facts['ansible_local']`变量中。事实按照定义它们的文件的名称来整理。例如，假设前面的自定义事实由受管主机上保存为`/etc/ansible/facts.d/custom.fact`的文件生成。这时，`ansible_facts['ansible_local']['custom']['users']['user1']`的值为`huang`。可以利用临时命令在受管主机上运行`setup`模块来检查自定义事实的结构，官方示例：
+```
+[user@demo ~]$ ansible demo1.example.com -m setup
+demo1.example.com | SUCCESS => {
+    "ansible_facts": {
+...output omitted...
+        "ansible_local": {
+            "custom": {
+                "packages": {
+                    "db_package": "mariadb-server",
+                    "web_package": "httpd"
+                },
+                "users": {
+                    "user1": "joe",
+                    "user2": "jane"
+                }
+            }
+        },
+...output omitted...
+    },
+    "changed": false
+}
+```
+自定义事实的使用方式与`playbook`中的默认事实相同，官方示例：
+```
+[user@demo ~]$ cat playbook.yml
+---
+- hosts: all
+  tasks:
+  - name: Prints various Ansible facts
+    debug:
+      msg: >
+           The package to install on {{ ansible_facts['fqdn'] }}
+           is {{ ansible_facts['ansible_local']['custom']['packages']['web_package'] }}
+
+[user@demo ~]$ ansible-playbook playbook.yml
+PLAY ***********************************************************************
+
+TASK [Gathering Facts] *****************************************************
+ok: [demo1.example.com]
+
+TASK [Prints various Ansible facts] ****************************************
+ok: [demo1.example.com] => {
+    "msg": "The package to install on demo1.example.com  is httpd"
+}
+
+PLAY RECAP *****************************************************************
+demo1.example.com    : ok=2    changed=0    unreachable=0    failed=0
+```
+### 使用魔法变量
+&#8195;&#8195;一些变量并非事实或通过`setup`模块配置，但也由Ansible自动设置。这些魔法变量也可用于获取与特定受管主机相关的信息。最常用的有四个：
+- `hostvars`：包含受管主机的变量，可以用于获取另一台受管主机的变量的值。如果还没有为受管主机收集事实，则它不会包含该主机的事实
+- `group_names`：列出当前受管主机所属的所有组
+- `groups`：列出清单中的所有组和主机
+- `inventory_hostname`：包含清单中配置的当前受管主机的主机名称。这可能因为各种原因而与事实报告的主机名称不同
+
+&#8195;&#8195;另外还有许多其他的`魔法变量`。有关更多信息参考[Variable precedence: Where should I put a variable?](https://docs.ansible.com/ansible/2.9/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable)。深入了解它们的值，可以使用`debug`模块报告特定主机的`hostvars`变量的内容：
+```
+[ansible@redhat9 ~]$ ansible localhost -m debug -a 'var=hostvars["localhost"]'
+localhost | SUCCESS => {
+    "hostvars[\"localhost\"]": {
+        "ansible_check_mode": false,
+        "ansible_config_file": "/home/ansible/ansible.cfg",
+        "ansible_connection": "local",
+        "ansible_diff_mode": false,
+        "ansible_facts": {},
+        "ansible_forks": 5,
+        "ansible_inventory_sources": [
+            "/home/ansible/inventory"
+        ],
+        "ansible_playbook_python": "/usr/bin/python3.9",
+        "ansible_python_interpreter": "/usr/bin/python3.9",
+        "ansible_verbosity": 0,
+        "ansible_version": {
+            "full": "2.12.2",
+            "major": 2,
+            "minor": 12,
+            "revision": 2,
+            "string": "2.12.2"
+        },
+        "group_names": [],
+        "groups": {
+            "all": [
+                "redhat8",
+                "192.168.100.131"
+            ],
+            "testhosts": [
+                "redhat8",
+                "192.168.100.131"
+            ],
+            "ungrouped": []
+        },
+        "inventory_hostname": "localhost",
+        "inventory_hostname_short": "localhost",
+        "omit": "__omit_place_holder__b264b0e13db6af9e4a57204f1d159fb7d8e2eb95",
+        "playbook_dir": "/home/ansible"
+    }
+}
+```
