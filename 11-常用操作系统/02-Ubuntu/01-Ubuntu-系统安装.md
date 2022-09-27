@@ -24,4 +24,9 @@ Press any key to continue...
 - 运行应用显示正在安装，等待若干分钟即可
 - 提升新建一个用户，并且和Windows不一样的，新建即可
 
+### Windows下Ubuntu目录
+例如用户huang的根目录在Windows下路径：
+```
+C:\Users\admin\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc\LocalState\rootfs\home\huang
+```
 ## 制作U盘引导安装Ubuntu
