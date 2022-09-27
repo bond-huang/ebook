@@ -1,0 +1,224 @@
+Switched to a new branch 'gitbook'
+On branch gitbook
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   SUMMARY.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	package-lock.json
+	travis_wait_2391.log
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[gitbook 078b1ca] [Travis] Update SUMMARY.md
+ 3 files changed, 375 insertions(+)
+ create mode 100644 package-lock.json
+ create mode 100644 travis_wait_2391.log
+To https://github.com/bond-huang/ebook.git
+ + b1aa752...078b1ca gitbook -> gitbook (forced update)
+Installing GitBook 3.2.3
+gitbook@3.2.3 ../../../../../tmp/tmp-5886cE5dg0nA7BwE/node_modules/gitbook
+├── escape-string-regexp@1.0.5
+├── escape-html@1.0.3
+├── destroy@1.0.4
+├── ignore@3.1.2
+├── bash-color@0.0.4
+├── gitbook-plugin-livereload@0.0.1
+├── cp@0.2.0
+├── graceful-fs@4.1.4
+├── nunjucks-do@1.0.0
+├── github-slugid@1.0.1
+├── direction@0.1.5
+├── q@1.4.1
+├── spawn-cmd@0.0.2
+├── gitbook-plugin-fontsettings@2.0.0
+├── open@0.0.5
+├── is@3.3.0
+├── object-path@0.9.2
+├── extend@3.0.2
+├── json-schema-defaults@0.1.1
+├── gitbook-plugin-search@2.2.1
+├── jsonschema@1.1.0
+├── crc@3.4.0
+├── urijs@1.18.0
+├── semver@5.1.0
+├── immutable@3.8.2
+├── front-matter@2.3.0
+├── dom-serializer@0.1.0 (domelementtype@1.1.3, entities@1.1.2)
+├── error@7.0.2 (xtend@4.0.2, string-template@0.2.1)
+├── omit-keys@0.1.0 (array-difference@0.0.1, isobject@0.2.0)
+├── tmp@0.0.28 (os-tmpdir@1.0.2)
+├── npmi@2.0.1 (semver@4.3.6)
+├── send@0.13.2 (etag@1.7.0, statuses@1.2.1, fresh@0.3.0, range-parser@1.0.3, ms@0.7.1, depd@1.1.2, mime@1.3.4, debug@2.2.0, http-errors@1.3.1, on-finished@2.3.0)
+├── mkdirp@0.5.1 (minimist@0.0.8)
+├── resolve@1.1.7
+├── rmdir@1.2.0 (node.flow@1.2.3)
+├── fresh-require@1.0.3 (is-require@0.0.1, shallow-copy@0.0.1, sleuth@0.1.1, astw@1.3.0, through2@0.6.5, acorn@0.9.0, escodegen@1.14.3)
+├── gitbook-plugin-theme-default@1.0.7
+├── js-yaml@3.14.1 (esprima@4.0.1, argparse@1.0.10)
+├── tiny-lr@0.2.1 (parseurl@1.3.3, livereload-js@2.4.0, qs@5.1.0, debug@2.2.0, body-parser@1.14.2, faye-websocket@0.10.0)
+├── cpr@1.1.1 (rimraf@2.4.5)
+├── gitbook-plugin-lunr@1.2.0 (html-entities@1.2.0, lunr@0.5.12)
+├── chokidar@1.5.0 (async-each@1.0.3, path-is-absolute@1.0.1, inherits@2.0.4, glob-parent@2.0.0, is-binary-path@1.0.1, is-glob@2.0.1, anymatch@1.3.2, readdirp@2.2.1)
+├── nunjucks@2.5.2 (asap@2.0.6, yargs@3.32.0, chokidar@1.7.0)
+├── gitbook-plugin-highlight@2.0.2 (highlight.js@9.2.0)
+├── read-installed@4.0.3 (debuglog@1.0.1, util-extend@1.0.3, slide@1.1.6, readdir-scoped-modules@1.1.0, read-package-json@2.1.2)
+├── moment@2.13.0
+├── gitbook-plugin-sharing@1.0.2 (lodash@3.10.1)
+├── juice@2.0.0 (deep-extend@0.4.2, slick@1.12.2, batch@0.5.3, cssom@0.3.1, commander@2.9.0, cross-spawn-async@2.2.5, web-resource-inliner@2.0.0)
+├── i18n-t@1.0.1 (lodash@4.17.21)
+├── gitbook-markdown@1.3.2 (kramed-text-renderer@0.2.1, gitbook-html@1.3.3, kramed@0.5.6, lodash@4.17.21)
+├── cheerio@0.20.0 (entities@1.1.2, css-select@1.2.0, htmlparser2@3.8.3, jsdom@7.2.2, lodash@4.17.21)
+├── gitbook-asciidoc@1.2.2 (gitbook-html@1.3.3, asciidoctor.js@1.5.5-1, lodash@4.17.21)
+├── request@2.72.0 (tunnel-agent@0.4.3, aws-sign2@0.6.0, forever-agent@0.6.1, oauth-sign@0.8.2, is-typedarray@1.0.0, caseless@0.11.0, stringstream@0.0.6, aws4@1.11.0, isstream@0.1.2, json-stringify-safe@5.0.1, tough-cookie@2.2.2, node-uuid@1.4.8, qs@6.1.2, combined-stream@1.0.8, mime-types@2.1.35, bl@1.1.2, hawk@3.1.3, har-validator@2.0.6, http-signature@1.1.1, form-data@1.0.1)
+└── npm@3.9.2
+[0;36minfo:[0m installing 9 plugins using npm@3.9.2 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "advanced-emoji" 
+[0;36minfo:[0m install plugin "advanced-emoji" (*) from NPM with version 0.2.2 
+/home/travis/build/bond-huang/ebook
+└─┬ gitbook-plugin-advanced-emoji@0.2.2 
+  └── emojify.js@1.1.0 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "advanced-emoji" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "toggle-chapters" 
+[0;36minfo:[0m install plugin "toggle-chapters" (*) from NPM with version 0.0.3 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "toggle-chapters" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "theme-comscore" 
+[0;36minfo:[0m install plugin "theme-comscore" (*) from NPM with version 0.0.3 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+├── gitbook-plugin-theme-comscore@0.0.3 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "theme-comscore" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "splitter" 
+[0;36minfo:[0m install plugin "splitter" (*) from NPM with version 0.0.8 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+├── gitbook-plugin-splitter@0.0.8 
+├── gitbook-plugin-theme-comscore@0.0.3 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "splitter" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "github" 
+[0;36minfo:[0m install plugin "github" (*) from NPM with version 2.0.0 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+├── gitbook-plugin-github@2.0.0 
+├── gitbook-plugin-splitter@0.0.8 
+├── gitbook-plugin-theme-comscore@0.0.3 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "github" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "search-plus" 
+[0;36minfo:[0m install plugin "search-plus" (*) from NPM with version 1.0.3 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+├── gitbook-plugin-github@2.0.0 
+├─┬ gitbook-plugin-search-plus@1.0.3 
+│ └── html-entities@1.2.0 
+├── gitbook-plugin-splitter@0.0.8 
+├── gitbook-plugin-theme-comscore@0.0.3 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "search-plus" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "anchor-navigation-ex-toc" 
+[0;36minfo:[0m install plugin "anchor-navigation-ex-toc" (0.0.9) from NPM with version 0.0.9 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+├─┬ gitbook-plugin-anchor-navigation-ex-toc@0.0.9 
+│ ├─┬ cheerio@0.22.0 
+│ │ ├─┬ css-select@1.2.0 
+│ │ │ ├── boolbase@1.0.0 
+│ │ │ ├── css-what@2.1.3 
+│ │ │ ├── domutils@1.5.1 
+│ │ │ └── nth-check@1.0.2 
+│ │ ├─┬ dom-serializer@0.1.1 
+│ │ │ └── domelementtype@1.3.1 
+│ │ ├── entities@1.1.2 
+│ │ ├─┬ htmlparser2@3.10.1 
+│ │ │ ├── domhandler@2.4.2 
+│ │ │ ├── inherits@2.0.4 
+│ │ │ └─┬ readable-stream@3.6.0 
+│ │ │   ├─┬ string_decoder@1.3.0 
+│ │ │   │ └── safe-buffer@5.2.1 
+│ │ │   └── util-deprecate@1.0.2 
+│ │ ├── lodash.assignin@4.2.0 
+│ │ ├── lodash.bind@4.2.1 
+│ │ ├── lodash.defaults@4.2.0 
+│ │ ├── lodash.filter@4.6.0 
+│ │ ├── lodash.flatten@4.4.0 
+│ │ ├── lodash.foreach@4.5.0 
+│ │ ├── lodash.map@4.6.0 
+│ │ ├── lodash.merge@4.6.2 
+│ │ ├── lodash.pick@4.4.0 
+│ │ ├── lodash.reduce@4.6.0 
+│ │ ├── lodash.reject@4.6.0 
+│ │ └── lodash.some@4.6.0 
+│ ├── colors@1.4.0 
+│ └── github-slugid@1.0.1 
+├── gitbook-plugin-github@2.0.0 
+├── gitbook-plugin-search-plus@1.0.3 
+├── gitbook-plugin-splitter@0.0.8 
+├── gitbook-plugin-theme-comscore@0.0.3 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "anchor-navigation-ex-toc" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "editlink" 
+[0;36minfo:[0m install plugin "editlink" (*) from NPM with version 1.0.2 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+├── gitbook-plugin-anchor-navigation-ex-toc@0.0.9 
+├── gitbook-plugin-editlink@1.0.2 
+├── gitbook-plugin-github@2.0.0 
+├── gitbook-plugin-search-plus@1.0.3 
+├── gitbook-plugin-splitter@0.0.8 
+├── gitbook-plugin-theme-comscore@0.0.3 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "editlink" installed with success 
+[0;36minfo:[0m  
+[0;36minfo:[0m installing plugin "copy-code-button" 
+[0;36minfo:[0m install plugin "copy-code-button" (*) from NPM with version 0.0.2 
+/home/travis/build/bond-huang/ebook
+├── gitbook-plugin-advanced-emoji@0.2.2 
+├── gitbook-plugin-anchor-navigation-ex-toc@0.0.9 
+├── gitbook-plugin-copy-code-button@0.0.2 
+├── gitbook-plugin-editlink@1.0.2 
+├── gitbook-plugin-github@2.0.0 
+├── gitbook-plugin-search-plus@1.0.3 
+├── gitbook-plugin-splitter@0.0.8 
+├── gitbook-plugin-theme-comscore@0.0.3 
+└── gitbook-plugin-toggle-chapters@0.0.3 
+
+[0;36minfo:[0m [0;32m>> [0mplugin "copy-code-button" installed with success 
+[0;36minfo:[0m 16 plugins are installed 
+[0;36minfo:[0m 12 explicitly listed 
+[0;36minfo:[0m loading plugin "advanced-emoji"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "toggle-chapters"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "splitter"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "github"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "search-plus"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "anchor-navigation-ex-toc"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "editlink"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "copy-code-button"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "highlight"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "fontsettings"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "theme-comscore"... [0;32mOK[0m 
+[0;36minfo:[0m loading plugin "theme-default"... [0;32mOK[0m 
+[0;36minfo:[0m found 358 pages 
+[0;36minfo:[0m found 49 asset files 
+init!

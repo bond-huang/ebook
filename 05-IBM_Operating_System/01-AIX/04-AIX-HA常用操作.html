@@ -1,0 +1,5698 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>AIX-HA常用操作 · eBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="ebook">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-advanced-emoji/emoji-website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-toggle-chapters/toggle.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-plus/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-anchor-navigation-ex-toc/style/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-theme-comscore/test.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="05-AIX-NIMserver.html" />
+    
+    
+    <link rel="prev" href="03-AIX-用户策略.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../../SUMMARY.html">
+            
+                <a href="../../SUMMARY.html">
+            
+                    
+                    SUMMARY
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../../01-IBM_Power_System/">
+            
+                <a href="../../01-IBM_Power_System/">
+            
+                    
+                    IBM_Power_System
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../../01-IBM_Power_System/01-HMC/">
+            
+                <a href="../../01-IBM_Power_System/01-HMC/">
+            
+                    
+                    HMC
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="../../01-IBM_Power_System/01-HMC/01-HMC-收集数据.html">
+            
+                <a href="../../01-IBM_Power_System/01-HMC/01-HMC-收集数据.html">
+            
+                    
+                    HMC-收集数据
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.2" data-path="../../01-IBM_Power_System/01-HMC/02-HMC-常用命令.html">
+            
+                <a href="../../01-IBM_Power_System/01-HMC/02-HMC-常用命令.html">
+            
+                    
+                    HMC-常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.3" data-path="../../01-IBM_Power_System/01-HMC/03-HMC-shell脚本使用.html">
+            
+                <a href="../../01-IBM_Power_System/01-HMC/03-HMC-shell脚本使用.html">
+            
+                    
+                    HMC-shell脚本使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.4" data-path="../../01-IBM_Power_System/01-HMC/04-HMC-RMC连接.html">
+            
+                <a href="../../01-IBM_Power_System/01-HMC/04-HMC-RMC连接.html">
+            
+                    
+                    HMC-RMC连接
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../../01-IBM_Power_System/02-Power_System/">
+            
+                <a href="../../01-IBM_Power_System/02-Power_System/">
+            
+                    
+                    Power_System
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1" data-path="../../01-IBM_Power_System/02-Power_System/01-Power-小型机数据收集.html">
+            
+                <a href="../../01-IBM_Power_System/02-Power_System/01-Power-小型机数据收集.html">
+            
+                    
+                    Power-小型机数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../../01-IBM_Power_System/03-OpenPower/">
+            
+                <a href="../../01-IBM_Power_System/03-OpenPower/">
+            
+                    
+                    OpenPower
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="../../01-IBM_Power_System/04-Pureflex/">
+            
+                <a href="../../01-IBM_Power_System/04-Pureflex/">
+            
+                    
+                    Pureflex
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../../02-IBM_Z&LinuxONE/">
+            
+                <a href="../../02-IBM_Z&LinuxONE/">
+            
+                    
+                    IBM_Z&LinuxONE
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/">
+            
+                    
+                    IBM_LinuxONE
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1.1" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/01-LinuxONE-数据收集.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/01-LinuxONE-数据收集.html">
+            
+                    
+                    LinuxONE-数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.2" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/02-LinuxONE-学习笔记.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/02-LinuxONE-学习笔记.html">
+            
+                    
+                    LinuxONE-学习笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.3" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/03-LinuxONE-云最佳实践笔记.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/03-LinuxONE-云最佳实践笔记.html">
+            
+                    
+                    LinuxONE-云最佳实践笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.4" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/04-LinuxONE-云最佳实践KVM笔记.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/04-LinuxONE-云最佳实践KVM笔记.html">
+            
+                    
+                    LinuxONE-云最佳实践KVM笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.5" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/05-LinuxONE-OpenStack部署_KVM.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/05-LinuxONE-OpenStack部署_KVM.html">
+            
+                    
+                    LinuxONE-OpenStack部署_KVM
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.6" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/06-LinuxONE-OpenStack使用手册.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/06-LinuxONE-OpenStack使用手册.html">
+            
+                    
+                    LinuxONE-OpenStack使用手册
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.7" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/07-LinxuONE-OpenShift安装配置.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/07-LinxuONE-OpenShift安装配置.html">
+            
+                    
+                    LinxuONE-OpenShift安装配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.8" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/08-LinuxONE-部署Kubernetes集群.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/08-LinuxONE-部署Kubernetes集群.html">
+            
+                    
+                    LinuxONE-部署Kubernetes集群
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.9" data-path="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/09-LinuxONE-Prometheus监控.html">
+            
+                <a href="../../02-IBM_Z&LinuxONE/01-IBM_LinuxONE/09-LinuxONE-Prometheus监控.html">
+            
+                    
+                    LinuxONE-Prometheus监控
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../../03-IBM_Storage_System/">
+            
+                <a href="../../03-IBM_Storage_System/">
+            
+                    
+                    IBM_Storage_System
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../../03-IBM_Storage_System/01-DS3-5k_Storage/">
+            
+                <a href="../../03-IBM_Storage_System/01-DS3-5k_Storage/">
+            
+                    
+                    DS3-5k_Storage
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1" data-path="../../03-IBM_Storage_System/01-DS3-5k_Storage/01-DS3-5K-微码升与降.html">
+            
+                <a href="../../03-IBM_Storage_System/01-DS3-5k_Storage/01-DS3-5K-微码升与降.html">
+            
+                    
+                    DS3-5K-微码升与降
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.2" data-path="../../03-IBM_Storage_System/01-DS3-5k_Storage/02-DS3-5K-常见问题.html">
+            
+                <a href="../../03-IBM_Storage_System/01-DS3-5k_Storage/02-DS3-5K-常见问题.html">
+            
+                    
+                    DS3-5K-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.3" data-path="../../03-IBM_Storage_System/01-DS3-5k_Storage/03-DS3-5K-常用操作.html">
+            
+                <a href="../../03-IBM_Storage_System/01-DS3-5k_Storage/03-DS3-5K-常用操作.html">
+            
+                    
+                    DS3-5K-常用操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="../../03-IBM_Storage_System/02-DS8k_Storage/">
+            
+                <a href="../../03-IBM_Storage_System/02-DS8k_Storage/">
+            
+                    
+                    DS8k_Storage
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.2.1" data-path="../../03-IBM_Storage_System/02-DS8k_Storage/01-DS8000-数据收集及基础.html">
+            
+                <a href="../../03-IBM_Storage_System/02-DS8k_Storage/01-DS8000-数据收集及基础.html">
+            
+                    
+                    DS8000-数据收集及基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.2" data-path="../../03-IBM_Storage_System/02-DS8k_Storage/02-DS8000-DSCLI常用命令.html">
+            
+                <a href="../../03-IBM_Storage_System/02-DS8k_Storage/02-DS8000-DSCLI常用命令.html">
+            
+                    
+                    DS8000-DSCLI常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.3" data-path="../../03-IBM_Storage_System/02-DS8k_Storage/03-DS8000-Copy_Services.html">
+            
+                <a href="../../03-IBM_Storage_System/02-DS8k_Storage/03-DS8000-Copy_Services.html">
+            
+                    
+                    DS8000-Copy_Services
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.4" data-path="../../03-IBM_Storage_System/02-DS8k_Storage/04-DS8000-Copy_Services_Manager.html">
+            
+                <a href="../../03-IBM_Storage_System/02-DS8k_Storage/04-DS8000-Copy_Services_Manager.html">
+            
+                    
+                    DS8000-Copy_Services_Manager
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2.5" data-path="../../03-IBM_Storage_System/02-DS8k_Storage/10-DS8000-硬件维护.html">
+            
+                <a href="../../03-IBM_Storage_System/02-DS8k_Storage/10-DS8000-硬件维护.html">
+            
+                    
+                    DS8000-硬件维护
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="../../03-IBM_Storage_System/03-Storwize_Storage/">
+            
+                <a href="../../03-IBM_Storage_System/03-Storwize_Storage/">
+            
+                    
+                    Storwize_Storage
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.4" data-path="../../03-IBM_Storage_System/04-Flash_System/">
+            
+                <a href="../../03-IBM_Storage_System/04-Flash_System/">
+            
+                    
+                    Flash_System
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.5" data-path="../../03-IBM_Storage_System/05-XIV_Storage/">
+            
+                <a href="../../03-IBM_Storage_System/05-XIV_Storage/">
+            
+                    
+                    XIV_Storage
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.5.1" data-path="../../03-IBM_Storage_System/05-XIV_Storage/01-XIV-日志查看及收集.html">
+            
+                <a href="../../03-IBM_Storage_System/05-XIV_Storage/01-XIV-日志查看及收集.html">
+            
+                    
+                    XIV-日志查看及收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.6" data-path="../../03-IBM_Storage_System/06-Tape_Storage/">
+            
+                <a href="../../03-IBM_Storage_System/06-Tape_Storage/">
+            
+                    
+                    Tape_Storage
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.6.1" data-path="../../03-IBM_Storage_System/06-Tape_Storage/05-TS4500-常见问题.html">
+            
+                <a href="../../03-IBM_Storage_System/06-Tape_Storage/05-TS4500-常见问题.html">
+            
+                    
+                    TS4500-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.6.2" data-path="../../03-IBM_Storage_System/06-Tape_Storage/10-TS7650G-虚拟带库.html">
+            
+                <a href="../../03-IBM_Storage_System/06-Tape_Storage/10-TS7650G-虚拟带库.html">
+            
+                    
+                    TS7650G-虚拟带库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.6.3" data-path="../../03-IBM_Storage_System/06-Tape_Storage/11-TS7650G-常见问题.html">
+            
+                <a href="../../03-IBM_Storage_System/06-Tape_Storage/11-TS7650G-常见问题.html">
+            
+                    
+                    TS7650G-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.6.4" data-path="../../03-IBM_Storage_System/06-Tape_Storage/12-TS7650G-安装配置.html">
+            
+                <a href="../../03-IBM_Storage_System/06-Tape_Storage/12-TS7650G-安装配置.html">
+            
+                    
+                    TS7650G-安装配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.7" data-path="../../03-IBM_Storage_System/07-NAS_Storage/">
+            
+                <a href="../../03-IBM_Storage_System/07-NAS_Storage/">
+            
+                    
+                    NAS_Storage
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.7.1" data-path="../../03-IBM_Storage_System/07-NAS_Storage/01-Nseries-常用命令和操作.html">
+            
+                <a href="../../03-IBM_Storage_System/07-NAS_Storage/01-Nseries-常用命令和操作.html">
+            
+                    
+                    Nseries-常用命令和操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.8" data-path="../../03-IBM_Storage_System/08-Cloud_Object_Storage/">
+            
+                <a href="../../03-IBM_Storage_System/08-Cloud_Object_Storage/">
+            
+                    
+                    Cloud_Object_Storage
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.9" data-path="../../03-IBM_Storage_System/09-SAN_Switch/">
+            
+                <a href="../../03-IBM_Storage_System/09-SAN_Switch/">
+            
+                    
+                    SAN_Switch
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.9.1" data-path="../../03-IBM_Storage_System/09-SAN_Switch/01-Switch-收集数据.html">
+            
+                <a href="../../03-IBM_Storage_System/09-SAN_Switch/01-Switch-收集数据.html">
+            
+                    
+                    Switch-收集数据
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.9.2" data-path="../../03-IBM_Storage_System/09-SAN_Switch/02-Switch-常用命令.html">
+            
+                <a href="../../03-IBM_Storage_System/09-SAN_Switch/02-Switch-常用命令.html">
+            
+                    
+                    Switch-常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.9.3" data-path="../../03-IBM_Storage_System/09-SAN_Switch/03-Switch-常见问题.html">
+            
+                <a href="../../03-IBM_Storage_System/09-SAN_Switch/03-Switch-常见问题.html">
+            
+                    
+                    Switch-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.9.4" data-path="../../03-IBM_Storage_System/09-SAN_Switch/04-Switch-常用脚本.html">
+            
+                <a href="../../03-IBM_Storage_System/09-SAN_Switch/04-Switch-常用脚本.html">
+            
+                    
+                    Switch-常用脚本
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/">
+            
+                    
+                    SAN_Volume_Controller
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.10.1" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/01-SVC-数据收集.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/01-SVC-数据收集.html">
+            
+                    
+                    SVC-数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10.2" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/02-SVC-远程拷贝.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/02-SVC-远程拷贝.html">
+            
+                    
+                    SVC-远程拷贝
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10.3" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/03-SVC-常用命令.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/03-SVC-常用命令.html">
+            
+                    
+                    SVC-常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10.4" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/04-SVC-Quorum磁盘.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/04-SVC-Quorum磁盘.html">
+            
+                    
+                    SVC-Quorum磁盘
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10.5" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/05-SVC-固件升级.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/05-SVC-固件升级.html">
+            
+                    
+                    SVC-固件升级
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10.6" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/06-SVC-系统性能.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/06-SVC-系统性能.html">
+            
+                    
+                    SVC-系统性能
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10.7" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/07-SVC-池_mdisk_卷.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/07-SVC-池_mdisk_卷.html">
+            
+                    
+                    SVC-池mdisk卷
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.10.8" data-path="../../03-IBM_Storage_System/10-SAN_Volume_Controller/20-SVC-简单脚本.html">
+            
+                <a href="../../03-IBM_Storage_System/10-SAN_Volume_Controller/20-SVC-简单脚本.html">
+            
+                    
+                    SVC-简单脚本
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../../04-IBM_Virtualization/">
+            
+                <a href="../../04-IBM_Virtualization/">
+            
+                    
+                    IBM_Virtualization
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../../04-IBM_Virtualization/01-PowerVC/">
+            
+                <a href="../../04-IBM_Virtualization/01-PowerVC/">
+            
+                    
+                    PowerVC
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="../../04-IBM_Virtualization/01-PowerVC/01-PowerVC-安装.html">
+            
+                <a href="../../04-IBM_Virtualization/01-PowerVC/01-PowerVC-安装.html">
+            
+                    
+                    PowerVC-安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../../04-IBM_Virtualization/02-PowerVM/">
+            
+                <a href="../../04-IBM_Virtualization/02-PowerVM/">
+            
+                    
+                    PowerVM
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.1" data-path="../../04-IBM_Virtualization/02-PowerVM/01-PowerVM-数据收集.html">
+            
+                <a href="../../04-IBM_Virtualization/02-PowerVM/01-PowerVM-数据收集.html">
+            
+                    
+                    PowerVM-数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2" data-path="../../04-IBM_Virtualization/02-PowerVM/02-PowerVM-VIOS常用命令.html">
+            
+                <a href="../../04-IBM_Virtualization/02-PowerVM/02-PowerVM-VIOS常用命令.html">
+            
+                    
+                    PowerVM-VIOS常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.3" data-path="../../04-IBM_Virtualization/02-PowerVM/03-PowerVM-常见问题.html">
+            
+                <a href="../../04-IBM_Virtualization/02-PowerVM/03-PowerVM-常见问题.html">
+            
+                    
+                    PowerVM-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    IBM_Operating_System
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    AIX
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1.1" data-path="01-AIX-数据收集及分析.html">
+            
+                <a href="01-AIX-数据收集及分析.html">
+            
+                    
+                    AIX-数据收集及分析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.2" data-path="02-AIX-常用命令.html">
+            
+                <a href="02-AIX-常用命令.html">
+            
+                    
+                    AIX-常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.3" data-path="03-AIX-用户策略.html">
+            
+                <a href="03-AIX-用户策略.html">
+            
+                    
+                    AIX-用户策略
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7.1.4" data-path="04-AIX-HA常用操作.html">
+            
+                <a href="04-AIX-HA常用操作.html">
+            
+                    
+                    AIX-HA常用操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.5" data-path="05-AIX-NIMserver.html">
+            
+                <a href="05-AIX-NIMserver.html">
+            
+                    
+                    AIX-NIMserver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.6" data-path="06-AIX-TCPIP-配置IPv6.html">
+            
+                <a href="06-AIX-TCPIP-配置IPv6.html">
+            
+                    
+                    AIX-TCPIP-配置IPv6
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.7" data-path="07-AIX-磁盘多路径.html">
+            
+                <a href="07-AIX-磁盘多路径.html">
+            
+                    
+                    AIX-磁盘多路径
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.8" data-path="08-AIX-网络与通信.html">
+            
+                <a href="08-AIX-网络与通信.html">
+            
+                    
+                    AIX-网络与通信
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.9" data-path="09-AIX-系统管理.html">
+            
+                <a href="09-AIX-系统管理.html">
+            
+                    
+                    AIX-系统管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.10" data-path="10-AIX-系统性能.html">
+            
+                <a href="10-AIX-系统性能.html">
+            
+                    
+                    AIX-系统性能
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.11" data-path="11-AIX-常见问题.html">
+            
+                <a href="11-AIX-常见问题.html">
+            
+                    
+                    AIX-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.12" data-path="12-AIX-系统或软件安装.html">
+            
+                <a href="12-AIX-系统或软件安装.html">
+            
+                    
+                    AIX-系统或软件安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="../02-AS400/">
+            
+                <a href="../02-AS400/">
+            
+                    
+                    AS400
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.2.1" data-path="../02-AS400/01-AS400-检查&日志收集.html">
+            
+                <a href="../02-AS400/01-AS400-检查&日志收集.html">
+            
+                    
+                    AS400-检查&日志收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.2" data-path="../02-AS400/02-AS400-系统基本知识.html">
+            
+                <a href="../02-AS400/02-AS400-系统基本知识.html">
+            
+                    
+                    AS400-系统基本知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.3" data-path="../02-AS400/03-AS400-常用命令.html">
+            
+                <a href="../02-AS400/03-AS400-常用命令.html">
+            
+                    
+                    AS400-常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.4" data-path="../02-AS400/04-AS400-常用操作.html">
+            
+                <a href="../02-AS400/04-AS400-常用操作.html">
+            
+                    
+                    AS400-常用操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.5" data-path="../02-AS400/05-AS400-磁盘管理.html">
+            
+                <a href="../02-AS400/05-AS400-磁盘管理.html">
+            
+                    
+                    AS400-磁盘管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.6" data-path="../02-AS400/06-AS400-系统性能.html">
+            
+                <a href="../02-AS400/06-AS400-系统性能.html">
+            
+                    
+                    AS400-系统性能
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.7" data-path="../02-AS400/07-AS400-作业管理.html">
+            
+                <a href="../02-AS400/07-AS400-作业管理.html">
+            
+                    
+                    AS400-作业管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.8" data-path="../02-AS400/08-AS400-子系统管理.html">
+            
+                <a href="../02-AS400/08-AS400-子系统管理.html">
+            
+                    
+                    AS400-子系统管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.9" data-path="../02-AS400/09-AS400-内存池管理.html">
+            
+                <a href="../02-AS400/09-AS400-内存池管理.html">
+            
+                    
+                    AS400-内存池管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.10" data-path="../02-AS400/10-AS400-网络与通信.html">
+            
+                <a href="../02-AS400/10-AS400-网络与通信.html">
+            
+                    
+                    AS400-网络与通信
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.11" data-path="../02-AS400/11-AS400-备份与恢复.html">
+            
+                <a href="../02-AS400/11-AS400-备份与恢复.html">
+            
+                    
+                    AS400-备份与恢复
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.12" data-path="../02-AS400/12-AS400-消息&消息队列.html">
+            
+                <a href="../02-AS400/12-AS400-消息&消息队列.html">
+            
+                    
+                    AS400-消息&消息队列
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.13" data-path="../02-AS400/13-AS400-日志&日志接收器.html">
+            
+                <a href="../02-AS400/13-AS400-日志&日志接收器.html">
+            
+                    
+                    AS400-日志&日志接收器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.14" data-path="../02-AS400/14-AS400-输出队列管理.html">
+            
+                <a href="../02-AS400/14-AS400-输出队列管理.html">
+            
+                    
+                    AS400-输出队列管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.15" data-path="../02-AS400/15-AS400-Spooled文件管理.html">
+            
+                <a href="../02-AS400/15-AS400-Spooled文件管理.html">
+            
+                    
+                    AS400-Spooled文件管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.16" data-path="../02-AS400/16-AS400-程序开发相关.html">
+            
+                <a href="../02-AS400/16-AS400-程序开发相关.html">
+            
+                    
+                    AS400-程序开发相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.17" data-path="../02-AS400/17-AS400-PowerHA高可用.html">
+            
+                <a href="../02-AS400/17-AS400-PowerHA高可用.html">
+            
+                    
+                    AS400-PowerHA高可用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.18" data-path="../02-AS400/18-AS400-Power虚拟化分区.html">
+            
+                <a href="../02-AS400/18-AS400-Power虚拟化分区.html">
+            
+                    
+                    AS400-Power虚拟化分区
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.19" data-path="../02-AS400/19-AS400-系统用户管理.html">
+            
+                <a href="../02-AS400/19-AS400-系统用户管理.html">
+            
+                    
+                    AS400-系统用户管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.20" data-path="../02-AS400/20-AS400-系统Security.html">
+            
+                <a href="../02-AS400/20-AS400-系统Security.html">
+            
+                    
+                    AS400-系统Security
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.21" data-path="../02-AS400/21-AS400-系统Services.html">
+            
+                <a href="../02-AS400/21-AS400-系统Services.html">
+            
+                    
+                    AS400-系统Services
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.22" data-path="../02-AS400/22-AS400-系统值.html">
+            
+                <a href="../02-AS400/22-AS400-系统值.html">
+            
+                    
+                    AS400-系统值
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.23" data-path="../02-AS400/23-AS400-监控系统活动.html">
+            
+                <a href="../02-AS400/23-AS400-监控系统活动.html">
+            
+                    
+                    AS400-监控系统活动
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.24" data-path="../02-AS400/24-AS400-HA_Tools_IASP_Manager.html">
+            
+                <a href="../02-AS400/24-AS400-HA_Tools_IASP_Manager.html">
+            
+                    
+                    AS400-HA_Tools_IASP_Manager
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.25" data-path="../02-AS400/25-AS400-文档查看及编辑.html">
+            
+                <a href="../02-AS400/25-AS400-文档查看及编辑.html">
+            
+                    
+                    AS400-文档查看及编辑
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.26" data-path="../02-AS400/26-AS400-Auxiliary_Storage_Pool.html">
+            
+                <a href="../02-AS400/26-AS400-Auxiliary_Storage_Pool.html">
+            
+                    
+                    AS400-Auxiliary_Storage_Pool
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.27" data-path="../02-AS400/31-AS400-i_Access.html">
+            
+                <a href="../02-AS400/31-AS400-i_Access.html">
+            
+                    
+                    AS400-i_Access
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.28" data-path="../02-AS400/32-AS400-学习笔记.html">
+            
+                <a href="../02-AS400/32-AS400-学习笔记.html">
+            
+                    
+                    AS400-学习笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.29" data-path="../02-AS400/33-AS400-MIMIX_iCluster.html">
+            
+                <a href="../02-AS400/33-AS400-MIMIX_iCluster.html">
+            
+                    
+                    AS400-MIMIX_iCluster
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.30" data-path="../02-AS400/40-AS400-常见系统问题.html">
+            
+                <a href="../02-AS400/40-AS400-常见系统问题.html">
+            
+                    
+                    AS400-常见系统问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.31" data-path="../02-AS400/41-AS400-高可用相关问题.html">
+            
+                <a href="../02-AS400/41-AS400-高可用相关问题.html">
+            
+                    
+                    AS400-高可用相关问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="../03-AS400程序/">
+            
+                <a href="../03-AS400程序/">
+            
+                    
+                    AS400程序
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.3.1" data-path="../03-AS400程序/01-CLP-基础知识.html">
+            
+                <a href="../03-AS400程序/01-CLP-基础知识.html">
+            
+                    
+                    CLP-基础知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3.2" data-path="../03-AS400程序/02-CLP-常用命令.html">
+            
+                <a href="../03-AS400程序/02-CLP-常用命令.html">
+            
+                    
+                    CLP-常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3.3" data-path="../03-AS400程序/03-CLP-变量基本操作.html">
+            
+                <a href="../03-AS400程序/03-CLP-变量基本操作.html">
+            
+                    
+                    CLP-变量基本操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3.4" data-path="../03-AS400程序/04-CLP-控制语句.html">
+            
+                <a href="../03-AS400程序/04-CLP-控制语句.html">
+            
+                    
+                    CLP-控制语句
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3.5" data-path="../03-AS400程序/05-CLP-检索可用作变量的值.html">
+            
+                <a href="../03-AS400程序/05-CLP-检索可用作变量的值.html">
+            
+                    
+                    CLP-检索可用作变量的值
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3.6" data-path="../03-AS400程序/40-AS400-PDM使用.html">
+            
+                <a href="../03-AS400程序/40-AS400-PDM使用.html">
+            
+                    
+                    AS400-PDM使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="../04-AS400数据库/">
+            
+                <a href="../04-AS400数据库/">
+            
+                    
+                    AS400数据库
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.4.1" data-path="../04-AS400数据库/01-AS400-数据库基础知识.html">
+            
+                <a href="../04-AS400数据库/01-AS400-数据库基础知识.html">
+            
+                    
+                    AS400-数据库基础知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4.2" data-path="../04-AS400数据库/05-AS400-Commitment Control.html">
+            
+                <a href="../04-AS400数据库/05-AS400-Commitment Control.html">
+            
+                    
+                    AS400-Commitment Control
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4.3" data-path="../04-AS400数据库/19-AS400-数据库文件管理.html">
+            
+                <a href="../04-AS400数据库/19-AS400-数据库文件管理.html">
+            
+                    
+                    AS400-数据库文件管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4.4" data-path="../04-AS400数据库/20-AS400-常用SQL.html">
+            
+                <a href="../04-AS400数据库/20-AS400-常用SQL.html">
+            
+                    
+                    AS400-常用SQL
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="../05-RedHat/">
+            
+                <a href="../05-RedHat/">
+            
+                    
+                    RedHat
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.5.1" data-path="../05-RedHat/01-RedHat-基础配置.html">
+            
+                <a href="../05-RedHat/01-RedHat-基础配置.html">
+            
+                    
+                    RedHat-基础配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5.2" data-path="../05-RedHat/02-RedHat-常用命令.html">
+            
+                <a href="../05-RedHat/02-RedHat-常用命令.html">
+            
+                    
+                    RedHat-常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5.3" data-path="../05-RedHat/03-RedHat-用户及用户权限.html">
+            
+                <a href="../05-RedHat/03-RedHat-用户及用户权限.html">
+            
+                    
+                    RedHat-用户及用户权限
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5.4" data-path="../05-RedHat/04-RedHat-文件和文字处理.html">
+            
+                <a href="../05-RedHat/04-RedHat-文件和文字处理.html">
+            
+                    
+                    RedHat-文件和文字处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5.5" data-path="../05-RedHat/05-RedHat-磁盘管理.html">
+            
+                <a href="../05-RedHat/05-RedHat-磁盘管理.html">
+            
+                    
+                    RedHat-磁盘管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5.6" data-path="../05-RedHat/20-RedHat-常用软件安装.html">
+            
+                <a href="../05-RedHat/20-RedHat-常用软件安装.html">
+            
+                    
+                    RedHat-常用软件安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5.7" data-path="../05-RedHat/21-RedHat-常见问题.html">
+            
+                <a href="../05-RedHat/21-RedHat-常见问题.html">
+            
+                    
+                    RedHat-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="../06-RHEL学习笔记/">
+            
+                <a href="../06-RHEL学习笔记/">
+            
+                    
+                    RHEL学习笔记
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.6.1" data-path="../06-RHEL学习笔记/01-RHEL-基础命令及操作.html">
+            
+                <a href="../06-RHEL学习笔记/01-RHEL-基础命令及操作.html">
+            
+                    
+                    RHEL-基础命令及操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.2" data-path="../06-RHEL学习笔记/02-RHEL-文本及用户操作.html">
+            
+                <a href="../06-RHEL学习笔记/02-RHEL-文本及用户操作.html">
+            
+                    
+                    RHEL-文本及用户操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.3" data-path="../06-RHEL学习笔记/03-RHEL-文件访问及进程管理.html">
+            
+                <a href="../06-RHEL学习笔记/03-RHEL-文件访问及进程管理.html">
+            
+                    
+                    RHEL-文件访问及进程管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.4" data-path="../06-RHEL学习笔记/04-RHEL-服务和守护进程及SSH.html">
+            
+                <a href="../06-RHEL学习笔记/04-RHEL-服务和守护进程及SSH.html">
+            
+                    
+                    RHEL-服务和守护进程及SSH
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.5" data-path="../06-RHEL学习笔记/05-RHEL-日志分析及管理.html">
+            
+                <a href="../06-RHEL学习笔记/05-RHEL-日志分析及管理.html">
+            
+                    
+                    RHEL-日志分析及管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.6" data-path="../06-RHEL学习笔记/06-RHEL-系统网络管理.html">
+            
+                <a href="../06-RHEL学习笔记/06-RHEL-系统网络管理.html">
+            
+                    
+                    RHEL-系统网络管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.7" data-path="../06-RHEL学习笔记/07-RHEL-归档和传输文件.html">
+            
+                <a href="../06-RHEL学习笔记/07-RHEL-归档和传输文件.html">
+            
+                    
+                    RHEL-归档和传输文件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.8" data-path="../06-RHEL学习笔记/08-RHEL-安装和更新软件包.html">
+            
+                <a href="../06-RHEL学习笔记/08-RHEL-安装和更新软件包.html">
+            
+                    
+                    RHEL-安装和更新软件包
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.9" data-path="../06-RHEL学习笔记/09-RHEL-访问Linux文件系统.html">
+            
+                <a href="../06-RHEL学习笔记/09-RHEL-访问Linux文件系统.html">
+            
+                    
+                    RHEL-访问Linux文件系统
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.10" data-path="../06-RHEL学习笔记/10-RHEL-分析服务器及获取支持.html">
+            
+                <a href="../06-RHEL学习笔记/10-RHEL-分析服务器及获取支持.html">
+            
+                    
+                    RHEL-分析服务器及获取支持
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6.11" data-path="../06-RHEL学习笔记/11-RHEL-复习与练习.html">
+            
+                <a href="../06-RHEL学习笔记/11-RHEL-复习与练习.html">
+            
+                    
+                    RHEL-复习与练习
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7" data-path="../07-RHEL-Ansible学习笔记/">
+            
+                <a href="../07-RHEL-Ansible学习笔记/">
+            
+                    
+                    RHEL-Ansible学习笔记
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.7.1" data-path="../07-RHEL-Ansible学习笔记/01-Ansible-安装Ansible.html">
+            
+                <a href="../07-RHEL-Ansible学习笔记/01-Ansible-安装Ansible.html">
+            
+                    
+                    Ansible-安装Ansible
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7.2" data-path="../07-RHEL-Ansible学习笔记/02-Ansible-实施Playbook.html">
+            
+                <a href="../07-RHEL-Ansible学习笔记/02-Ansible-实施Playbook.html">
+            
+                    
+                    Ansible-实施Playbook
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7.3" data-path="../07-RHEL-Ansible学习笔记/03-Ansible-变量管理等.html">
+            
+                <a href="../07-RHEL-Ansible学习笔记/03-Ansible-变量管理等.html">
+            
+                    
+                    Ansible-变量管理等
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7.4" data-path="../07-RHEL-Ansible学习笔记/04-Ansible-任务控制.html">
+            
+                <a href="../07-RHEL-Ansible学习笔记/04-Ansible-任务控制.html">
+            
+                    
+                    Ansible-任务控制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7.5" data-path="../07-RHEL-Ansible学习笔记/20-Ansible-常见问题.html">
+            
+                <a href="../07-RHEL-Ansible学习笔记/20-Ansible-常见问题.html">
+            
+                    
+                    Ansible-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7.6" data-path="../07-RHEL-Ansible学习笔记/21-Ansible-官方实例参考.html">
+            
+                <a href="../07-RHEL-Ansible学习笔记/21-Ansible-官方实例参考.html">
+            
+                    
+                    Ansible-官方实例参考
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../../06-IBM_Database&Middleware&Other/">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/">
+            
+                    
+                    IBM_Database&Middleware&Other
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../../06-IBM_Database&Middleware&Other/01-DB2_Database/">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/01-DB2_Database/">
+            
+                    
+                    DB2_Database
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1.1" data-path="../../06-IBM_Database&Middleware&Other/01-DB2_Database/01-DB2-数据收集.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/01-DB2_Database/01-DB2-数据收集.html">
+            
+                    
+                    DB2-数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.2" data-path="../../06-IBM_Database&Middleware&Other/01-DB2_Database/02-DB2-常见SQL_messages.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/01-DB2_Database/02-DB2-常见SQL_messages.html">
+            
+                    
+                    DB2-常见SQL_messages
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.3" data-path="../../06-IBM_Database&Middleware&Other/01-DB2_Database/03-DB2-数据库其它问题.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/01-DB2_Database/03-DB2-数据库其它问题.html">
+            
+                    
+                    DB2-数据库其它问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.4" data-path="../../06-IBM_Database&Middleware&Other/01-DB2_Database/04-DB2-数据库相关说明.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/01-DB2_Database/04-DB2-数据库相关说明.html">
+            
+                    
+                    DB2-数据库相关说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.1.5" data-path="../../06-IBM_Database&Middleware&Other/01-DB2_Database/05-DB2-常用操作或命令.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/01-DB2_Database/05-DB2-常用操作或命令.html">
+            
+                    
+                    DB2-常用操作或命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/">
+            
+                    
+                    Websphere_Application_Server
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.2.1" data-path="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/01-WAS-数据收集.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/01-WAS-数据收集.html">
+            
+                    
+                    WAS-数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.2" data-path="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/02-WAS-常见问题处理.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/02-WAS-常见问题处理.html">
+            
+                    
+                    WAS-常见问题处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.3" data-path="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/03-WAS-其它报错处理.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/03-WAS-其它报错处理.html">
+            
+                    
+                    WAS-其它报错处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2.4" data-path="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/04-WAS-故障处理实例.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/04-WAS-故障处理实例.html">
+            
+                    
+                    WAS-故障处理实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="../../06-IBM_Database&Middleware&Other/03-Websphere_MQ/">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/03-Websphere_MQ/">
+            
+                    
+                    Websphere_MQ
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.1" data-path="../../06-IBM_Database&Middleware&Other/03-Websphere_MQ/01-MQ-数据收集.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/03-Websphere_MQ/01-MQ-数据收集.html">
+            
+                    
+                    MQ-数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3.2" data-path="../../06-IBM_Database&Middleware&Other/03-Websphere_MQ/02-MQ-连接通道问题.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/03-Websphere_MQ/02-MQ-连接通道问题.html">
+            
+                    
+                    MQ-连接通道问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4" data-path="../../06-IBM_Database&Middleware&Other/04-Filenet/">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/04-Filenet/">
+            
+                    
+                    Filenet
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5" data-path="../../06-IBM_Database&Middleware&Other/05-Cognos/">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/05-Cognos/">
+            
+                    
+                    Cognos
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.5.1" data-path="../../06-IBM_Database&Middleware&Other/05-Cognos/01-Cognos-数据收集.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/05-Cognos/01-Cognos-数据收集.html">
+            
+                    
+                    Cognos-数据收集
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.2" data-path="../../06-IBM_Database&Middleware&Other/05-Cognos/02-Cognos-常见问题.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/05-Cognos/02-Cognos-常见问题.html">
+            
+                    
+                    Cognos-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.6" data-path="../../06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/">
+            
+                    
+                    InfoSphere_Data_Replication
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.6.1" data-path="../../06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/01-CDC-安装与卸载.html">
+            
+                <a href="../../06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/01-CDC-安装与卸载.html">
+            
+                    
+                    CDC-安装与卸载
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../../07-Oracle_Database/">
+            
+                <a href="../../07-Oracle_Database/">
+            
+                    
+                    Oracle_Database
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../../07-Oracle_Database/01-Oracle学习笔记/">
+            
+                <a href="../../07-Oracle_Database/01-Oracle学习笔记/">
+            
+                    
+                    Oracle学习笔记
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1.1" data-path="../../07-Oracle_Database/01-Oracle学习笔记/01-Oracle-安装与部署.html">
+            
+                <a href="../../07-Oracle_Database/01-Oracle学习笔记/01-Oracle-安装与部署.html">
+            
+                    
+                    Oracle-安装与部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../../08-Python/">
+            
+                <a href="../../08-Python/">
+            
+                    
+                    Python
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="../../08-Python/01-Python基础学习笔记/">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/">
+            
+                    
+                    Python基础学习笔记
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1.1" data-path="../../08-Python/01-Python基础学习笔记/01-Python学习笔记-基本数据类型.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/01-Python学习笔记-基本数据类型.html">
+            
+                    
+                    Python学习笔记-基本数据类型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.2" data-path="../../08-Python/01-Python基础学习笔记/02-Python学习笔记-变量与运算符.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/02-Python学习笔记-变量与运算符.html">
+            
+                    
+                    Python学习笔记-变量与运算符
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.3" data-path="../../08-Python/01-Python基础学习笔记/03-Python学习笔记-循环&分支&条件.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/03-Python学习笔记-循环&分支&条件.html">
+            
+                    
+                    Python学习笔记-循环&分支&条件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.4" data-path="../../08-Python/01-Python基础学习笔记/04-Python学习笔记-结构_包&模块.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/04-Python学习笔记-结构_包&模块.html">
+            
+                    
+                    Python学习笔记-结构_包&模块
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.5" data-path="../../08-Python/01-Python基础学习笔记/05-Python学习笔记-函数.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/05-Python学习笔记-函数.html">
+            
+                    
+                    Python学习笔记-函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.6" data-path="../../08-Python/01-Python基础学习笔记/06-Python学习笔记-面向对象.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/06-Python学习笔记-面向对象.html">
+            
+                    
+                    Python学习笔记-面向对象
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.7" data-path="../../08-Python/01-Python基础学习笔记/07-Python学习笔记-正则表达式.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/07-Python学习笔记-正则表达式.html">
+            
+                    
+                    Python学习笔记-正则表达式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.8" data-path="../../08-Python/01-Python基础学习笔记/08-Python学习笔记-JSON.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/08-Python学习笔记-JSON.html">
+            
+                    
+                    Python学习笔记-JSON
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.9" data-path="../../08-Python/01-Python基础学习笔记/09-Python学习笔记-枚举.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/09-Python学习笔记-枚举.html">
+            
+                    
+                    Python学习笔记-枚举
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.10" data-path="../../08-Python/01-Python基础学习笔记/10-Python学习笔记-高级语法与应用.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/10-Python学习笔记-高级语法与应用.html">
+            
+                    
+                    Python学习笔记-高级语法与应用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.11" data-path="../../08-Python/01-Python基础学习笔记/11-Python学习笔记-函数式编程.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/11-Python学习笔记-函数式编程.html">
+            
+                    
+                    Python学习笔记-函数式编程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.12" data-path="../../08-Python/01-Python基础学习笔记/12-Python学习笔记-爬虫学习.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/12-Python学习笔记-爬虫学习.html">
+            
+                    
+                    Python学习笔记-爬虫学习
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.1.13" data-path="../../08-Python/01-Python基础学习笔记/13-Python学习笔记-Pythonic.html">
+            
+                <a href="../../08-Python/01-Python基础学习笔记/13-Python学习笔记-Pythonic.html">
+            
+                    
+                    Python学习笔记-Pythonic
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="../../08-Python/02-Python内置模块&方法/">
+            
+                <a href="../../08-Python/02-Python内置模块&方法/">
+            
+                    
+                    Python内置模块&方法
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.2.1" data-path="../../08-Python/02-Python内置模块&方法/01-Python-操作系统接口.html">
+            
+                <a href="../../08-Python/02-Python内置模块&方法/01-Python-操作系统接口.html">
+            
+                    
+                    Python-操作系统接口
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2.2" data-path="../../08-Python/02-Python内置模块&方法/02-Python-time模块.html">
+            
+                <a href="../../08-Python/02-Python内置模块&方法/02-Python-time模块.html">
+            
+                    
+                    Python-time模块
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2.3" data-path="../../08-Python/02-Python内置模块&方法/03-Python-常用内置函数.html">
+            
+                <a href="../../08-Python/02-Python内置模块&方法/03-Python-常用内置函数.html">
+            
+                    
+                    Python-常用内置函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2.4" data-path="../../08-Python/02-Python内置模块&方法/04-Python-array&readline.html">
+            
+                <a href="../../08-Python/02-Python内置模块&方法/04-Python-array&readline.html">
+            
+                    
+                    Python-array&readline
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2.5" data-path="../../08-Python/02-Python内置模块&方法/05-Python-常用字符串方法.html">
+            
+                <a href="../../08-Python/02-Python内置模块&方法/05-Python-常用字符串方法.html">
+            
+                    
+                    Python-常用字符串方法
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="../../08-Python/03-Python_LeetCode/">
+            
+                <a href="../../08-Python/03-Python_LeetCode/">
+            
+                    
+                    Python_LeetCode
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.3.1" data-path="../../08-Python/03-Python_LeetCode/01-Python-简单题目.html">
+            
+                <a href="../../08-Python/03-Python_LeetCode/01-Python-简单题目.html">
+            
+                    
+                    Python-简单题目
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3.2" data-path="../../08-Python/03-Python_LeetCode/02-Python-简单题目_1.html">
+            
+                <a href="../../08-Python/03-Python_LeetCode/02-Python-简单题目_1.html">
+            
+                    
+                    Python-简单题目_1
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3.3" data-path="../../08-Python/03-Python_LeetCode/11-Python-中等难度.html">
+            
+                <a href="../../08-Python/03-Python_LeetCode/11-Python-中等难度.html">
+            
+                    
+                    Python-中等难度
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="../../08-Python/04-Python_AIX脚本/">
+            
+                <a href="../../08-Python/04-Python_AIX脚本/">
+            
+                    
+                    Python_AIX脚本
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.4.1" data-path="../../08-Python/04-Python_AIX脚本/01-Python-AIX环境部署.html">
+            
+                <a href="../../08-Python/04-Python_AIX脚本/01-Python-AIX环境部署.html">
+            
+                    
+                    Python-AIX环境部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4.2" data-path="../../08-Python/04-Python_AIX脚本/02-Python-检查系统.html">
+            
+                <a href="../../08-Python/04-Python_AIX脚本/02-Python-检查系统.html">
+            
+                    
+                    Python-检查系统
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4.3" data-path="../../08-Python/04-Python_AIX脚本/03-Python-AIX配置修改.html">
+            
+                <a href="../../08-Python/04-Python_AIX脚本/03-Python-AIX配置修改.html">
+            
+                    
+                    Python-AIX配置修改
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4.4" data-path="../../08-Python/04-Python_AIX脚本/04-Python-AIX日常巡检.html">
+            
+                <a href="../../08-Python/04-Python_AIX脚本/04-Python-AIX日常巡检.html">
+            
+                    
+                    Python-AIX日常巡检
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="../../08-Python/05-Python_爬虫/">
+            
+                <a href="../../08-Python/05-Python_爬虫/">
+            
+                    
+                    Python_爬虫
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.5.1" data-path="../../08-Python/05-Python_爬虫/01-Python-视频信息爬取.html">
+            
+                <a href="../../08-Python/05-Python_爬虫/01-Python-视频信息爬取.html">
+            
+                    
+                    Python-视频信息爬取
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5.2" data-path="../../08-Python/05-Python_爬虫/02-Python-热点话题爬取.html">
+            
+                <a href="../../08-Python/05-Python_爬虫/02-Python-热点话题爬取.html">
+            
+                    
+                    Python-热点话题爬取
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="../../08-Python/06-Python_Excel数据分析/">
+            
+                <a href="../../08-Python/06-Python_Excel数据分析/">
+            
+                    
+                    Python_Excel数据分析
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.6.1" data-path="../../08-Python/06-Python_Excel数据分析/01-Openpyxl-各系统环境部署.html">
+            
+                <a href="../../08-Python/06-Python_Excel数据分析/01-Openpyxl-各系统环境部署.html">
+            
+                    
+                    Openpyxl-各系统环境部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6.2" data-path="../../08-Python/06-Python_Excel数据分析/02-Openpyxl-Excel基础操作.html">
+            
+                <a href="../../08-Python/06-Python_Excel数据分析/02-Openpyxl-Excel基础操作.html">
+            
+                    
+                    Openpyxl-Excel基础操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7" data-path="../../08-Python/07-Python_Flask/">
+            
+                <a href="../../08-Python/07-Python_Flask/">
+            
+                    
+                    Python_Flask
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.7.1" data-path="../../08-Python/07-Python_Flask/01-Flask-基础环境搭建.html">
+            
+                <a href="../../08-Python/07-Python_Flask/01-Flask-基础环境搭建.html">
+            
+                    
+                    Flask-基础环境搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7.2" data-path="../../08-Python/07-Python_Flask/02-Flask-布局及视图笔记.html">
+            
+                <a href="../../08-Python/07-Python_Flask/02-Flask-布局及视图笔记.html">
+            
+                    
+                    Flask-布局及视图笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7.3" data-path="../../08-Python/07-Python_Flask/03-Flask-模板及网页布局笔记.html">
+            
+                <a href="../../08-Python/07-Python_Flask/03-Flask-模板及网页布局笔记.html">
+            
+                    
+                    Flask-模板及网页布局笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7.4" data-path="../../08-Python/07-Python_Flask/09-Flask-操作请求数据.html">
+            
+                <a href="../../08-Python/07-Python_Flask/09-Flask-操作请求数据.html">
+            
+                    
+                    Flask-操作请求数据
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7.5" data-path="../../08-Python/07-Python_Flask/10-Flask-常见问题.html">
+            
+                <a href="../../08-Python/07-Python_Flask/10-Flask-常见问题.html">
+            
+                    
+                    Flask-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7.6" data-path="../../08-Python/07-Python_Flask/11-HTML-基础学习笔记.html">
+            
+                <a href="../../08-Python/07-Python_Flask/11-HTML-基础学习笔记.html">
+            
+                    
+                    HTML-基础学习笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7.7" data-path="../../08-Python/07-Python_Flask/15-SQLite-基础知识笔记.html">
+            
+                <a href="../../08-Python/07-Python_Flask/15-SQLite-基础知识笔记.html">
+            
+                    
+                    SQLite-基础知识笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7.8" data-path="../../08-Python/07-Python_Flask/16-SQLite-常见问题.html">
+            
+                <a href="../../08-Python/07-Python_Flask/16-SQLite-常见问题.html">
+            
+                    
+                    SQLite-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/">
+            
+                    
+                    Python系统管理&自动化运维笔记
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.8.1" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/01-Python运维-基础知识.html">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/01-Python运维-基础知识.html">
+            
+                    
+                    Python运维-基础知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8.2" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/02-Python运维-打造命令行工具.html">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/02-Python运维-打造命令行工具.html">
+            
+                    
+                    Python运维-打造命令行工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8.3" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/03-Python运维-文本处理.html">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/03-Python运维-文本处理.html">
+            
+                    
+                    Python运维-文本处理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8.4" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/04-Python运维-Linux系统管理.html">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/04-Python运维-Linux系统管理.html">
+            
+                    
+                    Python运维-Linux系统管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8.5" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/05-Python运维-Linux系统管理实例.html">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/05-Python运维-Linux系统管理实例.html">
+            
+                    
+                    Python运维-Linux系统管理实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8.6" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/06-Python运维-监控Linux系统.html">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/06-Python运维-监控Linux系统.html">
+            
+                    
+                    Python运维-监控Linux系统
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8.7" data-path="../../08-Python/08-Python系统管理&自动化运维笔记/07-Python运维-文档与报告.html">
+            
+                <a href="../../08-Python/08-Python系统管理&自动化运维笔记/07-Python运维-文档与报告.html">
+            
+                    
+                    Python运维-文档与报告
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.9" data-path="../../08-Python/09-Python_常见问题及注意事项/">
+            
+                <a href="../../08-Python/09-Python_常见问题及注意事项/">
+            
+                    
+                    Python_常见问题及注意事项
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.9.1" data-path="../../08-Python/09-Python_常见问题及注意事项/01-Python-常见问题.html">
+            
+                <a href="../../08-Python/09-Python_常见问题及注意事项/01-Python-常见问题.html">
+            
+                    
+                    Python-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.9.2" data-path="../../08-Python/09-Python_常见问题及注意事项/02-Python-注意事项.html">
+            
+                <a href="../../08-Python/09-Python_常见问题及注意事项/02-Python-注意事项.html">
+            
+                    
+                    Python-注意事项
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.9.3" data-path="../../08-Python/09-Python_常见问题及注意事项/03-Python-编写脚本注意事项.html">
+            
+                <a href="../../08-Python/09-Python_常见问题及注意事项/03-Python-编写脚本注意事项.html">
+            
+                    
+                    Python-编写脚本注意事项
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="../../09-Shell脚本/">
+            
+                <a href="../../09-Shell脚本/">
+            
+                    
+                    Shell脚本
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="../../09-Shell脚本/01-Shell学习笔记/">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/">
+            
+                    
+                    Shell学习笔记
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1.1" data-path="../../09-Shell脚本/01-Shell学习笔记/01-Shell笔记-基础脚本.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/01-Shell笔记-基础脚本.html">
+            
+                    
+                    Shell笔记-基础脚本
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.2" data-path="../../09-Shell脚本/01-Shell学习笔记/02-Shell笔记-条件语句.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/02-Shell笔记-条件语句.html">
+            
+                    
+                    Shell笔记-条件语句
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.3" data-path="../../09-Shell脚本/01-Shell学习笔记/03-Shell笔记-循环语句.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/03-Shell笔记-循环语句.html">
+            
+                    
+                    Shell笔记-循环语句
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.4" data-path="../../09-Shell脚本/01-Shell学习笔记/04-Shell笔记-处理用户输入.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/04-Shell笔记-处理用户输入.html">
+            
+                    
+                    Shell笔记-处理用户输入
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.5" data-path="../../09-Shell脚本/01-Shell学习笔记/05-Shell笔记-数据呈现.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/05-Shell笔记-数据呈现.html">
+            
+                    
+                    Shell笔记-数据呈现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.6" data-path="../../09-Shell脚本/01-Shell学习笔记/06-Shell笔记-函数.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/06-Shell笔记-函数.html">
+            
+                    
+                    Shell笔记-函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.7" data-path="../../09-Shell脚本/01-Shell学习笔记/07-Shell笔记-sed和gawk基础.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/07-Shell笔记-sed和gawk基础.html">
+            
+                    
+                    Shell笔记-sed和gawk基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.8" data-path="../../09-Shell脚本/01-Shell学习笔记/08-Shell笔记-正则表达式.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/08-Shell笔记-正则表达式.html">
+            
+                    
+                    Shell笔记-正则表达式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.9" data-path="../../09-Shell脚本/01-Shell学习笔记/09-Shell笔记-sed编辑器.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/09-Shell笔记-sed编辑器.html">
+            
+                    
+                    Shell笔记-sed编辑器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.10" data-path="../../09-Shell脚本/01-Shell学习笔记/10-Shell笔记-gawk程序.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/10-Shell笔记-gawk程序.html">
+            
+                    
+                    Shell笔记-gawk程序
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.1.11" data-path="../../09-Shell脚本/01-Shell学习笔记/11-Shell笔记-脚本控制.html">
+            
+                <a href="../../09-Shell脚本/01-Shell学习笔记/11-Shell笔记-脚本控制.html">
+            
+                    
+                    Shell笔记-脚本控制
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="../../09-Shell脚本/02-Shell脚本快速指南/">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/">
+            
+                    
+                    Shell脚本快速指南
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.2.1" data-path="../../09-Shell脚本/02-Shell脚本快速指南/01-Shell-bash脚本实例.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/01-Shell-bash脚本实例.html">
+            
+                    
+                    Shell-bash脚本实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2.2" data-path="../../09-Shell脚本/02-Shell脚本快速指南/02-Shell-退出码_test_expr查询表.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/02-Shell-退出码_test_expr查询表.html">
+            
+                    
+                    Shell-退出码_test_expr查询表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2.3" data-path="../../09-Shell脚本/02-Shell脚本快速指南/03-Shell-Shtool脚本函数库.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/03-Shell-Shtool脚本函数库.html">
+            
+                    
+                    Shell-Shtool脚本函数库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2.4" data-path="../../09-Shell脚本/02-Shell脚本快速指南/04-Shell-正则表达式实例.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/04-Shell-正则表达式实例.html">
+            
+                    
+                    Shell-正则表达式实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2.5" data-path="../../09-Shell脚本/02-Shell脚本快速指南/05-Shell-sed&gawk实例.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/05-Shell-sed&gawk实例.html">
+            
+                    
+                    Shell-sed&gawk实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2.6" data-path="../../09-Shell脚本/02-Shell脚本快速指南/06-Shell-简单的脚本实用工具.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/06-Shell-简单的脚本实用工具.html">
+            
+                    
+                    Shell-简单的脚本实用工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2.7" data-path="../../09-Shell脚本/02-Shell脚本快速指南/07-Shell-有意思的小脚本.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/07-Shell-有意思的小脚本.html">
+            
+                    
+                    Shell-有意思的小脚本
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2.8" data-path="../../09-Shell脚本/02-Shell脚本快速指南/08-Shell-常用方法快速查询.html">
+            
+                <a href="../../09-Shell脚本/02-Shell脚本快速指南/08-Shell-常用方法快速查询.html">
+            
+                    
+                    Shell-常用方法快速查询
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" data-path="../../09-Shell脚本/03-Shell_AIX脚本/">
+            
+                <a href="../../09-Shell脚本/03-Shell_AIX脚本/">
+            
+                    
+                    Shell_AIX脚本
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.3.1" data-path="../../09-Shell脚本/03-Shell_AIX脚本/01-Shell-mksysb相关脚本.html">
+            
+                <a href="../../09-Shell脚本/03-Shell_AIX脚本/01-Shell-mksysb相关脚本.html">
+            
+                    
+                    Shell-mksysb相关脚本
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3.2" data-path="../../09-Shell脚本/03-Shell_AIX脚本/02-Shell-PowerHA相关脚本.html">
+            
+                <a href="../../09-Shell脚本/03-Shell_AIX脚本/02-Shell-PowerHA相关脚本.html">
+            
+                    
+                    Shell-PowerHA相关脚本
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3.3" data-path="../../09-Shell脚本/03-Shell_AIX脚本/10-Shell-AIX_ksh小脚本.html">
+            
+                <a href="../../09-Shell脚本/03-Shell_AIX脚本/10-Shell-AIX_ksh小脚本.html">
+            
+                    
+                    Shell-AIX_ksh小脚本
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.4" data-path="../../09-Shell脚本/04-Shell脚本编写注意/">
+            
+                <a href="../../09-Shell脚本/04-Shell脚本编写注意/">
+            
+                    
+                    Shell脚本编写注意
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.4.1" data-path="../../09-Shell脚本/04-Shell脚本编写注意/01-Shell-各种shell的区别.html">
+            
+                <a href="../../09-Shell脚本/04-Shell脚本编写注意/01-Shell-各种shell的区别.html">
+            
+                    
+                    Shell-各种shell的区别
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.4.2" data-path="../../09-Shell脚本/04-Shell脚本编写注意/02-Shell-编写脚本注意事项.html">
+            
+                <a href="../../09-Shell脚本/04-Shell脚本编写注意/02-Shell-编写脚本注意事项.html">
+            
+                    
+                    Shell-编写脚本注意事项
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.4.3" data-path="../../09-Shell脚本/04-Shell脚本编写注意/03-Shell-sed和gawk差异.html">
+            
+                <a href="../../09-Shell脚本/04-Shell脚本编写注意/03-Shell-sed和gawk差异.html">
+            
+                    
+                    Shell-sed和gawk差异
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="../../10-Git/">
+            
+                <a href="../../10-Git/">
+            
+                    
+                    Git
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="../../10-Git/01-GitHub&Git/">
+            
+                <a href="../../10-Git/01-GitHub&Git/">
+            
+                    
+                    GitHub&Git
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1.1" data-path="../../10-Git/01-GitHub&Git/01-GitHub-使用命令行.html">
+            
+                <a href="../../10-Git/01-GitHub&Git/01-GitHub-使用命令行.html">
+            
+                    
+                    GitHub-使用命令行
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.1.2" data-path="../../10-Git/01-GitHub&Git/02-GitHub-常用操作.html">
+            
+                <a href="../../10-Git/01-GitHub&Git/02-GitHub-常用操作.html">
+            
+                    
+                    GitHub-常用操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.1.3" data-path="../../10-Git/01-GitHub&Git/03-GitHub-常见问题.html">
+            
+                <a href="../../10-Git/01-GitHub&Git/03-GitHub-常见问题.html">
+            
+                    
+                    GitHub-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.2" data-path="../../10-Git/02-Markdown/">
+            
+                <a href="../../10-Git/02-Markdown/">
+            
+                    
+                    Markdown
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.2.1" data-path="../../10-Git/02-Markdown/01-Markdown-基础用法.html">
+            
+                <a href="../../10-Git/02-Markdown/01-Markdown-基础用法.html">
+            
+                    
+                    Markdown-基础用法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.2.2" data-path="../../10-Git/02-Markdown/02-Markdown-查询表.html">
+            
+                <a href="../../10-Git/02-Markdown/02-Markdown-查询表.html">
+            
+                    
+                    Markdown-查询表
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.3" data-path="../../10-Git/03-Travis-CI/">
+            
+                <a href="../../10-Git/03-Travis-CI/">
+            
+                    
+                    Travis-CI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.3.1" data-path="../../10-Git/03-Travis-CI/01-TravisCI-基础操作.html">
+            
+                <a href="../../10-Git/03-Travis-CI/01-TravisCI-基础操作.html">
+            
+                    
+                    TravisCI-基础操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.3.2" data-path="../../10-Git/03-Travis-CI/02-TravisCI-构建Flask项目.html">
+            
+                <a href="../../10-Git/03-Travis-CI/02-TravisCI-构建Flask项目.html">
+            
+                    
+                    TravisCI-构建Flask项目
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.4" data-path="../../10-Git/04-YAML/">
+            
+                <a href="../../10-Git/04-YAML/">
+            
+                    
+                    YAML
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.4.1" data-path="../../10-Git/04-YAML/01-YAML-基础学习.html">
+            
+                <a href="../../10-Git/04-YAML/01-YAML-基础学习.html">
+            
+                    
+                    YAML-基础学习
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="../../11-常用操作系统/">
+            
+                <a href="../../11-常用操作系统/">
+            
+                    
+                    常用操作系统
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="../../11-常用操作系统/01-Windows/">
+            
+                <a href="../../11-常用操作系统/01-Windows/">
+            
+                    
+                    Windows
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1.1" data-path="../../11-常用操作系统/01-Windows/01-Windows-常见问题.html">
+            
+                <a href="../../11-常用操作系统/01-Windows/01-Windows-常见问题.html">
+            
+                    
+                    Windows-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.1.2" data-path="../../11-常用操作系统/01-Windows/02-Windows-SQL08完全卸载&安装.html">
+            
+                <a href="../../11-常用操作系统/01-Windows/02-Windows-SQL08完全卸载&安装.html">
+            
+                    
+                    Windows-SQL08完全卸载&安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.1.3" data-path="../../11-常用操作系统/01-Windows/03-Windows-Excel购房贷款计算器.html">
+            
+                <a href="../../11-常用操作系统/01-Windows/03-Windows-Excel购房贷款计算器.html">
+            
+                    
+                    Windows-Excel购房贷款计算器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.1.4" data-path="../../11-常用操作系统/01-Windows/04-Windows-Excel常用函数.html">
+            
+                <a href="../../11-常用操作系统/01-Windows/04-Windows-Excel常用函数.html">
+            
+                    
+                    Windows-Excel常用函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.1.5" data-path="../../11-常用操作系统/01-Windows/05-Windows-常用软件操作.html">
+            
+                <a href="../../11-常用操作系统/01-Windows/05-Windows-常用软件操作.html">
+            
+                    
+                    Windows-常用软件操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.1.6" data-path="../../11-常用操作系统/01-Windows/11-Photoshop-基础操作.html">
+            
+                <a href="../../11-常用操作系统/01-Windows/11-Photoshop-基础操作.html">
+            
+                    
+                    Photoshop-基础操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.2" data-path="../../11-常用操作系统/02-Ubuntu/">
+            
+                <a href="../../11-常用操作系统/02-Ubuntu/">
+            
+                    
+                    Ubuntu
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.2.1" data-path="../../11-常用操作系统/02-Ubuntu/01-Ubuntu-系统安装.html">
+            
+                <a href="../../11-常用操作系统/02-Ubuntu/01-Ubuntu-系统安装.html">
+            
+                    
+                    Ubuntu-系统安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="../../12-虚拟化平台/">
+            
+                <a href="../../12-虚拟化平台/">
+            
+                    
+                    虚拟化平台
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.1" data-path="../../12-虚拟化平台/01-VMware/">
+            
+                <a href="../../12-虚拟化平台/01-VMware/">
+            
+                    
+                    VMware
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.1.1" data-path="../../12-虚拟化平台/01-VMware/01-VMware-基础操作.html">
+            
+                <a href="../../12-虚拟化平台/01-VMware/01-VMware-基础操作.html">
+            
+                    
+                    VMware-基础操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.1.2" data-path="../../12-虚拟化平台/01-VMware/02-VMware-常见问题.html">
+            
+                <a href="../../12-虚拟化平台/01-VMware/02-VMware-常见问题.html">
+            
+                    
+                    VMware-常见问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.2" data-path="../../12-虚拟化平台/02-Proxmox_VE/">
+            
+                <a href="../../12-虚拟化平台/02-Proxmox_VE/">
+            
+                    
+                    Proxmox_VE
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.3" data-path="../../12-虚拟化平台/03-QEMU/">
+            
+                <a href="../../12-虚拟化平台/03-QEMU/">
+            
+                    
+                    QEMU
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.3.1" data-path="../../12-虚拟化平台/03-QEMU/01-QEMU-虚拟AIX系统.html">
+            
+                <a href="../../12-虚拟化平台/03-QEMU/01-QEMU-虚拟AIX系统.html">
+            
+                    
+                    QEMU-虚拟AIX系统
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.4" data-path="../../12-虚拟化平台/04-KVM/">
+            
+                <a href="../../12-虚拟化平台/04-KVM/">
+            
+                    
+                    KVM
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.4.1" data-path="../../12-虚拟化平台/04-KVM/01-KVM-RHEL安装部署.html">
+            
+                <a href="../../12-虚拟化平台/04-KVM/01-KVM-RHEL安装部署.html">
+            
+                    
+                    KVM-RHEL安装部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.4.2" data-path="../../12-虚拟化平台/04-KVM/02-KVM-常用操作.html">
+            
+                <a href="../../12-虚拟化平台/04-KVM/02-KVM-常用操作.html">
+            
+                    
+                    KVM-常用操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.4.3" data-path="../../12-虚拟化平台/04-KVM/03-KVM-虚拟机自动安装.html">
+            
+                <a href="../../12-虚拟化平台/04-KVM/03-KVM-虚拟机自动安装.html">
+            
+                    
+                    KVM-虚拟机自动安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" data-path="../../13-X86_System/">
+            
+                <a href="../../13-X86_System/">
+            
+                    
+                    X86_System
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.15.1" data-path="../../13-X86_System/01-Lenovo X86/">
+            
+                <a href="../../13-X86_System/01-Lenovo X86/">
+            
+                    
+                    Lenovo X86
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.15.1.1" data-path="../../13-X86_System/01-Lenovo X86/01-SystemX-ASU使用.html">
+            
+                <a href="../../13-X86_System/01-Lenovo X86/01-SystemX-ASU使用.html">
+            
+                    
+                    SystemX-ASU使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.2" data-path="../../13-X86_System/02-HuaWei_X86/">
+            
+                <a href="../../13-X86_System/02-HuaWei_X86/">
+            
+                    
+                    HuaWei_X86
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.15.2.1" data-path="../../13-X86_System/02-HuaWei_X86/01-HuaWei-系统安装.html">
+            
+                <a href="../../13-X86_System/02-HuaWei_X86/01-HuaWei-系统安装.html">
+            
+                    
+                    HuaWei-系统安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.3" data-path="../../13-X86_System/03-HP_X86/">
+            
+                <a href="../../13-X86_System/03-HP_X86/">
+            
+                    
+                    HP_X86
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.15.3.1" data-path="../../13-X86_System/03-HP_X86/01-HP_iLO使用.html">
+            
+                <a href="../../13-X86_System/03-HP_X86/01-HP_iLO使用.html">
+            
+                    
+                    HP_iLO使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.3.2" data-path="../../13-X86_System/03-HP_X86/20-HP_常见故障.html">
+            
+                <a href="../../13-X86_System/03-HP_X86/20-HP_常见故障.html">
+            
+                    
+                    HP_常见故障
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.16" data-path="../../14-存储设备/">
+            
+                <a href="../../14-存储设备/">
+            
+                    
+                    存储设备
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.16.1" data-path="../../14-存储设备/01-华为存储系列/">
+            
+                <a href="../../14-存储设备/01-华为存储系列/">
+            
+                    
+                    华为存储系列
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.16.1.1" data-path="../../14-存储设备/01-华为存储系列/01-HuaWei-用户基本操作.html">
+            
+                <a href="../../14-存储设备/01-华为存储系列/01-HuaWei-用户基本操作.html">
+            
+                    
+                    HuaWei-用户基本操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.17" data-path="../../15-网络交换机/">
+            
+                <a href="../../15-网络交换机/">
+            
+                    
+                    网络交换机
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.17.1" data-path="../../15-网络交换机/04-SMC交换机/">
+            
+                <a href="../../15-网络交换机/04-SMC交换机/">
+            
+                    
+                    SMC交换机
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.17.1.1" data-path="../../15-网络交换机/04-SMC交换机/01-SMC-基本操作.html">
+            
+                <a href="../../15-网络交换机/04-SMC交换机/01-SMC-基本操作.html">
+            
+                    
+                    SMC-基本操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.18" data-path="../../16-云平台/">
+            
+                <a href="../../16-云平台/">
+            
+                    
+                    云平台
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.18.1" data-path="../../16-云平台/01-OpenShift/">
+            
+                <a href="../../16-云平台/01-OpenShift/">
+            
+                    
+                    OpenShift
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.18.1.1" data-path="../../16-云平台/01-OpenShift/01-OpenShift-简介.html">
+            
+                <a href="../../16-云平台/01-OpenShift/01-OpenShift-简介.html">
+            
+                    
+                    OpenShift-简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.18.1.2" data-path="../../16-云平台/01-OpenShift/02-Openshift-安装.html">
+            
+                <a href="../../16-云平台/01-OpenShift/02-Openshift-安装.html">
+            
+                    
+                    Openshift-安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.18.1.3" data-path="../../16-云平台/01-OpenShift/03-OpenShift-应用部署.html">
+            
+                <a href="../../16-云平台/01-OpenShift/03-OpenShift-应用部署.html">
+            
+                    
+                    OpenShift-应用部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.18.2" data-path="../../16-云平台/02-Docker/">
+            
+                <a href="../../16-云平台/02-Docker/">
+            
+                    
+                    Docker
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.18.2.1" data-path="../../16-云平台/02-Docker/01-Docker-安装配置.html">
+            
+                <a href="../../16-云平台/02-Docker/01-Docker-安装配置.html">
+            
+                    
+                    Docker-安装配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.18.2.2" data-path="../../16-云平台/02-Docker/10-Docker-部署Flask应用.html">
+            
+                <a href="../../16-云平台/02-Docker/10-Docker-部署Flask应用.html">
+            
+                    
+                    Docker-部署Flask应用
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.18.3" data-path="../../16-云平台/03-IBM_Hybrid_Cloud/">
+            
+                <a href="../../16-云平台/03-IBM_Hybrid_Cloud/">
+            
+                    
+                    IBM_Hybrid_Cloud
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19" data-path="../../17-HTML+CSS+JavaScript/">
+            
+                <a href="../../17-HTML+CSS+JavaScript/">
+            
+                    
+                    HTML+CSS+JavaScript
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.19.1" data-path="../../17-HTML+CSS+JavaScript/01-HTML5/">
+            
+                <a href="../../17-HTML+CSS+JavaScript/01-HTML5/">
+            
+                    
+                    HTML5
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.19.1.1" data-path="../../17-HTML+CSS+JavaScript/01-HTML5/01-HTML5-基础知识.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/01-HTML5/01-HTML5-基础知识.html">
+            
+                    
+                    HTML5-基础知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.2" data-path="../../17-HTML+CSS+JavaScript/02-CSS/">
+            
+                <a href="../../17-HTML+CSS+JavaScript/02-CSS/">
+            
+                    
+                    CSS
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.19.2.1" data-path="../../17-HTML+CSS+JavaScript/02-CSS/01-CSS3-基础.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/02-CSS/01-CSS3-基础.html">
+            
+                    
+                    CSS3-基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.2.2" data-path="../../17-HTML+CSS+JavaScript/02-CSS/02-CSS3-选择器.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/02-CSS/02-CSS3-选择器.html">
+            
+                    
+                    CSS3-选择器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.2.3" data-path="../../17-HTML+CSS+JavaScript/02-CSS/05-CSS3-美化图像.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/02-CSS/05-CSS3-美化图像.html">
+            
+                    
+                    CSS3-美化图像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.2.4" data-path="../../17-HTML+CSS+JavaScript/02-CSS/15-CSS3-常用样式笔记.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/02-CSS/15-CSS3-常用样式笔记.html">
+            
+                    
+                    CSS3-常用样式笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.3" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/">
+            
+                    
+                    JavaScript
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.19.3.1" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/01-JavaScript-基础知识.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/01-JavaScript-基础知识.html">
+            
+                    
+                    JavaScript-基础知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.3.2" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/10-Vue-基础知识.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/10-Vue-基础知识.html">
+            
+                    
+                    Vue-基础知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.3.3" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/11-Vue-模板语法.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/11-Vue-模板语法.html">
+            
+                    
+                    Vue-模板语法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.3.4" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/12-Vue-条件和列表渲染.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/12-Vue-条件和列表渲染.html">
+            
+                    
+                    Vue-条件和列表渲染
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.3.5" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/13-Vue-组件_深入了解.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/13-Vue-组件_深入了解.html">
+            
+                    
+                    Vue-组件_深入了解
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.3.6" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/20-Vue-注意事项.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/20-Vue-注意事项.html">
+            
+                    
+                    Vue-注意事项
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.3.7" data-path="../../17-HTML+CSS+JavaScript/03-JavaScript/21-Vue-代码调试.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/03-JavaScript/21-Vue-代码调试.html">
+            
+                    
+                    Vue-代码调试
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.4" data-path="../../17-HTML+CSS+JavaScript/04-Bootstrap/">
+            
+                <a href="../../17-HTML+CSS+JavaScript/04-Bootstrap/">
+            
+                    
+                    Bootstrap
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.19.4.1" data-path="../../17-HTML+CSS+JavaScript/04-Bootstrap/01-Bootstrap-下载及使用.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/04-Bootstrap/01-Bootstrap-下载及使用.html">
+            
+                    
+                    Bootstrap-下载及使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.4.2" data-path="../../17-HTML+CSS+JavaScript/04-Bootstrap/02-Bootstrap-布局组件.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/04-Bootstrap/02-Bootstrap-布局组件.html">
+            
+                    
+                    Bootstrap-布局组件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.4.3" data-path="../../17-HTML+CSS+JavaScript/04-Bootstrap/03-Bootstrap-插件.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/04-Bootstrap/03-Bootstrap-插件.html">
+            
+                    
+                    Bootstrap-插件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.4.4" data-path="../../17-HTML+CSS+JavaScript/04-Bootstrap/10-Bootstrap-使用实例.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/04-Bootstrap/10-Bootstrap-使用实例.html">
+            
+                    
+                    Bootstrap-使用实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.5" data-path="../../17-HTML+CSS+JavaScript/05-网页导航实例/">
+            
+                <a href="../../17-HTML+CSS+JavaScript/05-网页导航实例/">
+            
+                    
+                    网页导航实例
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.19.5.1" data-path="../../17-HTML+CSS+JavaScript/05-网页导航实例/01-Navigator-基础环境.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/05-网页导航实例/01-Navigator-基础环境.html">
+            
+                    
+                    Navigator-基础环境
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.5.2" data-path="../../17-HTML+CSS+JavaScript/05-网页导航实例/02-Navigator-网页模板.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/05-网页导航实例/02-Navigator-网页模板.html">
+            
+                    
+                    Navigator-网页模板
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.19.5.3" data-path="../../17-HTML+CSS+JavaScript/05-网页导航实例/03-Navigator-数据交互.html">
+            
+                <a href="../../17-HTML+CSS+JavaScript/05-网页导航实例/03-Navigator-数据交互.html">
+            
+                    
+                    Navigator-数据交互
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20" data-path="../../18-简单WEB项目/">
+            
+                <a href="../../18-简单WEB项目/">
+            
+                    
+                    简单WEB项目
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.20.1" data-path="../../18-简单WEB项目/01-System-Health-Management/">
+            
+                <a href="../../18-简单WEB项目/01-System-Health-Management/">
+            
+                    
+                    System-Health-Management
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.20.1.1" data-path="../../18-简单WEB项目/01-System-Health-Management/01-SHM-基础环境准备.html">
+            
+                <a href="../../18-简单WEB项目/01-System-Health-Management/01-SHM-基础环境准备.html">
+            
+                    
+                    SHM-基础环境准备
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.1.2" data-path="../../18-简单WEB项目/01-System-Health-Management/02-SHM-Container初步设计.html">
+            
+                <a href="../../18-简单WEB项目/01-System-Health-Management/02-SHM-Container初步设计.html">
+            
+                    
+                    SHM-Container初步设计
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.1.3" data-path="../../18-简单WEB项目/01-System-Health-Management/03-SHM-API和route.html">
+            
+                <a href="../../18-简单WEB项目/01-System-Health-Management/03-SHM-API和route.html">
+            
+                    
+                    SHM-API和route
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.1.4" data-path="../../18-简单WEB项目/01-System-Health-Management/04-SHM-Login模块及Mock后台.html">
+            
+                <a href="../../18-简单WEB项目/01-System-Health-Management/04-SHM-Login模块及Mock后台.html">
+            
+                    
+                    SHM-Login模块及Mock后台
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.2" data-path="../../18-简单WEB项目/10-学习及使用中记录的笔记/">
+            
+                <a href="../../18-简单WEB项目/10-学习及使用中记录的笔记/">
+            
+                    
+                    学习及使用中记录的笔记
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.20.2.1" data-path="../../18-简单WEB项目/10-学习及使用中记录的笔记/01-Vue-CLI-使用笔记.html">
+            
+                <a href="../../18-简单WEB项目/10-学习及使用中记录的笔记/01-Vue-CLI-使用笔记.html">
+            
+                    
+                    Vue-CLI-使用笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.2.2" data-path="../../18-简单WEB项目/10-学习及使用中记录的笔记/02-Vue-CLI-报错记录.html">
+            
+                <a href="../../18-简单WEB项目/10-学习及使用中记录的笔记/02-Vue-CLI-报错记录.html">
+            
+                    
+                    Vue-CLI-报错记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.2.3" data-path="../../18-简单WEB项目/10-学习及使用中记录的笔记/03-Vue-CLI-数据问题记录.html">
+            
+                <a href="../../18-简单WEB项目/10-学习及使用中记录的笔记/03-Vue-CLI-数据问题记录.html">
+            
+                    
+                    Vue-CLI-数据问题记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.2.4" data-path="../../18-简单WEB项目/10-学习及使用中记录的笔记/05-Element_Plus-学习笔记.html">
+            
+                <a href="../../18-简单WEB项目/10-学习及使用中记录的笔记/05-Element_Plus-学习笔记.html">
+            
+                    
+                    Element_Plus-学习笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.2.5" data-path="../../18-简单WEB项目/10-学习及使用中记录的笔记/20-ECharts-基础学习笔记.html">
+            
+                <a href="../../18-简单WEB项目/10-学习及使用中记录的笔记/20-ECharts-基础学习笔记.html">
+            
+                    
+                    ECharts-基础学习笔记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.20.2.6" data-path="../../18-简单WEB项目/10-学习及使用中记录的笔记/21-Echarts-数据获取问题.html">
+            
+                <a href="../../18-简单WEB项目/10-学习及使用中记录的笔记/21-Echarts-数据获取问题.html">
+            
+                    
+                    Echarts-数据获取问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >AIX-HA常用操作</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div class="search-plus" id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon "></span><a href="#aix-ha&#x5E38;&#x7528;&#x64CD;&#x4F5C;"><b></b>AIX-HA&#x5E38;&#x7528;&#x64CD;&#x4F5C;</a></li><ul><li><span class="title-icon "></span><a href="#&#x65E5;&#x5FD7;&#x67E5;&#x770B;&#x548C;&#x6536;&#x96C6;"><b></b>&#x65E5;&#x5FD7;&#x67E5;&#x770B;&#x548C;&#x6536;&#x96C6;</a></li><ul><li><span class="title-icon "></span><a href="#&#x65E5;&#x5FD7;&#x67E5;&#x770B;"><b></b>&#x65E5;&#x5FD7;&#x67E5;&#x770B;</a></li><li><span class="title-icon "></span><a href="#&#x65E5;&#x5FD7;&#x6536;&#x96C6;"><b></b>&#x65E5;&#x5FD7;&#x6536;&#x96C6;</a></li></ul><li><span class="title-icon "></span><a href="#&#x5E38;&#x7528;&#x547D;&#x4EE4;"><b></b>&#x5E38;&#x7528;&#x547D;&#x4EE4;</a></li><li><span class="title-icon "></span><a href="#&#x53C2;&#x6570;&#x914D;&#x7F6E;&#x8BF4;&#x660E;"><b></b>&#x53C2;&#x6570;&#x914D;&#x7F6E;&#x8BF4;&#x660E;</a></li><ul><li><span class="title-icon "></span><a href="#&#x8D44;&#x6E90;&#x7EC4;&#x7B56;&#x7565;&#x8BF4;&#x660E;"><b></b>&#x8D44;&#x6E90;&#x7EC4;&#x7B56;&#x7565;&#x8BF4;&#x660E;</a></li><li><span class="title-icon "></span><a href="#&#x8D44;&#x6E90;&#x7EC4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;"><b></b>&#x8D44;&#x6E90;&#x7EC4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;</a></li><li><span class="title-icon "></span><a href="#ha&#x505C;&#x6B62;&#x7B56;&#x7565;"><b></b>HA&#x505C;&#x6B62;&#x7B56;&#x7565;</a></li></ul><li><span class="title-icon "></span><a href="#&#x5E38;&#x7528;&#x64CD;&#x4F5C;"><b></b>&#x5E38;&#x7528;&#x64CD;&#x4F5C;</a></li><ul><li><span class="title-icon "></span><a href="#networkfdt&#x53C2;&#x6570;"><b></b>network_fdt&#x53C2;&#x6570;</a></li></ul><li><span class="title-icon "></span><a href="#&#x5E38;&#x89C1;&#x95EE;&#x9898;"><b></b>&#x5E38;&#x89C1;&#x95EE;&#x9898;</a></li><ul><li><span class="title-icon "></span><a href="#&#x540C;&#x6B65;&#x95EE;&#x9898;"><b></b>&#x540C;&#x6B65;&#x95EE;&#x9898;</a></li><li><span class="title-icon "></span><a href="#&#x5207;&#x6362;&#x95EE;&#x9898;"><b></b>&#x5207;&#x6362;&#x95EE;&#x9898;</a></li><li><span class="title-icon "></span><a href="#&#x8282;&#x70B9;&#x901A;&#x4FE1;&#x95EE;&#x9898;"><b></b>&#x8282;&#x70B9;&#x901A;&#x4FE1;&#x95EE;&#x9898;</a></li><li><span class="title-icon "></span><a href="#&#x78C1;&#x76D8;&#x95EE;&#x9898;"><b></b>&#x78C1;&#x76D8;&#x95EE;&#x9898;</a></li><li><span class="title-icon "></span><a href="#&#x5B95;&#x673A;&#x95EE;&#x9898;"><b></b>&#x5B95;&#x673A;&#x95EE;&#x9898;</a></li><li><span class="title-icon "></span><a href="#&#x5F85;&#x8865;&#x5145;"><b></b>&#x5F85;&#x8865;&#x5145;</a></li></ul></ul></ul></div><a href="#aix-ha&#x5E38;&#x7528;&#x64CD;&#x4F5C;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="aix-ha&#x5E38;&#x7528;&#x64CD;&#x4F5C;"><a name="aix-ha&#x5E38;&#x7528;&#x64CD;&#x4F5C;" class="anchor-navigation-ex-anchor" href="#aix-ha&#x5E38;&#x7528;&#x64CD;&#x4F5C;"><i class="fa fa-link" aria-hidden="true"></i></a>AIX-HA&#x5E38;&#x7528;&#x64CD;&#x4F5C;</h1>
+<p>PowerHA&#x662F;AIX&#x7CFB;&#x7EDF;&#x4E2D;&#x5E38;&#x7528;&#x7684;&#x9AD8;&#x53EF;&#x7528;&#x8F6F;&#x4EF6;&#x3002;</p>
+<h2 id="&#x65E5;&#x5FD7;&#x67E5;&#x770B;&#x548C;&#x6536;&#x96C6;"><a name="&#x65E5;&#x5FD7;&#x67E5;&#x770B;&#x548C;&#x6536;&#x96C6;" class="anchor-navigation-ex-anchor" href="#&#x65E5;&#x5FD7;&#x67E5;&#x770B;&#x548C;&#x6536;&#x96C6;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x65E5;&#x5FD7;&#x67E5;&#x770B;&#x548C;&#x6536;&#x96C6;</h2>
+<h3 id="&#x65E5;&#x5FD7;&#x67E5;&#x770B;"><a name="&#x65E5;&#x5FD7;&#x67E5;&#x770B;" class="anchor-navigation-ex-anchor" href="#&#x65E5;&#x5FD7;&#x67E5;&#x770B;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x65E5;&#x5FD7;&#x67E5;&#x770B;</h3>
+<p>&#x5927;&#x591A;&#x6570;HA&#x65E5;&#x5FD7;&#x5B58;&#x653E;&#x5728;/var/hacmp&#x76EE;&#x5F55;&#x4E0B;&#xFF0C;&#x5E38;&#x7528;&#x7684;&#x6709;&#xFF1A;</p>
+<ul>
+<li>&#x547D;&#x4EE4;<code>errpt -e</code>&#x8F93;&#x51FA;&#xFF1A;&#x7CFB;&#x7EDF;&#x65E5;&#x5FD7;&#xFF0C;&#x4F1A;&#x6709;HA&#x96C6;&#x7FA4;&#x4E8B;&#x4EF6;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x67E5;&#x770B;/var/adm/ras/errlog&#x6587;&#x4EF6;</li>
+<li>/var/hacmp/adm/cluster.log&#xFF1A;&#x5305;&#x542B;&#x7531;PowerHA SystemMirror&#x811A;&#x672C;&#x548C;&#x5B88;&#x62A4;&#x7A0B;&#x5E8F;&#x751F;&#x6210;&#x7684;&#x5E26;&#x65F6;&#x95F4;&#x6233;&#x7684;&#x683C;&#x5F0F;&#x5316;&#x6D88;&#x606F;&#xFF0C;&#x8BCA;&#x65AD;&#x96C6;&#x7FA4;&#x95EE;&#x9898;&#x65F6;&#x5019;&#x9996;&#x5148;&#x68C0;&#x67E5;&#x6B64;&#x6587;&#x4EF6;</li>
+<li>/var/hacmp/log/hacmp.out&#xFF0C;&#x5305;&#x542B;&#x811A;&#x672C;&#x6267;&#x884C;&#x7684;&#x6BCF;&#x4E2A;&#x547D;&#x4EE4;&#x7684;&#x9010;&#x884C;&#x8BB0;&#x5F55;&#xFF0C;&#x5305;&#x62EC;&#x6BCF;&#x4E2A;&#x547D;&#x4EE4;&#x7684;&#x6240;&#x6709;&#x53C2;&#x6570;&#x7684;&#x503C;</li>
+<li>/var/hacmp/clverify/clverify.log&#xFF1A;&#x96C6;&#x7FA4;&#x9A8C;&#x8BC1;&#x8BE6;&#x7EC6;&#x8F93;&#x51FA;</li>
+<li>/var/hacmp/log/autoverify.log&#xFF1A;&#x5728;&#x81EA;&#x52A8;&#x96C6;&#x7FA4;&#x9A8C;&#x8BC1;&#x8FD0;&#x884C;&#x671F;&#x95F4;&#x53D1;&#x751F;&#x7684;&#x4EFB;&#x4F55;&#x8B66;&#x544A;&#x6216;&#x9519;&#x8BEF;</li>
+<li>/var/hacmp/log/clutils.log&#xFF1A;&#x5305;&#x542B;&#x6709;&#x5173;&#x65E5;&#x671F;&#xFF0C;&#x65F6;&#x95F4;&#xFF0C;&#x7ED3;&#x679C;&#x4EE5;&#x53CA;&#x54EA;&#x4E2A;&#x8282;&#x70B9;&#x6267;&#x884C;&#x4E86;&#x81EA;&#x52A8;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x9A8C;&#x8BC1;&#x7684;&#x4FE1;&#x606F;</li>
+<li>/var/adm/ras/syslog.caa:CAA&#x65E5;&#x5FD7;&#xFF0C;CAA&#x5373;Cluster-Aware AIX</li>
+</ul>
+<p>&#x5728;&#x68C0;&#x67E5;&#x542F;&#x52A8;&#x95EE;&#x9898;&#x65F6;&#x5019;&#xFF0C;&#x542F;&#x52A8;HA&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8DDF;&#x8E2A;hacmp.out&#x8F93;&#x51FA;&#x67E5;&#x770B;&#x65E5;&#x5FD7;&#xFF0C;&#x6267;&#x884C;&#x547D;&#x4EE4;&#xFF1A;<code>tail -f hacmp.out</code>&#x3002;<br>&#x5728;PowerVM&#x73AF;&#x5883;&#xFF0C;&#x901A;&#x5E38;&#x8981;&#x68C0;&#x67E5;netmon.cf&#x914D;&#x7F6E;&#xFF0C;&#x8DEF;&#x5F84;&#xFF1A;/usr/es/sbin/cluster/netmon.cf&#x3002;</p>
+<h3 id="&#x65E5;&#x5FD7;&#x6536;&#x96C6;"><a name="&#x65E5;&#x5FD7;&#x6536;&#x96C6;" class="anchor-navigation-ex-anchor" href="#&#x65E5;&#x5FD7;&#x6536;&#x96C6;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x65E5;&#x5FD7;&#x6536;&#x96C6;</h3>
+<p>smit&#x6536;&#x96C6;cluster log&#x65B9;&#x6CD5;&#xFF1A;</p>
+<ul>
+<li>&#x6267;&#x884C;&#x547D;&#x4EE4; &#xFF1A;<code>smit hacmp</code></li>
+<li>&#x9009;&#x62E9;&#x9009;&#x9879;&#xFF1A;&quot;Problem Determination Tools&quot;</li>
+<li>&#x9009;&#x62E9;&#x9009;&#x9879;&#xFF1A;&quot;PowerHA SystemMirror Log Viewing and Management&quot;</li>
+<li>&#x9009;&#x62E9;&#x9009;&#x9879;&#xFF1A;&quot;Collect Log Files for Problem Reporting&quot;</li>
+<li>&#x5404;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#x5982;&#x4E0B;&#xFF1A;<ul>
+<li>Log Destination Directory&#xFF1A;&#x9ED8;&#x8BA4;/tmp&#x76EE;&#x5F55;</li>
+<li>Collection Pass Number&#xFF1A;&#x9ED8;&#x8BA4;&#x4E3A;2&#xFF0C;1&#x662F;&#x8BA1;&#x7B97;&#x6240;&#x9700;&#x7A7A;&#x95F4;</li>
+<li>Nodes to Collect Data from&#xFF1A;&#x9ED8;&#x8BA4;&#x9009;&#x62E9;all</li>
+<li>Debug &#xFF1A;&#x9ED8;&#x8BA4;&#x662F;No&#xFF0C;&#x9664;&#x975E;IBM &#x4E13;&#x5BB6;&#x5EFA;&#x8BAE;</li>
+<li>Collect RSCT Log Files&#xFF1A;&#x9ED8;&#x8BA4;Yes</li>
+</ul>
+</li>
+</ul>
+<p>&#x547D;&#x4EE4;&#x6536;&#x96C6;&#x65B9;&#x6CD5;&#xFF1A;
+&#x6267;&#x884C;&#x547D;&#x4EE4;<code>snap -ec</code>&#x5373;&#x53EF;&#xFF0C;&#x6536;&#x96C6;&#x6570;&#x636E;&#x5B58;&#x653E;&#x5728;/tmp/ibmsupt&#x4E0B;&#x9762;&#xFF0C;&#x6587;&#x4EF6;&#x540D;snap.pax.Z&#x3002;</p>
+<h2 id="&#x5E38;&#x7528;&#x547D;&#x4EE4;"><a name="&#x5E38;&#x7528;&#x547D;&#x4EE4;" class="anchor-navigation-ex-anchor" href="#&#x5E38;&#x7528;&#x547D;&#x4EE4;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5E38;&#x7528;&#x547D;&#x4EE4;</h2>
+<p>PowerHA&#x4E00;&#x822C;&#x7528;smit&#x83DC;&#x5355;&#x64CD;&#x4F5C;&#xFF0C;&#x5931;&#x8BEF;&#x7387;&#x5C0F;&#xFF0C;&#x5076;&#x5C14;&#x7528;&#x547D;&#x4EE4;&#x3002;&#x5728;AIX&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;PowerHA&#x547D;&#x4EE4;&#x8DEF;&#x5F84;&#xFF1A;/usr/es/sbin/cluster&#x3002;&#x5E38;&#x7528;&#x547D;&#x4EE4;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x547D;&#x4EE4;</th>
+<th style="text-align:left">&#x529F;&#x80FD;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">clstop</td>
+<td style="text-align:left">&#x505C;&#x6B62;&#x96C6;&#x7FA4;&#xFF0C;&#x6CE8;&#x610F;&#x53C2;&#x6570;</td>
+</tr>
+<tr>
+<td style="text-align:left">lscluster -m</td>
+<td style="text-align:left">&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x72B6;&#x6001;</td>
+</tr>
+<tr>
+<td style="text-align:left">lssrc -g caa</td>
+<td style="text-align:left">&#x67E5;&#x770B;caa/rsct/cluster&#x7B49;&#x670D;&#x52A1;</td>
+</tr>
+<tr>
+<td style="text-align:left">lssrc -ls cthags</td>
+<td style="text-align:left">&#x68C0;&#x67E5;&#x7EC4;&#x670D;&#x52A1;&#x5B50;&#x7CFB;&#x7EDF;</td>
+</tr>
+<tr>
+<td style="text-align:left">no -a | grep routerevalidate</td>
+<td style="text-align:left">&#x67E5;&#x770B;routerevalidate</td>
+</tr>
+<tr>
+<td style="text-align:left">no -po routerevalidate=1</td>
+<td style="text-align:left">&#x4FEE;&#x6539;routerevalidate</td>
+</tr>
+<tr>
+<td style="text-align:left">ls -al /dev/datavg</td>
+<td style="text-align:left">&#x67E5;&#x770B;vg&#x4FE1;&#x606F;&#xFF0C;&#x4E3B;&#x8981;&#x662F;&#x770B;major&#x53F7;</td>
+</tr>
+<tr>
+<td style="text-align:left">lvlstmajor</td>
+<td style="text-align:left">&#x67E5;&#x770B;&#x53EF;&#x7528;&#x7684; major&#x53F7;</td>
+</tr>
+<tr>
+<td style="text-align:left">chdev -l fscsi0 -a fc_err_recov=fast_fail -P</td>
+<td style="text-align:left">&#x4FEE;&#x6539;&#x5149;&#x7EA4;&#x53E3;&#x5C5E;&#x6027;</td>
+</tr>
+<tr>
+<td style="text-align:left">chdev -l &lt;disk&gt; -a queue_depth=40 -P</td>
+<td style="text-align:left">&#x4FEE;&#x6539;&#x78C1;&#x76D8;&#x5C5E;&#x6027;&#x793A;&#x4F8B;</td>
+</tr>
+<tr>
+<td style="text-align:left">/usr/sbin/rsct/bin/dhb_read -p &lt;disk&gt; -r</td>
+<td style="text-align:left">&#x5FC3;&#x8DF3;&#x76D8;&#x6D4B;&#x8BD5;(&#x4E3B;)</td>
+</tr>
+<tr>
+<td style="text-align:left">/usr/sbin/rsct/bin/dhb_read -p &lt;disk&gt; -t</td>
+<td style="text-align:left">&#x5FC3;&#x8DF3;&#x76D8;&#x6D4B;&#x8BD5;(&#x5907;)</td>
+</tr>
+<tr>
+<td style="text-align:left">clctrl -tune -L</td>
+<td style="text-align:left">&#x67E5;&#x770B;HA&#x4E00;&#x4E9B;&#x53C2;&#x6570;&#x914D;&#x7F6E;</td>
+</tr>
+<tr>
+<td style="text-align:left">clctrl -tune -L network_fdt</td>
+<td style="text-align:left">&#x67E5;&#x770B;Network network_fdt&#x914D;&#x7F6E;</td>
+</tr>
+</tbody>
+</table>
+<p>&#x8BF4;&#x660E;&#xFF1A;</p>
+<ul>
+<li>AIX&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7F13;&#x5B58;&#x8DEF;&#x7531;&#xFF0C;&#x9700;&#x8981;&#x8BBE;&#x7F6E;routerevalidate&#x9009;&#x9879;&#xFF1A;<code>routerevalidate=1</code>&#x3002;</li>
+<li>&#x542F;&#x505C;HA&#x547D;&#x4EE4;&#x65E5;&#x5E38;&#x4E0D;&#x63A8;&#x8350;&#x7528;&#xFF0C;&#x7279;&#x522B;&#x662F;&#x505C;&#x6B62;&#xFF0C;&#x9700;&#x8981;&#x52A0;&#x53C2;&#x6570;&#x6307;&#x5B9A;&#x505C;&#x6B62;&#x9009;&#x9879;&#x3002;</li>
+</ul>
+<h2 id="&#x53C2;&#x6570;&#x914D;&#x7F6E;&#x8BF4;&#x660E;"><a name="&#x53C2;&#x6570;&#x914D;&#x7F6E;&#x8BF4;&#x660E;" class="anchor-navigation-ex-anchor" href="#&#x53C2;&#x6570;&#x914D;&#x7F6E;&#x8BF4;&#x660E;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x53C2;&#x6570;&#x914D;&#x7F6E;&#x8BF4;&#x660E;</h2>
+<h3 id="&#x8D44;&#x6E90;&#x7EC4;&#x7B56;&#x7565;&#x8BF4;&#x660E;"><a name="&#x8D44;&#x6E90;&#x7EC4;&#x7B56;&#x7565;&#x8BF4;&#x660E;" class="anchor-navigation-ex-anchor" href="#&#x8D44;&#x6E90;&#x7EC4;&#x7B56;&#x7565;&#x8BF4;&#x660E;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x8D44;&#x6E90;&#x7EC4;&#x7B56;&#x7565;&#x8BF4;&#x660E;</h3>
+<p>&quot;Startup&quot;&#x542F;&#x52A8;&#x8BF4;&#x660E;&#xFF1A;</p>
+<ul>
+<li>Online On Home Node Only:&#x8D44;&#x6E90;&#x7EC4;&#x542F;&#x52A8;&#x671F;&#x95F4;&#xFF0C;&#x4EC5;&#x5728;&#x5176;&#x4E3B;&#x8282;&#x70B9;&#xFF08;&#x6700;&#x9AD8;&#x4F18;&#x5148;&#x7EA7;&#xFF09;&#x4E0A;&#x542F;&#x52A8;</li>
+<li>Online On First Available Node:&#x8D44;&#x6E90;&#x7EC4;&#x5728;&#x7B2C;&#x4E00;&#x4E2A;&#x53EF;&#x7528;&#x7684;&#x53C2;&#x4E0E;&#x8282;&#x70B9;&#x4E0A;&#x542F;&#x52A8;</li>
+<li>Online On All Available Nodes:&#x8D44;&#x6E90;&#x7EC4;&#x5728;&#x6240;&#x6709;&#x8282;&#x70B9;&#x4E0A;&#x542F;&#x52A8;</li>
+<li>Online Using Distribution Policy:&#x6BCF;&#x4E2A;&#x8282;&#x70B9;&#x4E0A;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x8D44;&#x6E90;&#x7EC4;&#x542F;&#x52A8;</li>
+</ul>
+<p>&quot;Fallover&quot;&#x6545;&#x969C;&#x8F6C;&#x79FB;&#xFF1A;</p>
+<ul>
+<li>Fallover To Next Priority Node in the list:&#x8D44;&#x6E90;&#x7EC4;&#x9075;&#x5FAA;&#x5728;&#x8282;&#x70B9;&#x5217;&#x8868;&#x4E2D;&#x6307;&#x5B9A;&#x7684;&#x9ED8;&#x8BA4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;&#x987A;&#x5E8F;</li>
+<li>Fallover Using Dynamic Node Priority:&#x8282;&#x70B9;&#x5931;&#x8D25;&#x65F6;&#x52A8;&#x6001;&#x9009;&#x62E9;&#x8FC1;&#x79FB;&#x8282;&#x70B9;&#xFF0C;&#x4E00;&#x822C;&#x4E09;&#x8282;&#x70B9;&#x60C5;&#x51B5;&#x4E0B;</li>
+<li>Bring Offline(On Error Node Only:&#x5F53;&#x8282;&#x70B9;&#x53D1;&#x751F;error&#x65F6;&#x5019;&#xFF0C;&#x4F7F;&#x8D44;&#x6E90;&#x7EC4;&#x8131;&#x673A;</li>
+</ul>
+<p>&quot;Fallback&quot;&#x9000;&#x56DE;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<ul>
+<li>Fallback To Higher Priority Node in the list:&#x5F53;&#x4F18;&#x5148;&#x7EA7;&#x8F83;&#x9AD8;&#x7684;&#x8282;&#x70B9;&#x52A0;&#x5165;&#x7FA4;&#x96C6;&#x65F6;&#xFF0C;&#x8D44;&#x6E90;&#x7EC4;&#x5C06;&#x56DE;&#x9000;</li>
+<li>Never Fallback:&#x8D44;&#x6E90;&#x7EC4;&#x52A0;&#x5165;&#x7FA4;&#x96C6;&#x65F6;&#x4E0D;&#x4F1A;&#x56DE;&#x9000;&#x5230;&#x8F83;&#x9AD8;&#x4F18;&#x5148;&#x7EA7;&#x7684;&#x8282;&#x70B9;</li>
+</ul>
+<h3 id="&#x8D44;&#x6E90;&#x7EC4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;"><a name="&#x8D44;&#x6E90;&#x7EC4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;" class="anchor-navigation-ex-anchor" href="#&#x8D44;&#x6E90;&#x7EC4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x8D44;&#x6E90;&#x7EC4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;</h3>
+<p>&#x5BF9;&#x4E8E;&#x8D44;&#x6E90;&#x7EC4;&#xFF0C;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;&#x5B9A;&#x4E49;&#x5728;&#x8D44;&#x6E90;&#x7EC4;&#x5C5E;&#x6027;&#x53C2;&#x6570;&quot;Participating node list&quot;&#x4E2D;&#xFF0C;&#x8BF4;&#x660E;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li>&#x5217;&#x8868;&#x5B9A;&#x4E49;&#x4E86;&#x53EF;&#x4EE5;&#x627F;&#x8F7D;&#x7279;&#x5B9A;&#x8D44;&#x6E90;&#x7EC4;&#x7684;&#x8282;&#x70B9;&#x5217;&#x8868;&#xFF0C;&#x53EF;&#x4EE5;&#x662F;&#x90E8;&#x5206;&#x8282;&#x70B9;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x662F;&#x5168;&#x90E8;</li>
+<li>&#x9ED8;&#x8BA4;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;&#x7531;&#x8282;&#x70B9;&#x5728;&#x7279;&#x5B9A;&#x8D44;&#x6E90;&#x7EC4;&#x7684;&#x8282;&#x70B9;&#x5217;&#x8868;&#x4E2D;&#x7684;&#x4F4D;&#x7F6E;&#x6765;&#x6807;&#x8BC6;</li>
+<li>&#x8282;&#x70B9;&#x5217;&#x8868;&#x4E2D;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#x5177;&#x6709;&#x6700;&#x9AD8;&#x7684;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;&#x3002;&#x8BE5;&#x8282;&#x70B9;&#x4E5F;&#x79F0;&#x4E3A;&#x8D44;&#x6E90;&#x7EC4;&#x7684;&#x4E3B;&#x8282;&#x70B9;&#x3002;&#x5728;&#x53E6;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#x4E4B;&#x524D;&#x5217;&#x51FA;&#x7684;&#x8282;&#x70B9;&#x5177;&#x6709;&#x6BD4;&#x5F53;&#x524D;&#x8282;&#x70B9;&#x66F4;&#x9AD8;&#x7684;&#x8282;&#x70B9;&#x4F18;&#x5148;&#x7EA7;</li>
+</ul>
+<h3 id="ha&#x505C;&#x6B62;&#x7B56;&#x7565;"><a name="ha&#x505C;&#x6B62;&#x7B56;&#x7565;" class="anchor-navigation-ex-anchor" href="#ha&#x505C;&#x6B62;&#x7B56;&#x7565;"><i class="fa fa-link" aria-hidden="true"></i></a>HA&#x505C;&#x6B62;&#x7B56;&#x7565;</h3>
+<p>&#x5728;&#x505C;&#x6B62;HA&#x65F6;&#x5019;&#xFF0C;&#x83DC;&#x5355;&quot;Stop Cluster Services&quot;&#x4E2D;&#x9009;&#x9879;&quot;Select an Action on resource groups&quot;</p>
+<ul>
+<li>Bring resource groups Offline:&#x505C;&#x6B62;&#x6B63;&#x5728;&#x505C;&#x6B62;&#x7684;&#x8282;&#x70B9;&#x4E0A;&#x5F53;&#x524D;&#x5728;&#x7EBF;&#x7684;&#x6240;&#x6709;&#x53D7;&#x7BA1;&#x8D44;&#x6E90;,&#x8D44;&#x6E90;&#x7EC4;&#x4E0D;&#x4F1A;&#x5207;&#x6362;&#x5230;&#x4EFB;&#x4F55;&#x8282;&#x70B9;&#x4E0A;</li>
+<li>Move resource groups:&#x505C;&#x6B62;&#x6B63;&#x5728;&#x505C;&#x6B62;&#x7684;&#x8282;&#x70B9;&#x4E0A;&#x5F53;&#x524D;&#x5728;&#x7EBF;&#x7684;&#x6240;&#x6709;&#x53D7;&#x7BA1;&#x8D44;&#x6E90;,&#x8D44;&#x6E90;&#x7EC4;&#x4F1A;&#x5207;&#x6362;&#x5230;&#x53EF;&#x7528;&#x8282;&#x70B9;&#x4E0A;</li>
+<li>Unmanage resource groups:&#x7FA4;&#x96C6;&#x670D;&#x52A1;&#x5C06;&#x7ACB;&#x5373;&#x505C;&#x6B62;,&#x8282;&#x70B9;&#x4E0A;&#x8D44;&#x6E90;&#x4E0D;&#x4F1A;&#x505C;&#x6B62;,&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7EE7;&#x7EED;&#x8FD0;&#x884C;,PowerHA SystemMirror&#x7EE7;&#x7EED;&#x8FD0;&#x884C;&#xFF0C;&#x5E76;&#x4E14;RSCT&#x4FDD;&#x6301;&#x8FD0;&#x884C;&#x72B6;&#x6001;</li>
+</ul>
+<h2 id="&#x5E38;&#x7528;&#x64CD;&#x4F5C;"><a name="&#x5E38;&#x7528;&#x64CD;&#x4F5C;" class="anchor-navigation-ex-anchor" href="#&#x5E38;&#x7528;&#x64CD;&#x4F5C;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5E38;&#x7528;&#x64CD;&#x4F5C;</h2>
+<h3 id="networkfdt&#x53C2;&#x6570;"><a name="networkfdt&#x53C2;&#x6570;" class="anchor-navigation-ex-anchor" href="#networkfdt&#x53C2;&#x6570;"><i class="fa fa-link" aria-hidden="true"></i></a>network_fdt&#x53C2;&#x6570;</h3>
+<p>&#x2003;&#x2003;network_fdt&#x5373;Network Failure Detection Time,&#x5728;&#x8001;&#x7248;&#x672C;&#x7684;AIX&#x7CFB;&#x7EDF;&#x4E2D;&#x53EF;&#x80FD;&#x6CA1;&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#xFF0C;&#x5728;IV76622&#x4E2D;&#x5F15;&#x5165;&#x4E86;&#x6B64;&#x53C2;&#x6570;&#x3002;&#x67E5;&#x770B;network_fdt&#x53C2;&#x6570;&#x547D;&#x4EE4;(&#x5355;&#x4F4D;&#x662F;&#x6BEB;&#x79D2;)&#xFF1A;</p>
+<pre><code>clctrl -tune -L network_fdt
+</code></pre><p>&#x4FEE;&#x6539;network_fdt&#x53C2;&#x6570;&#x547D;&#x4EE4;(&#x5355;&#x4F4D;&#x662F;&#x79D2;&#xFF0C;&#x8303;&#x56F4;5-590)&#xFF1A;</p>
+<pre><code>clmgr modify cluster NETWORK_FAILURE_DETECTION_TIME=&lt;xxx&gt;
+</code></pre><p>smit&#x67E5;&#x770B;&#x53CA;&#x4FEE;&#x6539;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<ul>
+<li>smit hacmp</li>
+<li>Custom Cluster Configurations</li>
+<li>CLuster Nodes and Networks</li>
+<li>Manage the Cluster</li>
+<li>Cluster heartbeat settings</li>
+<li>Press Enter</li>
+</ul>
+<p>&#x5B98;&#x65B9;&#x8BF4;&#x660E;&#xFF1A;<a href="https://www.ibm.com/support/knowledgecenter/zh/SSPHQG_7.2/concept/ha_concepts_ex_cluster.html" target="_blank">PowerHA SystemMirror use of Cluster Aware AIX </a></p>
+<h2 id="&#x5E38;&#x89C1;&#x95EE;&#x9898;"><a name="&#x5E38;&#x89C1;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#&#x5E38;&#x89C1;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5E38;&#x89C1;&#x95EE;&#x9898;</h2>
+<h3 id="&#x540C;&#x6B65;&#x95EE;&#x9898;"><a name="&#x540C;&#x6B65;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#&#x540C;&#x6B65;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x540C;&#x6B65;&#x95EE;&#x9898;</h3>
+<p>&#x95EE;&#x9898;&#x4E00;&#xFF1A;<br>&#x2003;&#x2003;&#x540C;&#x6B65;&#x65F6;&#x5019;&#x62A5;error&#x65F6;&#x95F4;&#x6233;&#x95EE;&#x9898;&#xFF0C;&#x5728;&#x540C;&#x6B65;&#x65F6;&#x5019;&#x9009;&#x9879;&#x4E2D;&#x7B2C;&#x4E8C;&#x4E2A;&#x9009;&#x9879;&#x9009;&#x62E9;yes&#x53EF;&#x4EE5;&#x81EA;&#x52A8;&#x4FEE;&#x590D;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#xFF08;&#x5728;HA&#x505C;&#x6B62;&#x72B6;&#x6001;&#x4E0B;&#x624D;&#x6709;&#x6B64;&#x9009;&#x9879;&#xFF09;&#xFF0C;
+Force synchronization if verification fails? [No] to 
+Force synchronization if verification fails? [Yes] </p>
+<p>&#x95EE;&#x9898;&#x4E8C;&#xFF1A;<br>&#x2003;&#x2003;A&#x662F;&#x4E3B;&#x8282;&#x70B9;&#x5728;&#x8FD0;&#x884C;&#x8D44;&#x6E90;&#x7EC4;&#xFF0C;B&#x662F;&#x5907;&#x8282;&#x70B9;&#x672A;&#x542F;&#x52A8;&#xFF0C;A&#x53EF;&#x4EE5;&#x540C;&#x6B65;&#x5230;B&#xFF08;&#x53EF;&#x80FD;&#x6709;warring&#x8BF4;&#x914D;&#x7F6E;&#x4E0D;&#x4E00;&#x81F4;&#xFF09;&#xFF0C;B&#x4E5F;&#x53EF;&#x4EE5;&#x542F;&#x52A8;&#xFF0C;&#x4F46;&#x662F;&#x542F;&#x52A8;&#x540E;&#x67E5;&#x770B;&#x72B6;&#x6001;B&#x770B;&#x5230;A&#x662F;down&#xFF0C;A&#x770B;&#x5230;B&#x662F;down&#xFF0C;&#x5982;&#x679C;&#x5C1D;&#x8BD5;&#x4ECE;A&#x5411;B&#x5207;&#x6362;&#xFF0C;&#x4F1A;&#x53D1;&#x73B0;&#x9009;&#x62E9;&#x4E0D;&#x4E86;B&#x8282;&#x70B9;&#x7684;&#xFF0C;&#x5EFA;&#x8BAE;&#x6B65;&#x9AA4;&#xFF1A;&#x505C;&#x6389;B&#x5907;&#x8282;&#x70B9;&#xFF0C;&#x7136;&#x540E;&#x68C0;&#x67E5;&#x4E24;&#x4E2A;&#x8282;&#x70B9;&#x7684;rhost&#x6587;&#x4EF6;&#xFF1A;</p>
+<ul>
+<li>HA6:etc/es/sbin/cluster/rhosts</li>
+<li>HA7:/etc/cluster/rhosts</li>
+</ul>
+<h3 id="&#x5207;&#x6362;&#x95EE;&#x9898;"><a name="&#x5207;&#x6362;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#&#x5207;&#x6362;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5207;&#x6362;&#x95EE;&#x9898;</h3>
+<p>&#x95EE;&#x9898;&#x4E00;&#xFF1A;<br>&#x2003;&#x2003;&#x5728;&#x5207;&#x6362;HA&#x8FC7;&#x7A0B;&#x4E2D;&#x5F88;&#x6162;&#xFF0C;&#x770B;&#x65E5;&#x5FD7;&#x662F;&#x53D1;&#x73B0;HA&#x811A;&#x672C;&#x51FA;&#x73B0;&#x95EE;&#x9898;&#x8FC7;&#x4E0D;&#x53BB;&#xFF0C;&#x6267;&#x884C;&#x9009;&#x9879;
+<code>Recover From PowerHA SystemMirror Script Failure</code>&#x5373;&#x53EF;&#xFF0C;&#x7136;&#x540E;&#x53BB;&#x68C0;&#x67E5;&#x4FEE;&#x590D;&#x811A;&#x672C;&#x7684;&#x95EE;&#x9898;&#x3002;<br>&#x95EE;&#x9898;&#x4E8C;:<br>&#x2003;&#x2003;A&#x662F;&#x4E3B;&#x8282;&#x70B9;&#x5728;&#x8FD0;&#x884C;&#x8D44;&#x6E90;&#x7EC4;&#xFF0C;B&#x662F;&#x5907;&#x8282;&#x70B9;HA&#x4E5F;&#x5728;&#x8FD0;&#x884C;&#xFF0C;&#x72B6;&#x6001;&#x770B;&#x90FD;&#x6B63;&#x5E38;&#xFF0C;&#x4F46;&#x662F;&#x4ECE;A&#x5411;B&#x5207;&#x6362;&#x540E;&#x53D1;&#x73B0;&#x90E8;&#x5206;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x6302;&#x8F7D;&#xFF0C;&#x7136;&#x540E;&#x53C8;&#x81EA;&#x52A8;&#x5378;&#x8F7D;&#xFF0C;&#x67E5;&#x770B;&#x72B6;&#x6001;&#x8282;&#x70B9;&#x8D44;&#x6E90;&#x7EC4;&#x662F;error&#x72B6;&#x6001;&#xFF0C;&#x5982;&#x679C;&#x6392;&#x9664;&#x811A;&#x672C;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x90A3;&#x53EF;&#x80FD;&#x662F;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x95EE;&#x9898;&#xFF0C;&#x5EFA;&#x8BAE;&#x68C0;&#x67E5;/etc/filesystems&#x662F;&#x5426;&#x4E00;&#x81F4;&#xFF0C;&#x8FD8;&#x6709;&#x5C31;&#x662F;&#x68C0;&#x67E5;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#xFF0C;&#x662F;&#x5426;&#x6709;&#x5728;B&#x673A;&#x5355;&#x72EC;&#x5728;HA&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x4E2D;&#x52A0;&#x8FC7;&#x6587;&#x4EF6;&#x6216;&#x8005;&#x76EE;&#x5F55;&#x6216;&#x8005;&#x8F6F;&#x94FE;&#x63A5;&#x7B49;&#x3002;<br>&#x95EE;&#x9898;&#x4E09;:<br>&#x2003;&#x2003;A&#x5F80;B&#x5207;&#x6362;&#x8FC7;&#x7A0B;&#x4E2D;&#x51FA;&#x73B0;&#x95EE;&#x9898;&#xFF0C;A&#x53D8;&#x6210;error&#x72B6;&#x6001;&#xFF0C;&#x8D44;&#x6E90;&#x7EC4;&#x4E24;&#x8FB9;&#x90FD;&#x6CA1;&#x6709;&#xFF0C;&#x6267;&#x884C;&#x9009;&#x9879;
+<code>Recover From PowerHA SystemMirror Script Failure</code>&#x540E;HA&#x72B6;&#x6001;&#x770B;&#x8D77;&#x6765;&#x6B63;&#x5E38;&#xFF0C;&#x4F46;&#x662F;B&#x673A;&#x7684;NAS&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x672A;&#x6302;&#x8F7D;&#xFF08;&#x5728;HA&#x811A;&#x672C;&#x4E2D;&#x6709;&#x5199;&#x6302;&#x8F7D;&#xFF09;&#xFF0C;&#x624B;&#x52A8;&#x6302;&#x8F7D;&#x540E;&#xFF0C;&#x53D1;&#x73B0;A&#x673A;<code>df -g</code>&#x547D;&#x4EE4;&#x6709;&#x62A5;&#x9519;&#xFF0C;&#x5E76;&#x4E14;&#x4E0D;&#x4F1A;&#x81EA;&#x52A8;&#x8FD4;&#x56DE;&#x5230;shell&#x3002;&#x68C0;&#x67E5;&#x89E3;&#x51B3;&#x6B65;&#x9AA4;&#xFF1A;</p>
+<ul>
+<li>&#x68C0;&#x67E5;rc.local&#x548C;inittab&#x90FD;&#x6CA1;&#x6709;&#x5F02;&#x5E38;&#x7684;&#x9009;&#x9879;</li>
+<li>&#x68C0;&#x67E5;A&#x673A;HA&#x505C;&#x6B62;&#x811A;&#x672C;&#x4E2D;&#x6709;&#x65E0;&#x6548;&#x7684;NFS&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;umonut&#x9009;&#x9879;&#xFF0C;&#x6CE8;&#x91CA;&#x6216;&#x8005;&#x5220;&#x9664;</li>
+<li>&#x68C0;&#x67E5;A&#x673A;HA&#x505C;&#x6B62;&#x811A;&#x672C;&#x4E2D;&#x6709;&#x6F0F;&#x6389;&#x7684;NFS&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;umonut&#x9009;&#x9879;&#xFF0C;&#x6DFB;&#x52A0;&#x4E0A;&#x53BB;</li>
+<li>&#x624B;&#x52A8;&#x6267;&#x884C;umonut&#x6F0F;&#x6389;&#x7684;NFS&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;</li>
+<li>&#x6267;&#x884C;&#x540E;&#x53D1;&#x73B0;&#x6709;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;umount&#x4E86;&#xFF0C;&#x624B;&#x52A8;mount&#x6216;&#x8005;&#x91CD;&#x542F;&#x5373;&#x53EF;</li>
+</ul>
+<h3 id="&#x8282;&#x70B9;&#x901A;&#x4FE1;&#x95EE;&#x9898;"><a name="&#x8282;&#x70B9;&#x901A;&#x4FE1;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#&#x8282;&#x70B9;&#x901A;&#x4FE1;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x8282;&#x70B9;&#x901A;&#x4FE1;&#x95EE;&#x9898;</h3>
+<p>&#x2003;&#x2003;&#x901A;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x8282;&#x70B9;&#x901A;&#x4FE1;&#x95EE;&#x9898;&#x539F;&#x56E0;&#x53EF;&#x80FD;&#x6709;&#xFF1A;&#x7F51;&#x7EDC;&#x95EE;&#x9898;&#xFF0C;&#x914D;&#x7F6E;&#x95EE;&#x9898;&#x7B49;&#x7B49;&#xFF0C;&#x914D;&#x7F6E;&#x4F8B;&#x5982;host&#x8868;&#xFF0C;rhost&#x6587;&#x4EF6;&#xFF0C;IP&#x914D;&#x7F6E;&#xFF0C;wlan&#x914D;&#x7F6E;&#x95EE;&#x9898;&#x7B49;&#x7B49;&#xFF0C;&#x4F46;&#x662F;&#x6709;&#x65F6;&#x5019;&#x95EE;&#x9898;&#x4E0D;&#x662F;&#x5F88;&#x660E;&#x663E;&#xFF0C;&#x6700;&#x8FD1;&#x9047;&#x5230;&#x8FC7;&#x4E00;&#x4E2A;HA&#x914D;&#x7F6E;&#x65E0;&#x95EE;&#x9898;&#xFF0C;&#x7F51;&#x7EDC;&#x770B;&#x8D77;&#x6765;&#x4E5F;&#x662F;&#x6B63;&#x5E38;&#x7684;&#xFF0C;&#x4F46;&#x662F;HA&#x540C;&#x6B65;&#x5C31;&#x540C;&#x6B65;&#x4E0D;&#x4E86;&#x3002;<br>&#x4F8B;&#x5982;&#xFF1A;A&#x8282;&#x70B9;HA&#x672A;&#x542F;&#x52A8;&#xFF0C;B&#x8282;&#x70B9;HA&#x542F;&#x52A8;&#x4E86;&#xFF0C;&#x8D44;&#x6E90;&#x7EC4;&#x6B63;&#x5728;&#x8FD0;&#x884C;&#xFF0C;AB&#x8282;&#x70B9;&#x90FD;&#x662F;PowerVM&#x73AF;&#x5883;&#x7684;VIOC&#x3002;<br>&#x4ECE;B&#x5F80;A&#x540C;&#x6B65;&#x6267;&#x884C;&#x7B49;&#x534A;&#x5929;&#x540E;&#xFF0C;&#x53D1;&#x73B0;&#x62A5;&#x9519;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>ERROR:Comm error found on node:&lt;nodename&gt;
+</code></pre><p>&#x2003;&#x2003;&#x5728;B&#x8282;&#x70B9;Show Cluster Services&#x83DC;&#x5355;&#x4E2D;&#xFF0C;&#x6267;&#x884C;&#x540E;&#x5F88;&#x6162;&#x51FA;&#x7ED3;&#x679C;&#xFF0C;&#x7B49;&#x5F85;&#x7ED3;&#x679C;&#x51FA;&#x6765;&#x540E;&#x53D1;&#x73B0;A&#x8282;&#x70B9;Cluster-Aware AIX status&#x662F;down&#x7684;&#x72B6;&#x6001;&#xFF0C;&#x5728;A&#x8282;&#x70B9;&#x4E0A;&#x68C0;&#x67E5;&#x670D;&#x52A1;&#x72B6;&#x6001;&#xFF1A;</p>
+<pre><code># lssrc -a |grep inetd
+ inetd            tcpip            2490704      active
+# lssrc -a |grep cthags
+ cthags           cthags                        inoperative
+# lssrc -a |grep clcomd
+ clcomd           caa              6750706      active
+# lssrc -a |grep clconfd
+ clconfd          caa              12911042     active
+# lssrc -ls inetd
+Subsystem         Group            PID          Status
+ inetd            tcpip            2490704      active
+Debug         Not active
+Signal        Purpose
+ SIGALRM      Establishes socket connections for failed services.
+ SIGHUP       Rereads the configuration database and reconfigures services.
+ SIGCHLD      Restarts the service in case the service ends abnormally.
+Service       Command                  Description              Status
+ caa_cfg      /usr/sbin/clusterconf    clusterconf              active
+ ftp          /usr/sbin/ftpd           ftpd                     active
+</code></pre><p>&#x4ECE;B&#x5411;A&#x6216;A&#x5411;B ping&#x90FD;&#x770B;&#x8D77;&#x6765;&#x6B63;&#x5E38;&#xFF1A;</p>
+<pre><code>$ ping -S nodea nodeb
+PING nodeb: (1.1.253.130): 56 data bytes
+64 bytes from 1.1.253.130: icmp_seq=0 ttl=255 time=0 ms
+64 bytes from 1.1.253.130: icmp_seq=1 ttl=255 time=0 ms
+64 bytes from 1.1.253.130: icmp_seq=2 ttl=255 time=0 ms
+</code></pre><p>&#x4F7F;&#x7528;<code>lscluster -m</code>&#x547D;&#x4EE4;&#x53BB;&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x72B6;&#x6001;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;A&#x8282;&#x70B9;&#x4E0B;&#x6709;&#x5982;&#x4E0B;&#x663E;&#x793A;&#xFF1A;</p>
+<pre><code>Points of contact for node :0
+</code></pre><p>&#x5728;A&#x8282;&#x70B9;&#x7684;HA Show Repository Disks&#x83DC;&#x5355;&#x4E2D;&#x6267;&#x884C;&#x540E;&#x83B7;&#x53D6;&#x4E0D;&#x5230;&#x5FC3;&#x8DF3;&#x76D8;&#x7684;&#x90E8;&#x5206;&#x4FE1;&#x606F;&#xFF0C;&#x5E76;&#x4F1A;&#x6709;&#x62A5;&#x9519;&#xFF08;&#x65F6;&#x6709;&#x65F6;&#x65E0;&#xFF09;&#xFF1A;</p>
+<pre><code>ERROR:unable to communicate with &quot;nodeb&quot;(nodeb,ip)
+ERROR:&quot;Repository Disks PVID&quot; was not found in data that you requested.
+</code></pre><p>&#x5728;B&#x8282;&#x70B9;&#x7684;HA Show Repository Disks&#x83DC;&#x5355;&#x53EF;&#x4EE5;&#x83B7;&#x53D6;&#x5230;&#x5FC3;&#x8DF3;&#x76D8;&#x4FE1;&#x606F;&#xFF0C;&#x6709;&#x65F6;&#x4E5F;&#x4F1A;&#x6709;&#xFF1A;</p>
+<pre><code>Communication error, see logfile
+</code></pre><p>&#x4EE5;&#x4E0A;&#x83DC;&#x5355;&#x90FD;&#x6267;&#x884C;&#x6BD4;&#x8F83;&#x6162;&#xFF0C;&#x4F46;&#x662F;&#x4F7F;&#x7528;dhb_read&#x547D;&#x4EE4;&#x53BB;&#x6D4B;&#x8BD5;&#x4E24;&#x4E2A;&#x8282;&#x70B9;&#x95F4;&#x5FC3;&#x8DF3;&#x78C1;&#x76D8;&#xFF0C;&#x6D4B;&#x8BD5;&#x662F;&#x6B63;&#x5E38;&#x7684;&#x3002;</p>
+<p>lspv&#x67E5;&#x770B;caavg_private VG&#x7684;&#x72B6;&#x6001;&#x662F;active&#xFF0C;&#x68C0;&#x67E5;caa&#x65E5;&#x5FD7;&#xFF0C;&#x4F1A;&#x53D1;&#x73B0;&#x5982;&#x4E0B;&#x62A5;&#x9519;&#xFF1A;</p>
+<pre><code>tcpsock_ndd_add2_sendq: Overflow, Dropping packet.
+Could not send lock request message. rc=127
+cluster_utils.c get_cluster_lock...Could not get lock....
+</code></pre><p>&#x2003;&#x2003;&#x53EF;&#x80FD;&#x662F;&#x5728;&#x8282;&#x70B9;A&#x4E0A;&#x542F;&#x7528;&#x4E86;jumbo frames,&#x800C;B&#x8282;&#x70B9;&#x65E0;&#x6CD5;&#x63A5;&#x6536;jumbo frames&#xFF0C;&#x53EF;&#x4EE5;&#x5206;&#x522B;&#x5728;&#x4E24;&#x4E2A;node&#x4E0A;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF0C;&#x5982;&#x679C;Jumbo frame&#x542F;&#x7528;&#x4E86;&#xFF0C;&#x90A3;&#x4E48;MTU size = 9000&#xFF1A;</p>
+<pre><code># netstat -i
+Name   Mtu   Network     Address                 Ipkts     Ierrs        Opkts     Oerrs  Coll
+en1    1500  link#2      ee.37.5f.fc.eb.3        281954049     0         33827048     0     0
+en1    1500  10.8.253    npospdb2-cv             281954049     0         33827048     0     0
+en0    1500  link#3      ee.37.5f.fc.eb.2        901593154     0        586172871     0     0
+en0    1500  192.168.3   node_svc                901593154     0        586172871     0     0
+en0    1500  1.1.253     nodeb                   901593154     0        586172871     0     0
+</code></pre><p>&#x2003;&#x2003;&#x6B64;&#x6B21;&#x6CA1;&#x6709;&#x542F;&#x52A8;jumbo frames&#xFF0C;&#x4F46;&#x4E5F;&#x662F;&#x662F;&#x7F51;&#x7EDC;&#x901A;&#x4FE1;&#x95EE;&#x9898;&#xFF0C;&#x68C0;&#x67E5;HA boot ip&#x6240;&#x5728;&#x7F51;&#x5361;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x5982;&#x679C;largesend&#x662F;&#x5F00;&#x542F;&#x7684;&#xFF0C;&#x5728;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;VIOS&#x4E0A;&#x7684;&#x76F8;&#x5E94;&#x9002;&#x914D;&#x5668;&#x4E5F;&#x5E94;&#x542F;&#x7528;largesend&#x548C;large_receive&#xFF0C;&#x4EE5;&#x907F;&#x514D;&#x5728;&#x7BA1;&#x7406;&#x7A0B;&#x5E8F;&#x4E2D;&#x51FA;&#x73B0;&#x788E;&#x7247;&#x3002;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x547D;&#x4EE4;clrsh&#x6D4B;&#x8BD5;&#x8282;&#x70B9;&#x8FDE;&#x63A5;&#xFF1A;</p>
+<pre><code># clrsh nodea date
+Communication error, see logfile
+# clrsh nodeb date
+Thu Feb 18 11:07:15 CST 2021
+# hostname
+nodea
+# clrsh nodea date
+Thu Feb 18 11:08:24 CST 2021
+# clrsh nodeb date
+Thu Feb 18 11:08:34 CST 2021
+# clrsh nodea date
+Thu Feb 18 11:08:46 CST 2021
+# clrsh nodeb date
+Communication error, see logfile
+</code></pre><p>&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x6709;&#x65F6;&#x5019;&#x901A;&#x4FE1;&#x5F02;&#x5E38;&#xFF0C;&#x6709;&#x65F6;&#x5019;&#x80FD;&#x51FA;&#x73B0;&#x547D;&#x4EE4;&#x8F93;&#x51FA;&#x4E5F;&#x6BD4;&#x8F83;&#x6162;&#x3002;</p>
+<p>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x7981;&#x7528;mtu_bypass&#xFF1A;</p>
+<pre><code># chdev -l enX -a mtu_bypass = off
+</code></pre><p>&#x6216;&#x5728;VEA&#x6216;&#x4E2D;&#x7EE7;VEA&#x4E0A;&#x7981;&#x7528;PLSO&#xFF1A;</p>
+<pre><code># chdev -l entX -a platform_lso = no
+</code></pre><p>IBM&#x76F8;&#x5173;&#x95EE;&#x9898;&#x63CF;&#x8FF0;&#x94FE;&#x63A5;&#xFF1A;</p>
+<ul>
+<li><a href="https://www.ibm.com/support/pages/apar/IJ25390" target="_blank">IJ25390: SLOW TCP PERFORMANCE WITH VIRTUAL ETHERNET ADAPTER AND LARGESENDAPPLIES TO AIX 7200-04</a></li>
+<li><a href="https://www.ibm.com/support/pages/node/6231440" target="_blank">VIOS (Doc Number=6667): High Impact / Highly Pervasive APAR IJ25390</a></li>
+</ul>
+<h3 id="&#x78C1;&#x76D8;&#x95EE;&#x9898;"><a name="&#x78C1;&#x76D8;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#&#x78C1;&#x76D8;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x78C1;&#x76D8;&#x95EE;&#x9898;</h3>
+<h4 id="pvid&#x95EE;&#x9898;"><a name="pvid&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#pvid&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>PVID&#x95EE;&#x9898;</h4>
+<p>&#x2003;&#x2003;&#x6709;&#x65F6;&#x5019;&#x7531;&#x4E8E;&#x67D0;&#x4E9B;&#x5F02;&#x5E38;&#x539F;&#x56E0;&#x5BFC;&#x81F4;&#x67D0;&#x4E00;&#x8282;&#x70B9;&#x7684;&#x6570;&#x636E;&#x78C1;&#x76D8;&#x7684;PVID&#x4E22;&#x5931;&#x6216;&#x8005;&#x4E0D;&#x4E00;&#x81F4;&#xFF0C;&#x4F8B;&#x5982;&#x5907;&#x8282;&#x70B9;test1&#x78C1;&#x76D8;PVID&#x5F02;&#x5E38;&#xFF0C;&#x540C;&#x6B65;&#x65F6;&#x5019;&#x62A5;&#x9519;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>ERROR: A disk with PVID 000baf2b911918a40000000000000000 is a part of the volume group datavg participating in resource group test_rg on node test2. Node test1 is also
+part of this resource group, but it does not have this PVID defined as a
+part of this volume group.
+The list of PVIDs per volume group should be consistent for all nodes that
+can require access to this volume group.
+Starting Corrective Action: cl_resource_update_vg_definitions.
+Do you want to change volume group definitions for the volume
+group: datavg participating in resource group test_rg on node: test1 [Yes / No]:
+&lt;01&gt; Updating volume group definitions of shared VG: datavg participating in 
+resource group test_rg so that it will be consistent across all the nodes 
+from this resource group: FAIL
+</code></pre><p>&#x5982;&#x679C;&#x78C1;&#x76D8;<code>reserve_policy</code>&#x5C5E;&#x6027;&#x662F;<code>single_path</code>&#x5219;&#x6539;&#x6210;<code>no_reserve</code>&#xFF1A;</p>
+<ul>
+<li>&#x5982;&#x679C;PVID&#x4E0D;&#x4E00;&#x81F4;&#xFF0C;&#x4FEE;&#x6539;PVID&#x4E3A;&#x4E00;&#x81F4;&#xFF0C;&#x5982;&#x679C;&#x78C1;&#x76D8;<code>reserve_policy</code>&#x5C5E;&#x6027;&#x662F;<code>single_path</code>&#x5219;&#x6539;&#x6210;<code>no_reserve</code>,  &#x7136;&#x540E;&#x540C;&#x6B65;&#xFF0C;&#x5907;&#x673A;test1&#x7684;VG&#x4FE1;&#x606F;&#x6062;&#x590D;&#xFF0C;HA&#x542F;&#x52A8;&#x6B63;&#x5E38;</li>
+<li>&#x5982;&#x679C;test1&#x7684;disk PVID&#x4E3A;<code>NONE</code>&#xFF0C;&#x4F7F;&#x7528;&#x547D;&#x4EE4;<code>odmdelete -o CuDv -q &quot;name=hdisk3&quot;</code>&#x5220;&#x9664;ODM&#x4FE1;&#x606F;&#xFF0C;&#x7136;&#x540E;&#x91CD;&#x542F;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#xFF0C;&#x78C1;&#x76D8;PVID&#x548C;VG&#x4FE1;&#x606F;&#x5E94;&#x8BE5;&#x4F1A;&#x6062;&#x590D;</li>
+</ul>
+<p>&#x4FEE;&#x6539;PVID&#x65B9;&#x6CD5;(&#x6BCF;&#x4E24;&#x4F4D;&#x4ECE;&#x5341;&#x516D;&#x8FDB;&#x5236;&#x8F6C;&#x6362;&#x6210;&#x516B;&#x8FDB;&#x5236;)&#xFF0C;&#x793A;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;\0000\0013\0257\0053\0231\0030\0030\0244\c&quot;</span> &gt; /tmp/myPVID
+cat /tmp/myPVID |dd of=/dev/hdisk3 bs=1 seek=128
+lquerypv -h /dev/hdisk3 80
+rmdev -dl hdisk3 
+cfgmgr
+lspv
+</code></pre>
+<p>&#x6216;&#x8005;&#x4F7F;&#x7528;&#x5199;&#x7684;Python&#x811A;&#x672C;&#x4FEE;&#x6539;&#xFF1A;<a href="http://ebook.big1000.com/08-Python/04-Python_AIX%E8%84%9A%E6%9C%AC/03-Python-AIX%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9.html" target="_blank">Python-AIX&#x914D;&#x7F6E;&#x4FEE;&#x6539;-&#x81EA;&#x52A8;&#x4FEE;&#x6539;hdisk&#x7684;PVID</a></p>
+<h4 id="&#x78C1;&#x76D8;&#x5F02;&#x5E38;&#x4E22;&#x5931;"><a name="&#x78C1;&#x76D8;&#x5F02;&#x5E38;&#x4E22;&#x5931;" class="anchor-navigation-ex-anchor" href="#&#x78C1;&#x76D8;&#x5F02;&#x5E38;&#x4E22;&#x5931;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x78C1;&#x76D8;&#x5F02;&#x5E38;&#x4E22;&#x5931;</h4>
+<p>&#x2003;&#x2003;&#x6A21;&#x62DF;&#x78C1;&#x76D8;&#x4E22;&#x5931;&#xFF0C;&#x65AD;&#x6389;&#x5907;&#x673A;test1&#x5206;&#x533A;&#x7684;hdisk3&#x78C1;&#x76D8;&#x6620;&#x5C04;&#xFF0C;&#x53CC;vios&#x90FD;&#x65AD;&#x5F00;&#xFF0C;&#x78C1;&#x76D8;&#x5F00;&#x59CB;&#x62A5;&#x8DEF;&#x5F84;&#x4E22;&#x5931;&#x548C;&#x78C1;&#x76D8;&#x64CD;&#x4F5C;&#x9519;&#x8BEF;&#xFF0C;&#x4F46;&#x662F;VG&#x72B6;&#x6001;&#x4E0D;&#x53D8;&#xFF0C;&#x78C1;&#x76D8;&#x72B6;&#x6001;&#x770B;&#x8D77;&#x6765;&#x6B63;&#x5E38;&#xFF0C;&#x4E3B;&#x673A;&#x7AEF;test2&#x6CA1;&#x6709;errpt&#xFF1A;</p>
+<pre><code>test1:/#lspv
+hdisk0          00f939e23e8ab01a                    rootvg          active      
+hdisk1          000baf2b911815a4                    datavg          concurrent  
+hdisk2          000baf2b9118164a                    caavg_private   active 
+hdisk3          000baf2b9e10273d                    datavg          concurrent
+</code></pre><p>&#x5728;&#x4E3B;&#x673A;test2&#x65B0;&#x5EFA;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#xFF0C;&#x5907;&#x673A;test1&#x7684;<code>datavg</code>&#x72B6;&#x6001;&#x4ECE;<code>concurrent</code>&#x53D8;&#x7A7A;&#xFF0C;&#x5E76;&#x4E14;&#x4E3B;&#x673A;test2&#x62A5;&#x9519;&#xFF1A;</p>
+<pre><code>test2:/#errpt
+IDENTIFIER TIMESTAMP  T C RESOURCE_NAME  DESCRIPTION
+F7DDA124   1209160521 U H LVDD           PHYSICAL VOLUME DECLARED MISSING
+</code></pre><p>&#x5907;&#x673A;test1&#x62A5;&#x9519;&#xFF1A;</p>
+<pre><code class="lang-test1:/#errpt">IDENTIFIER TIMESTAMP  T C RESOURCE_NAME  DESCRIPTION
+AEA055D0   1209160521 I S livedump       Live dump complete
+CAD234BE   1209160521 U H LVDD           QUORUM LOST, VOLUME GROUP CLOSING
+52715FA5   1209160521 U H LVDD           FAILED TO WRITE VOLUME GROUP STATUS AREA
+F7DDA124   1209160521 U H LVDD           PHYSICAL VOLUME DECLARED MISSING
+E86653C3   1209160521 P H LVDD           I/O ERROR DETECTED BY LVM
+B6267342   1209160521 P H hdisk3         DISK OPERATION ERROR
+</code></pre>
+<p>&#x547D;&#x4EE4;<code>rmdev -Rdl hdisk3</code>&#x5220;&#x9664;&#x4E0D;&#x4E86;&#x78C1;&#x76D8;&#xFF0C;&#x76F4;&#x63A5;<code>odmdelete -o CuDv -q &quot;name=hdisk3&quot;</code>&#x5220;&#x9664;ODM&#x5E93;&#xFF0C;&#x53EF;&#x4EE5;&#x5220;&#x9664;&#x3002;&#x7136;&#x540E;VIOS&#x91CD;&#x65B0;&#x6620;&#x5C04;&#x78C1;&#x76D8;&#xFF0C;&#x62A5;&#x9519;&#xFF1A;</p>
+<pre><code>&quot;hdisk7&quot; is already being used as a backing device.  Specify the -f flag
+to force this device to be used anyway.
+</code></pre><p>&#x5F3A;&#x5236;&#x6620;&#x5C04;&#xFF1A;</p>
+<pre><code>mkvdev -vdev hdisk7 -vadapter vhost3 -dev vtscsi8 -f
+</code></pre><p>&#x2003;&#x2003;&#x78C1;&#x76D8;&#x4F7F;&#x7528;&#x547D;&#x4EE4;<code>cfgmgr</code>&#x626B;&#x63CF;&#x4E0D;&#x56DE;&#x6765;&#xFF0C;&#x505C;&#x6389;&#x5907;&#x673A;test1&#x7684;HA&#xFF0C;&#x91CD;&#x542F;&#x7CFB;&#x7EDF;&#xFF0C;&#x91CD;&#x542F;&#x540E;hdisk3&#x6062;&#x590D;&#xFF0C;&#x5E76;&#x4E14;vg&#x4FE1;&#x606F;&#x4E5F;&#x6709;&#x3002;&#x518D;&#x6B21;&#x7528;&#x547D;&#x4EE4;<code>rmdev -Rdl hdisk3</code>&#x5220;&#x6389;&#x78C1;&#x76D8;&#xFF0C;<code>cfgmgr</code>&#x626B;&#x63CF;&#x56DE;&#x6765;&#x540E;&#x4F9D;&#x7136;&#x6B63;&#x5E38;&#x3002;</p>
+<h3 id="&#x5B95;&#x673A;&#x95EE;&#x9898;"><a name="&#x5B95;&#x673A;&#x95EE;&#x9898;" class="anchor-navigation-ex-anchor" href="#&#x5B95;&#x673A;&#x95EE;&#x9898;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5B95;&#x673A;&#x95EE;&#x9898;</h3>
+<p>&#x5B95;&#x673A;&#x539F;&#x56E0;&#x53C2;&#x8003;&#x94FE;&#x63A5;&#xFF1A;</p>
+<ul>
+<li><a href="https://www.talkwithtrend.com/Article/7729" target="_blank">TWT-&#x5982;&#x4F55;&#x5904;&#x7406;hacmp&#x4E2D;dms&#x7684;&#x95EE;&#x9898;</a></li>
+<li><a href="https://www.toolbox.com/tech/operating-systems/question/lpar-aix-rebooted-auto-020915/" target="_blank">Toolbox-LPAR AIX Rebooted Auto</a></li>
+<li><a href="https://www.ibm.com/docs/en/db2/10.1.0?topic=host-diagnosing-reboot-restart-light" target="_blank">DB2-Diagnosing a host reboot with a restart light</a></li>
+<li><a href="https://www.ibm.com/docs/en/db2/10.5?topic=light-gpfs-filesystem-outage-kernel-panic" target="_blank">GPFS filesystem outage with a kernel panic</a></li>
+<li><a href="https://www.ibm.com/docs/en/db2/11.1?topic=light-spectrum-scale-filesystem-outage-kernel-panic" target="_blank">IBM Spectrum Scale filesystem outage with a kernel panic</a></li>
+<li><a href="https://www.ibm.com/support/pages/apar/IV87544?mhsrc=ibmsearch_a&amp;mhq=APAR%20IV69760%20" target="_blank">IV87544: SHUTDOWN -F ON POWERHA MAY PANIC INSTEAD OF HALT</a></li>
+<li><a href="https://www.ibm.com/support/pages/apar/IV69760?mhsrc=ibmsearch_a&amp;mhq=APAR%20IV69760%20" target="_blank">IV69760: NODE DOWN IN CAA CLUSTER DUE TO CONFIGRM MEMORY LEAK</a></li>
+</ul>
+<p>PowerHA&#x96C6;&#x7FA4;&#x4E0E;&#x5B95;&#x673A;&#x76F8;&#x5173;&#x539F;&#x7406;&#x7B49;&#xFF1A;</p>
+<ul>
+<li><a href="https://www.ibm.com/docs/en/rsct/3.2?topic=recoveries-action-investigate-aix-node-crash" target="_blank">RSCT3.2-Action 9: investigate an AIX node crash</a></li>
+<li><a href="https://www.ibm.com/support/pages/node/519603?mhsrc=ibmsearch_a&amp;mhq=KERNEL_PANIC%20IDENTIFIER%3A%20%20%20%20%20225E3B63" target="_blank">Adjusting Dead Man Switch Timeout for CLUSTER (DMS)</a></li>
+</ul>
+<h3 id="&#x5F85;&#x8865;&#x5145;"><a name="&#x5F85;&#x8865;&#x5145;" class="anchor-navigation-ex-anchor" href="#&#x5F85;&#x8865;&#x5145;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5F85;&#x8865;&#x5145;</h3>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="03-AIX-用户策略.html" class="navigation navigation-prev " aria-label="Previous page: AIX-用户策略">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="05-AIX-NIMserver.html" class="navigation navigation-next " aria-label="Next page: AIX-NIMserver">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"AIX-HA常用操作","level":"1.7.1.4","depth":3,"next":{"title":"AIX-NIMserver","level":"1.7.1.5","depth":3,"path":"05-IBM_Operating_System/01-AIX/05-AIX-NIMserver.md","ref":"05-IBM_Operating_System/01-AIX/05-AIX-NIMserver.md","articles":[]},"previous":{"title":"AIX-用户策略","level":"1.7.1.3","depth":3,"path":"05-IBM_Operating_System/01-AIX/03-AIX-用户策略.md","ref":"05-IBM_Operating_System/01-AIX/03-AIX-用户策略.md","articles":[]},"dir":"ltr"},"config":{"plugins":["advanced-emoji","toggle-chapters","theme-comscore","splitter","github","-sharing","-lunr","-search","search-plus","anchor-navigation-ex-toc@0.0.9","editlink","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/bond-huang/ebook"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/bond-huang/ebook/master"},"splitter":{},"anchor-navigation-ex-toc":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"","level2Icon":"","level3Icon":"","showLevelIcon":false},"printLog":false,"showLevel":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-comscore":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"toggle-chapters":{},"search-plus":{}},"theme":"default","author":"ebook","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":18,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"eBook","links":{"sharing":{"all":null,"facebook":null,"google":null,"twitter":null,"weibo":null}},"gitbook":"*","description":"my notes","extension":null},"file":{"path":"05-IBM_Operating_System/01-AIX/04-AIX-HA常用操作.md","mtime":"2022-09-27T16:42:52.263Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-09-27T16:57:33.508Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-toggle-chapters/toggle.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-plus/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-plus/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-theme-comscore/test.js"></script>
+        
+    
+
+    </body>
+</html>
+
