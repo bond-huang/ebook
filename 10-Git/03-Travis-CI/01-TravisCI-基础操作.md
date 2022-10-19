@@ -283,4 +283,7 @@ The command "travis_wait 100 bash deploy.sh" exited with 128.
 ```
 &#8195;&#8195;应该是GitHub上的`Personal access tokens`不行了，重新创建一个即可。此次失败扣了70 credits。ppc64le不用扣除credits，但经常失败，credits有限，日常小更新继续使用ppc64le。
 
+## 构建时间问题
+### 构建时间过长
+&#8195;&#8195;近期一次构建耗费21分钟21秒，扣除了220credits，将`install`中的`travis_wait 30 npm install`删除，然后将`travis_wait 100 bash deploy.sh`改成原来的`travis_wait 10 bash deploy.sh`进行尝试。
 ## 待补充
