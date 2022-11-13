@@ -4,16 +4,16 @@
 运行`ansible-playbook`报错示例如下：
 ```
 [ansible@redhat9 ~]$ ansible-playbook -C site.yml
-PLAY [Install and start Apache HTTPD] ***************************************************************************************
+PLAY [Install and start Apache HTTPD] ***********************************************************************
 
-TASK [Gathering Facts] ***************************************************************************************
+TASK [Gathering Facts] ***********************************************************************
 ok: [redhat8]
 
-TASK [httpd package is present] ***************************************************************************************
+TASK [httpd package is present] ***********************************************************************
 fatal: [redhat8]: FAILED! => {"changed": false, "msg": "This command has to be run under the root user.", "results": []}
 
-PLAY RECAP ****************************************************************************************
-redhat8                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+PLAY RECAP ************************************************************
+redhat8  : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
 ```
 &#8195;&#8195;没有root权限，用户也不能使用`sudo`，在ansible.cfg文件中`become`相关项，检查配置文件。通常配置如下所示：
 ```ini
@@ -61,4 +61,36 @@ PLAY RECAP *********************************************************************
 redhat8                    : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0
 ```
 &#8195;&#8195;上面报错原因通常是到目标host的网络不通导致的，或者`/etc/hosts`里面写入了错误的IP地址导致网络不能通信。更改为正确的即可。
+## 语法问题
+### 语法使用不当
+示例报错如下：
+```
+ERROR! 'file' is not a valid attribute for a Play
+
+The error appears to be in '/home/ansible/file2.yml': line 1, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+- name: Touch a file and set permissions
+  ^ here
+```
+检查Play的语法或模块使用方法，确保正确编写Playbook。
+## 模块问题
+### sefcontext模块使用问题
+报错示例如下：
+```
+[ansible@redhat9 ~]$ ansible-playbook file3.yml
+ERROR! couldn't resolve module/action 'sefcontext'. 
+This often indicates a misspelling, missing collection, or incorrect module path.
+```
+&#8195;&#8195;查询需要安装`libselinux-python`和`policycoreutils-python`，控制节点和受控节点上都需要安装。
+### synchronize模块问题
+报错示例如下：
+```
+[ansible@redhat9 ~]$ ansible-playbook synchronize.yml
+ERROR! couldn't resolve module/action 'synchronize'. 
+This often indicates a misspelling, missing collection, or incorrect module path.
+```
+`rsync`工具必须同时安装在本地和远程主机上。
 ## 待补充

@@ -254,6 +254,25 @@ change ARG/ENV list size in 6K byte blocks to 1024
 chdev -l sys0 -a ncargs=64
 ```
 删除完成后，修改回来即可
+## 文件系统问题
+官方参考链接：[Troubleshooting file systems](https://www.ibm.com/docs/en/aix/7.3?topic=systems-troubleshooting-file)
+### Superblock问题
+#### superblock corrupted
+报错示例：
+```
+0506-945 The /dev/hd10opt JFS2 filesystem superblock is corrupted.
+0507-545 Connot read superblock on device /dev/hd10opt
+```
+可能重启即可修复，官方参考修复方法链接：
+- [Fixing a corrupted magic number in the file system superblock](https://www.ibm.com/docs/en/aix/7.2?topic=tfs-fixing-corrupted-magic-number-in-file-system-superblock)
+- [Repairing Corrupt File Systems or File System Log Devices](https://www.ibm.com/support/pages/repairing-corrupt-file-systems-or-file-system-log-devices)
+
+相关APAR：
+- [IY60010: FSCK ERROR ON > 1TB FILESYSTEM](https://www.ibm.com/support/pages/apar/IY60010?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
+- [IV69453: FSCK DOES NOT REPORT CORRUPTION TO A SPECIFIC SUPERBLOCK FIELD](https://www.ibm.com/support/pages/apar/IV69453?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
+- [IV54476: J2 FILESYSTEM GETS CORRUPTED AFTER ROLLBACK OF EXTERNAL SNAPSHOT APPLIES TO AIX 6100-09](https://www.ibm.com/support/pages/apar/IV54476?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
+- [IV57152: J2 FILESYSTEM GETS CORRUPTED AFTER ROLLBACK OF EXTERNAL SNAPSHOT APPLIES TO AIX 7100-02](https://www.ibm.com/support/pages/apar/IV57152?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
+
 ## 其它问题
 ### 错误代码0403-059
 执行某些命令时候会收到`0403-059`报错，示例如下：

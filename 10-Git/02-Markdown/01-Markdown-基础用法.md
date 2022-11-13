@@ -1,5 +1,6 @@
 # Markdown-基础用法
 目前只有一些本blog用到的用法，后续学到新的了再添加。
+## 基础用法
 ### 标题
 一共有六号标题，用"#"表示，增加一个代表一级，示例：
 \# 标题1 ；\## 标题2  
@@ -103,3 +104,15 @@ class classname(object):
 序列图：[https://bramp.github.io/js-sequence-diagrams/](https://bramp.github.io/js-sequence-diagrams/)  
 流程图：[http://flowchart.js.org/](http://flowchart.js.org/)  
 甘特图：[https://mermaid-js.github.io/mermaid/#/](https://mermaid-js.github.io/mermaid/#/) 
+
+### 上下标
+#### 下标
+下标格式：`~内容~`     
+示例：`CO~2~`   
+显示效果：CO~2~
+#### 上标
+上标格式：`^内容^`     
+示例：`2^38^`   
+显示效果：2^38^  
+
+## 待补充
