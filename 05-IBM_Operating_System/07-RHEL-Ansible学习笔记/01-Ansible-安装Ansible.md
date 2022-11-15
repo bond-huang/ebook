@@ -58,11 +58,11 @@ Successfully attached a subscription for: Red Hat Developer Subscription for Ind
 ```
 [root@redhat9 ~]# yum repolist
 Updating Subscription Management repositories.
-repo id                                            repo name
-redhat9_app                                        redhat9_app
-redhat9_os                                         redhat9_os
-rhel-9-for-x86_64-appstream-rpms                   Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)
-rhel-9-for-x86_64-baseos-rpms                      Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)
+repo id                              repo name
+redhat9_app                          redhat9_app
+redhat9_os                           redhat9_os
+rhel-9-for-x86_64-appstream-rpms     Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)
+rhel-9-for-x86_64-baseos-rpms        Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)
 ```
 #### 启用Ansible引擎库
 启动Ansible相关仓库：

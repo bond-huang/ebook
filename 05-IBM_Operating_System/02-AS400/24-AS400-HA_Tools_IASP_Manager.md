@@ -2,6 +2,7 @@
 &#8195;&#8195;PowerHA Tools IASP Manager是IBM Lab Services编写的高可用性产品。它专为使用IBM存储和/或将PowerHA与独立辅助存储池(IASP)解决方案结合使用的IBM i客户而设计。官方参考链接：[PowerHA Tools for IBM i - IASP Manager](https://www.ibm.com/support/pages/node/1126029)。
 ## 常用命令
 常用命令如下：
+
 命令|描述
 :---|:---
 CHKFLASH|Check FlashCopy
@@ -80,6 +81,7 @@ FlashCopy处理过程如下：
   - 如果生产节点被停顿或`varied off`，则提交退出程序以恢复或`vary on.`
   - 如果`Wait for completion`设置为`*YES`，则`STRFLASH`程序将保持活动状态，直到`FlashCopy`完成，并且状态更改为`100`
   - 如果`Wait for completion`设置为`*NO`，则`STRFLASH`程序成功结束
+
 ### FlashCopy过程中注意事项
 FlashCopy过程中注意事项如下：
 - 如果使用所有默认值，则有效进程将与ACS 2.1 FlashCopy进程(`wait for completion` = `*YES`并且`connect hosts`=`*CURRENT`)相同
@@ -272,10 +274,10 @@ H3|H1, H2|H3->H1(MMIR2)Reversed;H3->H2(MMIR3)Reversed|H1->H2(MMIR)
 
 源|活动目标/PPRC方向|未激活PPRC对/状态
 :---:|:---:|:---:|:---:
-H1|H2(MMIR)/Normal;H3(GMIR)/Normal|H2->H3(GMIR2 *MTIR)
-H2|H1(MMIR)/Reversed;H3(GMIR2)/Normal|H1->H2(GMIR *MTIR)
-H3(GMIR Reversed)|H1|H3->H2(GMIR2 *INELIGIBLE);H1->H2(MMIR *GCP *NORMAL)
-H3(GMIR2 Reversed)|H2|H3->H1(GMIR *INELIGIBLE)|H2->H1(MMIR *GCP *REVERSED)
+H1|H2(MMIR)/Normal;H3(GMIR)/Normal|H2->H3(GMIR2 \*MTIR)
+H2|H1(MMIR)/Reversed;H3(GMIR2)/Normal|H1->H2(GMIR \*MTIR)
+H3(GMIR Reversed)|H1|H3->H2(GMIR2 \*INELIGIBLE);H1->H2(MMIR \*GCP \*NORMAL)
+H3(GMIR2 Reversed)|H2|H3->H1(GMIR \*INELIGIBLE);H2->H1(MMIR \*GCP \*REVERSED)
 
 说明及注意事项：
 - 同样`SWPPRC`(Switch PPRC)命令可以在任何活动目标上运行
@@ -393,5 +395,63 @@ CHKPPRC ENV(<name of IASP>) TYPE(*)
 - 对于CSM环境，如果CSM服务器丢失，`CHKPPRC`会发出转义消息`IAS00AE`：
   - 这是一条警告消息，表明配置可运行，但需要采取措施才能实现完全冗余
   - 监视`CHKPPRC`功能时，CL程序应区分`IAS0070`(failed)和`IAS00AE`
+
+## 故障排查
+### 故障排查过程
+未成功完成的第一个指示通常是一条状态消息，例如以下原因示例之一：
+-  `A PPRC check for IASP CRG <CRGname> failed.`
+  - 生产系统名称=PPRC系统名称
+  - 生产系统名称=不存在的系统名称
+- `This command must run on the backup node.`
+  - PPRC系统名称=生产系统名称
+  - SWPPRC尝试在生产系统上运行
+- `Clustering not started on node <system name>.`
+  - PPRC系统名称=不存在的系统名称
+  - 所有群集节点处于非活动状态；自动启动设置为`*NO`
+  - TCP/IP未在生产系统上运行
+- `VRYCFG failed for device <IASPname>`
+  - 在IASP进行`vary on`期间TCP/IP出现failed
+  - “Signature”失败
+
+### 状态代码
+#### CRG PPRC状态码
+CRG PPRC状态码及描述：
+
+状态|描述
+:---:|:---
+0或`*Ready`|PPRC为`SWPPRC`做好准备
+10|PPRC批准收到生产节点操作员或用户的回复
+20|PPRC failover任务已完成，收到HA/DR操作员的回复
+100或`*INCOMPLETE`|PPRC计划外切换不完整，如果在`Metro Mirror`环境中，则需要`SWPPRC *COMPLETE`。Global Mirror要求手动完成
+
+#### CRG FlashCopy状态码
+CRG FlashCopy状态码及描述：
+
+状态|描述
+:---:|:---
+0或`*NONE`|Flash Copy就绪，可以进行`STRFLASH`
+20|Flash Copy完成;操作员在消息`IAS0001`中回复`G`
+90|Flash Copy过程已完成;开始`vary on` IASP
+100或`*FLASHED`|Flash Copy命令`STRFLASH`完成, 可以进行`ENDFLASH`
+
+#### CRG请求码
+CRG请求码如下：
+
+代码|描述
+:---:|:---
+0|没有请求，没有对任何节点采取任何操作。仅用于设置退出数据
+10|Flash Copy硬件检查
+20|向生产系统操作员或用户发送Flash Copy查询消息
+100|不是请求，用于定义FlashCopy/PPRC请求边界
+105|PPRC检查CHKPPRC
+120|向生产系统操作员或用户发送PPRC查询消息
+122|向备份系统操作员或用户发送PPRC查询消息
+205|在FlashCopy节点上执行pre-Flash前检查
+211|在生产节点上执行`vary off`（冷闪存）
+214|在生产节点上执行`vary on`
+215|在生产节点上执行`quiesce`
+216|在生产节点上执行`resume`
+217|在生产节点上执行`*FRCWRT`
+230|在FlashCopy节点上提交FlashCopy程序
 
 ## 待补充
