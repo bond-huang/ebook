@@ -172,3 +172,343 @@ rhel-system-roles.tuned|开发中|配置tuned服务，以调优系统性能
 ```
 [root@redhat9 ~]# yum install rhel-system-roles
 ```
+安装的RHEL9已经默认安装了，RHEL系统角色在目录`/usr/share/ansible/roles`下：
+```
+[ansible@redhat9 ~]$ ls /usr/share/ansible/roles
+linux-system-roles.certificate  linux-system-roles.ssh      rhel-system-roles.metrics
+linux-system-roles.cockpit      linux-system-roles.sshd     rhel-system-roles.nbde_client
+...output omitted... 
+```
+&#8195;&#8195;每个角色的对应上游名称都链接到RHEL系统角色。这使角色可在playbook中通过任一名称来引用。RHEL中的默认`roles_path`在路径中包含`/usr/share/ansible/roles`，在playbook引用这些角色时Ansible会自动找到它们。注意：
+- 如果`roles_path`在当前Ansible配置文件中已被覆盖，并且已设置`ANSIBLE_ROLES_PATH`环境变量，或者`roles_path`中更早列出的目录下存在另一个同名角色，则Ansible可能无法找到系统角色。
+
+#### 访问RHEL系统角色的文档
+&#8195;&#8195;安装后，RHEL系统角色的文档位于`/usr/share/doc/rhel-system-roles/`目录中。文档按照子系统整理到子目录中：
+```
+[ansible@redhat9 ~]$ ls -l /usr/share/doc/rhel-system-roles
+total 20
+drwxr-xr-x. 2 root root 4096 Sep  4 13:56 certificate
+drwxr-xr-x. 2 root root   42 Sep  4 13:56 cockpit
+drwxr-xr-x. 3 root root   55 Sep  4 13:56 collection
+drwxr-xr-x. 2 root root   42 Sep  4 13:56 crypto_policies
+drwxr-xr-x. 2 root root   42 Sep  4 13:56 firewall
+...output omitted... 
+```
+系统角色的文档说明：
+- 每个角色的文档目录均包含一个`README.md`文件。`README.md`文件含有角色的说明，以及角色用法信息
+- `README.md`文件也会说明影响角色行为的角色变量。通常，`README.md`文件中含有一个playbook代码片段，用于演示常见配置场景的变量设置
+- 部分角色文档目录中含有示例playbook。首次使用某一角色时，请查看文档目录中的任何额外示例playbook
+- RHEL系统角色的角色文档与Linux系统角色的文档相匹配。可以访问Ansible Galaxy网站[https://galaxy.ansible.com](https://galaxy.ansible.com)上的上游角色的角色文档。
+
+### 时间同步角色示例
+&#8195;&#8195;需要在服务器上配置NTP时间同步，可以自行编写自动化来执行每一个必要的任务。RHEL系统角色中有一个可以执行此操作的角色，那就是`rhel-system-roles.timesync`：
+- 该角色记录在`/usr/share/doc/rhel-system-roles/timesync`目录中的`README.md`文件中。此文件说明了影响角色行为的所有变量，还包含演示了不同时间同步配置的三个playbook代码片段
+- 为了手动配置NTP服务器，该角色有一个`timesync_ntp_servers`变量。此变量取一个要使用的NTP服务器的列表作为值。列表中的每一项均由一个或多个属性构成
+
+`timesync_ntp_servers`两个关键属性如下：
+
+属性|用途
+:---:|:---
+主机名称|要与其同步的 NTP 服务器的主机名
+iburst|一个布尔值，用于启用或禁用快速初始同步。在角色中默认为`no`，但通常应该将该属性设为`yes`
+
+&#8195;&#8195;下面示例play使用`rhel-system-roles.timesync`角色将受管主机配置为利用快速初始同步从三个NTP服务器获取时间。此外，还添加了一个任务，以使用`timezone`模块将主机的时区设为`UTC`：
+```yml
+- name: Time Synchronization Play
+  hosts: servers
+  vars:
+    timesync_ntp_servers:
+      - hostname: 0.rhel.pool.ntp.org
+        iburst: yes
+      - hostname: 1.rhel.pool.ntp.org
+        iburst: yes
+      - hostname: 2.rhel.pool.ntp.org
+        iburst: yes
+    timezone: UTC
+
+  roles:
+    - rhel-system-roles.timesync
+
+  tasks:
+    - name: Set timezone
+      timezone:
+        name: "{{ timezone }}"
+```
+示例说明及注意事项：
+- 此示例在play的`vars`部分中设置角色变量，但更好的做法可能是将它们配置为主机或主机组的清单变量
+- 如果要设置不同的时区，可以使用`tzselect`命令查询其他有效的值。也可以使用`timedatectl`命令来检查当前的时钟设置
+
+例如一个playbook项目具有以下结构：
+```
+[root@host playbook-project]# tree
+.
+├── ansible.cfg
+├── group_vars
+│   └── servers
+│       └── timesync.yml1
+├── inventory
+└── timesync_playbook.yml2
+```
+&#8195;&#8195;示例中`timesync.yml1`定义时间同步变量，覆盖清单中`servers`组内主机的角色默认值。此文件内容对比之前示例，类似于：
+```yml
+timesync_ntp_servers:
+  - hostname: 0.rhel.pool.ntp.org
+    iburst: yes
+  - hostname: 1.rhel.pool.ntp.org
+    iburst: yes
+  - hostname: 2.rhel.pool.ntp.org
+    iburst: yes
+timezone: UTC
+```
+示例中`timesync_playbook.yml2`的Playbook内容简化为：
+```yml
+- name: Time Synchronization Play
+  hosts: servers
+  roles:
+    - rhel-system-roles.timesync
+  tasks:
+    - name: Set timezone
+      timezone:
+        name: "{{ timezone }}"
+```
+示例结构说明：
+- 该结构可清楚地分隔角色、playbook代码和配置设置。Playbook代码简单易读，应该不需要复杂的重构。角色内容由红帽进行维护并提供支持。所有设置都以清单变量的形式进行处理
+- 该结构还支持动态的异构环境。具有新的时间同步要求的主机可能会放置到新的主机组中。相应的变量在YAML文件中定义，并放置到相应的`group_vars`（或`host_vars`）子目录中
+
+### SELinux角色示例
+&#8195;&#8195;`rhel-system-roles.selinux`角色可以简化SELinux配置设置的管理。它通过利用SELinux相关的Ansible模块来实施。与自行编写任务相比，使用此角色的优势是它能让用户摆脱编写这些任务的职责。取而代之，用户将为角色提供变量以对其进行配置，且角色中维护的代码将确保应用用户需要的SELinux配置。此角色可以执行的任务包括：
+- 设置`enforcing`或`permissive`模式
+- 对文件系统层次结构的各部分运行`restorecon`
+- 设置SELinux布尔值
+- 永久设置SELinux文件上下文
+- 设置SELinux用户映射
+
+#### 调用SELinux角色
+&#8195;&#8195;有时候，SELinux角色必须确保重新引导受管主机，以便能够完整应用其更改。但是，它本身从不会重新引导主机。如此一来，便可以控制重新引导的处理方式。不过，这意味着在play中正确使用此角色要比平常复杂一些。     
+&#8195;&#8195;其工作方式为，该角色将一个布尔值变量`selinux_reboot_required`设为`true`，如果需要重新引导，则失败。可以使用`block/rescue`结构来从失败中恢复，具体操作为：如果该变量未设为`true`，则让play失败，如果值是`true`，则重新引导受管主机并重新运行该角色。Play中的块应该类似于：
+```yml
+    - name: Apply SELinux role
+      block:
+        - include_role:
+            name: rhel-system-roles.selinux
+      rescue:
+        - name: Check for failure for other reasons than required reboot
+          fail:
+          when: not selinux_reboot_required
+
+        - name: Restart managed host
+          reboot:
+
+        - name: Reapply SELinux role to complete changes
+          include_role:
+            name: rhel-system-roles.selinux
+```
+#### 配置SELinux角色
+&#8195;&#8195;用于配置`rhel-system-roles.selinux`角色的变量的详细记录位于其`README.md`文件中。下面示例演示了使用此角色的一些方法。   
+&#8195;&#8195;`selinux_state`变量设置`SELinux`的运行模式。它可以设为`enforcing`、`permissive`或`disabled`。如果未设置，则不更改模式：
+```yml
+selinux_state: enforcing
+```
+&#8195;&#8195;`selinux_booleans`变量取一个要调整的SELinux布尔值的列表作为值。列表中的每一项是变量的散列/字典：布尔值 名称、状态（应为`on`或`off`），以及该设置在重新引导后是否应永久有效。本例将 `httpd_enable_homedirs`永久设为`on`：
+```yml
+selinux_booleans:
+  - name: 'httpd_enable_homedirs'
+    state: 'on'
+    persistent: 'yes'
+```
+&#8195;&#8195;`selinux_fcontext`变量取一个要永久设置（或删除）的文件上下文的列表作为值。它的工作方式与`selinux fcontext`命令非常相似。下面示例确保策略中包含一条规则，用于将`/srv/www`下所有文件的默认SELinux类型设为`httpd_sys_content_t`：
+```yml
+selinux_fcontexts:
+  - target: '/srv/www(/.*)?'
+    setype: 'httpd_sys_content_t'
+    state: 'present'
+```
+`selinux_restore_dirs`变量指定要对其运行`restorecon`的目录的列表：
+```yml
+selinux_restore_dirs:
+  - /srv/www
+```
+`selinux_ports`变量取应当具有特定SELinux类型的端口的列表作为值：
+```yml
+selinux_ports:
+  - ports: '82'
+    setype: 'http_port_t'
+    proto: 'tcp'
+    state: 'present'
+```
+## 创建角色
+### 角色创建流程
+在Ansible中创建角色不需要特别的开发工具。创建和使用角色包含三个步骤：
+- 创建角色目录结构
+- 定义角色内容
+- 在playbook中使用角色
+
+### 创建角色目录结构
+&#8195;&#8195;Ansible默认会在Ansible Playbook所在目录的roles子目录中查找角色。这样可以利用playbook和其他支持文件存储角色。如果Ansible无法在该位置找到角色，它会按照顺序在Ansible配置设置`roles_path`所指定的目录中查找。此变量包含要搜索的目录的冒号分隔列表。此变量的默认值为：
+```
+~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles
+```
+&#8195;&#8195;这允许用户将角色安装到由多个项目共享的系统上。例如，可能将自己的角色安装在自己的主目录下的`~/.ansible/roles`子目录中，而系统可能将所有用户的角色安装在`/usr/share/ansible/roles`目录中。每个角色具有自己的目录，采用标准化的目录结构。例如，以下目录结构包含了定义`motd`角色的文件：
+```
+[user@host ~]$ tree roles/
+roles/
+└── motd
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    ├── meta
+    │   └── main.yml
+    ├── README.md
+    ├── tasks
+    │   └── main.yml
+    └── templates
+        └── motd.j2
+```
+目录结构说明：
+- `README.md`提供人类可读的基本角色描述、有关如何使用该角色的文档和示例，以及其发挥作用所需要满足的任何非Ansible要求
+- `meta`子目录包含一个`main.yml`文件，该文件指定有关模块的作者、许可证、兼容性和依赖项的信息
+- `files`子目录包含固定内容的文件
+- `templates`子目录则包含使用时可由角色部署的模板
+- 其他子目录中可以包含`main.yml`文件，它们定义默认的变量值、处理程序、任务、角色元数据或变量，具体取决于所处的子目录
+- 如果某一子目录存在但为空，如示例中的`handlers`，它将被忽略
+- 如果某一角色不使用功能，则其子目录可以完全省略。例如，示例中的`vars`子目录已被省略
+
+#### 创建角色框架
+&#8195;&#8195;可以使用标准Linux命令创建新角色所需的所有子目录和文件。也可以通过命令行实用程序来自动执行新角色创建过程：
+- `ansible-galaxy`命令行工具可用于管理Ansible角色，包括新角色的创建
+- 可以运行`ansible-galaxy init`来创建新角色的目录结构。指定角色的名称作为命令的参数，该命令在当前工作目录中为新角色创建子目录
+
+创建示例如下：
+```
+[ansible@redhat9 ~]$ pwd
+/home/ansible
+[ansible@redhat9 ~]$ cd playbook-project/
+[ansible@redhat9 playbook-project]$ cd roles
+[ansible@redhat9 roles]$ ansible-galaxy init my_new_role
+- Role my_new_role was created successfully
+[ansible@redhat9 roles]$ ls my_new_role/
+defaults  files  handlers  meta  README.md  tasks  templates  tests  vars
+```
+### 定义角色内容
+&#8195;&#8195;创建目录结构后，必须编写角色的内容。可以从`ROLENAME/tasks/main.yml`任务文件开始，该文件是由角色运行的主要任务列表。    
+&#8195;&#8195;下列`tasks/main.yml`文件管理着受管主机上的`/etc/motd`文件。它使用`template`模块将名为`motd.j2`的模板部署到受管主机上。因为`template`模块是在角色任务而非playbook任务内配置的，所以从角色的`templates`子目录中检索`motd.j2`模板：
+```
+[user@host ~]$ cat roles/motd/tasks/main.yml
+---
+# tasks file for motd
+- name: deliver motd file
+  template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0444
+```
+下面是`motd`角色的`motd.j2`模板的内容。它引用了Ansible事实和`system_owner`变量：
+```
+[user@host ~]$ cat roles/motd/templates/motd.j2
+This is the system {{ ansible_facts['hostname'] }}.
+
+Today's date is: {{ ansible_facts['date_time']['date'] }}.
+
+Only use this system with permission.
+You can ask {{ system_owner }} for access.
+```
+&#8195;&#8195;该角色为`system_owner`变量定义一个默认值。角色目录结构中的`defaults/main.yml`文件就是设置这个值的位置。    
+&#8195;&#8195;下列`defaults/main.yml`文件将`system_owner`变量设置为`user@host.example.com`。此电子邮件地址将写入到该角色所应用的受管主机上的`/etc/motd`文件中：
+```
+[user@host ~]$ cat roles/motd/defaults/main.yml
+---
+system_owner: user@host.example.com
+```
+#### 角色内容开发的推荐做法
+&#8195;&#8195;角色允许以模块化方式编写playbook。为了最大限度地提高新开发角色的效率，在角色开发中采用以下推荐做法：
+- 在角色自己的版本控制存储库中维护每个角色。Ansible很适合使用基于git的存储库
+- 角色存储库中不应存储敏感信息，如密码或SSH密钥。敏感值应以变量的形式进行参数化，其默认值应不敏感。使用角色的Playbook负责通过`Ansible Vault`变量文件、环境变量或其他`ansible-playbook`选项定义敏感变量
+- 使用`ansible-galaxy init`启动用户的角色，然后删除不需要的任何目录和文件
+- 创建并维护`README.md`和`meta/main.yml`文件，以记录角色的用途、作者和用法
+- 让角色侧重于特定的用途或功能。可以编写多个角色，而不是让一个角色承担许多任务
+- 经常重用和重构角色。避免为边缘配置创建新的角色。如果现有角色能够完成大部分的所需配置，请重构现有角色以集成新的配置方案。使用集成和回归测试技术来确保角色提供所需的新功能，并且不对现有的playbook造成问题
+
+### 定义角色依赖项
+&#8195;&#8195;角色依赖项使得角色可以将其他角色作为依赖项包含在内。例如一个定义文档服务器的角色可能依赖于另一个安装和配置Web服务器的角色。依赖关系在角色目录层次结构中的`meta/main.yml`文件内定义。示例如下：
+```yml
+---
+dependencies:
+  - role: apache
+    port: 8080
+  - role: postgres
+    dbname: serverlist
+    admin_user: felix
+```
+&#8195;&#8195;默认情况下，角色仅作为依赖项添加到playbook中一次。若有其他角色也将它作为依赖项列出，它不会再次运行。此行为可以被覆盖，将`meta/main.yml`文件中的`allow_duplicates`变量设置为`yes`即可。
+### 在Playbook中使用角色
+&#8195;&#8195;要访问角色，可在play的`roles:`部分引用它。下列playbook引用了`motd`角色。由于没有指定变量，因此将使用默认变量值应用该角色：
+```yml
+---
+- name: use motd role playbook
+  hosts: remote.example.com
+  remote_user: devops
+  become: true
+  roles:
+    - motd
+```
+&#8195;&#8195;执行该playbook时，因为角色而执行的任务可以通过角色名称前缀来加以识别。以下示例输出通过任务名称中的`motd :`前缀进行了演示(假定`motd`角色位于`roles`目录中)：
+```
+[user@host ~]$ ansible-playbook -i inventory use-motd-role.yml
+
+PLAY [use motd role playbook] **************************************************
+
+TASK [setup] *******************************************************************
+ok: [remote.example.com]
+
+TASK [motd: deliver motd file] ************************************************
+changed: [remote.example.com]
+
+PLAY RECAP *********************************************************************
+remote.example.com         : ok=2    changed=1    unreachable=0    failed=0
+```
+#### 通过变量更改角色的行为
+&#8195;&#8195;编写良好的角色利用默认变量来改变角色行为，使之与相关的配置场景相符。这有助于让角色变得更为通用，可在各种不同的上下文中重复利用。如果通过以下方式定义了相同的变量，则角色的`defaults`目录中定义的变量的值将被覆盖：
+- 在清单文件中定义，作为主机变量或组变量
+- 在playbook项目的`group_vars`或`host_vars`目录下的YAML文件中定义
+- 作为变量嵌套在play的`vars`关键字中定义
+- 在play的`roles`关键字中包含该角色时作为变量定义
+
+&#8195;&#8195;示例如何将`motd`角色与`system_owner`角色变量的不同值搭配使用。角色应用到受管主机时，指定的值`someone@host.example.com`将取代变量引用：
+```yml
+---
+- name: use motd role playbook
+  hosts: remote.example.com
+  remote_user: devops
+  become: true
+  vars:
+    system_owner: someone@host.example.com
+  roles:
+    - role: motd
+```
+&#8195;&#8195;以这种方式定义时，`system_owner`变量将替换同一名称的默认变量的值。嵌套在`vars`关键字内的任何变量定义不会替换在角色的`vars`目录中定义的同一变量的值。    
+&#8195;&#8195;下例演示如何将`motd`角色与`system_owner`角色变量的不同值搭配使用。指定的值 `someone@host.example.com`将替换变量引用，不论是在角色的`vars`还是`defaults`目录中定义：
+```yml
+---
+- name: use motd role playbook
+  hosts: remote.example.com
+  remote_user: devops
+  become: true
+  roles:
+    - role: motd
+      system_owner: someone@host.example.com
+```
+注意，在play中使用角色变量时，变量的优先顺序可能会让人困惑：
+- 几乎任何其他变量都会覆盖角色的默认变量，如清单变量、`play vars`变量，以及内嵌的角色参数等
+- 较少的变量可以覆盖角色的`vars`目录中定义的变量。事实、通过`include_vars`加载的变量、注册的变量和角色参数是其中一些具备这种能力的变量。清单变量和`play vars`无此能力。这非常重要，因为它有助于避免play意外改变角色的内部功能
+- 不过，正如上述示例中最后一个所示，作为角色参数内嵌声明的变量具有非常高的优先级。它们可以覆盖角色的 `vars`目录中定义的变量。如果某一角色参数的名称与`play vars`或角色`vars`中设置的变量或者清单变量或 playbook变量的名称相同，该角色参数将覆盖另一个变量
+
+## 使用Ansible Galaxy部署角色
+### Ansible Galaxy介绍
+&#8195;&#8195;Ansible Galaxy是一个Ansible内容公共资源库，这些内容由许多Ansible管理员和用户编写。它包含数千个Ansible角色，具有可搜索的数据库，可帮助Ansible用户确定或许有助于他们完成管理任务的角色。Ansible Galaxy含有面向新的Ansible用户和角色开发人员的文档和视频链接。官方网站：[https://galaxy.ansible.com/](https://galaxy.ansible.com/)
+
+### Ansible Galaxy命令行工具
+&#8195;&#8195;`ansible-galaxy`命令行工具可以用于搜索角色，显示角色相关的信息，以及安装、列举、删除或初始化角色。
+#### 从命令行搜索角色

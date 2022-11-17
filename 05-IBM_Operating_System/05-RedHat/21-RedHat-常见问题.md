@@ -198,6 +198,30 @@ ns160       valid_lft 1748sec preferred_lft 1748sec
 total 4
 -rw-r--r--. 1 root root 315 May 29 14:11 ifcfg-ens160
 ```
+### 网关问题
+#### Network is unreachable
+使用ping命令报错，示例如下：
+```
+[root@redhat9 ~]# ping 117.42.141.83
+ping: connect: Network is unreachable
+```
+添加网关：
+```
+[root@redhat9 ~]# route add default gw 192.168.100.254
+```
+查看：
+```
+[root@redhat9 ~]# ip route
+default via 192.168.100.254 dev ens160
+192.168.100.0/24 dev ens160 proto kernel scope link src 192.168.100.133 metric 100
+192.168.100.0/24 dev ens160 proto kernel scope link src 192.168.100.135 metric 100
+[root@redhat9 ~]# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.100.254 0.0.0.0         UG    0      0        0 ens160
+192.168.100.0   0.0.0.0         255.255.255.0   U     100    0        0 ens160
+192.168.100.0   0.0.0.0         255.255.255.0   U     100    0        0 ens160
+```
 ## 用户问题
 ### 用户登录问题
 #### SSH服务器拒绝了密码

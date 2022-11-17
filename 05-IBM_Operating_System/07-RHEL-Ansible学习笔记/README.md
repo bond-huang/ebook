@@ -19,6 +19,8 @@ Ansible官方文档主页：[Ansible Documentation](https://docs.ansible.com/)
 
 Ansible的问题跟踪器及其集成模块，链接为：[https://github.com/ansible/ansible/issues](https://github.com/ansible/ansible/issues)
 
+Ansible Galaxy官方地址：[https://galaxy.ansible.com/](https://galaxy.ansible.com/)
+
 本章节是在官网学习RHEL记录的笔记。
 
 ## 内容
