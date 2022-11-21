@@ -512,3 +512,387 @@ remote.example.com         : ok=2    changed=1    unreachable=0    failed=0
 ### Ansible Galaxy命令行工具
 &#8195;&#8195;`ansible-galaxy`命令行工具可以用于搜索角色，显示角色相关的信息，以及安装、列举、删除或初始化角色。
 #### 从命令行搜索角色
+&#8195;&#8195;`ansible-galaxy search`子命令在Ansible Galaxy中搜索角色。如果以参数形式指定了字符串，则可用于按照关键字在Ansible Galaxy中搜索角色。可以使用`--author`、`--platforms`和 `--galaxy-tags`选项来缩小搜索结果的范围。也可以将这些选项用作主要的搜索键。    
+&#8195;&#8195;例如，命令 `ansible-galaxy search --author geerlingguy`将显示由用户`geerlingguy`提交的所有角色。   
+&#8195;&#8195;结果按照字母顺序显示，而不是`Best Match`分数降序排列。下例显示了包含`redis`并且适用于企业Linux(EL)平台的角色的名称：
+```
+[user@host ~]$ ansible-galaxy search 'redis' --platforms EL
+Found 124 roles matching your search:
+ Name                                  Description
+ ----                                  -----------
+...output omitted...
+ geerlingguy.php-redis                 PhpRedis support for Linux
+ geerlingguy.redis                     Redis for Linux
+ gikoluo.filebeat                      Filebeat for Linux.
+...output omitted...
+```
+&#8195;&#8195;`ansible-galaxy info`子命令显示与角色相关的更多详细信息。Ansible Galaxy从多个位置获取这一信息，包括角色的`meta/main.yml`文件及其GitHub存储库。以下命令显示了Ansible Galaxy提供的 `geerlingguy.redis`角色的相关信息：
+```
+[user@host ~]$ ansible-galaxy info geerlingguy.redis
+Role: geerlingguy.redis
+        description: Redis for Linux
+        active: True
+...output omitted...
+        license: license (BSD, MIT)
+        min_ansible_version: 2.4
+        modified: 2018-11-19T14:53:29.722718Z
+        open_issues_count: 11
+        path: [u'/etc/ansible/roles', u'/usr/share/ansible/roles']
+        role_type: ANS
+        stargazers_count: 98
+...output omitted...
+```
+#### 从Ansible Galaxy安装角色
+&#8195;&#8195;`ansible-galaxy install`子命令从Ansible Galaxy下载角色，并将它安装到控制节点本地。默认情况下，角色安装到用户的`roles_path`下的第一个可写目录中。根据为Ansible设置的默认`roles_path`，角色通常将安装到用户的`~/.ansible/roles`目录：
+- 默认的`roles_path`可能会被当前Ansible配置文件或环境变量`ANSIBLE_ROLES_PATH`覆盖，这将影响`ansible-galaxy`的行为
+- 也可以通过使用`-p DIRECTORY`选项，指定具体的目录来安装角色。
+
+&#8195;&#8195;下例中，`ansible-galaxy`将`geerlingguy.redis`角色安装到playbook项目的roles目录中。命令的当前工作目录是`/opt/project`：
+```
+[user@host project]$ ansible-galaxy install geerlingguy.redis -p roles/
+- downloading role 'redis', owned by geerlingguy
+- downloading role from https://github.com/geerlingguy/...output omitted...
+- extracting geerlingguy.redis to /opt/project/roles/geerlingguy.redis
+- geerlingguy.redis (1.6.0) was installed successfully
+[user@host project]$ ls roles/
+geerlingguy.redis
+```
+#### 使用要求文件安装角色
+&#8195;&#8195;也可以使用`ansible-galaxy`，根据某一文本文件中的定义来安装一个角色列表。例如，如果一个playbook需要安装特定的角色，可以在项目目录中创建一个`roles/requirements.yml`文件来指定所需的角色。此文件充当playbook项目的依赖项清单，使得playbook的开发和测试能与任何支持角色分开进行。
+
+例如，一个用于安装`geerlingguy.redis`的简单`requirements.yml`可能类似于如下：
+```yml
+- src: geerlingguy.redis
+  version: "1.5.0"
+```
+示例说明：
+- `src`属性指定角色的来源，本例中为来自Ansible Galaxy的`geerlingguy.redis`角色
+- `version`属性是可选的，指定要安装的角色版本，本例中为`1.5.0`
+
+若要使用角色文件来安装角色，可使用`-r REQUIREMENTS-FILE`选项：
+```
+[user@host project]$ ansible-galaxy install -r roles/requirements.yml \
+> -p roles
+- downloading role 'redis', owned by geerlingguy
+- downloading role from https://github.com/geerlingguy/ansible-role-redis/archive/1.6.0.tar.gz
+- extracting geerlingguy.redis to /opt/project/roles/geerlingguy.redis
+- geerlingguy.redis (1.6.0) was installed successfully
+```
+&#8195;&#8195;可以使用`ansible-galaxy`来安装不在Ansible Galaxy中的角色。可以在私有的Git存储库或Web服务器上托管自有的专用或内部角色。下例演示了如何利用各种远程来源配置要求文件：
+```
+[user@host project]$ cat roles/requirements.yml
+# from Ansible Galaxy, using the latest version
+- src: geerlingguy.redis
+
+# from Ansible Galaxy, overriding the name and using a specific version
+- src: geerlingguy.redis
+  version: "1.5.0"
+  name: redis_prod
+
+# from any Git-based repository, using HTTPS
+- src: https://gitlab.com/guardianproject-ops/ansible-nginx-acme.git
+  scm: git
+  version: 56e00a54
+  name: nginx-acme
+
+# from any Git-based repository, using SSH
+- src: git@gitlab.com:guardianproject-ops/ansible-nginx-acme.git
+  scm: git
+  version: master
+  name: nginx-acme-ssh
+
+# from a role tar ball, given a URL;
+#   supports 'http', 'https', or 'file' protocols
+- src: file:///opt/local/roles/myrole.tar
+  name: myrole
+```
+示例说明：
+- `src`关键字指定Ansible Galaxy角色名称。如果角色没有托管在Ansible Galaxy中，则`src`关键字将指明角色的URL
+- 如果角色托管在来源控制存储库中，则需要使用`scm`属性。`ansible-galaxy`命令能够从基于Git或`Mercurial`的软件存储库下载和安装角色：
+    - 基于Git 的存储库要求`scm`值为`git`，而托管在`Mercurial`存储库中的角色则要求值为`hg`
+    - 如果角色托管在Ansible Galaxy中，或者以`tar`存档形式托管在Web服务器上，则省略`scm`关键字
+- `name`关键字用于覆盖角色的本地名称
+- `version`关键字用于指定角色的版本。`version`关键字可以是与来自角色的软件存储库的分支、标记或提交哈希对应的任何值
+
+若要安装与playbook项目关联的角色，可执行`ansible-galaxy install`命令：
+```
+[user@host project]$ ansible-galaxy install -r roles/requirements.yml \
+> -p roles
+- downloading role 'redis', owned by geerlingguy
+- downloading role from https://github.com/geerlingguy/ansible-role-redis/archive/1.6.0.tar.gz
+- extracting geerlingguy.redis to /opt/project/roles/geerlingguy.redis
+- geerlingguy.redis (1.6.0) was installed successfully
+- downloading role 'redis', owned by geerlingguy
+- downloading role from https://github.com/geerlingguy/ansible-role-redis/archive/1.5.0.tar.gz
+- extracting redis_prod to /opt/project/roles/redis_prod
+- redis_prod (1.5.0) was installed successfully
+- extracting nginx-acme to /opt/project/roles/nginx-acme
+- nginx-acme (56e00a54) was installed successfully
+- extracting nginx-acme-ssh to /opt/project/roles/nginx-acme-ssh
+- nginx-acme-ssh (master) was installed successfully
+- downloading role from file:///opt/local/roles/myrole.tar
+- extracting myrole to /opt/project/roles/myrole
+- myrole was installed successfully
+```
+#### 管理下载的角色
+&#8195;&#8195;`ansible-galaxy`命令也可管理本地的角色，如位于playbook项目的`roles`目录中的角色。`ansible-galaxy list`子命令列出本地找到的角色：
+```
+[user@host project]$ ansible-galaxy list
+- geerlingguy.redis, 1.6.0
+- myrole, (unknown version)
+- nginx-acme, 56e00a54
+- nginx-acme-ssh, master
+- redis_prod, 1.5.0
+```
+可以使用`ansible-galaxy remove`子命令本地删除角色：
+```
+[user@host ~]$ ansible-galaxy remove nginx-acme-ssh
+- successfully removed nginx-acme-ssh
+[user@host ~]$ ansible-galaxy list
+- geerlingguy.redis, 1.6.0
+- myrole, (unknown version)
+- nginx-acme, 56e00a54
+- redis_prod, 1.5.0
+```
+&#8195;&#8195;在playbook中使用下载并安装的角色的方式与任何其他角色都一样。在`roles`部分中利用其下载的角色名称来加以引用。如果角色不在项目的`roles`目录中，则将检查`roles_path`来查看角色是否安装在了其中一个目录中，将使用第一个匹配项。以下`use-role.yml` playbook引用了`redis_prod`和`geerlingguy.redis`角色：
+```
+[user@host project]$ cat use-role.yml
+---
+- name: use redis_prod for Prod machines
+  hosts: redis_prod_servers
+  remote_user: devops
+  become: true
+  roles:
+    - redis_prod
+
+- name: use geerlingguy.redis for Dev machines
+  hosts: redis_dev_servers
+  remote_user: devops
+  become: true
+  roles:
+    - geerlingguy.redis
+```
+&#8195;&#8195;此playbook使不同版本的`geerlingguy.redis`角色应用到生产和开发服务器。借助这种方式，可以对角色更改进行系统化测试和集成，然后再部署到生产服务器上。如果角色的近期更改造成了问题，则借助版本控制来开发角色，就能回滚到过去某一个稳定的角色版本。
+## 从内容集合获取角色和模块
+### 讨论内容集合
+&#8195;&#8195;Ansible内容集合是Ansible内容的一种分发格式。该集合会提供一组相关模块、角色和插件，您可以将它们下载到控制节点，然后在Playbook中使用。例如：
+- `redhat.insights`集合对模块和角色进行分组，可以使用这些模块和角色来在RHEL的红帽`Insights`上注册一个系统
+- `cisco.ios`集合对管理Cisco IOS网络设备的模块和插件进行分组。该集合由Cisco公司负责支持和维护
+- `community.crypto`集合提供用于创建`SSL/TLS`证书的模块
+
+&#8195;&#8195;内容集合支持将核心Ansible代码与模块和插件分开更新。这样便于供应商和开发人员按照自己的节奏维护和分发集合，不受Ansible版本的影响。也可以自行开发集合，为团队自定义角色和模块。    
+&#8195;&#8195;内容集合合还可提供更大的灵活性。通过使用集合，可以仅安装所需内容，而不必安装所有受支持的模块。还可以选择集合的特定版本（可以是早期版本或晚期版本），或者在红帽或供应商支持的集合版本或社区提供的集合版本之间进行选择。
+#### 在命名空间中组织集合
+&#8195;&#8195;为了便于按名称指定集合及其内容，命名空间中还会整理集合名称。供应商、合作伙伴、开发人员和内容创建者可使用命名空间为其集合分配唯一名称，而不与其他开发人员发生冲突。    
+&#8195;&#8195;命名空间是集合名称的第一部分。例如，由Ansible社区维护的所有集合可能会放入`community`命名空间中，名称类似于`community.crypto`、`community.postgresql`和`community.rabbitmq`。由红帽维护和支持的集合则可能会放入redhat命名空间，名称类似于`redhat.rhv`、`redhat.satellite`和`redhat.insights`。
+#### 选择集合来源
+Ansible提供以下两个下载和安装集合的官方来源：
+- Ansible自动化中心
+    - Ansible自动化中心主要托管红帽及其合作伙伴为客户提供支持时会使用的Ansible内容集合。
+    - 红帽会审核、维护并更新这些集合，并提供全面支持。例如，该平台会提供`redhat.rhv`、`redhat.satellite`、 `redhat.insights`和`cisco.ios`集合
+    - 需要有效订阅红帽Ansible自动化平台服务才能访问Ansible自动化中心。可使用[https://cloud.redhat.com/ansible/automation-hub/](https://cloud.redhat.com/ansible/automation-hub/)上的 Ansible自动化中心Web UI来列出和访问集合
+- Ansible Galaxy
+    - Ansible Galaxy主要托管各类Ansible开发人员和用户提交的集合
+    - Ansible Galaxy是一个公共库，不提供官方支持，但允许公开访问。例如，该平台会提供`community.crypto`、`community.postgresql`和`community.rabbitmq`集合
+    - 可使用[https://galaxy.ansible.com/](https://galaxy.ansible.com/)上的Ansible Galaxy Web UI来搜索集合
+
+### 安装内容集合
+&#8195;&#8195;要想让playbook使用集合中的内容，必须在控制节点上安装相应集合。使用`ansible-galaxy`命令从多个可能来源下载集合，包括Ansible Galaxy。示例使用`ansible-galaxy`命令和`collection`参数下载`community.crypto`集合并在本地系统安装的情况：
+```
+[ansible@redhat9 ~]$ ansible-galaxy collection install community.crypto
+```
+该命令还可用于从本地或远程tar存档安装集合：
+```
+[user@controlnode ~]$ ansible-galaxy collection install \
+> /tmp/community-dns-1.2.0.tar.gz
+[user@controlnode ~]$ ansible-galaxy collection install \
+> http://www.example.com/redhat-insights-1.0.5.tar.gz
+```
+&#8195;&#8195;Ansible配置指令`collection_paths`可指定一个用冒号分隔的列表，其中列出了Ansible在系统中寻找已安装集合的路径。可以在`ansible.cfg`配置文件中设置此指令。`ansible-galaxy`命令默认会将集合安装到`Collections_paths`指令定义的第一个目录中：
+- `collections_paths`的默认值为`~/.ansible/collections:/usr/share/ansible/collections`。因此，`ansible-galaxy`命令默认会将集合安装在`~/.ansible/collections`目录中
+
+如果要将集合安装到其他目录，使用`--collections-path`（或 -p）选项。
+```
+[root@controlnode ~]# ansible-galaxy collection install \
+> -p /usr/share/ansible/collections community.postgresql
+```
+&#8195;&#8195;使用`--collections-path`（或 -p）选项时，请确保选择`collections_paths`指令中列出的目录。`ansible-playbook`命令也会使用该指令来查找集合。如果不使用`collections_paths`指令中定义的路径，playbook将无法找到所安装的集合。
+#### 使用要求文件来安装集合
+&#8195;&#8195;可以创建`requirements.yml`文件，列出需要安装的所有集合。在Ansible项目中添加`collections/requirements.yml`文件后，团队成员便可立即确定所需集合。此外，在运行playbook之前，自动化控制器还会检测该文件并自动安装所需集合。    
+&#8195;&#8195;以下`requirements.yml`文件列出了多个要安装的集合。注意，可以指定特定集合版本，也可以提供本地或远程tar存档：
+```yml
+---
+collections:
+  - name: community.crypto
+
+  - name: ansible.posix
+    version: 1.2.0
+
+  - name: /tmp/community-dns-1.2.0.tar.gz
+
+  - name: http://www.example.com/redhat-insights-1.0.5.tar.gz
+```
+&#8195;&#8195;然后，`ansible-galaxy`命令可以使用该文件来安装所有集合。使用`--requirements-file`（或 -r）选项向该命令提供`requirements.yml`文件：
+```
+[root@controlnode ~]# ansible-galaxy collection install -r requirements.yml
+```
+#### 配置集合来源
+&#8195;&#8195;`ansible-galaxy`命令默认会使用[https://galaxy.ansible.com/](https://galaxy.ansible.com/)位置的Ansible Galaxy来下载集合。要让该命令同时使用Ansible自动化中心来下载集合，将以下指令添加到`ansible.cfg`文件中：
+```ini
+...output omitted...
+[galaxy]
+server_list = automation_hub, galaxy
+
+[galaxy_server.automation_hub]
+url=https://cloud.redhat.com/api/automation-hub/
+auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token 
+token=eyJh...Jf0o
+
+[galaxy_server.galaxy]
+url=https://galaxy.ansible.com/
+```
+配置说明：
+- `server_list`：按顺序列出`ansible-galaxy`命令必须使用的所有存储库：
+    - 对于所定义的每个名称，请添加 `[galaxy_server.name]`部分以提供连接参数
+    - 鉴于Ansible自动化中心可能无法提供playbook需要的所有集合，也可以将Ansible Galaxy添加到最后一个位置作为备用，如果该集合在Ansible自动化中心不可用，则`ansible-galaxy`命令将在Ansible Galaxy 中检索
+- `url`：提供用于访问存储库的URL
+- `auth_url`：提供用于身份验证的URL
+- `token`：访问Ansible自动化中心，需要有一个与帐户关联的身份验证令牌。可使用Ansible自动化中心Web UI来生成该令牌
+
+除了令牌外，也可通过`username`和`password`参数提供客户门户网站的用户名和密码进行访问：
+```ini
+...output omitted...
+[galaxy_server.automation_hub]
+url=https://cloud.redhat.com/api/automation-hub/
+username=operator1
+password=Sup3r53cR3t
+...output omitted...
+```
+&#8195;&#8195;可能不希望在`ansible.cfg`文件中公开凭证，因为该文件可能会因版本控制而被提交。遇到这种情况，从 `ansible.cfg`文件中删除身份验证参数，并将其定义为环境变量。可按照以下方式定义环境变量：
+```
+ANSIBLE_GALAXY_SERVER_<server_id>_<key>=value
+```
+示例说明：
+- `server_id`：大写的服务器标识符。服务器标识符是一个名称，在`server_list`参数中以及`[galaxy_server.server_id]`部分的名称中会用到
+- `key`：大写的参数名称
+
+以下示例提供token参数作为环境变量：
+```
+[user@controlnode ~]$ cat ansible.cfg
+...output omitted...
+[galaxy_server.automation_hub]
+url=https://cloud.redhat.com/api/automation-hub/
+auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+[user@controlnode ~]$ export \
+> ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN='eyJh...Jf0o'
+[user@controlnode ~]$ ansible-galaxy collection install ansible.posix
+```
+### 使用集合
+&#8195;&#8195;安装集合后，可以使用临时命令和playbook来使用该集合。从Ansible自动化中心或Ansible Galaxy Web UI访问集合文档，以检索关于所提供的角色和模块的信息。也可以检查系统上的集合目录结构。该集合会将模块存储在`plugins/modules/`目录中，将角色存储在`roles/`目录中：
+```
+[user@controlnode ~]$ tree \
+> ~/.ansible/collections/ansible_collections/redhat/insights/
+/home/user/.ansible/collections/ansible_collections/redhat/insights/
+...output omitted...
+├── plugins
+│   ├── action
+│   │   └── insights_config.py
+│   ├── inventory
+│   │   └── insights.py
+│   └── modules
+│       ├── insights_config.py
+│       └── insights_register.py
+...output omitted...
+├── roles
+│   ├── compliance
+│   │   ├── meta
+│   │   │   └── main.yml
+│   │   ├── README.md
+│   │   ├── tasks
+│   │   │   ├── install.yml
+│   │   │   ├── main.yml
+│   │   │   └── run.yml
+│   │   └── tests
+│   │       ├── compliance.yml
+│   │       ├── install-only.yml
+│   │       └── run-only.yml
+│   └── insights_client
+...output omitted...
+```
+&#8195;&#8195;要使用某个模块或角色，请使用其完全限定的集合名称(FQCN)进行引用。根据前面的输出内容，所引用的`redhat.insights.insights_client`角色为`insights_client`。示例临时命令将从`community.general`集合调用`mail`模块：
+```
+[user@controlnode ~]$ ansible localhost -m community.general.mail \
+> -a 'subject="Hello World" to=root'
+```
+示例playbook将从`community.mysql`集合调用`mysql_user`模块：
+```yml
+---
+- name: Create the operator1 user in the test database
+  hosts: db.example.com
+
+  tasks:
+    - name: Ensure the operator1 database user is defined
+      community.mysql.mysql_user:
+        name: operator1
+        password: Secret0451
+        priv: '.:ALL'
+        state: present
+```
+示例playbook将从`redhat.satellite`集合调用`organizations`角色：
+```yml
+---
+- name: Add the test organizations to Red Hat Satellite
+  hosts: localhost
+
+  tasks:
+    - name: Ensure the organizations exist
+      include_role:
+        name: redhat.satellite.organizations
+      vars:
+        satellite_server_url: https://sat.example.com
+        satellite_username: admin
+        satellite_password: Sup3r53cr3t
+        satellite_organizations:
+          - name: test1
+            label: tst1
+            state: present
+            description: Test organization 1
+          - name: test2
+            label: tst2
+            state: present
+            description: Test organization 2
+```
+#### 使用Ansible 2.9之后的Ansible内置集合
+&#8195;&#8195;在Ansible的未来版本中，核心安装始终会包含一个名为`ansible.buildin`的特殊集合。此集合将会包含一组常见模块，如`copy`、`template`、`file`、`yum`、`command`和`service`：
+- 始终可以在playbook中使用这些模块的短名称。例如，仍然可以直接使用`file`，而不用使用`ansible.buildin.file`
+- 这样一来，很多Ansible 2.9 playbook无需修改即可运行。但对于`ansible.builderin`中未包含模块的其他集合，仍需先安装才能使用
+- 红帽仍建议您使用`FQCN`表示法，以防未来与可能的同名集合发生冲突
+
+示例playbook使用`FQCN`表示法来寻找`yum`、`copy`和`service`模块：
+```yml
+---
+- name: Install and start Apache HTTPD
+  hosts: web
+
+  tasks:
+    - name: Ensure the httpd package is present
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Ensure the index.html file is present
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+        setype: httpd_sys_content_t
+
+    - name: Ensure the httpd service is started
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+```
+## 练习
