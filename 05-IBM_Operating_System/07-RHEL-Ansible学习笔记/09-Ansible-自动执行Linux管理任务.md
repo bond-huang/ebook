@@ -335,3 +335,143 @@ system|在创建state=present的帐户时，将此参数设为yes可使该用户
 uid|设置用户的UID
 
 ### group模块
+&#8195;&#8195;`group`模块允许管理（添加、删除或修改）受管主机上的组。需要具有`groupadd`、`groupdel`或`groupmod`。对于Windows目标使用`win_group`模块。`group`模块示例：
+```yml
+- name: Verify that auditors group exists
+  group:
+    name: auditors
+    state: present
+```
+`group`模块参数：
+
+参数|注释
+:---:|:---
+gid|为组设置的可选GID
+local|强制在实施它的平台上使用“本地”命令替代选择
+name|要管理的组的名称
+state|远程主机上是否应存在该组
+system|如果设置为yes，则表示创建的组是系统组
+
+### 已知主机模块
+&#8195;&#8195;如果要管理大量主机密钥，则需要使用`known_hosts`模块。`known_hosts`模块允许在受管主机上的`known_hosts`文件中添加或删除主机密钥。`known_hosts`任务示例：
+```yml
+- name: copy host keys to remote servers
+  known_hosts:
+    path: /etc/ssh/ssh_known_hosts
+    name: host1
+    key: "{{ lookup('file', 'pubkeys/host1') }}" #lookup插件允许Ansible访问外部来源的数据
+```
+### authorized_key模块
+&#8195;&#8195;`authorized_key`模块允许为各个用户帐户添加或删除SSH授权密钥。在向大量服务器添加和减少用户时，需要能够管理ssh密钥。`authorized_key`任务示例：
+```yml
+- name: Set authorized key
+  authorized_key:
+    user: user1
+    state: present
+    key: "{{ lookup('file', '/home/user1/.ssh/id_rsa.pub') }}" # 也可以从url(https://github.com/user1.keys)获取密钥
+```
+## 管理引导过程和调度的进程
+### 使用at模块进行调度
+&#8195;&#8195;通过`at`模块来进行一次性快速调度。可以将作业创建为在将来的某个时间运行，它将等待到该时间执行。此模块附带六个参数。分别是`command`、`count`、`script_file`、`state`、`unique`和`units`。`at`模块示例：
+```yml
+- name: remove tempuser.
+  at:
+    command: userdel -r tempuser
+    count: 20
+    units: minutes
+    unique: yes
+```
+六个参数说明：
+
+参数|选项|注释
+:---:|:---:|:---		
+command|Null|计划运行的命令
+count|Null|单位数。(必须与units一起运行)
+script_file|Null|要在将来执行的现有脚本文件
+state|absent、present|添加或删除命令或脚本的状态
+unique|yes、no|如果作业已在运行，则不会再次执行
+units|minutes/hours/days/weeks|时间名称
+
+### 使用cron模块附加命令
+&#8195;&#8195;在设置作业调度任务时，可使用`cron`模块。`cron`模块将命令直接附加到指定用户的 `crontab`中。`cron`模块示例：
+```yml
+- cron:
+    name: "Flush Bolt"
+    user: "root"
+    minute: 45
+    hour: 11
+    job: "php ./app/nut cache:clear"
+```
+示例说明
+- 此play在清空`Bolt`缓存后立即使用`cache:clear`命令，在每天上午的`11:45`删除缓存的文件以及`CMS`服务器的`directories.flushes`缓存
+- Ansible将使用用户声明的正确语法将play写入到`crontab`中
+- 通过检查`crontab`来验证它是否已附加。
+
+`cron`模块的一些常用参数有：
+
+参数|选项|注释
+:---:|:---:|:---
+special_time|reboot、yearly、annually、monthly、 weekly、daily、hourly|一系列重复出现时间
+state|absent、present|如果设为present，它将创建命令。设为absent则会删除命令
+cron_file|Null|如果有大量的服务器需要维护，那么有时最好有一个预先编写好的crontab文件
+backup|yes、no|在编辑之前备份crontab文件
+
+### 使用systemd和service模块管理服务
+为管理服务或重新加载守护进程，Ansible提供了`systemd`和`service`模块：
+- `service`提供了一组基本选项，即`start`、`stop`、`restart`和`enable`
+- `systemd`模块提供更多配置选项
+- `Systemd`允许您执行守护进程重新加载，`service`模块则不会
+
+`service`模块示例：
+```yml
+- name: start nginx
+  service:
+    name: nginx
+    state: started"
+```
+`systemd`模块示例：
+```yml
+- name: reload web server
+  systemd:
+    name: apache2
+    state: reload
+    daemon-reload: yes
+```
+### reboot模块
+&#8195;&#8195;另一个很好用的Ansible系统模块是`reboot`。这被认为比使用shell模块来发起关机更加安全。在运行play期间，`reboot`模块将关闭受管主机，再等待它恢复运行，然后再继续执行play。`reboot`模块示例：
+```yml
+- name: "Reboot after patching"
+  reboot:
+    reboot_timeout: 180
+
+- name: force a quick reboot
+  reboot:
+```
+### shell和command模块
+&#8195;&#8195;与`service`和`systemd`模块一样，`shell`和`command`也可以交换一些任务。`command`模块被认为更安全，但某些环境变量不可用。此外，流操作符将无法运作。如果需要流式传输命令，那么`shell`模块就可以。`shell`模块示例：
+```yml
+- name: Run a templated variable (always use quote filter to avoid injection)
+    shell: cat {{ myfile|quote }} # 要清理变量，建议使用{{ var | quote }}而非{{ var }}
+```
+`command`模块示例：
+```yml
+- name: This command only
+  command: /usr/bin/scrape_logs.py arg1 arg2
+  args: # 可以将参数传递到表单中以提供选项
+    chdir: scripts/
+    creates: /path/to/script
+```
+&#8195;&#8195;通过在受管主机上收集事实，可以访问环境变量。有一个名为`ansible_env`的子列表，其中包含所有的环境变量：
+```yml
+---
+- name:
+  hosts: webservers
+  vars:
+    local_shell:  "{{ ansible_env }}" # 可以使用lookup插件确定要返回的变量。msg: "{{ lookup('env','USER','HOME','SHELL') }}"
+  tasks:
+    - name: Printing all the environment variables in Ansible
+      debug:
+        msg: "{{ local_shell }}"
+```
+## 管理存储
+### 使用Ansible模块配置存储
