@@ -175,4 +175,52 @@ Last login: Mon Sep  5 15:16:08 2022 from 192.168.100.1
 redhat8 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AbsjHS25kvfAWcZ3KmZVXQ/WXCT4V5m
 192.168.100.131 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5PIXbsjHS25kvfAWcZ3KmZjVXQ/WXCT4
 ```
+## 检查Ansible配置选项
+### 查看配置选项
+&#8195;&#8195;如果想要查找配置文件中的可用选项，使用`ansible-config list`命令。它将显示可用配置选项及其默认设置的详尽列表。根据安装的Ansible版本以及控制节点上是否有任何其他Ansible插件，此列表可能会有所不同。    
+&#8195;&#8195;`ansible-config list`显示的每个选项会有多个与之相关联的密匙对。这些键值对提供有关该选项的工作方式的信息。例如，选项`ACTION_WARNINGS`显示以下键值对：
+
+键|值|用途
+:---:|:---|:---
+description|默认情况下，从任务操作(模块或操作插件)收到时，Ansible将发出警告。通过将此设置调整为False可以使这些警告静音|描述此配置选项的用途
+type|boolean|该选项的类型是什么：boolean是指true-false值
+default|true|此选项的默认值
+version_added|2.5|为实现向后兼容性而添加了此选项的Ansible版本
+ini|`{ key: action_warnings, section: defaults }`|类似INI清单文件的哪部分包含此选项，以及该选项在配置文件中的名称(defaults 部分中的 action_warnings)
+env|ANSIBLE_ACTION_WARNINGS|如果设置了此环境变量，它将覆盖配置文件中所做的任何选项设置
+
+### 确定修改的配置选项
+&#8195;&#8195;使用配置文件时，可能想找出哪些选项已设置为与内置默认值不同的值。可以运行`ansible-config dump -v --only-changed`命令来完成此操作：
+- `-v`选项显示处理该命令时使用`ansible.cfg`文件的位置
+- `ansible-config`命令遵循前面提到的`ansible`命令的相同优先顺序
+- 根据`ansible.cfg`文件的位置和从中运行`ansible-config`命令的目录，输出将有所不同
+
+&#8195;&#8195;下面示例中，有单独的一个ansible配置文件位于`/etc/ansible/ansible.cfg`。`ansible-config`命令首先从学员的主目录运行，然后从工作目录运行，结果相同：
+```
+[user@controlnode ~]$ ansible-config dump -v --only-changed
+Using /etc/ansible/ansible.cfg as config file
+DEFAULT_ROLES_PATH(/etc/ansible/ansible.cfg) = [u'/etc/ansible/roles', u'/usr/share/ansible/roles']
+
+[user@controlnode ~]$ cd /home/student/workingdirectory
+[user@controlnode workingdirectory]$ ansible-config dump -v --only-changed
+Using /etc/ansible/ansible.cfg as config file
+DEFAULT_ROLES_PATH(/etc/ansible/ansible.cfg) = [u'/etc/ansible/roles', u'/usr/share/ansible/roles']
+```
+&#8195;&#8195;但是，如果工作目录中有自定义的`ansible.cfg`文件，则上述命令将根据其运行位置和相对`ansible.cfg`文件显示信息：
+```
+[user@controlnode ~]$ ansible-config dump -v --only-changed
+Using /etc/ansible/ansible.cfg as config file
+DEFAULT_ROLES_PATH(/etc/ansible/ansible.cfg) = [u'/etc/ansible/roles', u'/usr/share/ansible/roles']
+
+[user@controlnode ~]$ cd /home/student/workingdirectory
+[user@controlnode workingdirectory]$ cat ansible.cfg
+[defaults]
+inventory = ./inventory
+remote_user = devops
+
+[user@controlnode workingdirectory]$ ansible-config dump -v --only-changed
+Using /home/student/workingdirectory/ansible.cfg as config file
+DEFAULT_HOST_LIST(/home/student/workingdirectory/ansible.cfg) = [u'/home/student/workingdirectory/inventory']
+DEFAULT_REMOTE_USER(/home/student/workingdirectory/ansible.cfg) = devops
+```
 ## 待补充

@@ -473,5 +473,4 @@ backup|yes、no|在编辑之前备份crontab文件
       debug:
         msg: "{{ local_shell }}"
 ```
-## 管理存储
-### 使用Ansible模块配置存储
+## 接下篇
