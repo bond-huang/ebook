@@ -19,7 +19,7 @@ Identifier:RunLevel:Action:Command
 Action简介：
 
 Aciton|描述
-:---|:---
+:---:|:---
 respawn|如果进程不存在，启动进程；进程终止后重新启动。如果进程存在，则不执行任何操作，继续扫描/etc/inittab文件
 wait|当init命令输入与该条目的运行级别匹配时，启动该进程并等待其终止
 once|当init命令输入与该条目的运行级别匹配时，启动该进程，而不等待其终止；当进程终止后，不重启进程
@@ -56,5 +56,30 @@ rmitab <Identifier>
 IBM官方介绍：[https://www.ibm.com/support/knowledgecenter/ssw_aix_72/filesreference/inittab.html](https://www.ibm.com/support/knowledgecenter/ssw_aix_72/filesreference/inittab.html)
 
 PowerHA中对`/etc/inittab`文件的操作: [https://www.ibm.com/support/knowledgecenter/SSPHQG_7.2/admin/ha_admin_etcinittab.html](https://www.ibm.com/support/knowledgecenter/SSPHQG_7.2/admin/ha_admin_etcinittab.html)
+
+## /etc/security/limits文件
+配置参数说明：
+
+参数|描述
+:---:|:---
+fsize|soft file size in blocks
+core|soft core file size in blocks
+cpu|soft per process CPU time limit in seconds
+data|soft data segment size in blocks
+stack|soft stack segment size in blocks
+rss|soft real memory usage in blocks
+nofiles|soft file descriptor limit
+fsize_hard|hard file size in blocks
+core_hard|hard core file size in blocks
+cpu_hard|hard per process CPU time limit in seconds
+data_hard|hard data segment size in blocks
+stack_hard|hard stack segment size in blocks
+rss_hard|hard real memory usage in blocks
+nofiles_hard|hard file descriptor limit
+
+参考链接：
+- [AIX 7.3 ulimit Command](https://www.ibm.com/docs/en/aix/7.3?topic=u-ulimit-command)
+- [AIX: Verifying access rights and user limits](https://www.ibm.com/docs/en/spectrum-protect/8.1.9?topic=instance-aix-verifying-access-rights-user-limits)
+- [Mustgather: Using stackit.sh to collect native stack trace data on AIX](https://www.ibm.com/support/pages/node/344409?mhsrc=ibmsearch_a&mhq=aix%20stack)
 
 ## 待补充

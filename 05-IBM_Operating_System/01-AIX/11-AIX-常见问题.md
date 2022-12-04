@@ -161,6 +161,9 @@ id: audit "/usr/sbin/audit start # System Auditing"
 - Change Characteristics of a Physical Volume
 - Physical volum STATE from not active to active
 
+### Migratepv命令失败
+参考链接：[IBM Support Migratepv command fail](https://www.ibm.com/support/pages/migratepv-command-fail)
+
 ## 引导问题
 ### savebase failed
 当解除rootvg镜像时候报错：

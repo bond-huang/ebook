@@ -1,5 +1,7 @@
 # AS400-系统Services
-官方文档链接：[IBM i 7.5 IBM i Services](https://www.ibm.com/docs/en/i/7.5?topic=optimization-i-services)
+官方文档链接：
+- [IBM i 7.5 IBM i Services](https://www.ibm.com/docs/en/i/7.5?topic=optimization-i-services)
+- [Work with Service Table Entry (WRKSRVTBLE)](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/wrksrvtble.html)
 
 ## Performance Services
 返回收集服务配置属性：

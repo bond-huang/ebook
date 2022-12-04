@@ -33,4 +33,37 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.311-b11, mixed mode)
 - 在`Compare`展开列表中点击`Compare`，比对结果显现
 - 或直接`Ctrl+Alt+C`
 
+## 常用命令
+### tree命令
+打开命令行，使用`tree /?`命令可以查看使用方法及参数：
+```
+C:\Windows\system32>tree /?
+以图形显示驱动器或路径的文件夹结构。
+
+TREE [drive:][path] [/F] [/A]
+
+   /F   显示每个文件夹中文件的名称。
+   /A   使用 ASCII 字符，而不使用扩展字符。
+```
+示例查看D盘所有目录及文件树：
+```
+C:\Windows\system32>tree d:/ /F
+卷 新加卷 的文件夹 PATH 列表
+卷序列号为 000000E2 74F5:C51B
+D:\
+├─AS400学习资料
+│      AS400系统基本操作.docx
+│
+├─huang
+│  │  AIX_TEST.bat
+│  │  AIX_TEST.bat - 快捷方式.lnk
+...output omitted...
+```
+## Microsoft Office常用操作
+### Word
+#### 页眉横线删除
+有时候页眉有个横线想删除，方法：
+- 在页眉处双击进入页眉页脚编辑状态
+- 按快捷键`Crtl+Shift+N`可以直接删除页眉横线
+
 ## 待补充
