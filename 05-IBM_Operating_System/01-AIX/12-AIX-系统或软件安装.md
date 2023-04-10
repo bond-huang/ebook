@@ -1,6 +1,11 @@
 # AIX-系统或软件安装
 记录系统安装及一些常见的软件安装方法。
 ## 系统安装
+### 系统差异
+PDF文档链接：
+- [IBM AIX Version 6.1 Differences Guide](https://www.redbooks.ibm.com/abstracts/sg247559.html?Open)
+- [IBM AIX Version 7.1 Differences Guide](https://www.redbooks.ibm.com/abstracts/sg247910.html#:~:text=AIX%20Version%207.1%20introduces%20many%20new%20features%2C%20including%3A,you%20can%20explore%20them%20all%20in%20this%20publication.)
+
 ## 软件安装
 ### 安装OpenSSL和OpenSSH
 官方参考链接：[Downloading and Installing or Upgrading OpenSSL and OpenSSH](https://www.ibm.com/support/pages/downloading-and-installing-or-upgrading-openssl-and-openssh?mhsrc=ibmsearch_a&mhq=OPENSSH)

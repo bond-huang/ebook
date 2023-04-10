@@ -1,5 +1,9 @@
-
-
+# AIX 网络与通信
+## 网络管理
+参考链接：
+- [Network overview - Monitoring the hardware](https://developer.ibm.com/articles/au-aix7networkoptimize1/?mhsrc=ibmsearch_a&mhq=Ken%20Milberg)
+- [NFS monitoring and tuning](https://developer.ibm.com/articles/au-aix7networkoptimize2/?mhsrc=ibmsearch_a&mhq=Ken%20Milberg)
+- [Monitoring your network packets and tuning the network](https://developer.ibm.com/articles/au-aix7networkoptimize3/?mhsrc=ibmsearch_a&mhq=Ken%20Milberg)
 
 
 nslookup
