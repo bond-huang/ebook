@@ -77,5 +77,74 @@ IASP Vary On时间上数据库相关影响官方说明：
 - 要尽可能实现最快的联机时间，可以限制`SYSBAS`中存在的文件
 - `IASP`的推荐使用结构是将用户的应用程序数据对象的大部分放入`IASP`中，而将最少数量的非程序对象放在`SYSBAS`中，即`system disk pool`和所有已配置的`basic disk pools`。`system disk pool`和`basic user disk pools(SYSBAS)`主要包含操作系统对象、许可程序产品库和很少的用户库
 
-## 待补充
+## ASP数据平衡
+命令参考：
+- [Check ASP Balance (CHKASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/chkaspbal.html)
+- [End ASP Balance (ENDASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/endaspbal.html)
+- [Start ASP Balance (STRASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/straspbal.html)
+- [Trace ASP Balance (TRCASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/trcaspbal.html)
 
+### STRASPBAL命令
+&#8195;&#8195;`STRASPBAL`(Start ASP Balance)命令允许用户为一个或多个ASP启动辅助存储池(ASP)平衡功能。可以启动的ASP平衡类型包括：
+- `Capacity balancing`，ASP中所有单元上的数据都将进行平衡，因此每个单元的已用和未使用空间百分比相等：
+  - 当将新单元添加到ASP时，此平衡很有用
+- `Usage balancing`，重新分发ASP中每个“低”利用率单元上的“低”使用量数据，以平衡指定ASP中每个单元的臂利用率的未来使用情况。 
+  - 在`TRCASPBAL`(Trace ASP Balance)命令控制的跟踪收集使用情况统计信息之前，无法执行`*USAGE`平衡
+  - 当ASP包含大容量磁盘机时，使用率均衡非常有用
+- `Hierarchical Storage Management (HSM) balancing`（分层存储管理平衡），重新分发ASP中每个单元上的“高”使用量和“低”使用率数据，以便“高”使用率数据驻留在高性能设备上，“低”使用率数据驻留在低性能单元上。
+  - 在`TRCASPBAL`(Trace ASP Balance)命令控制的跟踪收集使用情况统计信息之前，无法执行 HSM 平衡
+  - 当ASP包含压缩磁盘单元或包含固态磁盘(SSD)单元和硬盘驱动器(HDD)单元的混合时，允许 HSM 平衡
+  - `SUBTYPE `关键字用于指定哪些单位将参与均衡
+- `Media Preference (MP) balancing`(媒体首选项平衡) ，操作系统(OS)为数据分配`media preference`属性。当ASP混合具有高性能和低性能磁盘机时，OS会尝试将具有高性能媒体首选项的数据放在快速磁盘机上。由于空间限制、磁盘配置更改以及试图利用高性能单元的速度，高性能单元上的数据可能并不总是具有高性能“介质首选项”属性的专用数据。MP在高性能磁盘机上查找没有高性能介质首选项属性的数据，并将该数据移动到低性能磁盘机。
+  - 以这种方式平衡的ASP必须包含固态磁盘(SSD)单元和硬盘驱动器(HDD)单元的混合
+  - SUBTYPE 关键字用于指定余额的范围：
+    - 指定`SUBTYPE(*CALC)`时，没有高性能介质首选项的数据将从SSD单元移动到HDD单元，具有高性能媒体首选项的数据将从HDD单元移动到SSD单元
+    - 指定子类型`*SSD`时，没有高性能介质首选项的数据将从SSD单元移动到HDD单元
+    - 指定子类型`*HDD`时，具有高性能介质首选项的数据将从HDD单元移动到SSD单元
+- `Move data from units`，此选项可用于减少移除磁盘相关的停机时间。可以通过指定`UNIT（单元编号）`和 `TYPE(*ENDALC)`来标记计划删除的磁盘单元以结束数据分配。
+  - 对于标记为`*ENDALC`的所有磁盘单元，指定`TYPE(*MOVDTA)`会将数据从标记的磁盘单元移动到同一 ASP 中的磁盘单元
+  - 要恢复标有`*ENDALC`的设备分配，指定`UNIT(设备编号)`和`TYPE(*RSMALC)`。将再次允许向该单位分配新的数据
+  - `CHKASPBAL`(Check ASP Balance)命令可用于确定当前标记为`*ENDALC`的单位
+
+&#8195;&#8195;用户可以指定函数要为每个平衡的ASP运行的时间限制，也可以将平衡设置为运行完成。如果需要结束平衡函数，请使用`ENDASPBAL`(End ASP Balance)命令。
+- 为每个 ASP 启动平衡功能时，将向系统历史记录 （QHST） 日志发送一条消息
+- 当平衡功能完成或结束时，也会向 QHST 日志发送一条消息。
+
+&#8195;&#8195;如果平衡功能运行几个小时后停止，则当平衡功能重新启动时，它将从中断的位置继续。这允许在几天的下班时间运行平衡。     
+&#8195;&#8195;示例启动ASP 1 的`*CAPACITY` ASP平衡功能。平衡功能将运行，直到每个单元的容量都已平衡：
+```
+STRASPBAL  ASP(1) TIMLMT(*NOMAX) TYPE(*CAPACITY)
+```
+&#8195;&#8195;示例为系统ASP和已运行`TRCASPBAL`命令的每个已配置的基本ASP启动`*USAGE` ASP平衡函数。每个平衡功能的时间限制为60分钟。六十分钟后，任何未完成的平衡功能将结束。
+```
+STRASPBAL   ASP(*ALL)  TIMLMT(60)  TYPE(*USAGE)
+```
+&#8195;&#8195;示例为名为`MYASP1`的ASP设备启动`*CAPACITY` ASP平衡函数。平衡功能将一直运行到完成。
+```
+STRASPBAL   ASPDEV(MYASP1)  TIMLMT(*NOMAX)  TYPE(*CAPACITY)
+```
+&#8195;&#8195;下面示例中第一个命令将单元`11`、`12`和`13`标记为不再接收新的分配。第二个命令开始将数据移出标记的单位。建议在非高峰时间执行`*MOVDTA` ASP 平衡功能。
+```
+STRASPBAL   UNIT(11 12 13)  TYPE(*ENDALC)
+STRASPBAL   TYPE(*MOVDTA)
+```
+&#8195;&#8195;示例启动`MYASP`的`*HSM` ASP平衡函数。平衡功能会将低使用率数据从高性能单位移动到低性能单位，将高使用率数据从低性能单位移动到高性能单位。它以低优先级运行。如果平衡未在600分钟内完成，则结束。
+```
+STRASPBAL TYPE(*HSM) ASP(MYASP) TIMLMT(600) PRIORITY(*LOW)
+```
+&#8195;&#8195;示例启动ASP 1 的`*HSM` ASP平衡函数。平衡功能会将低使用率数据从高性能HDD单元移动到低性能HDD单元，将高使用率数据从低性能HDD单元移动到高性能HDD单元。它以低优先级运行。如果未在240分钟内完成，则结束。
+```
+STRASPBAL TYPE(*HSM) ASP(1) TIMLMT(240) SUBTYPE(*HDD)
+```
+&#8195;&#8195;示例启动 ASP 1 的`*MP` ASP平衡函数。平衡功能会将具有“媒体首选项”属性的数据从HDD单元移动到SSD单元，将没有该属性的数据从SSD单元移动到HDD单元。它以高优先级运行。如果未在120分钟内完成，则结束。
+```
+STRASPBAL TYPE(*MP) ASP(1) TIMLMT(120) PRIORITY(*HIGH)
+```
+&#8195;&#8195;示例启动ASP 1 的`*MP`ASP平衡函数。平衡功能会将具有“媒体首选项”属性的数据从HDD单元移动到SSD单元。它以高优先级运行。如果未在120分钟内完成，则结束。
+```
+STRASPBAL TYPE(*MP) ASP(1) TIMLMT(240) SUBTYPE(*HDD)
+```
+### TRCASPBAL命令
+&#8195;&#8195;启动跟踪函数，该函数将识别每个单元上的“高”和“低”使用数据。使用情况平衡活动运行完成后，将清除跟踪信息。
+
+## 待补充

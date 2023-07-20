@@ -1,6 +1,6 @@
 # Switch-常用命令
 交换机管理常用命令
-## SAN B-type 常用命令
+## SAN B-type常用命令
 IBM SAN B-type系列交换机是OEM博科的，命令和博科交换机基本一致。
 示例：
 ```shell

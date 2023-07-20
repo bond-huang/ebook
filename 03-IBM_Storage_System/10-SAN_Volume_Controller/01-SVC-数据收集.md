@@ -65,3 +65,7 @@ Option4：Standard logs plus new statesaves
 - 选择"Monitoring"，然后选择"System"
 - 选中对应的节点，然后右键
 - 选择"Actions"菜单里面的"download VPD"
+
+## 常用备件查询
+### 2145-CG8备件查询
+[2145 UPS-1U parts](https://www.ibm.com/docs/en/sanvolumecontroller/7.8.x?topic=listing-2145-ups-1u-parts)

@@ -10,6 +10,8 @@ IBM SAN Switch有两个系列：
 
 官方网站：[https://www.ibm.com/cn-zh/it-infrastructure/storage/san](https://www.ibm.com/cn-zh/it-infrastructure/storage/san)
 
+IBM和博科型号对应关系：[IBM and Brocade product matrix](https://www.ibm.com/docs/en/storage-networking?topic=HW29A/san24b6.doc/ibm_brocade.htm)
+
 ## IBM支持
 7\*24小时呼叫中心：400-810-6678
 

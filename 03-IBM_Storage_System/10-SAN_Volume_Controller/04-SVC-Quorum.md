@@ -1,4 +1,4 @@
-# SVC-Quorum磁盘
+# SVC-Quorum
 定额磁盘是MDisk或受管驱动器，包含专门用于系统管理的保留区域，系统自动分配候选定额磁盘。
 ## 定额磁盘介绍
 ### 概念
@@ -53,3 +53,14 @@ LU 必须满足以下条件，才能被视为候选定额磁盘：
 - [chquorum](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_chquorum.html)
 - [lsquorum ](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_lsquorum_03301100.html)
 - [镜像卷](https://www.ibm.com/support/knowledgecenter/zh/STPVGU_8.3.1/com.ibm.storage.svc.console.831.doc/svc_vdiskmirroring_3r7ceb.html)
+
+## IP Quorum
+参考链接：
+- [chquorum](https://www.ibm.com/docs/en/flashsystem-7x00/8.4.x?topic=csc-chquorum)
+- [mkquorumapp](https://www.ibm.com/docs/en/flashsystem-9x00/8.4.x?topic=csc-mkquorumapp-2)
+- [Quorum disk](https://www.ibm.com/docs/en/spectrumvirtualsoftw/7.8.1?topic=details-quorum-disk)
+- [Configuring quorum](https://www.ibm.com/docs/en/flashsystem-9x00/8.3.x?topic=details-configuring-quorum)
+- [Quorum disk configuration](https://www.ibm.com/docs/en/spectrumvirtualsoftw/7.8.1?topic=disk-quorum-configuration)
+- [IP quorum configuration](https://www.ibm.com/docs/en/spectrumvirtualsoftw/7.8.1?topic=disk-ip-quorum-configuration)
+- [V5000 IP quorum configuration](https://www.ibm.com/docs/en/flashsystem-5x00/8.1.x?topic=disk-ip-quorum-configuration)
+- [Manual quorum disk override in a HyperSwap system](https://www.ibm.com/docs/en/spectrumvirtualsoftw/7.8.1?topic=disk-manual-quorum-override-in-hyperswap-system)
