@@ -128,4 +128,76 @@ make[1]: Leaving directory `/root/tmp/cmatrix'
 [root@VM-0-6-centos cmatrix]# cmatrix
 ```
 至此成功安装。
+#### Centos安装示例
+使用阿里云预装的Centos 8.2版本。下载cmatrix：
+```
+[root@centos82 ~]# wget https://github.com/abishekvashok/cmatrix/archive/refs/tags/v2.0.tar.gz
+```
+安装automake：
+```
+[root@centos82 soft]# yum search automake
+Last metadata expiration check: 0:52:42 ago on Tue 01 Aug 2023 10:35:32 AM CST.
+=========================== Name Exactly Matched: automake ============================
+automake.noarch : A GNU tool for automatically creating Makefiles
+[root@centos82 soft]# yum install automake
+```
+解压cmatrix安装包：
+```
+[root@centos82 soft]# tar -zxvf v2.0.tar.gz
+[root@centos82 cmatrix-2.0]# ls
+AUTHORS         cmatrix.spec.in     data               matrix.psf.gz  takeScreenshots
+ChangeLog       CODE_OF_CONDUCT.md  INSTALL            mtx.pcf
+CMakeLists.txt  configure.ac        ISSUE_TEMPLATE.md  NEWS
+cmatrix.1       CONTRIBUTING.md     Makefile.am        README
+cmatrix.c       COPYING             matrix.fnt         README.md
+```
+autoreconf：
+```
+[root@centos82 cmatrix-2.0]# autoreconf -i
+configure.ac:9: installing './compile'
+configure.ac:6: installing './install-sh'
+configure.ac:6: installing './missing'
+Makefile.am: installing './depcomp'
+[root@centos82 cmatrix-2.0]# ls
+aclocal.m4       CODE_OF_CONDUCT.md  depcomp            missing
+AUTHORS          compile             INSTALL            mtx.pcf
+autom4te.cache   config.h.in         install-sh         NEWS
+ChangeLog        configure           ISSUE_TEMPLATE.md  README
+CMakeLists.txt   configure.ac        Makefile.am        README.md
+cmatrix.1        CONTRIBUTING.md     Makefile.in        takeScreenshots
+cmatrix.c        COPYING             matrix.fnt
+cmatrix.spec.in  data                matrix.psf.gz
+```
+需要安装libncurses5-dev：
+```
+[root@centos82 cmatrix-2.0]# yum install ncurses-libs
+[root@centos82 cmatrix-2.0]# yum install ncurses-devel
+```
+配置及make:
+```
+[root@centos82 cmatrix-2.0]# ./configure
+[root@centos82 cmatrix-2.0]# make
+make  all-am
+make[1]: Entering directory '/soft/cmatrix-2.0'
+gcc -DHAVE_CONFIG_H -I.     -g -O2 -MT cmatrix.o -MD -MP -MF .deps/cmatrix.Tpo -c -o cmatrix.o cmatrix.c
+mv -f .deps/cmatrix.Tpo .deps/cmatrix.Po
+gcc  -g -O2   -o cmatrix cmatrix.o  -lncurses  -lncurses
+make[1]: Leaving directory '/soft/cmatrix-2.0'
+[root@centos82 cmatrix-2.0]# make install
+make[1]: Entering directory '/soft/cmatrix-2.0'
+ /usr/bin/mkdir -p '/usr/local/bin'
+  /usr/bin/install -c cmatrix '/usr/local/bin'
+ Installing matrix fonts in /usr/lib/kbd/consolefonts...
+ /usr/bin/mkdir -p '/usr/local/share/man/man1'
+ /usr/bin/install -c -m 644 cmatrix.1 '/usr/local/share/man/man1'
+make[1]: Leaving directory '/soft/cmatrix-2.0'
+```
+默认模式使用：
+```
+[root@centos82 ~]# cmatrix
+```
+指定参数示例：
+```
+[root@centos82 ~]# cmatrix -ba -u 2 -C red
+```
 ### 待补充
