@@ -87,6 +87,27 @@ OK
 127.0.0.1:6379> quit
 [root@centos82 redis-stable]#
 ```
+关闭redis：
+```
+[root@centos82 redis-stable]# ./src/redis-cli -p 6379 -h 127.0.0.1
+127.0.0.1:6379> shutdown
+not connected>quit
+[root@centos82 redis-stable]#
+```
+查看端口使用情况：
+```
+[root@centos82 redis-stable]# netstat -tunpl |grep 6379
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      45800/./src/redis-s
+tcp6       0      0 ::1:6379                :::*                    LISTEN      45800/./src/redis-s
+```
+创建conf目录，下面创建一个配置文件，名为redis_7012.conf，从配置文件启动：
+```
+[root@centos82 redis-stable]# chown -R redis.redis conf
+[redis@centos82 redis-stable]$ ./src/redis-server ./conf/redis_7012.conf
+[root@centos82 ~]# netstat -tunpl |grep 6379
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      47118/./src/redis-s
+tcp        0      0 172.26.9.154:6379       0.0.0.0:*               LISTEN      47118/./src/redis-s
+```
 ## 工具安装
 ### Windows管理平台
 Windows下有一款Another Redis Desktop Manager工具，打开PowerShell：

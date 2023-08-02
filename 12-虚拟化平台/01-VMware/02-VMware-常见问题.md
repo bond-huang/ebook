@@ -16,6 +16,17 @@ VMware Workstation与Device/Credential Guard不兼容。在禁用Device/Credenti
 - 重启电脑
 
 官方参考链接：[VMware Workstation and Device/Credential Guard are not compatible" error in VMware Workstation on Windows 10 host (2146361)](http://www.vmware.com/go/turnoff_CG_DG)
+### 虚拟化兼容性问题
+启动RHEL8时候报错：
+```
+此平台不支持虚拟化的 AMD-V/RVI。
+
+不使用虚拟化的 AMD-V/RVI，是否继续?
+```
+在VMware控制台中选择编辑虚拟机：
+- 选择并点击`处理器`
+- 在虚拟化引擎项中将`虚拟化Intel VT-x/EPT 或AMD-V/RVI(V)`前的勾去掉
+- 点击`确认`保存
 
 ### 网络问题
 虚拟机通过NAT模式连接不了网络，检查：

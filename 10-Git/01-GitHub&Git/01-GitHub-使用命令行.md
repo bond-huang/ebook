@@ -9,7 +9,7 @@ Debian和Ubuntu中安装方法如下：
 ```shell
 apt-get install git
 ```
-###  RHEL安装
+###  RHEL make安装
 &#8195;&#8195;RHEL可以下载tarball并从源代码进行构建：[https://www.kernel.org/pub/software/scm/git/](https://www.kernel.org/pub/software/scm/git/)， 或从GitHub网站上的镜像来获得：[https://github.com/git/git/releases](https://github.com/git/git/releases)
 
 下载的最新版本（git-2.29.2.tar.gz）上传到服务器并解压,安装步骤如下：
@@ -140,6 +140,17 @@ zlib官网：[http://www.zlib.net/](http://www.zlib.net/)
 zlib各版本下载链接：[http://rpmfind.net/linux/rpm2html/search.php?query=zlib(x86-64)] (http://rpmfind.net/linux/rpm2html/search.php?query=zlib(x86-64))    
 zlib-devel下载链接：[http://rpmfind.net/linux/rpm2html/search.php?query=zlib-devel](http://rpmfind.net/linux/rpm2html/search.php?query=zlib-devel)      
 
+### RHEL YUM安装
+Centos8.2版本配置了yum，yum源中有git，直接安装：
+```
+[root@centos82 ~]# yum install git
+......
+Installed:
+  git-2.27.0-1.el8.x86_64               git-core-2.27.0-1.el8.x86_64
+  git-core-doc-2.27.0-1.el8.noarch      perl-Error-1:0.17025-2.el8.noarch
+  perl-Git-2.27.0-1.el8.noarch          perl-TermReadKey-2.37-7.el8.x86_64
+```
+## Redis
 ### 其它系统安装
 其它Linux或者Unix参考官方链接：[https://git-scm.com/download/linux](https://git-scm.com/download/linux)
 ## 配置Git

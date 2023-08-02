@@ -496,6 +496,33 @@ Connection 'ens160' (ff73ccde-8a3c-42aa-a2c1-8a60a01c1a9c) successfully deleted.
 [root@redhat8 ~]# ls -l /etc/sysconfig/network-scripts/
 total 0
 ```
+### 删除IP
+示例ens160上有两个ip：
+```
+[root@redhat9 ~]# ip add show ens160
+2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:0c:29:85:4e:49 brd ff:ff:ff:ff:ff:ff
+    altname enp3s0
+    inet 192.168.100.138/24 brd 192.168.100.255 scope global noprefixroute ens160
+       valid_lft forever preferred_lft forever
+    inet 192.168.100.135/24 brd 192.168.100.255 scope global secondary dynamic noprefixroute ens160
+       valid_lft 1619sec preferred_lft 1619sec
+    inet6 fe80::be74:9a91:a0b4:8639/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+```
+运行以下命令删除一个：
+```
+[root@redhat9 ~]# ip addr del 192.168.100.135/24 dev ens160
+[root@redhat9 ~]# ip add show ens160
+2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:0c:29:85:4e:49 brd ff:ff:ff:ff:ff:ff
+    altname enp3s0
+    inet 192.168.100.138/24 brd 192.168.100.255 scope global noprefixroute ens160
+       valid_lft forever preferred_lft forever
+    inet6 fe80::be74:9a91:a0b4:8639/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+```
+重启后IP地址又回来了
 ### 修改网络设置权限
 修改网络设置说明：
 - `root`用户可以使用`nmcli`对网络配置进行任何必要的更改
