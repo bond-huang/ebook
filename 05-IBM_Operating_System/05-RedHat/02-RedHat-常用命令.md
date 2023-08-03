@@ -1,5 +1,10 @@
 # Redhat-常用命令
 ## 系统管理
+查看系统版本：
+```
+[root@redhat8 ~]# cat /etc/redhat-release
+Red Hat Enterprise Linux release 8.0 (Ootpa)
+```
 ### 服务管理
 #### systemctl命令
 下表是服务管理实用命令：

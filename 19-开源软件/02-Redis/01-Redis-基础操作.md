@@ -39,6 +39,7 @@ deamonize yes
 [root@centos82 redis-stable]# ./src/redis-cli -p 6379 -h 127.0.0.1
 127.0.0.1:6379> 
 ```
+### 配置查看修改
 查看内存配置：
 ```
 127.0.0.1:6379> info memory
@@ -87,6 +88,7 @@ OK
 127.0.0.1:6379> quit
 [root@centos82 redis-stable]#
 ```
+### 关闭
 关闭redis：
 ```
 [root@centos82 redis-stable]# ./src/redis-cli -p 6379 -h 127.0.0.1
@@ -100,6 +102,7 @@ not connected>quit
 tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      45800/./src/redis-s
 tcp6       0      0 ::1:6379                :::*                    LISTEN      45800/./src/redis-s
 ```
+### 从配置文件启动
 创建conf目录，下面创建一个配置文件，名为redis_7012.conf，从配置文件启动：
 ```
 [root@centos82 redis-stable]# chown -R redis.redis conf
@@ -108,6 +111,15 @@ tcp6       0      0 ::1:6379                :::*                    LISTEN      
 tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      47118/./src/redis-s
 tcp        0      0 172.26.9.154:6379       0.0.0.0:*               LISTEN      47118/./src/redis-s
 ```
+### 数据写入
+设置键(key)为"username"，值(value)为"Thor"。然后使用GET命令获取该键的值：
+```
+127.0.0.1:6379> set username Thor
+OK
+127.0.0.1:6379> GET username
+"Thor"
+```
+### RHEL防火墙
 ## 工具安装
 ### Windows管理平台
 Windows下有一款Another Redis Desktop Manager工具，打开PowerShell：
