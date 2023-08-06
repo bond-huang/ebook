@@ -111,7 +111,7 @@ tcp6       0      0 ::1:6379                :::*                    LISTEN      
 tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      47118/./src/redis-s
 tcp        0      0 172.26.9.154:6379       0.0.0.0:*               LISTEN      47118/./src/redis-s
 ```
-### 数据写入
+### 数据操作
 设置键(key)为"username"，值(value)为"Thor"。然后使用GET命令获取该键的值：
 ```
 127.0.0.1:6379> set username Thor
@@ -119,6 +119,22 @@ OK
 127.0.0.1:6379> GET username
 "Thor"
 ```
+删除数据：
+```
+127.0.0.1:6379> DEL username
+(integer) 1
+```
+清空当前库所有keys：
+```
+192.168.100.134:6500> info keyspace
+# Keyspace
+db0:keys=672,expires=0,avg_ttl=0
+192.168.100.134:6500> flushdb
+OK
+192.168.100.134:6500> info keyspace
+# Keyspace
+```
+注意：高危操作，需谨慎！
 ### RHEL防火墙
 ## 工具安装
 ### Windows管理平台

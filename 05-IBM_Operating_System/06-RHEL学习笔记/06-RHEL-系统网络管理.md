@@ -689,4 +689,85 @@ Host 112.254.152.115.in-addr.arpa. not found: 3(NXDOMAIN)
 ```
 nmcli con mod "ens160" ipv4.ignore-auto-dns yes
 ```
+## 防火墙
+### 防火墙基础操作
+查看防火墙状态：
+```
+[root@redhat9 ~]# systemctl status firewalld
+● firewalld.service - firewalld - dynamic firewall daemon
+     Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2023-08-03 00:40:27 CST; 1 day 14h ago
+       Docs: man:firewalld(1)
+   Main PID: 900 (firewalld)
+      Tasks: 2 (limit: 10936)
+     Memory: 39.8M
+        CPU: 1.082s
+     CGroup: /system.slice/firewalld.service
+             └─900 /usr/bin/python3 -s /usr/sbin/firewalld --nofork --nopid
+
+Aug 03 00:40:25 redhat9 systemd[1]: Starting firewalld - dynamic firewall daemon...
+Aug 03 00:40:27 redhat9 systemd[1]: Started firewalld - dynamic firewall daemon.
+```
+关闭防火墙进程：
+```
+[root@redhat9a ~]# systemctl stop firewalld
+[root@redhat9a ~]# systemctl status firewalld
+○ firewalld.service - firewalld - dynamic firewall daemon
+     Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)
+     Active: inactive (dead) since Fri 2023-08-04 15:34:12 CST; 1s ago
+       Docs: man:firewalld(1)
+    Process: 899 ExecStart=/usr/sbin/firewalld --nofork --nopid $FIREWALLD_ARGS (code=exited, status=0/SUCCESS)
+   Main PID: 899 (code=exited, status=0/SUCCESS)
+        CPU: 1.024s
+```
+开启防火墙进程：
+```
+[root@redhat9a ~]# systemctl start firewalld
+```
+若遇到无法开启，执行以下命令：
+```
+systemctl unmask firewalld.service
+systemctl start firewalld.service
+```
+禁用防火墙
+```
+[root@redhat9a ~]# systemctl disable firewalld
+Removed /etc/systemd/system/multi-user.target.wants/firewalld.service.
+Removed /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
+```
+启用防火墙
+```
+[root@redhat9a ~]# systemctl enable firewalld
+Created symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service → /usr/lib/systemd/system/firewalld.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/firewalld.service → /usr/lib/systemd/system/firewalld.service.
+```
+### 防火墙端口操作
+查看7369端口是否开启：
+```
+[root@redhat9 ~]# firewall-cmd --query-port=6379/tcp
+no
+```
+开放7369端口：
+```
+[root@redhat9 ~]# firewall-cmd --add-port=6379/tcp --permanent
+success
+```
+重新加载开放的端口：
+```
+[root@redhat9 ~]# firewall-cmd --reload
+success
+[root@redhat9 ~]# firewall-cmd --query-port=6379/tcp
+yes
+```
+移除指定的端口：
+```
+[root@redhat9 ~]# firewall-cmd --query-port=7369/tcp
+yes
+[root@redhat9 ~]# firewall-cmd --permanent --remove-port=7369/tcp
+success
+[root@redhat9 ~]# firewall-cmd --reload
+success
+[root@redhat9 ~]# firewall-cmd --query-port=7369/tcp
+no
+```
 ## 练习
