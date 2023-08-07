@@ -88,7 +88,7 @@ OK
 127.0.0.1:6379> quit
 [root@centos82 redis-stable]#
 ```
-### 关闭
+### 关闭Redis
 关闭redis：
 ```
 [root@centos82 redis-stable]# ./src/redis-cli -p 6379 -h 127.0.0.1
@@ -135,7 +135,102 @@ OK
 # Keyspace
 ```
 注意：高危操作，需谨慎！
-### RHEL防火墙
+## 安全配置
+### 密码配置
+V6.0版本前，可以在配置文件中`requirepass`项设置用户访问密码，示例：
+```ini
+requirepass 123456
+```
+查看配置：
+```
+192.168.100.134:6500> config get requirepass
+1) "requirepass"
+2) "123456"
+```
+在线修改：
+```
+192.168.100.134:6500> config set requirepass "654321"
+OK
+192.168.100.134:6500> config get requirepass
+1) "requirepass"
+2) "654321"
+```
+在线修改不会写入到配置文件中。
+### ACL机制配置
+&#8195;&#8195;Redis6.0发布了权限管理功能`ACL`(access control list访问控制列表)，可以根据不同的用户设置不同的权限，限制用户访问命令和待访问的数据。查看用户权限列表：
+```
+192.168.100.134:6500> acl list
+1) "user default on #8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92 ~* &* +@all"
+```
+查看当前使用用户：
+```
+192.168.100.134:6500> acl whoami
+"default"
+```
+创建一个用户示例：
+```
+192.168.100.134:6500> acl setuser batman on >123456 ~superh* +@string +get
+OK
+192.168.100.134:6500> acl list
+1) "user batman on #8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92 ~superh* resetchannels -@all +@string"
+2) "user default on #8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92 ~* &* +@all"
+```
+示例说明：
+- `user`：表示是用户
+- `batman`：用户名, `default`是系统默认用户名
+- `on`：表示启用用户，默认为`off`(禁用)
+- `#...`：用户密码, `nopass`表示不需要密码
+- `~*`：可访问的数据Key(正则匹配)
+     - `~superh*`表示可以访问`superh`开头的key
+- `+@all`：表示用户的权限：
+     - `+`添加权限，`-`删减权限;
+     -  `@`为redis命令分类, 可以通过ACL CAT查询相关分类
+     - `+@all`表示拥有所有权限
+     - `+@string +get`：表示只对`string`类型的数据具有`get`权限
+
+redis命令分类：
+```
+192.168.100.134:6500> acl cat
+ 1) "keyspace"
+ 2) "read"
+ 3) "write"
+ 4) "set"
+ 5) "sortedset"
+ 6) "list"
+ 7) "hash"
+ 8) "string"
+ 9) "bitmap"
+10) "hyperloglog"
+11) "geo"
+12) "stream"
+13) "pubsub"
+14) "admin"
+15) "fast"
+16) "slow"
+17) "blocking"
+18) "dangerous"
+19) "connection"
+20) "transaction"
+21) "scripting"
+```
+示例batman用户get相关数据：
+```
+192.168.100.134:6500> get supergod_1000
+(error) NOPERM this user has no permissions to access one of the keys used as arguments
+192.168.100.134:6500> get superhero_100
+-> Redirected to slot [12369] located at 192.168.100.138:6500
+"batman_100"
+```
+切换用户：
+```
+192.168.100.134:6500> auth batman 123456
+OK
+```
+删除用户：
+```
+192.168.100.134:6500> acl deluser batman
+(integer) 1
+```
 ## 工具安装
 ### Windows管理平台
 Windows下有一款Another Redis Desktop Manager工具，打开PowerShell：
