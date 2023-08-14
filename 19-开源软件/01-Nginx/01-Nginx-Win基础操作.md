@@ -1,4 +1,4 @@
-# Windows-基础操作
+# Nginx-Win基础操作
 ## Nginx下载安装
 官方网站：[http://nginx.org/](http://nginx.org/)    
 下载：[http://nginx.org/en/download.html](http://nginx.org/en/download.html)    
