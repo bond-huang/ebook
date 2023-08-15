@@ -3,6 +3,8 @@
 参考Travis-CI基础操作中构建方法。
 ## 服务器构建
 &#8195;&#8195;之前Travis-CI用了几年都很，最近发现Travis-CI被限制进行构建，提示积分不够，但是查看还有9100积分，无奈部署到自己阿里云服务器上去。
+
+参考博客：[http://suqiankun.com/](http://suqiankun.com/)
 ### 环境准备
 服务器系统是阿里云的CentOS8.2版本，安装node.js：
 ```
@@ -83,19 +85,63 @@ nothing to commit, working tree clean
 构建书籍：
 ```
 [gitbook@centos82 ebook]$ gitbook build .
-[gitbook@centos82 ebook]$ gitbook build .
-info: 16 plugins are installed
-info: 12 explicitly listed
-info: loading plugin "advanced-emoji"... OK
+info: 16 plugins are installed 
+info: 12 explicitly listed 
+info: loading plugin "advanced-emoji"... OK 
 ......
-info: loading plugin "theme-default"... OK
-info: found 399 pages
-info: found 47 asset files
+info: loading plugin "theme-default"... OK 
+info: found 402 pages 
+info: found 48 asset files 
 init!
+finish!
+info: >> generation finished with success in 603.6s !
 ```
-启动服务：
+耗时十分钟左右，CPU使用率54%左右，内存750M左右。
+下面命令启动服务会重新构建一次：
 ```
-[gitbook@centos82 ebook]$ gitbook serve --port 81
+[gitbook@centos82 ebook]$ gitbook serve
+Live reload server started on port: 35729
+Press CTRL+C to quit ...
+
+info: 16 plugins are installed 
+info: 13 explicitly listed 
+info: loading plugin "advanced-emoji"... OK 
+......
+info: loading plugin "theme-default"... OK 
+info: found 402 pages 
+info: found 48 asset files 
+init!
+finish!
+info: >> generation finished with success in 605.7s ! 
+
+Starting server ...
+Serving book on http://localhost:4000
 ```
 ### Nginx配置
+构建文件赋予权限：
+```
+[root@centos82 ~]# chown -R nginx:nginx /home/gitbook/ebook/_book
+[root@centos82 ~]# chmod -R 755 /home/gitbook/ebook/_book
+```
+如果赋权不行，将Nginx配置文件中用户改为root：
+```
+user  root;
+```
+在Nginx配置文件中加入配置：
+```ini
+    server {
+        listen       81;
+        server_name  localhost;
+
+        location / {
+            root   /home/gitbook/ebook/_book;
+            index  index.html;
+        }
+    }
+```
+保存配置文件，重启Ningx：
+```
+[root@centos82 nginx]# systemctl reload nginx
+```
+## 待补充
 

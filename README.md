@@ -12,7 +12,7 @@
 
 - ebook主页: [https://ebook.big1000.com](https://ebook.big1000.com)
 
-- 简易导航：[http://nav.big1000.com](https://nav.big1000.com)
+- 简易导航：[http://nav.big1000.com](http://nav.big1000.com)
 
 
 ## Book说明
@@ -29,10 +29,10 @@
 ** Book中主要使用工具 ** 
 
 - [GitBook](https://www.gitbook.com/) ：构建本书
-- [Travis-CI](https://www.travis-ci.org/) ：持续构建
+- [Travis-CI](https://www.travis-ci.org/) ：持续构建(已停止使用)
 - [VScode](https://code.visualstudio.com/) ：编写MarkDown
 
 ## 搭建说明
 
-本Book搭建方式参考Lyon的分享，blogs主页：[Lyon's blog](https://lyonyang.github.io/blogs)
+本Book Travis-CI上构建方式参考Lyon的分享，blogs主页：[Lyon's blog](https://lyonyang.github.io/blogs)
 

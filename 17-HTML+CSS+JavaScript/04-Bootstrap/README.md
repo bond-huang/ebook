@@ -7,7 +7,7 @@
 
 官方文档：[https://getbootstrap.com/docs/5.0/getting-started/introduction/](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
 
-Bootstrap GitHum：[https://github.com/twbs/bootstrap](https://github.com/twbs/bootstrap)
+Bootstrap GitHub：[https://github.com/twbs/bootstrap](https://github.com/twbs/bootstrap)
 
 Bootstrap中文网：[https://www.bootcss.com/](https://www.bootcss.com/)
 
