@@ -144,4 +144,3 @@ user  root;
 [root@centos82 nginx]# systemctl reload nginx
 ```
 ## 待补充
-
