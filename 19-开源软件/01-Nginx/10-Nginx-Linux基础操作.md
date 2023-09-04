@@ -58,4 +58,45 @@ WEB登录到服务器地址，即可访问Nginx主页：Welcome to nginx on Red 
 [root@centos82 ~]# ps -aux |grep nginx
 root      398796  0.0  0.0  12132  1156 pts/4    S+   21:27   0:00 grep --color=auto nginx
 ```
+## 服务使用
+### 使用https
+&#8195;&#8195;一般云平台服务器都可以免费下载证书。我在阿里云下载证书，一共两个文件`.pem`和`.key`文件，上传到服务器默认`/etc/nginx`目录。Nginx配置示例：
+```ini
+    # HTTPS server
+    #
+    server {
+       listen       443 ssl;
+        server_name  localhost;
+
+        ssl_certificate      big1000.com.pem;
+        ssl_certificate_key  big1000.com.key;
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+
+        location / {
+            root   /home/gitbook/ebook/_book;
+            index  index.html;
+        }
+		location /status {
+                stub_status;
+                access_log off;
+                allow 127.0.0.1;
+                allow ::1;
+                deny all;
+		    }
+    }
+```
+重启nginx服务即可。
+## 常用命令
+### 常用查看命令
+查看当前nginx使用配置文件：
+```
+[root@centos82 ~]# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
 ## 待补充

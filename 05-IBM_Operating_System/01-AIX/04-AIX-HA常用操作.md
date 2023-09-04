@@ -103,6 +103,14 @@ smit查看及修改方法：
 
 官方说明：[PowerHA SystemMirror use of Cluster Aware AIX ](https://www.ibm.com/support/knowledgecenter/zh/SSPHQG_7.2/concept/ha_concepts_ex_cluster.html)
 
+## 心跳盘操作
+### 更改心跳盘
+参考链接：[Replacing a repository disk with SMIT](https://www.ibm.com/docs/en/powerha-aix/7.2?topic=networks-replacing-repository-disk)
+## 磁盘操作
+### AIX系统层面磁盘迁移
+参考链接：[13 steps to migrate PowerHA shared volume groups to new storage while keeping a copy on the old disks](https://www.ibm.com/support/pages/13-steps-migrate-powerha-shared-volume-groups-new-storage-while-keeping-copy-old-disks#:~:text=Add%20the%20new%20disks%20to%20the%20shared%20volume,confirm%20adding%20the%20disk%20to%20the%20volume%20group.)
+### 非并发VG添加到HA
+参考链接：[How to add an existing nonconcurrent volume group to PowerHA resource group](https://www.ibm.com/support/pages/how-add-existing-nonconcurrent-volume-group-powerha-resource-group)
 ## 常见问题
 ### 同步问题
 问题一：    

@@ -10,4 +10,15 @@
     - 限制IP来源：0.0.0.0/0
     - 备注：redis
 
+## SL证书申请
+### 免费SSL证书
+免费SSL证书申请步骤：
+- 访问证书购买页面，0元购一个，地址：[阿里云免费证书购买](https://common-buy.aliyun.com/?spm=a2c4g.11186623.0.0.1bcb4c52JhTTrJ&commodityCode=cas_dv_public_cn&request=%7B%22product%22%3A%22free_product%22%7D)
+- 进入数字证书管理服务控制台，地址：[数字证书管理服务](https://yundunnext.console.aliyun.com/?spm=a2c4g.11186623.0.0.1bcb4c52JhTTrJ&p=cas)
+- 点击左侧主导航菜单中的`SSL证书`
+- 点击页面导航栏上的`免费证书`
+- 点击`创建证书`，会出现一条待审请状态的证书
+- 点击`证书申请`，填写相关信息
+- 等证书签发后，点击`下载`可以下载对应服务器类型的证书
+
 ## 待补充

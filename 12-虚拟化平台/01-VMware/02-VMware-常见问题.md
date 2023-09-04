@@ -47,4 +47,12 @@ VMnet信息如下：
 该虚拟机似乎正在使用中。如果该虚拟机未在使用，请按“获取所有权(T)”按钮获取它的所有权。否则，请按“取消(C)”按钮以防损坏。
 ```
 &#8195;&#8195;两个按钮都解决不了问题，把VMware的进程全部杀掉重新启动程序一样不行，进入到虚拟机的所在的目录下，目录下结尾为`.lck`的文件夹删掉即可，或者备份一份也行，重新打开虚拟机就可以访问了。
+## vCenter问题
+### VMware Inventory Service服务无法启动
+&#8195;&#8195;在Windows系统的vCenter，异常宕机或某些极端情况发生后，启动VMware Inventory Service服务时候报错，vCenter无法使用，报错示例：
+```
+Windows could not start the VMware Inventory Service on LocaComputer. For more information, review the System Event Log. Ifthis is a non-Microsoft service, contact the service vendor, andrefer to service-specific error code 1.
+```
+&#8195;&#8195;可能是Inventory Service database问题，数据损坏导致无法启动，需要reset Inventory Service database，对于6.0版本官方参考文档：[How to reset Inventory Service database for vCenter Server 6.0 (2146264)](https://kb.vmware.com/s/article/2146264?lang=en_us)。
+
 ## 待补充
