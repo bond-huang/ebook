@@ -18,6 +18,16 @@ java version "1.8.0_311"
 Java(TM) SE Runtime Environment (build 1.8.0_311-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.311-b11, mixed mode)
 ```
+## 防火墙
+### 入站规则
+#### 开启ping权限
+步骤如下：
+- 打开Windows防火墙
+- 点击`高级设置`
+- 点击`入站规则`
+- 找到`文件和打印机共享（回显请求-ICMPv4-In）`
+- 右键，点击`启用规则`
+
 ## 常用软件操作
 ### Notepad++
 #### Notepad++文件比对
