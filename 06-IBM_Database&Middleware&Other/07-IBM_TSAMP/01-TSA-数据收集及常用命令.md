@@ -61,6 +61,7 @@ lsrgreq -L -m
 lsrsrc -Ab -c IBM.PeerNode
 ```
 ### 启停命令
+#### 启停domain
 启动domian：
 ```sh
 startrpdomain <DOMAIN_NAME>
@@ -74,6 +75,32 @@ stoprpdomain <DOMAIN_NAME>
 chrsrc -c IBM.PeerNode CritRsrcProtMethod=5
 stoprpdomain -f <DOMAIN_NAME>
 ```
+#### 资源启停
+关闭所有资源组：
+```sh
+chrg -o offline -s 1=1
+```
+启动所有资源组：
+```sh
+chrg -o online -s 1=1
+```
+启动某个资源组：
+```sh
+chrg -o online <RG name>
+```
+停止某个资源组：
+```sh
+chrg -o offline <RG name>
+```
+停止资源组中某个应用：
+```sh
+stoprsrc -s 'Name=="<app_name>"' IBM.Application
+```
+重置资源组中某个应用：
+```sh
+resetrsrc -s 'Name=="<app_name>"' IBM.Application
+```
+### 资源请求
 提交请求：
 ```sh
 rgreq -o <request_type> <RG or RG member name>
@@ -86,14 +113,19 @@ rgreq -o lock -s 1=1
 ```sh
 rgreq -o unlock -s 1=1
 ```
-关闭所有资源组：
+切换资源组：
 ```sh
-chrg -o offline -s 1=1
+rgreq -o move <RG name>
 ```
-启动所有资源组：
-```sh
-chrg -o online -s 1=1
-```
+请求操作类型：
+- `start`：启动资源组的请求
+- `stop`：停止资源组的请求
+- `move`：资源组及其成员移动到群集中的其他节点
+- `cancel`：取消以前输入的请求
+- `movecancel`：取消先前输入的移动请求
+- `lock`：锁定资源组，锁定后保持当前状态不自动化切换
+- `unlock`：解锁资源组
+
 ### 集群配置
 创建集群必须两个步骤：
 ```sh
