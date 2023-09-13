@@ -18,8 +18,8 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 
 ## 内容
 
-- [HMC](https://big1000.com/01-IBM_Power_System/01-HMC/) 
-- [Power_System](https://big1000.com/01-IBM_Power_System/02-Power_System/)
-- [OpenPower](https://big1000.com/01-IBM_Power_System/03-OpenPower/)
-- [Pureflex](https://big1000.com/01-IBM_Power_System/04-Pureflex/)
+- [HMC](https://gitbook.big1000.com/01-IBM_Power_System/01-HMC/) 
+- [Power_System](https://gitbook.big1000.com/01-IBM_Power_System/02-Power_System/)
+- [OpenPower](https://gitbook.big1000.com/01-IBM_Power_System/03-OpenPower/)
+- [Pureflex](https://gitbook.big1000.com/01-IBM_Power_System/04-Pureflex/)
 

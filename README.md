@@ -2,18 +2,18 @@
 # Welcome to Bond's ebook!
 [![Build Status](https://app.travis-ci.com/bond-huang/ebook.svg?branch=master)](https://app.travis-ci.com/bond-huang/ebook)
 
-&#8195;&#8195;在GitHub中发现了一个由GitBook构建的Blog，称为Book更恰当，极其简洁，用手机查看也非常方便，甚是喜欢。于是搭建了一个，记录学习笔记，收录知识要点及分享技术经验，方便随时查阅。
+&#8195;&#8195;在GitHub中发现了一个由GitBook构建的Blog，称为Book更恰当，极其简洁，用手机查看也非常方便，甚是喜欢。于是搭建了一个，记录学习笔记，收录知识要点及分享技术经验，手机随时可以访问，方便查阅。
 
 ## 个人简介
+- WeChat：interstellar1000
 
 - Email : 451675348@qq.com
 
-- GitHub主页: [https://bond-huang.github.io/huang/](https://bond-huang.github.io/huang/)
+- GitHub主页: [https://github.com/bond-huang](https://github.com/bond-huang)
 
-- ebook主页: [https://ebook.big1000.com](https://ebook.big1000.com)
+- ebook主页: [https://gitbook.big1000.com/](https://gitbook.big1000.com/)
 
 - 简易导航：[http://nav.big1000.com](http://nav.big1000.com)
-
 
 ## Book说明
 
@@ -31,8 +31,4 @@
 - [GitBook](https://www.gitbook.com/) ：构建本书
 - [Travis-CI](https://www.travis-ci.org/) ：持续构建(已停止使用)
 - [VScode](https://code.visualstudio.com/) ：编写MarkDown
-
-## 搭建说明
-
-本Book Travis-CI上构建方式参考Lyon的分享，blogs主页：[Lyon's blog](https://lyonyang.github.io/blogs)
 

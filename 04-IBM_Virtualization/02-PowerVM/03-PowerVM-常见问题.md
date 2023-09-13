@@ -1,6 +1,8 @@
 # PowerVM-常见问题
 VIOS系统中常见问题。
 ## HMC连接问题
+### RMC连接问题
+&#8195;&#8195;在HMC中，查看分区的存储时候，显示到VIOS的RMC链接是busy状态，vscsi下面的磁盘都看不到，两个vios都是busy，分区也挂了不能访问。最后重启了两个vios解决。官方参考链接：[RMC communication to VIOS is busy or timed out](https://www.ibm.com/docs/en/powervc/2.0.0?topic=solutions-rmc-communication-vios-is-busy-timed-out)。
 ### HMC查看虚拟网络报错
 #### 报错示例一
 报错示例：
@@ -91,5 +93,7 @@ $ updateios -dev <directory_with_VIO_update> -accept -install
 $ alt_root_vg -bundle update_all -location <directory_vios_VIO_update> -target <hdisk#>
 ```
 官方说明：[VIO updateios reports sysck 3001-017. File ntp.conf can not be a link.](https://www.ibm.com/support/pages/node/646359?mhsrc=ibmsearch_a&mhq=sysck%3A3001-038%203001-003)
+
+## 
 
 ## 待补充

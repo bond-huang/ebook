@@ -134,7 +134,11 @@ $ viosbr -backup -file mybackup -frequency daily -numfiles 5
 说明：
 - viosbr 命令不会备份适配器或驱动程序的父设备、设备驱动程序、虚拟串行适配器、虚拟终端设备、内核扩展、因特网网络扩展 (inet0)、虚拟 I/O 总线、处理器、内存或高速缓存
 
+### lsmap命令
+官方参考链接：[lsmap command](https://www.ibm.com/docs/en/power9/9009-41A?topic=commands-lsmap-command)
+
 ### 其它命令
 更多命令可参考官方文档：[Virtual I/O Server and Integrated Virtualization Manager commands listed alphabetically](https://www.ibm.com/support/knowledgecenter/TI0003N/p8hcg/p8hcg_kickoff_alphabetical.htm)
 
+## 待补充
 

@@ -59,4 +59,8 @@ rmvdev -vtd <VTD_name>
 - 点击`OK`确认
 
 &#8195;&#8195;如果添加成功一个后，添加第一个报错失败，可以刷新下HMC再进行添加。后续每添加一个映射关系都进行刷新下，只能一个一个操作，非常耗费时间。
+## SSP问题
+### 共享存储池状态异常
+参考链接：[Health status is not 'OK'](https://www.ibm.com/docs/en/powervc/2.1.1?topic=solutions-health-status-is-not-ok)
 ## 待补充
+

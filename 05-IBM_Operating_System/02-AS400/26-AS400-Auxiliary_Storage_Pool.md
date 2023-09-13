@@ -2,7 +2,6 @@
 &#8195;&#8195;AS400磁盘管理内容中也有涉及此方面的，需要学习和了解的知识也比较多，磁盘池单独列出来。磁盘池在基于字符的界面中也称为`Auxiliary Storage Pool`(ASP)，是系统上一组磁盘单元的软件定义。相关官方参考链接：
 - [IBM i 7.5 Disk pools](https://www.ibm.com/docs/en/i/7.5?topic=management-disk-pools)
 - [Managing auxiliary storage pools](https://www.ibm.com/docs/en/i/7.5?topic=system-managing-auxiliary-storage-pools)
-- [Adding disk units to an existing auxiliary storage pool](https://www.ibm.com/docs/en/i/7.5?topic=pools-adding-disk-units-existing-asp)
 - [Deleting an auxiliary storage pool](https://www.ibm.com/docs/en/i/7.5?topic=pools-deleting-asp)
 - [Working with ASP trace and ASP balance](https://www.ibm.com/docs/en/i/7.5?topic=pools-working-asp-trace-asp-balance)
 - [Attach Independent Disk pool](https://www.ibm.com/docs/en/i/7.2?topic=pools-attach-independent-disk-pool)
@@ -83,6 +82,7 @@ IASP Vary On时间上数据库相关影响官方说明：
 - [End ASP Balance (ENDASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/endaspbal.html)
 - [Start ASP Balance (STRASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/straspbal.html)
 - [Trace ASP Balance (TRCASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/trcaspbal.html)
+- [Operating System Disk Balancing Support](https://www.ibm.com/support/pages/node/644689?mhsrc=ibmsearch_a&mhq=add%20Disk%20Units%20From%20ASP%20Using%20SST)
 
 ### STRASPBAL命令
 &#8195;&#8195;`STRASPBAL`(Start ASP Balance)命令允许用户为一个或多个ASP启动辅助存储池(ASP)平衡功能。可以启动的ASP平衡类型包括：
@@ -147,4 +147,46 @@ STRASPBAL TYPE(*MP) ASP(1) TIMLMT(240) SUBTYPE(*HDD)
 ### TRCASPBAL命令
 &#8195;&#8195;启动跟踪函数，该函数将识别每个单元上的“高”和“低”使用数据。使用情况平衡活动运行完成后，将清除跟踪信息。
 
+### 将磁盘添加到ASP里面
+将新磁盘分配给IBM i系统识别后，登录进入SST服务助手：
+- 选择选项：`3. work with disk units`
+- 选择选项：`2. Work with Disk Configuration`
+- 选择选项：`Add Units to ASPs and Balance Data`
+- 选择选项：`3. Add units to existing ASPs and Balance data`
+- 在需要添加的磁盘前面输入ASP的编号，SYS的为1，IASP的根据实际编号输入
+- 回车确认，弹出`Confirm Add Units and Balance Data`页面，按`F9`可以查看当前ASP使用情况
+- 回车确认开始添加，会有百分比显示，可能会比较慢，建议每次少加一点，添加完成后才开始Balance data
+
+参考链接：[Adding disk units to an existing auxiliary storage pool](https://www.ibm.com/docs/en/i/7.5?topic=pools-adding-disk-units-existing-asp)
+### 将磁盘从ASP里面踢掉
+&#8195;&#8195;示例将unit为4011-4024的14块磁盘从IASP里面踢掉，首先屏蔽掉磁盘不接收新的数据（确保剩余未踢的磁盘空间足够），以4011开始，执行到4024，示例：
+```
+STRASPBAL UNIT(4011 4012 4013 4014 4015)  ASPDEV(MYIASP)  TYPE(*ENDALC)
+```
+确认是不是4011-4024号磁盘被标记了：
+```
+CHKASPBAL
+```
+然后将磁盘数据迁移到系统其它磁盘，确保IASP剩余磁盘空间足够：
+```
+STRASPBAL  TYPE(*MOVDTA)
+```
+使用`CHKASPBAL`命令翻到最后查看状态提示：
+```
+Balancing type *MOVDTA is active for ASP 33 with name MYIASP
+```
+使用`CHKASPBAL`命令查看是否完成，提示：
+```
+Balancing is not active for ASP 33 with name MYIASP
+```
+登录进入SST服务助手：
+- 选择选项：`3. work with disk units`
+- 选择选项：`2. Work with Disk Configuration`
+- 选择选项：`12. Work with removing units from configuration`
+- 选择选项：`3. Remove Units from Configuration`
+- 弹出页面中，根据提示踢出需要剔除的磁盘，UNIT为4011-4024的磁盘前输入`4`
+- 回车确认开始剔除磁盘
+- 剔除完成后，可以在`Display Non-Configured Units`选项里面查看到，可以看到14块磁盘 
+
+官方参考链接：[IBM Support Remove Disk Units From ASP Using SST](https://www.ibm.com/support/pages/remove-disk-units-asp-using-sst)
 ## 待补充

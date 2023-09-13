@@ -9,5 +9,5 @@ IBM Z mainframe官网：[https://www.ibm.com/cn-zh/it-infrastructure/z](https://
 IBM LinuxONE官网：[https://www.ibm.com/cn-zh/it-infrastructure/linuxone](https://www.ibm.com/cn-zh/it-infrastructure/linuxone)
 
 ## 内容
-- [IBM_LinuxONE](https://bond-huang.github.io/huang/02-IBM_Z&LinuxONE/01-IBM_LinuxONE/)
+- [IBM_LinuxONE](https://gitbook.big1000.com/02-IBM_Z&LinuxONE/)
 

@@ -8,4 +8,4 @@ IBM 官方网站：[IBM XIV Storage System](https://www.ibm.com/cn-zh/marketplac
 IBM XIV 知识中心：[IBM XIV Storage System documentation](https://www.ibm.com/support/knowledgecenter/STJTAG/landing/xiv_kcwelcomepage.html)
 
 ## 内容
-- [XIV-数据收集](https://ebook.big1000.com/03-IBM_Storage_System/05-XIV_Storage/01-XIV-%E6%97%A5%E5%BF%97%E6%9F%A5%E7%9C%8B%E5%8F%8A%E6%94%B6%E9%9B%86.html)
+- [XIV-日志查看及收集](https://gitbook.big1000.com/03-IBM_Storage_System/05-XIV_Storage/01-XIV-%E6%97%A5%E5%BF%97%E6%9F%A5%E7%9C%8B%E5%8F%8A%E6%94%B6%E9%9B%86.html)
