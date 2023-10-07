@@ -82,6 +82,13 @@ CREATE TABLE post (
 - [RUNOOB.COM SQLite创建表](https://www.runoob.com/sqlite/sqlite-create-table.html)
 - [W3school SQL CREATE TABLE 语句](https://www.w3school.com.cn/sql/sql_create_table.asp)
 
+## 常用命令：
+### 数据库查看命令
+列出数据库的名称及其所依附的文件：
+```
+sqlite> .databases
+main: /home/navusr/navigator/instance/nav.sqlite
+```
 ## Select语句
 ### 基本语法
 基本语法：
@@ -204,4 +211,29 @@ INSERT OR REPLACE INTO table_1 SELECT * FROM table_2
 ```
 如果有重复的就REPLACE，合并两张表的方法，注意会覆盖数据，慎重操作。
 
+## 数据库备份及恢复
+### 备份数据库
+最近发现导航丢数据了，想备份下。首先查找库文件所在目录：
+```
+[root@centos82 /]# find . -name nav.sqlite
+./home/navusr/navigator/instance/nav.sqlite
+```
+连接数据库备份并查看：
+```
+[root@centos82 instance]# sqlite3 nav.sqlite
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter ".help" for usage hints.
+sqlite> .backup backup2310.db
+sqlite> .quit
+[root@centos82 instance]# ls -l
+total 128
+-rw-r--r-- 1 root   root   65536 Oct  7 23:23 backup2310.db
+-rw-rw-r-- 1 navusr navusr 65536 Oct  7 23:02 nav.sqlite
+```
+当前数据库记录数量：
+```
+sqlite> SELECT count(*) FROM links;
+188
+```
+2023年10月7日，一共188条，数据编号到了276，少了几十条，原因不明。
 ## 待补充

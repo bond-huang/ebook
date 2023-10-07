@@ -3,6 +3,7 @@ IBM i虚拟化主要有iHost和PowerVM。
 ## PowerVM
 主机相关链接：
 - [IBM Power9 Virtual I/O Server](https://www.ibm.com/docs/en/power9/9080-M9S?topic=environment-virtual-io-server)
+- [IBM Power Virtualization Center (PowerVC) for IBM i](https://www.ibm.com/support/pages/ibm-power-virtualization-center-powervc-ibm-i)
 - [Partitioning with a IBM i](https://www.ibm.com/docs/zh/i/7.3?topic=partitions-partitioning-i)
 - [IBM i 7.3 Virtual Partition Manager](https://www.ibm.com/docs/zh/i/7.3?topic=i-virtual-partition-manager)
 - [IBM i 7.3 Miscellaneous limits](https://www.ibm.com/docs/zh/i/7.3?topic=capacities-miscellaneous-limits)

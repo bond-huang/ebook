@@ -13,5 +13,5 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 [高效快速获得IBM售后技术支持](https://mp.weixin.qq.com/s/abopnPZ8uEQ7PC56YiJJHw)
 
 ## 内容
-- [PowerVC](https://ebook.big1000.com/04-IBM_Virtualization/01-PowerVC/)
-- [PowerVM](https://ebook.big1000.com/04-IBM_Virtualization/02-PowerVM/)
+- [PowerVC](https://gitbook.big1000.com/04-IBM_Virtualization/01-PowerVC/)
+- [PowerVM](https://gitbook.big1000.com/04-IBM_Virtualization/02-PowerVM/)

@@ -366,6 +366,10 @@ LISTEN 0        128                    [::]:sunrpc                      [::]:*
 -p|显示使用套接字的进程
 -A inet|对于inet地址系列，显示活动的连接(但不显示侦听套接字)，忽略本地UNIX域套接字。对于ss，同时显示IPv4和IPv6连接。对于netstat ，仅显示IPv4连接(netstat -A inet6显示IPv6连接，netstat -46则同时显示IPv4和IPv6)
 
+查看端口连接信息：
+```
+netstat -anltp |grep 39999
+```
 ## 从命令行配置网络
 ### NetworkManager概念
 &#8195;&#8195;`NetworkManager`是监控和管理网络设置的守护进程。除了该守护进程外，还有一个提供网络状态信息的`GNOME`通知区域小程序。命令行和图形工具与`NetworkManager`通信，并将配置文件保存在`/etc/sysconfig/network-scripts`目录中：

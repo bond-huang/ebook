@@ -131,4 +131,14 @@ lssam
 ```
 参考链接：[TSAMP: Changing a node IP address in a running cluster](https://www.ibm.com/support/pages/tsamp-changing-node-ip-address-running-cluster)
 
+### 更改资源监控
+&#8195;&#8195;有时候需要手动停掉某个应用，但是不想通过TSA命令，手动操作后但是马上自动启动了，需要修改TSA某个应用不监控，就不会自动启动了，命令如下：
+```
+chrsrc -s 'Name=="<appname>"' IBM.Application MonitorCommandTimeout=0
+```
+注意事项：
+- 搞完后修改回来，要不然TSA高可用无意义了
+- 直接在线改，应用状态会变成`unknown`
+- 如果停掉资源组去修改，启动资源组时候可能无法启动
+
 ## 待补充

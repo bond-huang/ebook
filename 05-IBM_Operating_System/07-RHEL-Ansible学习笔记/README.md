@@ -24,3 +24,15 @@ Ansible Galaxy官方地址：[https://galaxy.ansible.com/](https://galaxy.ansibl
 本章节是在官网学习RHEL记录的笔记。
 
 ## 内容
+- [Ansible-安装Ansible](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01-Ansible-%E5%AE%89%E8%A3%85Ansible.html)
+- [Ansible-实施Playbook](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02-Ansible-%E5%AE%9E%E6%96%BDPlaybook.html)
+- [Ansible-变量管理等](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03-Ansible-%E5%8F%98%E9%87%8F%E7%AE%A1%E7%90%86%E7%AD%89.html)
+- [Ansible-任务控制](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04-Ansible-%E4%BB%BB%E5%8A%A1%E6%8E%A7%E5%88%B6.html)
+- [Ansible-将文件部署到受管主机](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05-Ansible-%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0%E5%8F%97%E7%AE%A1%E4%B8%BB%E6%9C%BA.html)
+- [Ansible-管理Play和Playbook](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06-Ansible-%E7%AE%A1%E7%90%86Play%E5%92%8CPlaybook.html)
+- [Ansible-利用角色简化Playbook](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07-Ansible-%E7%AE%80%E5%8C%96Playbook.html)
+- [Ansible-故障排除](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08-Ansible-%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4.html)
+- [Ansible-自动执行Linux管理任务](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09-Ansible-%E8%87%AA%E5%8A%A8%E6%89%A7%E8%A1%8CLinux%E7%AE%A1%E7%90%86%E4%BB%BB%E5%8A%A1.html)
+- [Ansible-Linux存储和网络管理](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10-Ansible-Linux%E5%AD%98%E5%82%A8%E5%92%8C%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86.html)
+- [Ansible-常见问题](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/20-Ansible-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)
+- [Ansible-官方实例参考](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/21-Ansible-%E5%AE%98%E6%96%B9%E5%AE%9E%E4%BE%8B%E5%8F%82%E8%80%83.html)

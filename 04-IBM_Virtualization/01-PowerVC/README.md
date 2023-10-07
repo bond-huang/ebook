@@ -6,5 +6,6 @@
 官方介绍网站：[IBM PowerVC官网](https://www.ibm.com/cn-zh/marketplace/powervc?mhsrc=ibmsearch_a&mhq=PowerVC)
 
 ## 内容
-- [PowerVC-安装](https://bond-huang.github.io/huang/04-IBM_Virtualization/01-PowerVC/01-PowerVC-%E5%AE%89%E8%A3%85.html)
+- [PowerVC-安装](https://gitbook.big1000.com/04-IBM_Virtualization/01-PowerVC/01-PowerVC-%E5%AE%89%E8%A3%85.html)
+- [PowerVC-常见问题](https://gitbook.big1000.com/04-IBM_Virtualization/01-PowerVC/10-PowerVC-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)
 

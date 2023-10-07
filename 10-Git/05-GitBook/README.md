@@ -6,4 +6,6 @@
 Node.js下载地址：[https://nodejs.org/en/download/releases](https://nodejs.org/en/download/releases)
 
 ## 内容
+- [GitBook-构建ebook](https://gitbook.big1000.com/10-Git/05-GitBook/01-GitBook-%E6%9E%84%E5%BB%BAebook.html)
+- [GitBook-常见问题](https://gitbook.big1000.com/10-Git/05-GitBook/05-GitBook-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)
 

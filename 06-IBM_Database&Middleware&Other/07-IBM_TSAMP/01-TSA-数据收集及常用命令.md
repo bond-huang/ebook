@@ -48,6 +48,10 @@ lscomg
 ```sh
 lsrel -Ab
 ```
+列出指定Managed Relationship信息：
+```
+lsrel -M <Managed Relationship name>
+```
 列出资源组或资源组成员创建请求：
 ```sh
 lsrgreq -L

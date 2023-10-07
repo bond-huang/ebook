@@ -15,6 +15,10 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 [高效快速获得IBM售后技术支持](https://mp.weixin.qq.com/s/abopnPZ8uEQ7PC56YiJJHw)
 
 ## 内容
-- [AIX](https://ebook.big1000.com/05-IBM_Operating_System/01-AIX/)
-- [AS400](https://ebook.big1000.com/05-IBM_Operating_System/02-AS400/)
-- [RedHat](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/)
+- [AIX](https://gitbook.big1000.com/05-IBM_Operating_System/01-AIX/)
+- [AS400](https://gitbook.big1000.com/05-IBM_Operating_System/02-AS400/)
+- [AS400程序](https://gitbook.big1000.com/05-IBM_Operating_System/03-AS400%E7%A8%8B%E5%BA%8F/)
+- [AS400数据库](https://gitbook.big1000.com/05-IBM_Operating_System/04-AS400%E6%95%B0%E6%8D%AE%E5%BA%93/)
+- [RedHat](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/)
+- [RHEL学习笔记](https://gitbook.big1000.com/05-IBM_Operating_System/06-RHEL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/)
+- [RHEL-Ansible学习笔记](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/)

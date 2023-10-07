@@ -14,5 +14,7 @@ CSS文档：[https://developer.mozilla.org/en-US/docs/Web/CSS](https://developer
 HTML/CSS/JS 在线工具：[https://c.runoob.com/front-end/61](https://c.runoob.com/front-end/61)
 
 ## 内容
-- [CSS3-基础](https://ebook.big1000.com/15-HTML+CSS+JavaScript/02-CSS/01-CSS3-%E5%9F%BA%E7%A1%80.html)
-- [CSS3-选择器](https://ebook.big1000.com/15-HTML+CSS+JavaScript/02-CSS/02-CSS3-%E9%80%89%E6%8B%A9%E5%99%A8.html)
+- [CSS3-基础](https://gitbook.big1000.com/17-HTML+CSS+JavaScript/02-CSS/01-CSS3-%E5%9F%BA%E7%A1%80.html)
+- [CSS3-选择器](https://gitbook.big1000.com/17-HTML+CSS+JavaScript/02-CSS/02-CSS3-%E9%80%89%E6%8B%A9%E5%99%A8.html)
+- [CSS3-美化图像](https://gitbook.big1000.com/17-HTML+CSS+JavaScript/02-CSS/05-CSS3-%E7%BE%8E%E5%8C%96%E5%9B%BE%E5%83%8F.html)
+- [CSS3-常用样式笔记](https://gitbook.big1000.com/17-HTML+CSS+JavaScript/02-CSS/15-CSS3-%E5%B8%B8%E7%94%A8%E6%A0%B7%E5%BC%8F%E7%AC%94%E8%AE%B0.html)

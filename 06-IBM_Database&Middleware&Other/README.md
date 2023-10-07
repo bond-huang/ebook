@@ -17,8 +17,10 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 IBM 软件技术支持微信公众号：ibmsupport
 
 ## 内容
-- [DB2_Database](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/01-DB2_Database/)
-- [Websphere_Application_Server](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/)
-- [Websphere_MQ](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/03-Websphere_MQ/)
-- [Flienet](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/04-Filenet/)
-- [Cognos](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/05-Cognos/)
+- [DB2_Database](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/01-DB2_Database/)
+- [Websphere_Application_Server](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/02-Websphere_Application_Server/)
+- [Websphere_MQ](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/03-Websphere_MQ/)
+- [Flienet](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/04-Filenet/)
+- [Cognos](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/05-Cognos/)
+- [InfoSphere_Data_Replication](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/)
+- [IBM_TSAMP](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/07-IBM_TSAMP/)

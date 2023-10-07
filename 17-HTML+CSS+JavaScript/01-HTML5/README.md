@@ -14,4 +14,4 @@ html颜色代码：[https://encycolorpedia.cn/html](https://encycolorpedia.cn/ht
 HTML/CSS/JS 在线工具：[https://c.runoob.com/front-end/61](https://c.runoob.com/front-end/61)
 
 ## 内容
-- [HTML5-基础知识](https://ebook.big1000.com/15-HTML+CSS+JavaScript/01-HTML5/01-HTML5-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html)
+- [HTML5-基础知识](https://gitbook.big1000.com/17-HTML+CSS+JavaScript/01-HTML5/01-HTML5-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html)

@@ -8,6 +8,6 @@
 
 ## 内容
 
-- [MQ-数据收集](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/03-Websphere_MQ/01-MQ-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html) 
-- [MQ-连接通道问题](https://bond-huang.github.io/huang/06-IBM_Database&Middleware&Other/03-Websphere_MQ/02-MQ-%E8%BF%9E%E6%8E%A5%E9%80%9A%E9%81%93%E9%97%AE%E9%A2%98.html)
+- [MQ-数据收集](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/03-Websphere_MQ/01-MQ-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html) 
+- [MQ-连接通道问题](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/03-Websphere_MQ/02-MQ-%E8%BF%9E%E6%8E%A5%E9%80%9A%E9%81%93%E9%97%AE%E9%A2%98.html)
 

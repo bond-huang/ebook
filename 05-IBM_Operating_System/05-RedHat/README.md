@@ -12,8 +12,12 @@ Linux教程：[https://www.runoob.com/linux/linux-tutorial.html](https://www.run
 系统及软件下载：[https://calipso.linux.it.umich.edu/pulp/isos/](https://calipso.linux.it.umich.edu/pulp/isos/)
 
 ## 内容
-- [RedHat-基础配置](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/01-RedHat-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE.html)
-- [RedHat-常用命令](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/02-RedHat-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
-- [RedHat-用户及用户权限](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/03-RedHat-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90.html)
-- [RedHat-文件和文字处理](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/04-RedHat-%E6%96%87%E4%BB%B6%E5%92%8C%E6%96%87%E5%AD%97%E5%A4%84%E7%90%86.html)
-- [RedHat-磁盘管理](https://ebook.big1000.com/05-IBM_Operating_System/04-RedHat/05-RedHat-%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86.html)
+- [RedHat-基础配置](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/01-RedHat-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE.html)
+- [RedHat-常用命令](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/02-RedHat-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
+- [RedHat-用户及用户权限](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/03-RedHat-%E7%94%A8%E6%88%B7%E5%8F%8A%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90.html)
+- [RedHat-文件和文字处理](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/04-RedHat-%E6%96%87%E4%BB%B6%E5%92%8C%E6%96%87%E5%AD%97%E5%A4%84%E7%90%86.html)
+- [RedHat-磁盘管理](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/05-RedHat-%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86.html)
+- [Redhat-RAID管理](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/06-Redhat-RAID%E7%AE%A1%E7%90%86.html)
+- [RedHat-磁盘多路径](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/07-RedHat-%E7%A3%81%E7%9B%98%E5%A4%9A%E8%B7%AF%E5%BE%84.html)
+- [RedHat-常用软件安装](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/20-RedHat-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85.html)
+- [RedHat-常见问题](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/21-RedHat-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)

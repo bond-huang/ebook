@@ -1,5 +1,10 @@
 # HMC-常用命令
-HMC管理说实话用命令的很少，一般都是图形化界面，很方便；但是在一些对受管机器分区进行批量处理的时候，或者查看获取一些受管机器信息的时候，用命令查看配置或者是写脚本去抓取数据还是比较方便的。
+&#8195;&#8195;HMC管理说实话用命令的很少，一般都是图形化界面，很方便；但是在一些对受管机器分区进行批量处理的时候，或者查看获取一些受管机器信息的时候，用命令查看配置或者是写脚本去抓取数据还是比较方便的。
+
+官方参考链接：
+- [HMC commands](https://www.ibm.com/docs/zh/power9/9040-MR9?topic=interfaces-hmc-commands)
+- [HMC 任务，用户角色，标识和相关联的命令](https://www.ibm.com/docs/zh/power7?topic=POWER7/p7ha1/hmctasksanduserroles.html)
+
 ## 常用命令
 ### 管理HMC命令
 介绍一些常用管理HMC控制台的命令

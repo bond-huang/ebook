@@ -8,3 +8,4 @@
 官方下载地址：[https://www.mysql.com/downloads/](https://www.mysql.com/downloads/)
 
 ## 内容
+- [MySQL-安装与卸载](https://gitbook.big1000.com/07-Oracle_Database/10-Oracle-MySQL/01-MySQL-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD.html)

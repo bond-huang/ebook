@@ -8,5 +8,6 @@
 - [IBM InfoSphere Data Replication documentation](https://www.ibm.com/docs/en/idr)
 
 ## 内容
+- [CDC-安装与卸载](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/01-CDC-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD.html)
 
 

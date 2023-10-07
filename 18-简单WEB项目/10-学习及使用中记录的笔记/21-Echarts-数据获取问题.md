@@ -1,4 +1,4 @@
-# ECharts-基础学习笔记
+# ECharts-数据获取问题
 学习和使用过程中记录的笔记，参考链接：
 - ECharts官网：[Apache ECharts](https://echarts.apache.org/zh/index.html)
 - vue-echarts GitHub: [vue-echarts](https://github.com/ecomfe/vue-echarts)
