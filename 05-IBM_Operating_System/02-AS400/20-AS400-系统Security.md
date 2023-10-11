@@ -31,7 +31,7 @@ CHGSECAUD QAUDCTL(*AUDLVL) QAUDLVL(*DFTSET)
     - `JRN`必须使用名称`QSYS/QAUDJRN`，`JRNRCV`指定在上一步中创建的日志接收器的名称
     - 在`AUT`参数上指定`*EXCLUDE`以限制对存储在日志中的信息的访问。必须有权将对象添加到`QSYS`
     - 使用`MNGRCV`(Manage receiver)参数让系统更改日志接收器并在附加的接收器超过创建日志接收器时指定的阈值时附加一个新接收器。如果选择此选项，则无需使用`CHGJRN`命令来分离接收器并手动创建和附加新接收器
-    - 指定`DLTRCV(*NO)`(默认值）表示不要让系统删除分离的接收器。`QAUDJRN`接收器是用户的安全审计跟踪，在从系统中删除它们之前，确保它们被充分保存
+    - 指定`DLTRCV(*NO)`（默认值）表示不要让系统删除分离的接收器。`QAUDJRN`接收器是用户的安全审计跟踪，在从系统中删除它们之前，确保它们被充分保存
 3. 使用`WRKSYSVAL`命令设置`QAUDLVL`(audit level)系统值或`QAUDLVL2`(audit level extension)系统值。此两个值确定将哪些操作记录到系统上所有用户的审计日志中
 4. 如有必要，使用`CHGUSRAUD`命令为单个用户设置操作审计，或为特定用户设置对象审计
 5. 如有必要，使用`CHGOBJAUD`、`CHGAUD`和`CHGDLOAUD`命令为特定对象设置对象审计
@@ -58,7 +58,7 @@ CHGSECAUD QAUDCTL(*AUDLVL) QAUDLVL(*DFTSET)
 - 使用Operational Assistant菜单时提供的自动清理功能不会清理`QAUDJRN`接收器。为避免磁盘空间问题，请定期分离、保存和删除`QAUDJRN`接收器
 - 如果`QAUDJRN`日志不存在并且`QAUDCTL`系统值设置为非`*NONE`，则在`IPL`期间进行创建。这仅发生在异常情况之后，例如更换磁盘设备或清除辅助存储池
 
-### 保存和删除审计日志接收器
+#### 保存和删除审计日志接收器
 附加一个新的审计日志接收器，保存并删除旧接收器：
 - CHGJRN QSYS/QAUDJRN JRNRCV(*GEN)
 - SAVOBJ (保存旧接收器)
@@ -67,7 +67,11 @@ CHGSECAUD QAUDCTL(*AUDLVL) QAUDLVL(*DFTSET)
 建议选择系统不忙的时间，并且应定期分离当前的审计日志接收器并附加一个新的接收器，原因：
 - 如果每个日志接收器都包含特定、可管理时间段的条目，则分析日志条目会更容易
 - 大型日志接收器会影响系统性能并占用辅助存储池上的宝贵空间
-
+#### 重置Sequence number
+最大值是9999999999，reset命令如下：
+```
+CHGJRN QSYS/QAUDJRN SEQOPR(*RESET) JRNRCV(*GEN)
+``` 
 #### 系统管理的日志接收器
 &#8195;&#8195;如果系统管理接收器，保存所有分离的`QAUDJRN`接收器并删除它们的步骤(使用日志消息队列和CPF7020消息的监视下述过程，CPF7020消息指示系统更改日志已成功完成)：
 - 输入`WRKJRNA QAUDJRN`，显示当前连接的接收器，不要保存或删除此接收器
@@ -84,7 +88,16 @@ CHGSECAUD QAUDCTL(*AUDLVL) QAUDLVL(*DFTSET)
 - 使用`WRKJRNA`命令显示当前连接了哪个接收器：WRKJRNA QAUDJRN
 - 使用`SAVOBJ`命令保存分离的日志接收器，指定对象类型`*JRRNCV`
 - 使用`DLTJRNRCV`命令删除接收器。如果删除没有保存的接收器，将收到一条警告消息
-
+## 对象审计
+### 开启并查看对象审计
+首先开启系统审计日志，审计项目系统值`QAUDCTL`里面要有`*OBJAUD`。对象里面设置开启审计：
+```
+CHGPF FILE(MYLIB/MYTABLE) AUDIT(*CHANGE)
+```
+查看审计日志：
+```
+DSPJRN JRN(MYAUDITJRN) FILE(MYLIB/MYTABLE)
+```
 ## Object Authority
 ### Object Authority for User
 &#8195;&#8195;在对象属性中有用户对对象的权限。可以为用户分配几个不同的系统定义的对象权限级别，这些级别有如下几种：

@@ -1,0 +1,47 @@
+# Shell-Linux小脚本
+## 用户相关
+### 从其他系统同步用户
+&#8195;&#8195;通常可以通过`rsync`或`scp`命令对文件`/etc/passwd`、`/etc/shadow`和`/etc/group`进行同步或者拷贝以达到从其他系统同步用户的目的，有时候需求不需要全部的，只需要部分，直接覆盖不行，但是又比较多的情况下，用脚本实现比较方便。例如redhat8系统中有如下用户要在redhat9中创建：
+```sh
+christ:x:1003:1003::/home/christ:/bin/bash
+christb:x:1004:1003::/home/christb:/bin/bash
+harry:x:1005:1005::/home/harry:/bin/bash
+sarah:x:1006:1006::/home/sarah:/sbin/nologin
+testuser2:x:1007:1007::/home/testuser2:/sbin/nologin
+testusr3:x:1014:1014::/home/testusr3:/bin/bash
+```
+&#8195;&#8195;将上面需要copy的用户的内容拷贝到redhat9分区的文件中passwd.txt，对应`/etc/shadow`中的内容拷贝到shadow.txt中，脚本示例如：
+```sh
+#!/bin/bash
+for usrinfo in `cat passwd.txt`
+do 
+    usr=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $1}'`
+    usrid=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $3}'`
+    usrgid=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $4}'`
+    usrdir=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $6}'`
+    usrsh=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $7}'`
+    usrpw=`cat shadow.txt |grep -w $usr |gawk 'BEGIN{FS=":"}{print $2}'`
+    groupadd $usr -g $usrgid
+    useradd $usr -u $usrid -g $usrgid -d $usrdir -s $usrsh -p $usrpw
+done
+```
+脚本执行示例：
+```
+[root@redhat9 ~]# sh cpusr.sh
+groupadd: GID '1003' already exists
+```
+redhat9分区创建用户信息：
+```sh
+christ:x:1003:1003::/home/christ:/bin/bash
+christb:x:1004:1003::/home/christb:/bin/bash
+harry:x:1005:1005::/home/harry:/bin/bash
+sarah:x:1006:1006::/home/sarah:/sbin/nologin
+testuser2:x:1007:1007::/home/testuser2:/sbin/nologin
+testusr3:x:1014:1014::/home/testusr3:/bin/bash
+```
+脚本说明及注意事项：
+- 如果组ID和用户ID不一样，并且组名称也是和同id的用户名称不一样，此脚本不适用，目前没考虑这点
+- 注意在脚本中，`grep`后面要加上`-w`进行完全匹配，否则christ和christb这种用户`grep`后结果是两个
+- 脚本没有考虑用户目录的权限，创建后是默认权限，可能与原分区权限不一样，需要注意
+
+## 待补充

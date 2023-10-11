@@ -1,9 +1,9 @@
 # GitHub-常用操作
 目前大部分都是在WEB进行完成，命令行用的少，但是有些时候必须用到。
+## 命令行修改
 ### 修改或添加目录
-最近想修改下目录名字，GitHub的WEB管理界面找了半天没找到，查了下确实没有，需要通过命令行来操作。
-建议最好Git上远程仓库和GitHub上保持一致再作修改目录操作，不一致可以可以把远程仓库更新同步到本地。
-##### 同步到本地
+&#8195;&#8195;最近想修改下目录名字，GitHub的WEB管理界面找了半天没找到，查了下确实没有，需要通过命令行来操作。建议最好Git上远程仓库和GitHub上保持一致再作修改目录操作，不一致可以可以把远程仓库更新同步到本地。
+#### 同步到本地
 使用命令`git pull`,作用是从另外个仓库或者本地分支获取内容并合并，格式如下：
 ```shell
 git pull [<options>] [<repository> [<refspec>…​]]
@@ -18,7 +18,7 @@ $ git branch
 $ git pull
 Already up to date.
 ```
-##### 修改目录名
+#### 修改目录名
 同步完成后进行修改，使用命令`git mv`，示例如下
 ```shell
 $ git mv -f 14-IBM_Hybrid_Cloud 07-IBM_Hybrid_Cloud
@@ -33,7 +33,7 @@ $ ls
  07-IBM_Hybrid_Cloud/                 book.json
 ```
 如果目录中有&这种符号，目录名前后需要有引号
-##### 记录对repository的更改
+#### 记录对repository的更改
 使用`git commit`命令：
 ```shell
 $ git commit -m "changed the foldername"
@@ -41,7 +41,7 @@ $ git commit -m "changed the foldername"
  1 file changed, 0 insertions(+), 0 deletions(-)
  rename {14-IBM_Hybrid_Cloud => 07-IBM_Hybrid_Cloud}/README.md (100%)
 ```
-##### 同步
+#### 同步
 使用`git push`命令，就一个master分支，直接输入即可：
 ```shell
 $ git push
@@ -58,6 +58,7 @@ To github.com:bond-huang/huang.git
 在WEB界面刷新下，可以看到更改成功了。
 上面命令更多使用方法可以参考官方：[https://git-scm.com/docs](https://git-scm.com/docs)
 
+## 常用配置
 ### 设置Custom domain
 在仓库根目录创建CNAME文件，写入自己的域名：
 ```
@@ -96,3 +97,22 @@ $ git config user.email
 或者直接改文件：`vi ~/.gitconfig`。
 
 参考链接：[https://www.cnblogs.com/shenxiaolin/p/7896489.html](https://www.cnblogs.com/shenxiaolin/p/7896489.html)
+
+## 其他常用操作
+### Markdown字数统计
+&#8195;&#8195;打开Git Bash命令行，cd到项目所在的目录，首先查找所有md文件，遍历后使用`wc`命令进行字数统计。示例统计字符数：
+```sh
+$ find . -name '*.md' -exec cat {} \;|wc -m
+2185910
+```
+统计词数（汉字一句话算一个词了，以空格等符号做分隔符）：
+```sh
+$ find . -name '*.md' -exec cat {} \;|wc -w
+169617
+```
+统计行数：
+```sh
+$ find . -name '*.md' -exec cat {} \;|wc -l
+63021
+```
+## 待补充

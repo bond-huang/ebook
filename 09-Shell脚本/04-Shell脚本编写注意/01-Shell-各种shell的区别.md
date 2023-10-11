@@ -141,4 +141,4 @@ echo $count
 3
 ```
 ### 其它差异
-AIX7.1.4.3中没有mktemp命令，没用lsof命令，可以单独安装
+AIX7.1.4.3中没有mktemp命令，没有lsof命令，可以单独安装。

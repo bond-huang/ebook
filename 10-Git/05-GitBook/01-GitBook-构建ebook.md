@@ -143,4 +143,63 @@ user  root;
 ```
 [root@centos82 nginx]# systemctl reload nginx
 ```
+## 重新构建
+### 更新服务器数据
+&#8195;&#8195;服务器上没有配置git，github上更新后，需要删除原来的文件，把文件下载到本地，重新手动导入到服务器重新构建。比较麻烦，偶尔弄下。
+
+首先移出`node_modules`文件夹：
+```
+[gitbook@centos82 ebook]$ mv node_modules ../
+[gitbook@centos82 ebook]$ cd ..
+[gitbook@centos82 ~]$ ls -l
+total 8
+drwxrwxr-x 23 gitbook gitbook 4096 Oct  7 23:56 ebook
+drwxrwxr-x 43 gitbook gitbook 4096 Aug 15 14:30 node_modules
+```
+清空项目文件夹：
+```
+[gitbook@centos82 ~]$ rm -rf ebook
+[gitbook@centos82 ~]$ ls
+node_modules
+[gitbook@centos82 ~]$ mkdir ebook
+[gitbook@centos82 ~]$ ls -l
+total 4
+drwxrwxr-x  2 gitbook gitbook    6 Oct  7 23:58 ebook
+drwxrwxr-x 43 gitbook gitbook 4096 Aug 15 14:30 node_modules
+```
+下载项目到本地：
+```
+[gitbook@centos82 ~]$ git clone https://github.com/bond-huang/ebook.git /home/gitbook/ebook
+Cloning into '/home/gitbook/ebook'...
+remote: Enumerating objects: 8408, done.
+remote: Counting objects: 100% (1719/1719), done.
+remote: Compressing objects: 100% (603/603), done.
+remote: Total 8408 (delta 1099), reused 1635 (delta 1091), pack-reused 6689
+Receiving objects: 100% (8408/8408), 11.41 MiB | 8.16 MiB/s, done.
+Resolving deltas: 100% (4536/4536), done.
+```
+生成目录：
+```
+[gitbook@centos82 ebook]$ pwd
+/home/gitbook/ebook
+[gitbook@centos82 ebook]$ sh summary_crt.sh
+```
+移回`node_modules`文件夹：
+```
+[gitbook@centos82 ~]$ ls
+ebook  node_modules
+[gitbook@centos82 ~]$ mv node_modules/ ./ebook
+[gitbook@centos82 ~]$ ls
+ebook
+```
+构建数据：
+```
+[gitbook@centos82 ebook]$ gitbook build .
+......
+info: found 419 pages
+info: found 48 asset files
+......
+info: >> generation finished with success in 718.2s ! 
+```
+构建完成后web可以访问，不需要重启Ningx。
 ## 待补充

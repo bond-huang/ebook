@@ -9,4 +9,5 @@
 - [Shell脚本快速指南](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/02-Shell%E8%84%9A%E6%9C%AC%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/)
 - [Shell_AIX脚本](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/03-Shell_AIX%E8%84%9A%E6%9C%AC/)
 - [Shell编写脚本注意](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/04-Shell%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E6%B3%A8%E6%84%8F/)
+- [Shell_Linux脚本](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/05-Shell_Linux%E8%84%9A%E6%9C%AC/)
 
