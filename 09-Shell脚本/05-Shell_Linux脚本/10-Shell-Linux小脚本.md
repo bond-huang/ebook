@@ -10,9 +10,15 @@ sarah:x:1006:1006::/home/sarah:/sbin/nologin
 testuser2:x:1007:1007::/home/testuser2:/sbin/nologin
 testusr3:x:1014:1014::/home/testusr3:/bin/bash
 ```
-&#8195;&#8195;将上面需要copy的用户的内容拷贝到redhat9分区的文件中passwd.txt，对应`/etc/shadow`中的内容拷贝到shadow.txt中，脚本示例如：
+&#8195;&#8195;将上面需要copy的用户的内容拷贝到redhat9分区的文件中passwd.txt，对应`/etc/shadow`中的内容拷贝到shadow.txt中，对应group信息拷贝在group.txt文件夹中，脚本示例如：
 ```sh
 #!/bin/bash
+for groupinfo in `cat group.txt`
+do
+	group=`echo $groupinfo|gawk 'BEGIN{FS=":"}{print $1}'`
+	groupid=`echo $groupinfo|gawk 'BEGIN{FS=":"}{print $3}'`
+	groupadd $group -g $groupid
+done
 for usrinfo in `cat passwd.txt`
 do 
     usr=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $1}'`
@@ -21,14 +27,12 @@ do
     usrdir=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $6}'`
     usrsh=`echo $usrinfo|gawk 'BEGIN{FS=":"}{print $7}'`
     usrpw=`cat shadow.txt |grep -w $usr |gawk 'BEGIN{FS=":"}{print $2}'`
-    groupadd $usr -g $usrgid
     useradd $usr -u $usrid -g $usrgid -d $usrdir -s $usrsh -p $usrpw
 done
 ```
 脚本执行示例：
 ```
 [root@redhat9 ~]# sh cpusr.sh
-groupadd: GID '1003' already exists
 ```
 redhat9分区创建用户信息：
 ```sh
@@ -40,7 +44,6 @@ testuser2:x:1007:1007::/home/testuser2:/sbin/nologin
 testusr3:x:1014:1014::/home/testusr3:/bin/bash
 ```
 脚本说明及注意事项：
-- 如果组ID和用户ID不一样，并且组名称也是和同id的用户名称不一样，此脚本不适用，目前没考虑这点
 - 注意在脚本中，`grep`后面要加上`-w`进行完全匹配，否则christ和christb这种用户`grep`后结果是两个
 - 脚本没有考虑用户目录的权限，创建后是默认权限，可能与原分区权限不一样，需要注意
 

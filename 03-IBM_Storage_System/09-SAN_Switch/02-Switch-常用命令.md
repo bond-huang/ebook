@@ -81,6 +81,7 @@ cfgSave
 注意：      
 &#8195;&#8195;建议先cfgEnable然后cfgSave。先cfgSave的话，会有提示defind和effective的配置会不一致，并且在错误日志里面有warning：defind and effective zone configurations are inconsistent。
 
+参考链接：[Configuring zoning](https://www.ibm.com/docs/en/powervc/2.1.1?topic=storage-configuring-zoning)
 ### 修改配置
 常用对交换机配置修改命令如下：
 

@@ -6,6 +6,7 @@
 AIX官方性能数据收集脚本：[AIX MustGather: System Performance Analysis](https://www.ibm.com/support/pages/node/875894)
 
 官方参考文档：
+- [AIX 7.2 The sar command](https://www.ibm.com/docs/en/aix/7.2?topic=monitoring-sar-command)
 - [Disk I/O pacing](https://www.ibm.com/docs/en/aix/7.1?topic=performance-disk-io-pacing)
 - [Recommended AIX Virtual Memory Manager settings for DB2 database product](https://www.ibm.com/support/pages/recommended-aix-virtual-memory-manager-settings-db2-database-product)
 - [Archived | Part 3, Tuning swap space settings](https://developer.ibm.com/articles/au-aix7memoryoptimize3/)

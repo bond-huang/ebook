@@ -2,6 +2,7 @@
 使用RedHat8系统学习时候的一些基础学习笔记。
 ## 用户及用户权限
 ### 用户及用户组创建
+#### 创建用户组和组
 创建名为ftpusers的用户组，组id为4000：
 ```
 [root@redhat8 ~]# groupadd -g 40000 ftpusers
@@ -54,6 +55,33 @@ Changing password for user harry.
 passwd: all authentication tokens updated successfully.
 ```
 说明：`echo`方式不建议在命令行使用，因为命令`history`可以看到设置的密码。
+#### useradd命令
+useradd命令常用参数如下：
+- `-b, --base-dir BASE_DIR`：新用户主目录的基本目录
+- `-c, --comment COMMENT`：新用户的GECOS字段 
+- `-d，--home-dir HOME_DIR`：指定新用户的home目录
+- `-D, --defaults`：打印或更改默认useradd配置
+- `-e, --expiredate EXPIRE_DATE`：新用户的过期日期
+- `-f, --inactive INACTIVE`：新帐户的密码不活动
+- `-g, --gid GROUP`：新用户的首要组名或组ID
+- `-G, --groups GROUPS`:新帐户的补充组列表
+- `-h, --help`：显示帮助信息并退出
+- `-k, --skel SKEL_DIR`：使用此备用框架目录
+- `-K, --key KEY=VALUE`：覆盖`/etc/login.defs`默认值
+- `-l, --no-log-init`：不要将用户添加到lastlog和faillog数据库
+- `-m, --create-home`：创建新用户的home目录
+- `-M, --no-create-home`：不创建新用户的home目录
+- `-N, --no-user-group`：不创建与用户同名的组
+- `-o, --non-unique`：允许创建具有重复（非唯一）UID的用户
+- `-p, --password PASSWORD`：新用户的加密密码（/etc/shadow里面密码）
+- `-r, --system`：创建系统帐户
+- `-R, --root CHROOT_DIR`：要chroot到的目录
+- `-P, --prefix PREFIX_DIR`：`/etc/*`文件所在的前缀目录
+- `-s, --shell SHELL`：新用户的登录shell
+- `-u, --uid UID`：新用户的用户ID
+- `-U, --user-group`：创建和用户同名的组
+- `-Z, --selinux-user SEUSER`：对SELinux用户映射使用特定的SEUSER
+
 ### 用户权限
 创建`/var/ftp/pub`目录，按以下要求配置目录权限：
 - `/var/ftp/pub`目录的所有者为root

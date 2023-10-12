@@ -130,6 +130,7 @@ rgreq -o move <RG name>
 - `lock`：锁定资源组，锁定后保持当前状态不自动化切换
 - `unlock`：解锁资源组
 
+rgreq命令官方文档：[ TSA rgreq](https://www.ibm.com/docs/en/tsafm/4.1.1?topic=reference-rgreq#rgreq)
 ### 集群配置
 创建集群必须两个步骤：
 ```sh
