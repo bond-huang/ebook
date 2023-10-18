@@ -121,6 +121,22 @@ Linux 4.18.0-193.14.2.el8_2.x86_64 (centos82)   09/16/2023      _x86_64_        
 - `-V`或`--version`：输出版本并退出
 
 #### vmstat命令使用示例
+查看事件记录数据统计信息：
+```
+[root@centos82 ~]# vmstat -s
+      1870156 K total memory
+      1088232 K used memory
+      1187592 K active memory
+       266024 K inactive memory
+        83212 K free memory
+            0 K buffer memory
+       698712 K swap cache
+    ......
+   2543843634 interrupts
+   3307181057 CPU context switches
+   1692111285 boot time
+     39000160 forks
+```
 每隔2秒显示3次统计信息：
 ```
 [root@centos82 ~]# vmstat -a 2 3

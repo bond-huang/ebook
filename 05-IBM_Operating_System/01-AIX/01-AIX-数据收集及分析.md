@@ -5,7 +5,8 @@ AIX系统安装在Power系列小型机上，硬件故障大多数也会记录在
 
 硬件类型日志收集具体可以参考：[Power-小型机数据收集](https://bond-huang.github.io/huang/01-IBM_Power_System/02-Power_System/01-Power-%E5%B0%8F%E5%9E%8B%E6%9C%BA%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html)
 
-## 系统日志收集
+## 系统日志
+### 系统日志收集
 命令`snap`是AIX系统中收集系统信息和配置最常用的命令。
 最常用的就是`snap -gc`，其中参数`-c`是打包压缩成.Z文件，
 收集需要条件：
@@ -30,6 +31,9 @@ AIX系统安装在Power系列小型机上，硬件故障大多数也会记录在
 - `-t`：收集网络相关信息
 
 命令`snap`更多用法可以参照官方介绍：[AIX snap命令介绍](https://www.ibm.com/support/knowledgecenter/zh/ssw_aix_72/s_commands/snap.html)
+
+### 系统日志查看
+使用`NormalizeSnap.sh`可以分析snap日志，暂时没有使用过，脚本代码地址：[NormalizeSnap.sh](https://adamssystems.nl/listings/NormalizeSnap.sh.html)。
 
 ## 多路径软件数据收集
 连接外接存储并且使用多路径，当出现路径问题时候，需要收集多路径软件相关信息。

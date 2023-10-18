@@ -12,4 +12,4 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 [IBM 支持团队](https://www.ibm.com/mysupport/s/?language=zh_CN)
 
 ## 内容
-- [V7000-基础操作](https://gitbook.big1000.com/03-IBM_Storage_System/03-Storwize_Storage/01-V7000-%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C.html)
+- [Storwize-基础操作](https://gitbook.big1000.com/03-IBM_Storage_System/03-Storwize_Storage/01-Storwize-%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C.html)

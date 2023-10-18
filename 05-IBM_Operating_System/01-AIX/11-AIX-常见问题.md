@@ -276,6 +276,29 @@ chdev -l sys0 -a ncargs=64
 - [IV54476: J2 FILESYSTEM GETS CORRUPTED AFTER ROLLBACK OF EXTERNAL SNAPSHOT APPLIES TO AIX 6100-09](https://www.ibm.com/support/pages/apar/IV54476?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
 - [IV57152: J2 FILESYSTEM GETS CORRUPTED AFTER ROLLBACK OF EXTERNAL SNAPSHOT APPLIES TO AIX 7100-02](https://www.ibm.com/support/pages/apar/IV57152?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
 
+## 网络问题
+### IP配置问题
+&#8195;&#8195;配置的IP重启后没有了，可能是ifconfig命令配置的，不会写入ODM库里面，当然也有可能是其他原因。使用`mktcpip`命令配置的IP才会在`lsattr`里面查看到，才会写入ODM库。例如`mktcpip`命令配置en0查看属性可以看到IP信息：
+```sh
+lsattr -El en0
+```
+查询ODM库信息：
+```sh
+odmget -q name=en0 CuAt
+```
+直接筛选出IP地址：
+```sh
+lsattr -E -l en0 -F "value" -a netaddr
+```
+直接筛选出掩码信息：
+```sh
+lsattr -E -l en0 -F "value" -a netmask
+```
+如果是`mktcpip`命令重启后依旧没有排查思路：
+- 配置后使用上述命令查看信息是否正常写入，如果没有，可能是bug或系统问题或网络设备问题导致
+- 检查`/etc/rc.net.serial`文件，里面会查询网卡配置，获取IP掩码的信息启动时候进行配置，如果上面命令都查看不到信息，这个文件里面的命令也不会获取IP信息
+- 检查/`etc/inittab`文件，是否有自定义的启动项影响IP配置
+
 ## 其它问题
 ### 错误代码0403-059
 执行某些命令时候会收到`0403-059`报错，示例如下：

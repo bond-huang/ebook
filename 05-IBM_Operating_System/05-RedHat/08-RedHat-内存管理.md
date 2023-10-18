@@ -48,6 +48,8 @@ crontab -e
 ```
 [root@centos82 ~]# cat /proc/sys/vm/min_free_kbytes
 45056
+[root@centos82 ~]# sysctl -a |grep "min_free_kbytes"
+vm.min_free_kbytes = 45056
 ```
 `vfs_cache_pressure`查看方法：
 ```

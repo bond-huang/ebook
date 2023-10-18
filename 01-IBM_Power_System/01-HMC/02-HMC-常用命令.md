@@ -4,6 +4,7 @@
 官方参考链接：
 - [HMC commands](https://www.ibm.com/docs/zh/power9/9040-MR9?topic=interfaces-hmc-commands)
 - [HMC 任务，用户角色，标识和相关联的命令](https://www.ibm.com/docs/zh/power7?topic=POWER7/p7ha1/hmctasksanduserroles.html)
+- [Creating logical partitions by using Create partition option](https://www.ibm.com/docs/en/power9/9223-42S?topic=pt-creating-logical-partitions-by-using-create-partition-option)
 
 ## 常用命令
 ### 管理HMC命令

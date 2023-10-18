@@ -1,6 +1,17 @@
 # SVC-远程拷贝
 SVC远程拷贝(Remote Copy)功能是SVC一项重要功能，可用于数据冗余、数据备份、数据迁移及容灾数据同步等。
+## 伙伴关系
+参考链接：[Remote-copy port groups](https://www.ibm.com/docs/en/sanvolumecontroller/8.2.x?topic=partnerships-remote-copy-port-groups)
+### IP partnerships
+参考链接：
+- [Configuring IP partnerships ](https://www.ibm.com/docs/en/sanvolumecontroller/8.2.x?topic=configuring-ip-partnerships)
+- [Intersite link planning](https://www.ibm.com/docs/en/sanvolumecontroller/8.2.x?topic=partnerships-intersite-link-planning)
+- [IP partnership performance best practices](https://www.ibm.com/docs/en/sanvolumecontroller/8.2.x?topic=partnerships-ip-partnership-performance-best-practices)
+- [mkippartnership](https://www.ibm.com/docs/en/flashsystem-9x00/8.3.x?topic=commands-mkippartnership)
+- [IP partnership configuration](https://www.ibm.com/docs/en/sanvolumecontroller/8.2.x?topic=partnerships-ip-partnership-configuration)
+- [IP partnership requirements](https://www.ibm.com/docs/en/sanvolumecontroller/8.2.x?topic=partnerships-ip-partnership-requirements)
 
+## 远程拷贝
 ### 拷贝模式
 SVC提供了三种一致性拷贝模式：
 - 高速镜像：采用数据实时同步方式
@@ -31,16 +42,16 @@ SVC提供了三种一致性拷贝模式：
 - 可以选择创建新的或者添加新的卷（此卷必须与关系中的其它卷在同一个I/O组，并且具有相同的容量，无法将改卷映射给主机，或者在其它拷贝服务中使用）。
 - 同样在辅助SVC端也要创建同样的辅助全局变更卷，才可以启动一致性组。
 
-### 一致性组相关命令
+## 一致性组相关命令
 有时候需要用到一些命令去查看或者编辑一致性组关系，用的很少，简单记录几个。
-##### 查看一致性组
+### 查看一致性组
 查看所有及指定某一个查看的命令，不知道ID先查看所有：
 ```
 lsrcconsistgrp -delim :
 lsrcconsistgrp -delim : rc_consist_group_id
 ```
 说明：rc_consist_group_id是一致性组的ID
-##### 创建一致性组
+### 创建一致性组
 创建一致性组及往一致性组里面添加关系：
 ```
 mkrcconsistgrp -name new_name -cluster cluster_id
@@ -52,7 +63,7 @@ chrcrelationship -consistgrp consist_group_name rc_rel_id
 - 新的一致性组不包含任何关系，并且处于空状态。
 - consolid_group_name是要为其分配关系的新一致性组的名称，而rc_rel_id是该关系的ID
 
-##### 启动及停止一致性组
+### 启动及停止一致性组
 启动及停止一致性组以及用`-access`参数启用辅助卷的写访问：
 ```
 startrcconsistgrp rc_consist_group_id
@@ -60,14 +71,14 @@ stoprcconsistgrp rc_consist_group_id
 stoprcconsistgrp rc_consist_group_id -access 
 ```
 说明：rc_consist_group_id是一致性组的ID
-##### 删除一致性组
+### 删除一致性组
 删除一致性组（里面没有一致性关系），以及强制删除（不为空，里面还有一致性关系）：
 ```
 rmrcconsistgrp rc_consist_group_id 
 rmrcconsistgrp -force rc_consist_group_id 
 ```
 说明：rc_consist_group_id是一致性组的ID
-##### 更改一致性组
+### 更改一致性组
 全局镜像更改为高速镜像：
 ```
 chrcconsistgrp  -metro rc_consist_group_name
@@ -83,3 +94,5 @@ chrcconsistgrp -global -cyclingmode multi -cycleperiodseconds period rc_consist_
 说明：
 - rc_consist_group_name是要更改的一致性组的名称
 - 更改后所有新设置都适用于一致性组内的所有关系
+
+## 待补充

@@ -14,6 +14,9 @@ IBM Power System是采用Power处理器的商用服务器，通常称为Power小
 
 常用链接：
 - [Power System Recommendations](https://esupport.ibm.com/customercare/flrt/power#:~:text=Power%20System%20Recommendations%20Build%20a%20recommendation%20report%20for,to%20verify%20the%20current%20health%20of%20a%20system.)
+- [Planning for model 9406-550, 9113-550, OpenPower 720 (9124-720), and 9133-55A server specifications](https://www.ibm.com/docs/en/power6?topic=ss-planning-model-9406-550-9113-550-openpower-720-9124-720-9133-55a-server-specifications)
+- [Locations — model 55x and OpenPower 720](https://www.ibm.com/docs/en/power5?topic=locations-model-55x-openpower-720)
+- [Power 5 System parts](https://www.ibm.com/docs/en/power5?topic=catalog-system-parts#partssystem__partssystem_power)
 
 ## 内容
 
