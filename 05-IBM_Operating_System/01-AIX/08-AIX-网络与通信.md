@@ -24,6 +24,12 @@ chdev -l inet0 -a route=net,-hopcount,0,,,,,,-static,11.18.18.118,192.168.100.25
 ```sh
 chdev -l inet0 -a delroute=net,-hopcount,0,,0,192.168.100.254
 ```
+## 网络管理
+### 网络trace
+收集en0上端口22的trace，写入telnet.cap文件，命令示例：
+```sh
+tcpdump -i en0 -w telnet.cap -s 0 host 192.168.100.2 and port 22
+```
 ## 待补充
 
 nslookup

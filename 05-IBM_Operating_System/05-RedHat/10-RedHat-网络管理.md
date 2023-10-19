@@ -36,4 +36,12 @@ Ncat: 0 bytes sent, 0 bytes received in 0.01 seconds.
 ```sh
 iptables -L
 ```
+## 网络抓包
+### Wrieshark工具
+收集eth0网口上到指定主机22端口上的数据包信息，并写入指定文件：
+```sh
+tcpdump -i eth0 host 192.168.100.2 and dst port 22 -w wrieshark.cap
+```
+&#8195;&#8195;然后从服务器传出文件，通过Wrieshark打开，进行分析。Windows和Linux系统可以直接安装对应版本进行使用，如果没安装传出到有Wrieshark的机器查看分析。官方网站：[https://www.wireshark.org/](https://www.wireshark.org/)。
+
 ## 待补充

@@ -198,6 +198,22 @@ ns160       valid_lft 1748sec preferred_lft 1748sec
 total 4
 -rw-r--r--. 1 root root 315 May 29 14:11 ifcfg-ens160
 ```
+### 网络端口问题
+#### 端口时通时不通
+&#8195;&#8195;A和B服务器要访问C的9999端口，系统层面均没有防火墙配置，C的端口正常监听状态，A到C时通时不通，B到C没问题正常访问，可以确认或排除的点：
+- 对端服务器C的端口应该正常
+- 大概率是网络层面有限制，例如路由对数据包进行了过滤
+
+排查确认思路：
+- B分区上抓包，命令：`tcpdump -i eth0 host <C IP> and dst port 9999 -w telnetB.cap`
+- B分区上对C的端口进行Telnet：`telnet <C IP> 9999`，分多次，哪些通了哪些没通记录
+- C分区上抓包，命令：`tcpdump -i eth0 host <C IP> -w telnetC.cap`
+- C分区上查看B的哪些端口连接到了9999端口
+
+将两个cap文件使用Wrieshark工具分析，如果是以下现象就是网络层面限制了：
+- B上没连上C的端口发送数据包进行了重传：`[TCP Retransmission]`，记录这些端口
+- C上只看到B连上的端口数据包，telnet没通的端口完全没有信息
+
 ### 网关问题
 #### Network is unreachable
 使用ping命令报错，示例如下：
