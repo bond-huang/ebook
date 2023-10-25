@@ -4,8 +4,8 @@
 - [DS8880 Command-line interface](https://www.ibm.com/docs/en/ds8880/8.5.4?topic=reference-command-line-interface)
 
 ## 登录使用
-### MC上使用
-在MC上的空白处右键，既有打开DSCLI选项，点击打开输入用户密码即可管理此DS8000存储。
+### HMC上使用
+在HMC上的空白处右键，既有打开DSCLI选项，点击打开输入用户密码即可管理此DS8000存储。
 ### PC终端
 &#8195;&#8195;从IBM fixcentral中下载DSCLI安装后，运行程序，输入`dscli`命令后根据提示输入IP地址、用户名及密码即可连上对于的DS8000存储，登录成功后会有存储名称提示，注意核对序列号避免出错。
 ## 常用命令
@@ -58,6 +58,10 @@ E980PRD_IBASE 1001 Online Normal Normal 2107-099 FB 520PV P0 70.0 75.2 146800640
 E980PRD_IASP 1200 Online Normal Normal 2107-A04 FB 520P P0 65.7 70.6 137822208
 E980PRD_IASP 1201 Online Normal Normal 2107-A04 FB 520P P0 65.7 70.6 137822208
 ```
+查看指定的volgrp的卷信息：
+```
+dscli> lsfbvol -volgrp v3
+```
 命令`lsddm`，示例如下：
 ```
 dscli> lsddm
@@ -103,6 +107,10 @@ All CKD V10 FICON/ESCON All
 ...
 All Fixed Block-512 V20 SCSI All
 All Fixed Block-520 V30 OS400 All
+```
+命令`showvolgrp`可以查看volgrp里面的卷ID：
+```
+dscli> showvolgrp v3
 ```
 ### 修改类命令
 

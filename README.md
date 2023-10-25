@@ -1,5 +1,5 @@
 
-# Welcome to Bond's ebook!
+# <center> Welcome to Bond's ebook!
 [![Build Status](https://app.travis-ci.com/bond-huang/ebook.svg?branch=master)](https://app.travis-ci.com/bond-huang/ebook)
 
 &#8195;&#8195;在GitHub中发现了一个由GitBook构建的Blog，称为Book更恰当，极其简洁，用手机查看也非常方便，甚是喜欢。于是搭建了一个，记录学习笔记，收录知识要点及分享技术经验，手机随时可以访问，方便查阅。
