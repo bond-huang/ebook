@@ -235,4 +235,94 @@ Device             tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
 vda               6.00         0.00        16.00          0         32
 vda1              4.00         0.00        16.00          0         32
 ```
+## 磁盘性能
+### 磁盘性能测试
+#### dd命令
+命令参数说明：
+- `bs=BYTES`：一次读取和写入最多Bytes字节（默认值：512），包括ibs和obs
+- `cbs=BYTES`：一次转换Bytes字节
+- `conv=CONVS`：根据逗号分隔的符号列表转换文件，`CONVS`可以是：
+    - ascii：从EBCDIC到ASCII
+    - ebcdic：从ASCII到EBCDIC
+    - ibm：从ASCII到alternate EBCDIC
+    - block：用cbs大小的空格填充换行终止的记录
+    - unblock：用换行符替换cbs大小记录中的尾随空格
+    - lcase：将大写更改为小写
+    - ucase：将小写更改为大写
+    - sparse：尝试查找而不是写入NUL输入块的输出
+    - swab：交换每对输入字节
+    - sync：用NUL将每个输入块填充到ibs大小；与block或unlock一起使用时，使用空格而不是NUL填充
+    - excl：如果输出文件已存在，则失败
+    - nocreat：不创建输出文件
+    - notrunc：不要截断输出文件
+    - noerror：读取错误后继续
+    - fdatasync：在完成之前物理写入输出文件数据
+    - fsync：同上，还要写元数据
+- `count=N`：仅复制N个输入块
+- `ibs=BYTES`：一次最多读取Bytes字节（默认值：512） 
+- `if=FILE`：从`FILE`而不是stdin读取
+- `iflag=FLAGS`：按照逗号分隔的符号列表读取，`FLAGS`可以是：
+    - append：附加模式（仅对输出有意义；建议使用conv=notrunc）
+    - direct：对数据使用直接I/O，不经过缓存
+    - directory：不是目录的情况下失败
+    - dsync：对数据使用同步I/O
+    - sync：同上，也适用于元数据 
+    - fullblock：累积完整的输入块（仅限iflag）
+    - nonblock：使用非阻塞I/O
+    - noatime：不更新访问时间
+    - nocache：请求删除缓存。参考oflag=sync
+    - noctty：不要从文件中分配控制终端
+    - nofollow：不要接收符号链接
+    - count_bytes：将`count=N`视为字节计数（仅限iflag）
+    - skip_bytes：将`skip=N`视为字节计数（仅限iflag）
+    - seek_bytes：将`seek=N`视为字节计数（仅限oflog）
+- `obs=BYTES`：一次最多写入Bytes字节（默认值：512）
+- `of=FILE`：写入`FILE`而不是stdout
+- `oflag=FLAGS`：按照逗号分隔的符号列表写入，`FLAGS`选项同上
+- `seek=N`：在输出开始时跳过N个obs大小的块
+- `skip=N`：在写入开始时跳过N个ibs大小的块
+- `status=LEVEL`：要打印到stderr的信息的`LEVEL`：
+    - “none”禁止除错误消息之外的所有内容
+    - “noxfer”抑制最终传输统计信息
+    - “progress”显示定期传输统计信息
+
+写测试：
+```sh
+time dd if=/dev/zero of=/data/test bs=64k count=1000000
+```
+示例：
+```
+[root@mongodb06 sa]# time dd if=/dev/zero of=/data/test bs=64k count=1000000
+1000000+0 records in
+1000000+0 records out
+65536000000 bytes (66 GB) copied, 107.921 s, 607 MB/s
+
+real    1m47.929s
+user    0m0.134s
+sys     0m53.222s
+```
+读测试：
+```sh
+time dd if=/data/test of=/dev/null bs=64k count=1000000
+```
+不使用缓存直接写入：
+```sh
+dd if=/dev/zero of=/data/test bs=64k count=1000000 oflag=direct
+```
+不使用缓存直接读取：
+```sh
+dd if=/data/test of=/dev/null bs=64k count=1000000 iflag=direct
+```
+不使用缓存读写测试：
+```sh
+dd if=/data/test of=/data/test1 bs=64k count=1000000 iflag=direct oflag=direct
+```
+在执行到最后执行一次`sync`操作：
+```sh
+dd if=/dev/zero of=/data/test bs=64k count=1000000 conv=fdatasync
+```
+执行每次都会同步写入到磁盘，也就是写入64k到磁盘后再继续下一个
+```sh
+dd if=/dev/zero of=/data/test bs=64k count=1000000 oflag=dsync
+```
 ## 待补充
