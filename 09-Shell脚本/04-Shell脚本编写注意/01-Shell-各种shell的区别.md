@@ -140,5 +140,42 @@ echo $count
 # sh test9.sh
 3
 ```
+### ${}的差异
+Linux的bash中脚本示例：
+```
+vara="thor,batman,hulk"
+[root@centos82 ~]# echo $vara
+thor,batman,hulk
+[root@centos82 ~]# varb=(${vara//,/ })
+[root@centos82 ~]# echo ${varb[@]}
+thor batman hulk
+[root@centos82 ~]# varNumber=${#varb[@]}
+[root@centos82 ~]# echo $varNumber
+3
+```
+说明：
+- `varb=(${vara//,/ })`表示将变量`vara`里面的逗号替换成空格，并组成一个数组赋值给`varb`
+- `echo ${varb[@]}`输出数组里面的值，如果直接`echo $varb`，结果就只有`thor`
+- `varNumber=${#varb[@]}`：
+  - `${var[@]}`用法表示输出数组里面的内容
+  - `${#var}`用法表示输出里面元素的数量，默认间隔是空格
+
+AIX的ksh的差异：
+- 没有`${}`用法，包括上面的`${var//,/ }`,`${var[@]}`及`${#var}`
+- 没有`varb=(vara)`的用法，直接提示括号无法使用
+
+针对上面用法，如果不考虑varb作为一个数组后期用法，AIX ksh中可以使用以下替代：
+```sh
+vara="thor,batman,hulk"
+varb=`echo $vara |sed 's/,/ /g'`
+varNumber=`echo $varb |awk '{print NF}'`
+```
+如果只需要字段数量，也就是3这个结果，替换代码：
+```sh
+vara="thor,batman,hulk"
+varNumber=`echo $vara -F , |awk '{print NF}'`
+```
+&#8195;&#8195;以上只是根据字面需求进行替换，实际还需要结合上下文需求。最好的办法还是直接在AIX中下载bash，AIX的bash IBM官方下载地址：[Bash 5.2.15 for aix](https://public.dhe.ibm.com/aix/freeSoftware/aixtoolbox/RPMS/ppc/bash/bash-5.2.15-1.aix7.1.ppc.rpm)。
+
 ### 其它差异
 AIX7.1.4.3中没有mktemp命令，没有lsof命令，可以单独安装。

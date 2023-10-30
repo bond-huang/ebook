@@ -77,4 +77,6 @@ PDF文档链接：
 # startsrc -s sshd   
 # stopsrc -s sshd
 ```
+### 安装bash
+AIX的bash官方下载地址：[Bash 5.2.15 for aix](https://public.dhe.ibm.com/aix/freeSoftware/aixtoolbox/RPMS/ppc/bash/bash-5.2.15-1.aix7.1.ppc.rpm)
 ### 待补充

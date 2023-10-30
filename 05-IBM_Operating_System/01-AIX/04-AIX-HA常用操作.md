@@ -302,7 +302,24 @@ to force this device to be used anyway.
 mkvdev -vdev hdisk7 -vadapter vhost3 -dev vtscsi8 -f
 ```
 &#8195;&#8195;磁盘使用命令`cfgmgr`扫描不回来，停掉备机test1的HA，重启系统，重启后hdisk3恢复，并且vg信息也有。再次用命令`rmdev -Rdl hdisk3`删掉磁盘，`cfgmgr`扫描回来后依然正常。
-
+#### VG无法varyon
+hacmp.out日志中报错示例：
+```
+:cl_pvo:datavg1[16] varyonvg -n -c -P datavg
+0516-949 varyonvg: This volume group not created concurrent capable.
+:cl_pvo:datavg[17] rc=1
+:cl_pvo:datavg[18] : exit status of varyonvg -n -c -P datavg is: 1
+:cl_pvo:datavg[20] (( 1 == 20 ))
+:cl_pvo:datavg[34] (( 1 != 0 ))
+:cl_pvo:datavg[35] cl_log 296 'cl_pvo: Failed to vary on volume group datavg in passive mode' cl_pvo datavg
+:cl_log[+50] version=1.10
+:cl_log[+94] SYSLOG_FILE=/var/hacmp/adm/cluster.log
+***************************
+Oct 29 2023 19:14:15 !!!!!!!!!! ERROR !!!!!!!!!!
+***************************
+Oct 29 2023 19:14:15 cl_pvo: Failed to vary on volume group datavg in passive mode
+```
+&#8195;&#8195;问题原因是`This volume group not created concurrent capable`，检查vg的配置，确认vg是concurrent的配置，修改vg属性时候在HACMP菜单的vg操作里面进行，配置会同步到另外的节点。
 ### 宕机问题
 宕机原因参考链接：
 - [TWT-如何处理hacmp中dms的问题](https://www.talkwithtrend.com/Article/7729)

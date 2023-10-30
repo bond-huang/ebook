@@ -63,7 +63,7 @@ hscroot@hmc:~>chhmc -c xntp -s add -a 192.168.1.32 -i eth0
 hscroot@hmc:~>chhmc -c xntp -s remove mytimeserver.company.com
 ```
 ### 管理受管机器命令
-所有操作都可以在HMC图形化管理界面进行操作，当需要在HMC可以用命令行对受管小型机进行相应配置操作，用命令对查看小型机信息和进行批量配置时候很有用。
+&#8195;&#8195;所有操作都可以在HMC图形化管理界面进行操作，当需要在HMC可以用命令行对受管小型机进行相应配置操作，用命令对查看小型机信息和进行批量配置时候很有用。
 ####  mkvterm
 打开受管系统中分区的虚拟终端会话，示例：
 ```shell
@@ -212,6 +212,41 @@ lssysconn -r all -F ipaddr:state
 # List utilization data for logical partitions 
 ~> lslparutil -r lpar
 ```
+#### chsysstate
+chsysstate命令用户修改系统或分区状态：
+```shell
+# 打开受管系统的电源，如果不是BMC托管系统，则自动启动分区
+chsysstate -m <managed system> -r sys -o on 
+# 使用指定profile启动受管系统
+chsysstate -m <managed system> -o onsysprof -f <profile name>
+# 正常关闭受管系统
+chsysstate -m <managed system> -r sys -o off
+# 快速关闭受管系统
+chsysstate -m <managed system> -r sys -o off --immed
+# 重启受管系统
+chsysstate -m <managed system> -r sys -o off --immed --restart 
+# 重建受管系统
+chsysstate -m <managed system> -r sys -o rebuild
+# 恢复受管系统的分区数据
+chsysstate -m <managed system> -r sys -o recover 
+# 启动FSP切换：
+chsysstate -m <managed system> -r sys -o spfailover
+# 使用当前配置激活分区
+chsysstate -m <managed system> -r lpar -o on -n <partition name>
+# 使用当前配置激活多个分区
+chsysstate -m <managed system> -r lpar -o on -n <partition1>,<partition2>,<partition3>
+# 指定profile激活分区
+chsysstate -m <managed system> -r lpar -o on -n <partition name> -f <profile name>
+# 关闭分区ID为1的分区
+chsysstate -m <managed system> -r lpar -o shutdown --id 1 
+# 发出操作系统关闭命令立即关闭分区
+chsysstate -m <managed system> -r lpar -o osshutdown -n <partition name> --immed
+# 发出操作系统关闭命令立即关闭分区然后重新启动
+chsysstate -m <managed system> -r lpar -o osshutdown -n p1 --restart
+# 立即重启分区ID为1的分区
+chsysstate -m <managed system> -r lpar -o shutdown --id 1 --immed --restart 
+```
+命令更多用法参考官方文档：[chsysstate - change partition state or system state](https://www.ibm.com/docs/en/power9?topic=commands-chsysstate)
 ## 使用示例
 查看指定受管设备的lpar信息：
 ```shell
