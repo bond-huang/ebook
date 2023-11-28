@@ -47,4 +47,46 @@ testusr3:x:1014:1014::/home/testusr3:/bin/bash
 - 注意在脚本中，`grep`后面要加上`-w`进行完全匹配，否则christ和christb这种用户`grep`后结果是两个
 - 脚本没有考虑用户目录的权限，创建后是默认权限，可能与原分区权限不一样，需要注意
 
+### 用户访问问题
+#### 检查是否免密
+批量检查iplist1文件中IP是否免密登录：
+```sh
+#!/bin/bash
+while IFS= read -r ip
+do
+	ssh -o ConnectTimeout=3 -o BatchMode=yes $ip 'exit' > /dev/null 2>&1
+	if [ $? -eq 0 ]
+	then
+		echo "$ip" >> iplist3
+	else
+		echo "$ip" >> iplist4
+	fi
+done < iplist1
+```
+脚本说明：
+- iplist1文件中每一行是一个主机系统的IP地址
+- 免密的IP和不免密的分别存放在当前目录的不同文件中
+
+## 网络相关
+### 网络端口
+#### 检查端口是否通
+脚本示例如下：
+```sh
+#!/bin/bash
+cat ~/.ssh/known_hosts |gawk '{print $1}'|uniq > hostlist
+while IFS= read -r ip
+do
+	nc -z -w 1 "$ip" 22 &> /dev/null
+	if [ $? -eq 0 ]
+	then
+		echo "$ip" >> iplist1
+	else
+		echo "$ip" >> iplist2
+	fi
+done < hostlist
+```
+脚本说明：
+- 脚本检查是known_hosts文件中的所有IP是否22端口能通，改成一个ip list也行
+- 通的IP和不通的分别存放在当前目录的不同文件中
+
 ## 待补充
