@@ -31,6 +31,7 @@ supportshow|查看交换机诊断信息
 fabricShow|显示fabric信息及级联信息
 nsshow|查看当前交换机设备信息
 nsallshow|查看fabric中的所有设备信息
+nszoneshow -wwn &#60;wwn&#62;|查看此wwn号在整个级联集群中配置
 
 ### zone配置相关
 创建一个zone的基本步骤：
