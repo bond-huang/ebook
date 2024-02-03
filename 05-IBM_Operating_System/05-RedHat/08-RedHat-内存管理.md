@@ -14,7 +14,7 @@
 ```
 ym.drop_caches = 1
 ```
-然后执行`sysctl -p`命令，也是一次性操作。
+然后执行`sysctl -p`命令使配置生效，也是一次性操作。
 #### 自动清理
 ##### 定时任务清理
 每天自动清理，首先写个脚本`clear_cache.sh`：
@@ -56,4 +56,27 @@ vm.min_free_kbytes = 45056
 [root@centos82 ~]# sysctl -a |grep "vfs_cache_pressure"
 vm.vfs_cache_pressure = 100
 ```
+临时配置方法：
+```sh
+sysctl vm.min_free_kbytes = 1048576
+```
+修改/etc/sysctl.conf文件加入以下行：
+```sh
+vm.min_free_kbytes = 1048576
+```
+然后运行`sysctl -p`使配置永久生效。
+### 内存与swap
+&#8195;&#8195;vm.swappiness值越大表示积极使用swap，越小表示积极使用物理内存。为0时表示最大限度使用物理内存，为100时表示积极使用swap。配置查看方法：
+```sh
+sysctl -a |grep vm.swappiness
+```
+临时调整方法：
+```sh
+sysctl vm.swappiness = 10
+```
+修改/etc/sysctl.conf文件加入以下行：
+```sh
+vm.swappiness = 10
+```
+然后运行`sysctl -p`使配置永久生效。
 ## 待补充

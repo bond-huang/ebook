@@ -257,6 +257,34 @@ PermitRootLogin yes
 PasswordAuthentication yes
 #PermitEmptyPasswords no
 ```
+#### 用户密码过期问题
+登录时候提示：
+```
+响应:	530 Login incorrect.
+```
+查看用户属性：
+```
+[root@host1 ~]# chage -l u01600
+Last password change                                    : Oct 11, 2023
+Password expires                                        : Jan 09, 2024
+Password inactive                                       : never
+Account expires                                         : never
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 90
+Number of days of warning before password expires       : 7
+```
+修改为永不过期示例：
+```
+[root@host1 ~]# chage -M 99999 u01600
+[root@host1 ~]# chage -l u01600
+Last password change                                    : Oct 11, 2023
+Password expires                                        : never
+Password inactive                                       : never
+Account expires                                         : never
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 99999
+Number of days of warning before password expires       : 7
+```
 #### 找不到匹配的host key算法
 &#8195;&#8195;OpenSSH版本过高，而shell终端上没有对应的加密算法。例如RHEL9.0默认是OpenSSH_8.7p1版本。需要升级shell终端，例如使用Xshell6版本，或者使用其它版本shell终端。
 ## 登录问题

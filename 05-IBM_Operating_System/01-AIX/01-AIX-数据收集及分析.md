@@ -120,4 +120,134 @@ pax: snap.pax : 0511-626 An invalid file header has been read.
 pax: snap.pax :          Skipping to the next file...ls
 ```
 解压报错了，并且没一会虚拟AIX把我电脑搞蓝屏，以后再示例。
+## 数据收集脚本
+### 常用命令输出收集
+系统数量比较多，需要用到一个对所有系统免密的跳板机，检查是否免密的脚本：
+```sh
+#!/bin/bash
+for ip in `cat jy_aix_all.list`
+do
+	ssh -o ConnectTimeout=3 -o BatchMode=yes $ip 'exit' > /dev/null 2>&1
+	if [ $? -eq 0 ]
+	then
+		echo "$ip" >> aix.list
+	else
+		echo "$ip" >> aix_nopwd.list
+	fi
+done
+```
+收集数据脚本，例如名为aixck.sh：
+```sh
+#!/bin/ksh
+echo "###### hostname ######"
+hostname
+echo "###### uname -Mu ######"
+uname -Mu
+echo "###### oslevel -s ######"
+oslevel -s
+echo "###### uptime ######"
+uptime
+echo "###### ntpq -p ######"
+ntpq -p
+echo "###### ifconfig -a ######"
+ifconfig -a
+echo "###### netstat -rn ######"
+netstat -rn
+echo "###### lspv ######"
+lspv
+echo "###### lsps -a ######"
+lsps -a
+echo "###### lspath ######"
+lspath
+echo "###### df -g ######"
+df -g
+echo "###### crontab -l ######"
+crontab -l |sed -n '/^#/!p'
+echo "###### cat /etc/hosts ######"
+cat /etc/hosts |sed -n '/^#/!p'
+echo "###### lsvg -p rootvg ######"
+lsvg -p rootvg
+echo "###### lsvg -l rootvg ######"
+lsvg -l rootvg
+echo "###### lsvg rootvg ######"
+lsvg rootvg
+for vg in `lsvg -o |grep -v rootvg`
+do 
+	echo "###### lsvg -p $vg ######"
+	lsvg -p $vg
+	echo "###### lsvg -l $vg ######"
+	lsvg -l $vg
+	echo "###### lsvg $vg ######"
+	lsvg $vg
+done
+for fscsi in `lsdev |grep fscsi|awk '{print $1}'`
+do 
+	echo "###### lsattr -El $fscsi ######"
+	lsattr -El $fscsi
+done
+for hdisk in `lspv |awk '{print $1}'`
+do 
+	echo "###### lsattr -El $hdisk ######"
+	lsattr -El $hdisk
+done
+for dev in `lsdev -Cc adapter |grep -E "Virtual SCSI|Virtual Fibre|Virtual I/O"|awk '{print $1}'`
+do 
+	echo "###### lsattr -El $dev ######"
+	lsattr -El $dev
+done
+echo "###### iostat ######"
+iostat
+echo "###### iostat -d 1 3 ######"
+iostat -d 1 3 
+echo "###### iostat -t 1 5 ######"
+iostat -t 1 5
+echo "###### iostat -atd 1 5 ######"
+iostat -atd 1 5
+echo "###### vmstat ######"
+vmstat
+echo "###### vmstat 1 5 ######"
+vmstat 1 5 
+echo "###### svmon -G ######"
+svmon -G
+echo "###### prtconf ######"
+prtconf
+echo "###### lscfg -vp ######"
+lscfg -vp
+echo "###### errpt ######"
+errpt
+```
+使用跳板机将脚本传输到所有系统，脚本名为aixscp.sh:
+```sh
+#!/bin/bash
+for ip in `cat aix.list`
+do	
+    scp aixck.sh $ip:/tmp/
+done
+```
+数据收集脚本，脚本名为aixcheck.sh:
+```sh
+#!/bin/bash
+for ip in `cat aix.list`
+do	
+	hostname=`ssh $ip "hostname"`
+	ssh $ip "sh /tmp/aixck.sh " \
+	> /root/ces/AIX/result/"$hostname"_"$ip"_`date +%Y%m%d`
+done
+```
+后台运行：
+```sh
+nohup sh -x aixcheck.sh &
+```
+传输和收集可以何在一起：
+```sh
+#!/bin/bash
+for ip in `cat aix.list`
+do	
+    scp aixck.sh $ip:/tmp/
+	hostname=`ssh $ip "hostname"`
+	ssh $ip "sh /tmp/aixck.sh " \
+	> /root/ces/AIX/result/"$hostname"_"$ip"_`date +%Y%m%d`
+done
+```
+### 批量数据分析
 ## 待补充

@@ -156,7 +156,7 @@ id: audit "/usr/sbin/audit start # System Auditing"
 ```
 # sysdumpdev -P -p /dev/lg_dumplv
 ```
-如果直接修改磁盘状态是不成功的(即使修改了dump配置）：
+如果直接修改磁盘状态是不成功的(即使修改了dump配置)：
 - smit chpv
 - Change Characteristics of a Physical Volume
 - Physical volum STATE from not active to active
@@ -164,6 +164,44 @@ id: audit "/usr/sbin/audit start # System Auditing"
 ### Migratepv命令失败
 参考链接：[IBM Support Migratepv command fail](https://www.ibm.com/support/pages/migratepv-command-fail)
 
+### rootvg被锁
+执行命令时候提示rootvg被锁：
+```
+# lsvg -l rootvg
+0516-1201 lsvg: Warning: Volume group rootvg is locked. This command
+        will continue retries until lock is free.  If lock is inadvertent
+        and needs to be removed, execute 'chvg -u rootvg'.
+```
+执行解锁命令发现卡住半天没反应：
+```
+# chvg -u rootvg
+
+```
+查看进程发现很多lsvg进程卡住了：
+```
+# ps -ef |grep vg
+    root  7077894 10485878   0   Mar 08      -  1:35 /usr/sbin/lsvg -p rootvg
+    ......
+    root 41746566 41091104   0   Jun 04      -  1:09 /usr/sbin/lsvg -p rootvg
+    root 43122796 41287680   0 17:04:24  pts/5  0:00 /bin/ksh /etc/chvg -u rootvg
+```
+kill 掉除chvg的所有
+```
+# kill -9 41746566
+# ps -ef |grep vg
+    root 38863020 22413336   0 17:12:46  pts/6  0:00 grep vg
+    root 43122796 41287680   0 17:04:24  pts/5  0:00 /bin/ksh /etc/chvg -u rootvg
+```
+但是chvg命令还是没反应，继续kill掉chvg：
+```
+# kill -9 43122796
+```
+可以看到被干掉了：
+```
+# chvg -u rootvg
+^CKilled
+```
+再去执行lsvg相关命令就可以使用了。
 ## 引导问题
 ### savebase failed
 当解除rootvg镜像时候报错：

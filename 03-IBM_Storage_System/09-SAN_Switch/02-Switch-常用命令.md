@@ -67,7 +67,7 @@ cfgDisable|disable zone配置
 configUpload|备份配置
 configDownload|恢复配置
 
-以wwnzone为示例,使用格式如下：
+以wwnzone为示例,配置zone使用格式如下：
 ```shell
 aliCreate "DE4000H_A_port2","20:22:d0:39:ea:1a:de:71"
 aliCreate "DE4000H_B_port2","20:22:d0:39:ea:1a:9d:61"
@@ -78,10 +78,17 @@ zoneCreate "DE4000H_vios2","DE4000H_A_port2;DE4000H_B_port2;vios1_fcs1;vios2_fcs
 cfgAdd "cfg_A","DE4000H_vios1;DE4000H_vios2"
 cfgEnable "cfg_A"
 cfgSave
-```
-注意：      
+```     
 &#8195;&#8195;建议先cfgEnable然后cfgSave。先cfgSave的话，会有提示defind和effective的配置会不一致，并且在错误日志里面有warning：defind and effective zone configurations are inconsistent。
 
+删除一个zone的步骤示例：
+```sh
+cfgremove "cfg_A","nimble_node1_SVC;nimble_node2_SVC"
+zonedelete "nimble_node1_SVC"
+zonedelete "nimble_node2_SVC"
+cfgsave
+cfgenable "cfg_A"
+```
 参考链接：[Configuring zoning](https://www.ibm.com/docs/en/powervc/2.1.1?topic=storage-configuring-zoning)
 ### 修改配置
 常用对交换机配置修改命令如下：
