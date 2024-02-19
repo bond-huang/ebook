@@ -144,4 +144,24 @@ do
 done
 ```
 ### 批量数据分析
+目前只做了抓取文件系统超过70%的脚本，脚本示例：
+```sh
+#!/bin/bash
+for viosfile in `ls ./vioslist`
+do
+  echo "Check $viosfile filesystems"
+  cat ./vioslist/$viosfile |sed -n '/###### df -g ######/,/###### lsmap -all -net ######/{//!p}'|sed -n '/[0-9]%/p' > tempfile
+  while IFS= read -r line
+  do
+	pct=`echo $line |awk '{print $4}'|sed -n '/[0-9]%/p'|sed 's/[^0-9]//g'`
+	if [[ $pct =~ ^[0-9]+$ ]]
+	then 
+		if [ $pct -ge 70 ]
+		then 
+			echo $line|awk '{print $7,$4}'
+		fi
+	fi
+  done < tempfile
+done > viosresult
+```
 ## 待补充

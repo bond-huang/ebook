@@ -196,4 +196,7 @@ Installing collected packages: click
 Successfully installed click-7.1.2
 ```
 &#8195;&#8195;对于PIP其它安装方法及常用命令，在本ebook的章节[Python运维-基础知识](https://ebook.big1000.com/14-Python%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/01-Python%E8%BF%90%E7%BB%B4-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01-Python%E8%BF%90%E7%BB%B4-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html?h=pip)中有详细的介绍和示例演示。
+
+## NTP配置
+参考链接：[Linux系统之NTP服务器配置方法](https://blog.csdn.net/jks212454/article/details/121616176)
 ## 待补充

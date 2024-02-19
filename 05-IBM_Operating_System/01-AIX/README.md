@@ -7,6 +7,14 @@ AIX官方主页：[https://www.ibm.com/cn-zh/it-infrastructure/power/os/aix](htt
 
 AIX产品文档：[https://www.ibm.com/support/knowledgecenter/ssw_aix](https://www.ibm.com/support/knowledgecenter/ssw_aix)
 
+## 安装
+### U盘安装AIX
+IBM 官方参考文档：
+- [Using and taking advantage from USB devices and AIX. ](https://www.ibm.com/support/pages/node/715609)
+- [How to create a bootable USB drive for AIX/VIOS](https://www.ibm.com/support/pages/how-create-bootable-usb-drive-aixvios)
+
+Rufus下载链接：[Rufus Downloads](http://rufus.ie/downloads/#google_vignette)
+
 ## 内容
 - [AIX-数据收集及分析](https://gitbook.big1000.com/05-IBM_Operating_System/01-AIX/01-AIX-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%E5%8F%8A%E5%88%86%E6%9E%90.html)
 - [AIX-常用命令](https://gitbook.big1000.com/05-IBM_Operating_System/01-AIX/02-AIX-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)

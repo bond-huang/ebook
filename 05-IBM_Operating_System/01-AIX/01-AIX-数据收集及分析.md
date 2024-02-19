@@ -250,4 +250,24 @@ do
 done
 ```
 ### 批量数据分析
+目前只做了抓取文件系统超过70%的脚本，脚本示例：
+```sh
+#!/bin/bash
+for aixfile in `ls ./aixlist`
+do
+  echo "Check $aixfile filesystems"
+  cat ./aixlist/$aixfile |sed -n '/###### df -g ######/,/###### crontab -l ######/{//!p}'|sed -n '/[0-9]%/p' > tempfile1
+  while IFS= read -r line
+  do
+	pct=`echo $line |awk '{print $4}'|sed -n '/[0-9]%/p'|sed 's/[^0-9]//g'`
+	if [[ $pct =~ ^[0-9]+$ ]]
+	then 
+		if [ $pct -ge 70 ]
+		then 
+			echo $line|awk '{print $7,$4}'
+		fi
+	fi
+  done < tempfile1
+done > aixresult
+```
 ## 待补充

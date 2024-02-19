@@ -24,3 +24,4 @@ IBM 软件技术支持微信公众号：ibmsupport
 - [Cognos](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/05-Cognos/)
 - [InfoSphere_Data_Replication](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/)
 - [IBM_TSAMP](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/07-IBM_TSAMP/)
+- [08-IBM_Spectrum_Scale](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/08-IBM_Spectrum_Scale/)

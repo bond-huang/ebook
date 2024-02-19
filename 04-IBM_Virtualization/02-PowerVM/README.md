@@ -20,3 +20,4 @@ Virtual I/O Server简称VIOS，即I/O虚拟服务分区，底层是AIX系统；V
 - [PowerVM-IO资源映射](https://gitbook.big1000.com/04-IBM_Virtualization/02-PowerVM/04-PowerVM-IO%E8%B5%84%E6%BA%90%E6%98%A0%E5%B0%84.html)
 - [PowerVM-共享存储池](https://gitbook.big1000.com/04-IBM_Virtualization/02-PowerVM/05-PowerVM-%E5%85%B1%E4%BA%AB%E5%AD%98%E5%82%A8%E6%B1%A0.html)
 - [PowerVM-SSP操作及命令](https://gitbook.big1000.com/04-IBM_Virtualization/02-PowerVM/06-PowerVM-SSP%E6%93%8D%E4%BD%9C%E5%8F%8A%E5%91%BD%E4%BB%A4.html)
+- [PowerVM-系统迁移](https://gitbook.big1000.com/04-IBM_Virtualization/02-PowerVM/07-PowerVM-%E7%B3%BB%E7%BB%9F%E8%BF%81%E7%A7%BB.html)

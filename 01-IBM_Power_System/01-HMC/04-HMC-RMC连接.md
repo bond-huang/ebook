@@ -2,6 +2,17 @@
 ## 简介
 &#8195;&#8195;要执行动态分区操作，需要逻辑分区与硬件管理控制台(HMC)之间的资源监视和控制(RMC)连接。RMC用作AIX和Linux逻辑分区与HMC之间的主通信信道，使用RMC可以配置用于管理普通系统情况的响应操作或脚本；如果不能针对逻辑分区执行添加或除去处理器、内存或I/O设备的操作，需要检查RMC连接是否处于活动状态。
 
+### 参考文档
+官方参考链接：
+- [Which HMC manages this server? ](https://www.ibm.com/support/pages/which-hmc-manages-server-0)
+- [lssvc 命令](https://www.ibm.com/docs/zh/power9?topic=commands-lssvc-command#p9hcg_lssvc)
+- [stopsvc 命令](https://www.ibm.com/docs/zh/power9?topic=commands-stopsvc-command)
+- [Management domain configuration](https://www.ibm.com/docs/en/rsct/3.2?topic=security-management-domain-configuration)
+- [Creating an RSCT management domain](https://www.ibm.com/docs/en/rsct/3.2?topic=managers-creating-rsct-management-domain)
+
+其他参考文档：
+- [Hardware Management Console (HMC ) Explained - UnixMantra](https://www.unixmantra.com/2013/10/hardware-management-console-hmc-explained.html)
+
 ## 验证RMC连接
 需要超级管理员权限。
 ### 查看状态

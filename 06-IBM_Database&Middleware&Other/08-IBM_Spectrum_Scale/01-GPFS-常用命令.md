@@ -1,5 +1,15 @@
 # GPFS-常用命令
 官方命令参考文档：[GPFS 5.1.8 Command reference](https://www.ibm.com/docs/en/storage-scale/5.1.8?topic=command-reference)
+## 常用命令链接
+常用命令官方参考链接：
+- [mmcrfileset command](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=commands-mmcrfileset-command)
+- [mmmount command](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=commands-mmmount-command)
+- [mmdeldisk command](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=commands-mmdeldisk-command)
+- [mmchfs command](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=commands-mmchfs-command#mmchfs)
+- [mmcrfs command](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=commands-mmcrfs-command)
+- [mmadddisk command](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=commands-mmadddisk-command)
+- [mmlsfs command](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=commands-mmlsfs-command)
+
 ## 查看命令
 ### 集群查看
 mmlscluster命令查看集群配置状态示例：
@@ -81,4 +91,5 @@ nfs_nsd6     nsd         512          -1 Yes      Yes   ready         up        
 nfs_nsd7     nsd         512          -1 Yes      Yes   ready         up           system 
 ```
 ## 配置命令
+NSD创建命令：[Create GPFS Network Shared Disks (NSD)](https://www.ibm.com/docs/en/storage-scale/4.2.0?topic=clusters-create-gpfs-network-shared-disks-nsd)
 ## 待补充

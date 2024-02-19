@@ -44,6 +44,7 @@ in System <MANAGED_SYSTEM_NAME>- Unable to connect to Database."
 [When Using HMC GUI you see message "Unable to connect to the Database Error occurred "](https://www.ibm.com/support/pages/when-using-hmc-gui-you-see-message-unable-connect-database-error-occurred)
 
 ## VIOS升级问题
+升级官方参考文档：[VIOS 3.1 - viosupgrade process](https://www.ibm.com/support/pages/vios-31-viosupgrade-process)
 ### root用户被删
 通过updateios命令进行VIOS升级失败，出现类似以下错误： 
 ```
