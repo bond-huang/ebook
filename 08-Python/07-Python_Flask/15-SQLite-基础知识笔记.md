@@ -82,6 +82,25 @@ CREATE TABLE post (
 - [RUNOOB.COM SQLite创建表](https://www.runoob.com/sqlite/sqlite-create-table.html)
 - [W3school SQL CREATE TABLE 语句](https://www.w3school.com.cn/sql/sql_create_table.asp)
 
+### 重置序列值
+注意表里面没有数据了，SQL说明如下：
+```sql
+DELETE FROM sqlite_sequence WHERE name = 'table-name'; -- 删除当前序列值记录
+UPDATE table-name SET id = NULL; -- 清空所有已存在的ID值
+INSERT INTO sqlite_sequence (name, seq) VALUES ('table-name', 0); -- 设置新的起始序列值为0（或其他初始值）
+```
+示例如下：
+```sql
+sqlite> select count(*) from links;
+0
+sqlite> select * from links;
+sqlite> DELETE FROM sqlite_sequence WHERE name = 'links';
+sqlite> UPDATE links SET id = NULL;
+sqlite> INSERT INTO sqlite_sequence (name, seq) VALUES ('links', 0);
+sqlite> INSERT INTO links (maincategory, subcategory, urlname, urllocation) VALUES ('IBM','Power System','PowerE980','e980.com');
+sqlite> select * from links;      
+1|IBM|Power System|PowerE980|e980.com
+```
 ## 常用命令：
 ### 数据库查看命令
 列出数据库的名称及其所依附的文件：
@@ -167,6 +186,18 @@ sqlite> INSERT INTO links VALUES ('78','IBM','Power System','PowerE880','e880.co
 sqlite> SELECT * FROM links WHERE id = 78;
 78|IBM|Power System|PowerE880|e880.com
 ```
+插入多条数据，SQL示例：
+```sql
+INSERT INTO links (maincategory, subcategory, urlname, urllocation) \
+VALUES ('IBM','Power System','PowerE980','e980.com'),('IBM','Power System','PowerE880','e880.com');
+```
+使用示例：
+```sql
+sqlite> INSERT INTO links (maincategory, subcategory, urlname, urllocation) VALUES (
+'IBM','Power System','PowerE980','e980.com'),('IBM','Power System','PowerE880','e880.com');sqlite> SELECT * FROM links;
+281|IBM|Power System|PowerE980|e980.com
+282|IBM|Power System|PowerE880|e880.com
+```
 ## Update语句
 ### 基本语法
 基本语法如下
@@ -236,4 +267,54 @@ sqlite> SELECT count(*) FROM links;
 188
 ```
 2023年10月7日，一共188条，数据编号到了276，少了几十条，原因不明。
+### 恢复数据库
+今天发现数据库里面一条数据都没有了：
+```
+[navusr@centos82 instance]$ sqlite3 nav.sqlite
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter ".help" for usage hints.
+sqlite> SELECT count(*) FROM links;
+0
+```
+进行恢复，首先打开备份数据库，再进行恢复，示例：
+```
+[navusr@centos82 instance]$ sqlite3 backup2310.db
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter ".help" for usage hints.
+sqlite> .restore nav.sqlite
+Error: attempt to write a readonly database
+```
+修改以下权限：
+```
+[root@centos82 instance]# ls -l
+total 128
+-rw-r--r-- 1 root   root   65536 Oct  7 23:23 backup2310.db
+-rw-rw-r-- 1 navusr navusr 65536 Dec 14 19:07 nav.sqlite
+[root@centos82 instance]# chown navusr:navusr backup2310.db
+[root@centos82 instance]# chmod 664 backup2310.db
+[root@centos82 instance]# ls -l
+total 128
+-rw-rw-r-- 1 navusr navusr 65536 Oct  7 23:23 backup2310.db
+-rw-rw-r-- 1 navusr navusr 65536 Dec 14 19:07 nav.sqlite
+```
+恢复失败，以下操作是搞反了，备份的数据也没有了，一定要慎重，不要搞反了：
+```
+[navusr@centos82 instance]$ sqlite3 backup2310.db
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter ".help" for usage hints.
+sqlite> SELECT count(*) FROM links;
+188
+sqlite> .restore nav.sqlite
+sqlite> .quit
+[navusr@centos82 instance]$ sqlite3 nav.sqlite
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter ".help" for usage hints.
+sqlite> SELECT count(*) FROM links;
+0
+sqlite> .quit
+[navusr@centos82 instance]$ ls -l
+total 128
+-rw-rw-r-- 1 navusr navusr 65536 Feb 28 00:32 backup2310.db
+-rw-rw-r-- 1 navusr navusr 65536 Dec 14 19:07 nav.sqlite
+```
 ## 待补充

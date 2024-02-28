@@ -44,4 +44,20 @@ kill %$jobs_id
 - bg：在后台运行作业，可以将后台暂停了的作业在后台继续执行
 - fg：在前台运行作业，可以将后台作业放到前台执行，暂停的也可以
 
+## 数据抓取类型
+### 批量抓取node id
+脚本如下：
+```sh
+#!/bin/bash
+for ip in `cat aix.list`
+do	
+	hostname=`ssh $ip "hostname"`
+	nodeid=`ssh $ip "cat /etc/ct_node_id|head -n 1"`
+	echo "$hostname , $ip , $nodeid" >> nodeidinfo
+done
+```
+脚本说明：
+- 在一个linux系统上执行，需要对所有目标AIX系统免密
+- 文件aix.list里面是目标AIX系统的IP清单
+
 ## 待补充

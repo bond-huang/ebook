@@ -83,8 +83,80 @@ VIOserver1,active,9.200.104.132,1,1,1,1
 
 官方参考文档：[逻辑分区与HMC之间的RMC连接故障诊断](https://www.ibm.com/support/knowledgecenter/zh/POWER7/p7hat/iphatrmctroubleshoot.htm)
 
-lsrsrc IBM.MCP
+## 系统rsct相关
+### rsct相关命令查看
+操作系统上使用lsrsrc命令查看，正常示例：
+```
+# lsrsrc IBM.MCP
+Resource Persistent Attributes for IBM.MCP
+resource 1:
+        MNName            = "10.10.114.202"
+        NodeID            = 1348464137648977727
+        KeyToken          = "HMC666"
+        IPAddresses       = {"10.126.237.123"}
+        ConnectivityNames = {"10.10.114.202"}
+        HMCName           = "7042CR9*686666D"
+        HMCIPAddr         = "10.126.237.123"
+        HMCAddIPs         = "10.126.219.220"
+        HMCAddIPv6s       = ""
+        ActivePeerDomain  = "TESTDB_Clu"
+        NodeNameList      = {"TESTDB2"}
+```
+相关进程查看示例：
+```
+qstcdb1:/#lssrc -a |grep rsct
+ ctrmc            rsct             3801192      active
+ IBM.DRM          rsct_rm          3604726      active
+ IBM.ConfigRM     rsct_rm          3146338      active
+ IBM.HostRM       rsct_rm          3604834      active
+ IBM.MgmtDomainRM rsct_rm          3735902      active
+ IBM.ServiceRM    rsct_rm          4391000      active
+ IBM.StorageRM    rsct_rm          4260500      active
+ IBM.GblResRM     rsct_rm          4850134      active
+ IBM.RecoveryRM   rsct_rm          4784300      active
+ IBM.TestRM       rsct_rm          4260282      active
+ ctcas            rsct                          inoperative
+ IBM.ERRM         rsct_rm                       inoperative
+ IBM.AuditRM      rsct_rm                       inoperative
+ IBM.LPRM         rsct_rm                       inoperative
+```
+rmc domain状态查看：
+```
+# /usr/sbin/rsct/bin/rmcdomainstatus -s ctrmc
 
+Peer Domain Status
+  I A  0xd34ca9a5ea1e37c6  0001  TESTDB1
+  I A  0x849959f09d9ceec6  0003  TESTDB3
+  S S  0xe8a76231700ca2eb  0002  TESTDB2
+
+Management Domain Status: Management Control Points
+  I A  0x12b6b4fd1cebb73f  0001  10.126.37.29
+```
+### 重启RMC服务
+重启步骤如下：
+- 停止RMC守护程序：`# /usr/sbin/rsct/bin/rmcctrl -z`
+- 重新配置必要的信息并启动RMC守护程序：`/usr/sbin/rsct/bin/rmcctrl -A`
+- 启用远程客户端连接：`# /usr/sbin/rsct/bin/rmcctrl -p`
+
+### 刷新配置
+&#8195;&#8195;命令`/usr/sbin/rsct/install/bin/recfgct`可以重新配置rsct，进而刷新rmc连接等，但是Domain在运行状态下无法执行。使用示例：
+```
+testdb1:/#/usr/sbin/rsct/install/bin/recfgct
+Cannot run if an online Peer Domain exists (see output of lsrpdomain).
+For assistance with removing domains, refer to the rmrpnode and rmrpdomain commands.
+testdb1:/#lsrpdomain
+Name       OpState RSCTActiveVersion MixedVersions TSPort GSPort 
+testdb_clu Online  3.1.4.0           Yes           12347  12348  
+```
+重置配置成功示例：
+```
+# /usr/sbin/rsct/install/bin/recfgct
+/usr/lib/dr/scripts/all/ctrmc_MDdr               DR script to refresh Management Domain configuration
+0513-071 The ctcas Subsystem has been added.
+0513-071 The ctrmc Subsystem has been added.
+0513-059 The ctrmc Subsystem has been started. Subsystem PID is 11993300.
+```
+## 其他
 同一个HMC,A机器的a分区rmc使用ip 1，B机器的b分区rmc使用ip 2，现在客户把a分区的业务迁移到b分区了，b分区rmc使用的ip 也改成ip 1，a分区关闭（但是不删除），这样在这台HMC上，用`lspartition -dlpar`查看a分区rmc ip还是ip 1，那么b分区的rmc连接是不正常的，使用`chsysstate -m <system name> -o rebuild -r sys`命令不行，除非删掉a分区然后chsysstate后，b分区的RMC才正常。请问下有没有办法不删除分区，在两个分区配置同样RMC ip时候（其中一个分区关闭了），把关闭分区的rmc 的ip信息删除
 
 http://www-01.ibm.com/support/knowledgecenter/SGVKBA_3.1.5/com.ibm.rsct315.trouble/bl507_diagrmc.htm

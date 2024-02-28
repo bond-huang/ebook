@@ -3,7 +3,9 @@
 
 ## 简介
 
-Python初学者，目前只有基础学习笔记
+Python初学者，记录学习笔记和日常使用笔记。
+
+Python3中文官方文档：[https://docs.python.org/zh-cn/3/](https://docs.python.org/zh-cn/3/)
 
 ## 内容
 
