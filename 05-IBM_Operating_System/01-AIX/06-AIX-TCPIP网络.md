@@ -1,4 +1,5 @@
-# AIX-配置IPv6
+# AIX-TCPIP网络
+## 配置IPv6
 &#8195;&#8195;有客户近期需要配置IPv6，看了官网配置方案不难，给客户写了一份方案，这里也把方案记录下方便查阅，以后可能经常会用到。分两种情况，一种是已经有IPv4，一种是没有，两种配置差别不大，但是有些细节步骤不一样，还是分开写避免混淆。
 ### 从IPv4到IPv6的手动升级
 当前系统已经配置了IPv4的情况下采用此方案。
@@ -172,3 +173,8 @@ no -r -o ip6forwarding=1
 ```
 autoconf6 -i en0 en1
 ```
+## 网络服务
+### /etc/services文件
+[AIX services File Format for TCP/IP](https://www.ibm.com/docs/en/aix/7.1?topic=formats-services-file-format-tcpip)
+## 待补充
+

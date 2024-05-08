@@ -1,5 +1,8 @@
 # AS400-系统Security
-官方参考链接：[IBM i 7.3 Security](https://www.ibm.com/docs/zh/i/7.3?topic=security)
+官方参考链接：
+- 系统安全官方主页：[IBM i 7.3 Security](https://www.ibm.com/docs/zh/i/7.3?topic=security)
+- 安全相关系统值锁定功能：[Lock function of security-related system values](https://www.ibm.com/docs/api/v1/content/ssw_ibm_i_75/rzakz/rzakzlocksecurity.htm)
+
 ## Auditing security
 官方参考链接：[Auditing security on IBM i](https://www.ibm.com/docs/zh/i/7.3?topic=reference-auditing-security-i)
 ### 使用Security Audit Journal
@@ -122,4 +125,9 @@ DSPJRN JRN(MYAUDITJRN) FILE(MYLIB/MYTABLE)
 - `Delete`：删除权限提供从对象中删除条目的权限
 - `Execute`：执行权限提供运行程序或搜索库或目录的权限
 
+批量给库里面所有对象添加权限列表命令示例（可指定对象类型或者具体对象）：
+```
+GRTOBJAUT OBJ(TEMPLIB/*ALL) OBJTYPE(*ALL) AUTL(TEMPAUTL)
+```
+将某个库打包恢复到其它系统时候，如需要带上权限，SAVLIB需要在参数Private authorities (PVTAUT)上选择`*YES`
 ### 待补充

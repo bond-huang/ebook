@@ -166,4 +166,15 @@ mkrel -p dependson -S IBM.ServiceIP:myServerIP -G IBM.Equivalency:MyInterfaces
 ```sh
 lsrel -M mySerIp_depon_MyInterfaces
 ```
+## 启停节点
+### 重启节点
+TSA集群中，不要直接重启有资源运行的node，重启某个node前先停止运行的资源：
+```sh
+samctrl -u a <node_name>
+```
+然后重启此node，上面命令还可以组装资源在此node运行。Re-enable命令：
+```sh
+samctrl -u d <node_name> 
+```
+官方参考链接：[TSAM 4.1.0 Rebooting a node](https://www.ibm.com/docs/en/tsafm/4.1.0?topic=cluster-rebooting-node)
 ## 待补充

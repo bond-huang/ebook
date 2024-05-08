@@ -1,6 +1,8 @@
 # Switch-常用命令
 交换机管理常用命令
 ## SAN B-type常用命令
+官方命令参考链接：[Brocade Fabric OS Commands](https://techdocs.broadcom.com/us/en/fibre-channel-networking/fabric-os/fabric-os-commands/9-0-x/Fabric-OS-Commands-Chapter.html)
+
 IBM SAN B-type系列交换机是OEM博科的，命令和博科交换机基本一致。
 示例：
 ```shell

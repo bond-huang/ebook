@@ -95,6 +95,15 @@ $ alt_root_vg -bundle update_all -location <directory_vios_VIO_update> -target <
 ```
 官方说明：[VIO updateios reports sysck 3001-017. File ntp.conf can not be a link.](https://www.ibm.com/support/pages/node/646359?mhsrc=ibmsearch_a&mhq=sysck%3A3001-038%203001-003)
 
-## 
+## FC链路问题
+诊断工具summ：[IBM AIX Diagnostic Tool "summ": A Summarized System Error log and Report Generator for I/O devices.](https://www.ibm.com/support/pages/node/1072626)
+### FCA_ERR4/FCA_ERR12
+官方参考链接：
+- [FCP_ERR12 fscsi COMMUNICATION PROTOCOL ERROR in PowerVM VIOS](https://www.ibm.com/support/pages/fcperr12-fscsi-communication-protocol-error-powervm-vios)
+- [PowerVM/VIOS FCA_ERR4/FCA_ERR12 errors on unused fibrechannel ports](https://www.ibm.com/support/pages/powervmvios-fcaerr4fcaerr12-errors-unused-fibrechannel-ports)
+
+## 文件系统问题
+### CMdb文件系统告警
+VIOS CMdb清理参考：[VIOS CMdb cleanup](https://community.ibm.com/community/user/power/discussion/vios-cmdb-cleanup)
 
 ## 待补充

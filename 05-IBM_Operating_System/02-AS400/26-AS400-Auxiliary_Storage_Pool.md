@@ -6,6 +6,34 @@
 - [Working with ASP trace and ASP balance](https://www.ibm.com/docs/en/i/7.5?topic=pools-working-asp-trace-asp-balance)
 - [Attach Independent Disk pool](https://www.ibm.com/docs/en/i/7.2?topic=pools-attach-independent-disk-pool)
 
+## ASP(1-32)
+#### 创建ASP(1-32)
+使用Dedicated Service Tools (DST) (使用SST步骤基本类似)菜单步骤:
+- 选择选项`3.Use Dedicated Service Tools (DST)`
+- 选择选项`4 .Work with disk units`
+- 选择选项`1.Work with disk configuration`
+- 选择选项`3.Work with ASP configuration`
+- 选择选项`3.Add units to ASPs`，添加选项如下：
+  ```
+  1. Create unencrypted ASPs
+  2. Create encrypted ASPs
+  3. Add units to existing ASPs
+  ```
+
+参考链接：[Creating an unencrypted auxiliary storage pool](https://www.ibm.com/docs/en/i/7.3?topic=pools-creating-unencrypted-asp)
+#### 删除ASP(1-32)
+使用Dedicated Service Tools (DST) 菜单步骤:
+- 选择选项`3.Use Dedicated Service Tools (DST)`
+- 选择选项`4 .Work with disk units`
+- 选择选项`1.Work with disk configuration`
+- 选择选项`3.Work with ASP configuration`
+- 选择选项`2.Delete user ASP`
+- 在需要删除的ASP前输入4（4=Delete），然后回车
+- 屏幕会显示需要删除的ASP，确认后按F10确认删除
+
+注意：ASP里面所有数据也会一起删除，参考链接：[Deleting an auxiliary storage pool](https://www.ibm.com/docs/en/i/7.3?topic=pools-deleting-asp)
+
+[Deleting a disk pool](https://www.ibm.com/docs/en/i/7.5?topic=pools-deleting-disk-pool)
 ## IASP
 ### IASP vary on
 官方参考链接：
@@ -76,6 +104,26 @@ IASP Vary On时间上数据库相关影响官方说明：
 - 要尽可能实现最快的联机时间，可以限制`SYSBAS`中存在的文件
 - `IASP`的推荐使用结构是将用户的应用程序数据对象的大部分放入`IASP`中，而将最少数量的非程序对象放在`SYSBAS`中，即`system disk pool`和所有已配置的`basic disk pools`。`system disk pool`和`basic user disk pools(SYSBAS)`主要包含操作系统对象、许可程序产品库和很少的用户库
 
+### 创建IASP
+创建IASP需要使用导航器或者 `CFGDEVASP`(Configure Device ASP)命令，创建命令示例：
+```
+CFGDEVASP ASPDEV(IASP001) ACTION(*CREATE) UNITS(*SELECT)
+```
+&#8195;&#8195;默认是不保护和不加密，根据需求选择是否加密或者受保护，执行后会让选择可以供选择的未配置磁盘，选择磁盘后开始配置，提示如下：
+```
+Configuration of ASP device MYIASP is 0% complete.
+```
+参考链接：
+- [Configure Device ASP  (CFGDEVASP)](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/cfgdevasp.html)
+- [Creating an independent disk pool](https://www.ibm.com/docs/en/i/7.3?topic=cidp-creating-independent-disk-pool)
+- [Create Device Desc (ASP)  (CRTDEVASP)](https://www.ibm.com/docs/zh/i/7.3?topic=ssw_ibm_i_73/cl/crtdevasp.html)
+
+#### 删除IASP
+使用`CFGDEVASP`命令删除，示例：
+```
+CFGDEVASP ASPDEV(MYIASP) ACTION(*DELETE)
+```
+参考链接：[Deleting a disk pool](https://www.ibm.com/docs/en/i/7.5?topic=pools-deleting-disk-pool)
 ## ASP数据平衡
 命令参考：
 - [Check ASP Balance (CHKASPBAL) - IBM 文档](https://www.ibm.com/docs/zh/i/7.5?topic=ssw_ibm_i_75/cl/chkaspbal.html)

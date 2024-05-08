@@ -9,5 +9,6 @@
 
 ## 内容
 - [CDC-安装与卸载](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/01-CDC-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD.html)
+- [CDC-日常操作](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/06-InfoSphere_Data_Replication/02-CDC-%E6%97%A5%E5%B8%B8%E6%93%8D%E4%BD%9C.html)
 
 

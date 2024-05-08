@@ -1,4 +1,6 @@
 # PowerVC-常见问题
+## 数据收集
+数据收集官方参考链接：[MustGather: PowerVC Data Collection](https://www.ibm.com/support/pages/mustgather-powervc-data-collection)
 ## 虚拟分区问题
 ### 受限制的分区
 PowerVC下分发的虚拟机在Profile文件的物理I/O下会有如下提示：

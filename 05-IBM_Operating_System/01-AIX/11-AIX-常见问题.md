@@ -161,6 +161,7 @@ id: audit "/usr/sbin/audit start # System Auditing"
 - Change Characteristics of a Physical Volume
 - Physical volum STATE from not active to active
 
+参考链接：[Resolving "missing" or "removed" disks in AIX LVM](https://www.ibm.com/support/pages/resolving-missing-or-removed-disks-aix-lvm)
 ### Migratepv命令失败
 参考链接：[IBM Support Migratepv command fail](https://www.ibm.com/support/pages/migratepv-command-fail)
 
@@ -344,4 +345,15 @@ lsattr -E -l en0 -F "value" -a netmask
 /etc/reducevg[436]: Mb_pending:0403-059 There cannot be more than 9 levels of recursion
 ```
 &#8195;&#8195;这不是AIX问题，是如何获取`.profile`的问题，如果是要到root用户，使用`su root`而不是使用`su - root`可以解决问题。官方参考链接：[Receive 0403-059 There cannot be more than 9 levels of recursion during Informix Install.](https://www.ibm.com/support/pages/receive-0403-059-there-cannot-be-more-9-levels-recursion-during-informix-install)
+
+## FC链路问题
+### FCP_ERR12和FCP_ERR4
+AIX FCP_ERR12和FCP_ERR4报错相关参考：
+- [FCP_ERR12 fscsi COMMUNICATION PROTOCOL ERROR in AIX](https://www.ibm.com/support/pages/fcperr12-fscsi-communication-protocol-error-aix)
+- [IV75962: DISKS MAY NOT CONFIGURE. SAN BOOT MAY FAIL W/CISCO SWITCH. APPLIES TO AIX 7100-03](https://www.ibm.com/support/pages/apar/IV75962)
+- [IV82203: DISKS MAY NOT CONFIGURE. SAN BOOT MAY FAIL W/CISCO SWITCH. APPLIES TO AIX 7100-04](https://www.ibm.com/support/pages/apar/IV82203)
+- [IV82209: DISKS MAY NOT CONFIGURE. SAN BOOT MAY FAIL W/CISCO SWITCH. APPLIES TO AIX 7200-00](https://www.ibm.com/support/pages/apar/IV82209)
+- [IV82478: DISKS MAY NOT CONFIGURE. SAN BOOT MAY FAIL W/CISCO SWITCH. APPLIES TO AIX 7200-01](https://www.ibm.com/support/pages/apar/IV82478)
+- [Fix pack information for: CLASS 3 NAMESERVER QUERY ODM SUPPORT FOR LEGACY FC/F](https://www.ibm.com/support/pages/fix-pack-information-class-3-nameserver-query-odm-support-legacy-fcf-4)
+
 ## 待补充

@@ -9,6 +9,9 @@ scp superuser@cluster_name:/dumps/iostats/* /tmp
 - [SVC 8.3.x lssystemstats](https://www.ibm.com/docs/en/sanvolumecontroller/8.3.x?topic=commands-lssystemstats)
 - [SVC 8.3.x lsnodestats](https://www.ibm.com/docs/en/sanvolumecontroller/8.3.x?topic=commands-lsnodestats)
 
+相关性能文件字段参考：
+- [Field Descriptions for SVC / Storwize Performance Data File QSVCVDISK](https://www.ibm.com/support/pages/field-descriptions-svc-storwize-performance-data-file-qsvcvdisk)
+
 ### SVC性能相关字段
 #### lsnodestats字段说明
 命令`lsnodestats`输出部分字段说明：

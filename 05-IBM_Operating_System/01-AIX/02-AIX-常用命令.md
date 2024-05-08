@@ -1,6 +1,17 @@
 # AIX-常用命令和操作
-## 硬件类
-slibclean  除去内科和库中任何当前不用的模块
+## 磁盘管理
+### 磁盘相关命令
+查看硬盘中stale的pp：
+```
+lspv -M hdisk1 |grep stale
+```
+### rootvg相关命令
+rootvg在存储lun上扩容后执行命令识别容量：
+```
+chvg -g rootvg
+```
+## 网络相关命令
+slibclean  除去内核和库中任何当前不用的模块
 netstat -ni 查看网络配置
 autoconf6 配置IPv6
 netstat -rn 查看路由

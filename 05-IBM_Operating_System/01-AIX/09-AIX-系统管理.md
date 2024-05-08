@@ -82,4 +82,14 @@ nofiles_hard|hard file descriptor limit
 - [AIX: Verifying access rights and user limits](https://www.ibm.com/docs/en/spectrum-protect/8.1.9?topic=instance-aix-verifying-access-rights-user-limits)
 - [Mustgather: Using stackit.sh to collect native stack trace data on AIX](https://www.ibm.com/support/pages/node/344409?mhsrc=ibmsearch_a&mhq=aix%20stack)
 
+## /etc/services文件
+&#8195;&#8195;AIX中/etc/services文件定义了系统上用于网络服务的套接字和协议。此处还定义了PowerHA SystemMirror组件使用的端口和协议。
+
+参考链接：
+- [AIX /etc/services](https://www.ibm.com/docs/en/powerha-aix/7.2?topic=SSPHQG_7.2/admin/ha_admin_etcservices.html)
+- [AIX services File Format for TCP/IP](https://www.ibm.com/docs/en/aix/7.1?topic=formats-services-file-format-tcpip)
+
+## AIX系统服务
+AIX系统服务介绍：[Summary of common AIX system services](https://www.ibm.com/docs/en/aix/7.2?topic=security-summary-common-aix-system-services)
+
 ## 待补充

@@ -7,6 +7,11 @@ PDF文档链接：
 - [IBM AIX Version 7.1 Differences Guide](https://www.redbooks.ibm.com/abstracts/sg247910.html#:~:text=AIX%20Version%207.1%20introduces%20many%20new%20features%2C%20including%3A,you%20can%20explore%20them%20all%20in%20this%20publication.)
 
 ## 软件安装
+## DNF配置
+AIX使用DNF官方参考文档：
+- [DNF is now available on AIX Toolbox](https://community.ibm.com/community/user/power/blogs/sangamesh-mallayya1/2021/05/28/dnf-is-now-available-on-aix-toolbox)
+- [Creating local repo with DNF and AIX Toolbox Media Image](https://community.ibm.com/community/user/power/blogs/sangamesh-mallayya1/2022/02/09/creating-local-repo-with-dnf-and-aix-toolbox-media?CommunityKey=10c1d831-47ee-4d92-a138-b03f7896f7c9)
+
 ### 安装OpenSSL和OpenSSH
 官方参考链接：[Downloading and Installing or Upgrading OpenSSL and OpenSSH](https://www.ibm.com/support/pages/downloading-and-installing-or-upgrading-openssl-and-openssh?mhsrc=ibmsearch_a&mhq=OPENSSH)
 #### 下载安装包

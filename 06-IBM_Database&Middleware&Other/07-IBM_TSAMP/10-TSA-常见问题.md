@@ -9,4 +9,20 @@
 ```sh
 lsrsrc -l IBM.Application
 ```
+## 节点状态问题
+### 节点状态Failed Offline
+&#8195;&#8195;lssam命令输出看到某节点资源状态是`Failed Offline`，通常是由于节点异常宕机导致，并且此时如果进行切换，会切换失败。重启节点可以解决，或者运行命令：
+```shell
+resetrsrc –s ‘Name=”<resource_name>” && NodeNameList={“node_name”}’ IBM.Application
+```
+官方参考链接：[A resource has an OpState of Failed Offline](https://www.ibm.com/docs/en/tsafm/4.1.0?topic=analysis-resource-has-opstate-failed-offline)
+## 其它
+### lssam命令2612-023报错
+lssam命令输出提示：
+```
+(lsrsrc-api) /usr/sbin/rsct/bin/lsrsrc-api：2612-023 找不到资源。 
+lssam：出现意外的 RMC 错误。RMC 返回码为 1。
+```
+语言环境的原因，官方参考链接：[IV74701: LSSAM COMMAND OUTPUT ERROR 2612-023](https://www.ibm.com/support/pages/apar/IV74701)
+
 ## 待补充
