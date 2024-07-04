@@ -89,6 +89,40 @@ do
     fi	
 done
 ```
+### 查找池中主镜像在此池的卷
+例如池ID为8，需要找出此池中卷的主镜像在此池的卷，下面三个卷类型说明：
+```sh
+### 主镜像在其他池：
+lsvdisk -delim : 1925
+### 主镜像在其本池：
+lsvdisk -delim : 154
+### 没有镜像：
+lsvdisk -delim : 297
+```
+下面命令显示primary:yes和parent_mdisk_grp_id:8同时匹配的数据，以空行为数据分隔：
+```sh
+lsvdisk -delim : 154 |sed -n '/^$/ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;s/^\n//p;x;s/.*//}; /./{H}; $ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;s/^\n//p}'
+lsvdisk -delim : 1925 |sed -n '/^$/ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;s/^\n//p;x;s/.*//}; /./{H}; $ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;s/^\n//p}'
+lsvdisk -delim : 154 |sed -n '/^$/ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;s/^\n//p;x;s/.*//}; /./{H}; $ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;s/^\n//p}'
+```
+脚本示例：
+```sh
+for vdiskid in `lsvdisk -nohdr -delim :|cut -d: -f1`
+do
+	result=`lsvdisk -delim : $vdiskid |\
+	sed -n '/^$/ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;\
+	s/^\n//p;x;s/.*//}; /./{H}; \
+	$ {x;/primary:yes/!d;/parent_mdisk_grp_id:8/!d;s/^\n//p}'`
+	if [ -n "$result" ]
+	then
+		lsvdisk -nohdr -filtervalue id=$vdiskid
+	fi
+done
+```
+运行后示例：
+```
+154 Vmware_mbank_mysqldatamigrate_Pool_2 1 io_grp1 online many many 2.03TB many     600507680C8181600000000000000C9A 0 2 not_empty 2 no 0 many many no no 154 Vmware_mbank_mysqldatamigrate_Pool_2  
+```
 ### 查找未映射给主机的卷
 首先列所有的卷ID:
 ```SH

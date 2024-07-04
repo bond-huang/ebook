@@ -128,4 +128,38 @@ tcpdump -i eth0 host 192.168.100.2 and dst port 22 -w wrieshark.cap
 &#8195;&#8195;然后从服务器传出文件，通过Wrieshark打开，进行分析。Windows和Linux系统可以直接安装对应版本进行使用，如果没安装传出到有Wrieshark的机器查看分析。     
 官方网站：[https://www.wireshark.org/](https://www.wireshark.org/)。     
 参考链接：[Wireshark下载安装和使用教程](https://c.biancheng.net/view/6379.html)
+## 老版本网络管理
+### REHL 6.6网络配置
+查看系统版本：
+```sh
+[root@localhost ~]# cat /etc/redhat-release 
+Red Hat Enterprise Linux Server release 6.6 (Santiago)
+```
+关掉NetworkManager：
+```sh
+[root@localhost network-scripts]# service NetworkManager status
+NetworkManager (pid  2084) is running...
+[root@localhost network-scripts]# service NetworkManager stop
+Stopping NetworkManager daemon: [  OK  ]
+[root@localhost ~]# service NetworkManager status
+NetworkManager is stopped
+```
+配置ifcfg-eth1：
+```ini
+# for the documentation of these parameters.
+DEVICE=eth1
+BOOTPROTO=none
+NETMASK=255.255.255.0
+TYPE=Ethernet
+HWADDR=56:f4:f2:9e:7a:08
+IPADDR=10.110.147.166
+IPV6INIT=no
+ONBOOT=yes
+USERCTL=no 
+~
+```
+重启服务：
+```
+[root@localhost network-scripts]# service network restart
+```
 ## 待补充

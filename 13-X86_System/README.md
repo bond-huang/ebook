@@ -8,3 +8,4 @@
 - [Lenovo X86](https://gitbook.big1000.com/13-X86_System/01-Lenovo%20X86/)
 - [HuaWei_X86](https://gitbook.big1000.com/13-X86_System/02-HuaWei_X86/)
 - [HP_X86](https://gitbook.big1000.com/13-X86_System/03-HP_X86/)
+- [X86基础知识](https://gitbook.big1000.com/13-X86_System/10-X86%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/)

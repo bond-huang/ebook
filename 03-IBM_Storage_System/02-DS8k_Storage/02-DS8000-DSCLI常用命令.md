@@ -112,8 +112,124 @@ All Fixed Block-520 V30 OS400 All
 ```
 dscli> showvolgrp v3
 ```
+#### showfbvol命令
+`showfbvol`命令可以查看fbvol的详细信息，包括分布的ranks情况，命令输出示例：
+```
+Date/Time: June 27, 2024 9:24:44 PM CST IBM DSCLI Version: 7.8.51.148 DS: IBM.2107-75HFA66
+Name                       E870TEST_IASP
+ID                         12A5
+accstate                   Online
+datastate                  Normal
+configstate                Normal
+deviceMTM                  2107-A04
+datatype                   FB 520P
+addrgrp                    1
+extpool                    P0
+exts                       4206
+cap (MiB)                  67296
+captype                    iSeries
+cap (2^30B)                65.7
+cap (10^9B)                70.6
+cap (blocks)               137822208
+volgrp                     V15
+ranks                      21
+dbexts                     -
+sam                        Standard
+repcapalloc                -
+eam                        managed
+reqcap (blocks)            137822208
+realextents                4206
+virtualextents             8
+realcap (MiB)              67296
+migrating                  0
+migratingcap (MiB)         0
+perfgrp                    PG0
+migratingfrom              -
+resgrp                     RG0
+tierassignstatus           -
+tierassignerror            -
+tierassignorder            -
+tierassigntarget           -
+%tierassigned              0
+etmonpauseremain           -
+etmonitorreset             unknown
+GUID                       6005076308FFD1F300000000000013A6
+safeguardedcap (2^30B)     -
+safeguardedloc             -
+usedsafeguardedcap (2^30B) -
+safeguarded                no
+SGC Recovered              no
+```
+&#8195;&#8195;如果需要统计几百个vol的ranks情况，可以将`showfbvol 12A5`这种命令写在文本里面，然后在GUI里面嵌入的DSCLI里导入脚本执行，执行完成后将结果粘贴到文本，然后在Linux下运行下面脚本显示结果，示例：
+```sh
+sed -n '/^ID/p; /ranks/p' showfbvol.txt |awk '{print $2}' |sed '{N;s/\n/,/}'
+```
+命令官方参考链接：[DS8870 showfbvol](https://www.ibm.com/docs/en/ds8870/7.5.0?topic=commands-showfbvol)
+#### showsi命令
+查看存储Signature等信息使用`showsi`命令，输出示例：
+```
+Name             sherwood
+Desc             -
+ID               IBM.2107-75NA901
+Storage Unit     IBM.2107-75NA900
+Model            996
+WWNN             5005076408FEC795
+Signature        9719-5d08-1865-1091
+State            Online
+ESSNet           Enabled
+Volume Group     V0
+os400Serial      795
+NVS Memory       127.5 GB
+Cache Memory     1867.3 GB
+Processor Memory 1912.9 GB
+MTS              IBM.5631-75NA910
+numegsupported   16
+ETAutoMode       all
+ETMonitor        all
+IOPMmode         Disabled
+ETCCMode         -
+ETHMTMode        Enabled
+ETSRMode         Enabled
+ETTierOrder      High utilization
+ETAutoModeAccel  Enabled
+```
 ### 修改类命令
 
+### 用户管理
+#### 密码相关命令
+`showpass`命令可以现实当前系统用户的密码策略，示例：
+```
+dscli> showpass
+Date/Time: June 26, 2024 7:21:54 PM CST IBM DSCLI Version: 7.9.33.112 DS: -
+Password Expiration   90 days
+Failed Logins Allowed 5
+Password Age          1 days
+Minimum Length        8
+Password History      8
+```
+`chpass`命令更改密码策略中过期策略、寿命以及history示例：
+```
+dscli> chpass -expire 0 -age 0 -history 2
+Date/Time: June 26, 2024 7:25:22 PM CST IBM DSCLI Version: 7.9.33.112 DS: -
+CMUC00195I chpass: Security properties successfully set.
+dscli> showpass
+Date/Time: June 26, 2024 7:25:28 PM CST IBM DSCLI Version: 7.9.33.112 DS: -
+Password Expiration   0 days
+Failed Logins Allowed 5
+Password Age          0 days
+Minimum Length        8
+Password History      2
+```
+#### 更改用户密码
+使用`chuser`命令修改qlpar用户密码示例：
+```
+chuser -pw passw1rd qlpar
+```
+解锁用户密码示例：
+```
+chuser -unlock qlpar
+```
+官方命令参考文档：[DS8900 chuser](https://www.ibm.com/docs/en/ds8900/9.3.1?topic=commands-chuser)
 ### Copy Services命令
 #### FlashCopy命令
 FlashCopy命令：

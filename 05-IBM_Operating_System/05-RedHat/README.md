@@ -22,5 +22,6 @@ Linux教程：[https://www.runoob.com/linux/linux-tutorial.html](https://www.run
 - [RedHat-内存管理](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/08-RedHat-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.html)
 - [RedHat-系统性能](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/09-RedHat-%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD.html)
 - [RedHat-网络管理](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/10-RedHat-%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86.html)
+- [RedHat-系统进程](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/11-RedHat-%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B.html)
 - [RedHat-常用软件安装](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/20-RedHat-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85.html)
 - [RedHat-常见问题](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/21-RedHat-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)

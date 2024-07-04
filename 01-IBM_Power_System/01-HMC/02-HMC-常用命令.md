@@ -247,6 +247,20 @@ chsysstate -m <managed system> -r lpar -o osshutdown -n p1 --restart
 chsysstate -m <managed system> -r lpar -o shutdown --id 1 --immed --restart 
 ```
 命令更多用法参考官方文档：[chsysstate - change partition state or system state](https://www.ibm.com/docs/en/power9?topic=commands-chsysstate)
+## 事件管理
+使用`lssvcevents`命令查看事件，示例查看当天服务事件：
+```sh
+lssvcevents -t hardware -d 0
+```
+查看控制台三天事件：
+```sh
+lssvcevents -t console -d 3
+```
+查看某台受管设备开启的事件：
+```sh
+lssvcevents -t hardware -m system1 --filter status=open 
+```
+命令参考连接：[HMC Manual Reference Pages-LSSVCEVENTS](https://www.ibm.com/docs/en/power8?topic=commands-lssvcevents)
 ## 使用示例
 查看指定受管设备的lpar信息：
 ```shell

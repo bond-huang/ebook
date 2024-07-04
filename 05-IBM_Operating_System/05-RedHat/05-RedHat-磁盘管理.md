@@ -551,6 +551,13 @@ link1  ln1  lost+found  mount201031.log  mount.log  test1.log  test2.sh  test3.s
 link files test file
 change the source file
 ```
+下面是简单四条命令扩容示例：
+```sh
+pvcreate /dev/sdc
+vgextend datavg /dev/sdc
+lvextend -l +100%FREE /dev/datavg/datalv
+resize2fs -p /dev/mapper/datavg-datalv
+```
 ### LVM环境下扩容
 &#8195;&#8195;对于在VG中的逻辑卷扩容，如果VG容量足够，使用`lvextend`命令进行扩容，如果VG容量不够，划分新磁盘过来，创建新的分区，然后用`vgextend`命令先对VG进行扩容，然后再扩容逻辑卷。参考文档:[https://blog.csdn.net/chongxin1/article/details/76072071/](https://blog.csdn.net/chongxin1/article/details/76072071/)。
 #### 扩展物理磁盘

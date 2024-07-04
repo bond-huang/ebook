@@ -296,6 +296,17 @@ change ARG/ENV list size in 6K byte blocks to 1024
 chdev -l sys0 -a ncargs=64
 ```
 删除完成后，修改回来即可
+## 权限问题
+### 用户创建文件权限问题
+AIX系统touch文件报错，示例：
+```
+touch: 0652-046 Cannot create testfile.
+```
+可能原因及检查方法：
+- 通常是用户没有权限，首先检查目录权限
+- 如果不是权限，检查系统告警，文件系统是否爆满，inode是否满
+- 如果是历史用户执行的，现在客户发过来要分析原因，用last查看用户登录记录，查看问题点登录用户是否有权限
+
 ## 文件系统问题
 官方参考链接：[Troubleshooting file systems](https://www.ibm.com/docs/en/aix/7.3?topic=systems-troubleshooting-file)
 ### Superblock问题

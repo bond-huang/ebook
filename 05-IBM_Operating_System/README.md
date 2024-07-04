@@ -22,3 +22,4 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 - [RedHat](https://gitbook.big1000.com/05-IBM_Operating_System/05-RedHat/)
 - [RHEL学习笔记](https://gitbook.big1000.com/05-IBM_Operating_System/06-RHEL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/)
 - [RHEL-Ansible学习笔记](https://gitbook.big1000.com/05-IBM_Operating_System/07-RHEL-Ansible%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/)
+- [PowerLinux](https://gitbook.big1000.com/05-IBM_Operating_System/08-PowerLinux/)
