@@ -199,4 +199,10 @@ Successfully installed click-7.1.2
 
 ## NTP配置
 参考链接：[Linux系统之NTP服务器配置方法](https://blog.csdn.net/jks212454/article/details/121616176)
+## ulimits配置
+用户可以使用如下命令查看当前用户配置：
+```sh
+ulimit -a
+```
+&#8195;&#8195;用户可以直接用命令`ulimit`加对应参数修改对应的项目，但是是临时的，可以修改配置文件，所在位置是`/etc/security/limits.conf`，可以针对所有用户或者特定用户指定特定的值。
 ## 待补充

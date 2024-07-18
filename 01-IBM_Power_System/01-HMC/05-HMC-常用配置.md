@@ -22,4 +22,7 @@ hscroot@HMC666:~>
 ```
 然后在另一端同样进行以上配置，就可以互相免密进行系统迁移操作了。HMC免密配置mkauthkeys命令：[HMC Manual Reference Pages  -MKAUTHKEYS (1)](https://www.ibm.com/docs/en/power8?topic=commands-mkauthkeys)
 
+## 动态分区迁移
+### MSP配置
+&#8195;&#8195;迁移分区需要在vios的高级属性那里开启MSP（移动者分区服务），并且源和目标VIOS之间需要22、23端口及ICMP服务，源vios会对目标vios发起ping操作。
 ## 待补充

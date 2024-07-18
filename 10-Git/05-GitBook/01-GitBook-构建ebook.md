@@ -201,5 +201,5 @@ info: found 48 asset files
 ......
 info: >> generation finished with success in 718.2s ! 
 ```
-构建完成后web可以访问，不需要重启Ningx。
+构建完成后web可以访问，不需要重启Nginx。
 ## 待补充

@@ -20,6 +20,25 @@ hdisk0 hdisk1 hdisk0 hdisk1 hdisk2
 1
 hdisk0
 ```
+&#8195;&#8195;命令输出也是一样的，命令输出多行字符串赋值给变量后，直接引用变量会变成一行，引用变量的时候加上双引号即可，示例如下：
+```
+[root@centos82 ~]# test=`df -h`
+[root@centos82 ~]# echo $test
+Filesystem Size Used Avail Use% Mounted on devtmpfs 899M 0 899M 0% /dev tmpfs 914M 16M 899M 2% /dev/shm tmpfs 914M 572K 913M 1% /run tmpfs 914M 0 914M 0% /sys/fs/cgroup /dev/vda1 50G 7.3G 43G 15% / 
+[root@centos82 ~]# echo "$test"
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        899M     0  899M   0% /dev
+tmpfs           914M   16M  899M   2% /dev/shm
+tmpfs           914M  572K  913M   1% /run
+tmpfs           914M     0  914M   0% /sys/fs/cgroup
+/dev/vda1        50G  7.3G   43G  15% /
+```
+## 符号差异
+### 单引号和双引号的区别
+差异如下：
+- 单引号：在单引号内的所有字符，包括变量、命令、特殊字符等，都被视为字面值，所见即所得。例如test变量值为123：`echo ’$test’`，Shell会将其视为普通文本`$test`；
+- 双引号：双引号内的内容可以被Shell解析，包括变量替换和命令替换。例如test变量值为123：`echo “$test”`，Shell会解析成`123`。
+
 ## 字符串比较注意
 &#8195;&#8195;变量获取了命令的输出，输出中有空格，如果直接调用去做比较，就会报错，例如下面示例：
 ```sh

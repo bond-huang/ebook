@@ -112,6 +112,7 @@ All Fixed Block-520 V30 OS400 All
 ```
 dscli> showvolgrp v3
 ```
+`showioport`命令可以查看端口光功率等信息，官方参考链接：[showioport](https://www.ibm.com/docs/en/ds8870/7.4?topic=commands-showioport)
 #### showfbvol命令
 `showfbvol`命令可以查看fbvol的详细信息，包括分布的ranks情况，命令输出示例：
 ```

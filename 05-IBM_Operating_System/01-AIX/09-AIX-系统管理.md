@@ -1,4 +1,12 @@
 # AIX-系统管理
+## I/O设备管理
+### 光纤卡管理
+#### 光纤卡端口功率查看
+AIX 系统安装emfc_power工具后，可以查看FC端口收发功率等信息。使用命令示例：
+```
+./emfc_power /dev/fscsi0
+```
+官方下载地址：[AIX Support Center Tools ](https://www.ibm.com/support/pages/node/6117130)
 ## /etc/inittab文件
 作用：控制初始化过程，init命令去调用`/etc/inittab`文件。
 ### 条目格式
@@ -88,6 +96,21 @@ nofiles_hard|hard file descriptor limit
 参考链接：
 - [AIX /etc/services](https://www.ibm.com/docs/en/powerha-aix/7.2?topic=SSPHQG_7.2/admin/ha_admin_etcservices.html)
 - [AIX services File Format for TCP/IP](https://www.ibm.com/docs/en/aix/7.1?topic=formats-services-file-format-tcpip)
+
+## Pageing Space管理
+### 添加Pageing Space
+首先创建LV，或者在现有LV里面进行添加，步骤：
+- `smitty pgsp`进入Pageing Space管理菜单
+- 选择选项`Add Another Pageing Space`进行添加
+- 添加后选择`Activate a Paging Space`进行激活
+
+### 释放Pageing Space
+&#8195;&#8195;内存不足，换页空间使用70%，扩容内存后，内存使用率下降，但是应用反馈还是资源不足，部分热点数据可能还在Pageing Space中，需要释放page space。操作：
+- 如果系统只有一个page space，需要先新建一个临时的并激活
+- `smitty pgsp`进入Pageing Space管理菜单
+- 选择选项`Deactivate a Paging Space`取消激活使用率高的page space
+- 等待数据往物理内存里面迁移，物理内存使用率增加，Paging Space为0后取消激活成功
+- 然后激活操作的page space，取消激活新建的page space并删除
 
 ## AIX系统服务
 AIX系统服务介绍：[Summary of common AIX system services](https://www.ibm.com/docs/en/aix/7.2?topic=security-summary-common-aix-system-services)

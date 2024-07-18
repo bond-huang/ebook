@@ -152,12 +152,16 @@ id: audit "/usr/sbin/audit start # System Auditing"
 ```
 # varyonvg rootvg
 ```
+或者进入smitty菜单：
+- `smitty vg`进入VG管理菜单 
+- 选择选项`Activate a volume Group`，然后选项rootvg进行激活
+
 磁盘状态恢复正常，镜像自动同步，等待完成即可，改回dump配置：
 ```
 # sysdumpdev -P -p /dev/lg_dumplv
 ```
 如果直接修改磁盘状态是不成功的(即使修改了dump配置)：
-- smit chpv
+- smitty chpv
 - Change Characteristics of a Physical Volume
 - Physical volum STATE from not active to active
 
