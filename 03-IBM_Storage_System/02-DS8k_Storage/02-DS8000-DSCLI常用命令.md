@@ -163,7 +163,7 @@ SGC Recovered              no
 ```
 &#8195;&#8195;如果需要统计几百个vol的ranks情况，可以将`showfbvol 12A5`这种命令写在文本里面，然后在GUI里面嵌入的DSCLI里导入脚本执行，执行完成后将结果粘贴到文本，然后在Linux下运行下面脚本显示结果，示例：
 ```sh
-sed -n '/^ID/p; /ranks/p' showfbvol.txt |awk '{print $2}' |sed '{N;s/\n/,/}'
+sed -n '/^ID/p;/ranks/p' showfbvol.txt  |awk '{print $2}'|tr -d '\r' |sed  '{N;s/\n/  /}'
 ```
 命令官方参考链接：[DS8870 showfbvol](https://www.ibm.com/docs/en/ds8870/7.5.0?topic=commands-showfbvol)
 #### showsi命令

@@ -23,4 +23,3 @@ IBM 用户支持中心：产品下载和更新、打开和查看案例、产品�
 - [SVC-池mdisk卷](https://gitbook.big1000.com/03-IBM_Storage_System/10-SAN_Volume_Controller/07-SVC-%E6%B1%A0mdisk%E5%8D%B7.html)
 - [SVC-集群配置](https://gitbook.big1000.com/03-IBM_Storage_System/10-SAN_Volume_Controller/08-SVC-%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE.html)
 - [SVC-故障排查及处理](https://gitbook.big1000.com/03-IBM_Storage_System/10-SAN_Volume_Controller/19-SVC-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E5%8F%8A%E5%A4%84%E7%90%86.html)
-- [SVC-简单脚本](https://gitbook.big1000.com/03-IBM_Storage_System/10-SAN_Volume_Controller/20-SVC-%E7%AE%80%E5%8D%95%E8%84%9A%E6%9C%AC.html)

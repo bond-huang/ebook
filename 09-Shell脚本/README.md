@@ -10,4 +10,4 @@
 - [Shell_AIX脚本](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/03-Shell_AIX%E8%84%9A%E6%9C%AC/)
 - [Shell编写脚本注意](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/04-Shell%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E6%B3%A8%E6%84%8F/)
 - [Shell_Linux脚本](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/05-Shell_Linux%E8%84%9A%E6%9C%AC/)
-
+- [Shell_其他平台脚本](https://gitbook.big1000.com/09-Shell%E8%84%9A%E6%9C%AC/06-Shell_%E5%85%B6%E4%BB%96%E5%B9%B3%E5%8F%B0%E8%84%9A%E6%9C%AC/)

@@ -180,6 +180,10 @@ lssysconn -r all -F ipaddr:state
 #列出指定managed frames信息
 ~>lssyscfg -r frame -e <managed frames>
 ```
+示例查看68159BX机器上TESTAIX分区的profile信息：
+```sh
+lssyscfg -r prof -m Server-8286-42A-SN68159BX -F --header |grep TESTAIX
+```
 #### mksyscfg
 为受管系统创建分区、分区概要文件或系统概要文件，示例：
 ```shell

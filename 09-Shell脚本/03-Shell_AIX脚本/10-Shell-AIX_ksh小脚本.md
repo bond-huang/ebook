@@ -44,6 +44,43 @@ kill %$jobs_id
 - bg：在后台运行作业，可以将后台暂停了的作业在后台继续执行
 - fg：在前台运行作业，可以将后台作业放到前台执行，暂停的也可以
 
+### 抓取系统中进程消耗情况
+#### 批量抓取系统中特定应用java进程消耗CPU是否过高
+使用下面的命令可以抓取：
+```sh
+ps aux|head -1;ps aux |sort -rn +2 |head -10
+ps -A -o pid,ppid,pcpu,pmem,args | sort -nrk 3  |head -11
+ps -e -o pid,ppid,pcpu,pmem,args | sort -nrk 3  |head -11
+```
+例如一个程序叫test，然后他会启动java，由root用户执行，批量抓取脚本如下：
+```sh
+#!/bin/bash
+for ip in `cat aix.list`
+do
+	hostname=`ssh $ip "hostname"`
+    ### 系统中对进行CPU消耗进行排序，在头三个查找java进程
+	javaprc=`ssh $ip "ps aux |sort -rn +2 |head -3 |sed -n  '/root/p' |sed -n '/java/p'"`
+	javaid=`echo "$javaprc" |awk '{print $2}'`
+    ### 判断里面是否有java进程
+	if [ -n $javaid ]
+	then
+		for jid in $javaid
+		do
+			result=`ssh $ip "ps -ef |grep "$jid"|sed -n '/test/p'"`
+            ### 判断是否是test程序运行的java
+			if [ -n $result ]
+			then
+				echo "$hostname;$ip" >> /root/ces/cktest/chtest.csv
+			fi
+		done
+	fi
+done
+```
+后台执行：
+```sh
+nohup sh -x cktest.sh &
+```
+
 ## 数据抓取类型
 ### 批量抓取node id
 脚本如下：

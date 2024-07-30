@@ -78,6 +78,105 @@ VIOserver1,active,9.200.104.132,1,1,1,1
 ### 实例三
 &#8195;&#8195;HMC上列出分区信息后面可以看到AIX操作系统版本，但是当某个系统升级后，上面的信息没有更新，使用命令`chsysstate -m <system name> -o rebuild -r sys`等几分钟后刷新即可。
 
+### 实例四
+&#8195;&#8195;最近遇到在一个vios系统上，发现RMC连接异常，vios到HMC的657、22和443等端口都通，在vios上查看RMC连接信息发现还是以前的HMC信息，示例：
+```
+# lsrsrc IBM.MCP
+Resource Persistent Attributes for IBM.MCP
+resource 1:
+        MNName            = "100.126.217.218"
+        NodeID            = 14480238873508198302
+        KeyToken          = "HMC113"
+        IPAddresses       = {"100.126.217.113"}
+        ConnectivityNames = {"100.126.217.218"}
+        HMCName           = "7042CR8*84270AD"
+        HMCIPAddr         = "10.126.217.113"
+        HMCAddIPs         = ""
+        HMCAddIPv6s       = ""
+        ActivePeerDomain  = ""
+        NodeNameList      = {"986W_VIOS1"}
+```
+实例中`10.126.237.113`地址不是现有HMC的地址，依次执行下面命令刷新配置：
+```sh
+/usr/sbin/rsct/bin/rmcctrl -z
+/usr/sbin/rsct/bin/rmcctrl -A
+/usr/sbin/rsct/bin/rmcctrl -p
+```
+启动后自动添加了一个配置：
+```
+#  lsrsrc IBM.MCP
+Resource Persistent Attributes for IBM.MCP
+resource 1:
+        MNName            = "100.126.217.218"
+        NodeID            = 14480238873508198302
+        KeyToken          = "HMC113"
+        IPAddresses       = {"100.126.217.113"}
+        ConnectivityNames = {"100.126.217.218"}
+        HMCName           = "7042CR8*84270AD"
+        HMCIPAddr         = "10.126.217.113"
+        HMCAddIPs         = ""
+        HMCAddIPv6s       = ""
+        ActivePeerDomain  = ""
+        NodeNameList      = {"986W_VIOS1"}
+resource 2:
+        MNName            = "100.126.217.218"
+        NodeID            = 1342464117648976727
+        KeyToken          = "HMC259"
+        IPAddresses       = {"100.126.217.259"}
+        ConnectivityNames = {"100.126.217.218"}
+        HMCName           = "7042CR9*686891D"
+        HMCIPAddr         = "100.126.217.249"
+        HMCAddIPs         = ""
+        HMCAddIPv6s       = ""
+        ActivePeerDomain  = ""
+        NodeNameList      = {"986W_VIOS1"}
+```
+HMC上查看RMC连接状态：
+```
+<#280> Partition:<1*8286-42A*84C877W, , 100.026.217.218>
+       Active:<1>, OS:<AIX, 6.1, 6100-09-07-1614>, DCaps:<0x14f9f>, CmdCaps:<0x4000003a, 0x3a>, PinnedMem:<3070>
+```
+### 实例六
+&#8195;&#8195;有一台PowerLinux服务器，也是PowerVM虚拟化，近期将其从物理HMC替换成了虚拟HMC，但是HMC的IP没有变，迁移过去后，PowerLinux系统上的RMC连接异常，检查RMC信息还是以前的HMC的型号序列号：
+```
+# lsrsrc IBM.MCP
+Resource Persistent Attributes for IBM.MCP
+resource 1:
+        MNName            = "10.10.114.113"
+        NodeID            = 9845953214215121694
+        KeyToken          = "hmc186"
+        IPAddresses       = {"100.124.28.186"}
+        ConnectivityNames = {"10.10.114.113"}
+        HMCName           = "7042CR8*06A315C"
+        HMCIPAddr         = "100.124.28.186"
+        HMCAddIPs         = ""
+        HMCAddIPv6s       = ""
+        ActivePeerDomain  = ""
+        NodeNameList      = {"testnode"}
+```
+&#8195;&#8195;使用`chsysstate -m Server-9008-22L-SN7894B4A -o rebuild -r sys`不行，使用`refrsrc IBM.MCP`不行。首先创建一个配置文件infile.mcp，写入如下目标HMC信息内容：
+```
+PersistentResourceAttributes::
+resource 1:
+        MNName            = "10.10.114.113"
+        KeyToken          = "vhmc186"
+        IPAddresses       = {"100.124.28.186"}
+        ConnectivityNames = {"10.10.114.113"}
+        HMCName           = "V807f77*6d11757"
+        HMCIPAddr         = "101.124.24.194"
+        HMCAddIPs         = "100.124.28.186"
+```
+上面`101.124.24.194`和`100.124.28.186`都是新虚拟HMC的IP，主要是用原来的IP。输入如下命令更新配置：
+```sh
+chrsrc -f infile.mcp -s 'MNName == "10.10.114.113"' IBM.MCP
+```
+依次执行下面命令重启服务并刷新配置：
+```sh
+/usr/sbin/rsct/bin/rmcctrl -z
+/usr/sbin/rsct/bin/rmcctrl -A
+/usr/sbin/rsct/bin/rmcctrl -p
+```
+完成后RMC连接恢复正常。
 ## 官方文档
 官方参考文档：[验证移动分区的RMC连接](https://www.ibm.com/support/knowledgecenter/zh/POWER7/p7hc3/iphc3hmcpreprmc.htm)
 

@@ -396,5 +396,19 @@ flag                value                    description
  -T                 /test_file               Default mount point
  --mount-priority   0                        Mount priority
 ```
+## 节点增加
+### 客户端节点增加
+基础步骤如下：
+- 客户端安装GPFS软件
+- 确保GPFS使用的网络端口在服务端与客户端通信正常
+- 服务端添加客户端的hosts解析，客户端也添加和服务端一样
+- 创建GPFS相关的用户
+- 客户端生成秘钥文件并拷贝至server端的`.ssh/authorized_keys`文件中
+`ssh-keygen`
+- 然后将server端的`.ssh/authorized_keys`文件scp到集群中的其他机器中
+- 确保互相ssh访问正常
+- 添加节点：`./mmaddnode -N dr_test_gpfs6`
+- 接受许可：`./mmchlicense client --accept -N dr_test_gpfs6`
+- 启动GPFS：`./mmstartup -N dr_test_gpfs6`
 
 ## 待补充
