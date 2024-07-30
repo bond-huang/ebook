@@ -134,7 +134,7 @@ do
 	### clustersrc
 	clustersrc=`cat ./result/$hafile |sed -n '/###### cluster src ######/,/###### caa src ######/{//!p}'\
 	|grep "cluster"|awk '{print $4}'|uniq`
-	if [ "$clustersrc"==active ]
+	if [ "$clustersrc" == active ]
 	then
 		clssrcst="All active"
 	else
@@ -143,7 +143,7 @@ do
 	### caasrc
 	caasrc=`cat ./result/$hafile |sed -n '/###### caa src ######/,/###### rsct src ######/{//!p}'\
 	|grep "caa"|awk '{print $4}'|uniq`
-	if [ "$caasrc"==active ]
+	if [ "$caasrc" == active ]
 	then
 		caasrcst="All active"
 	else
@@ -179,7 +179,7 @@ do
 	### node state
 	nodestate=`cat ./result/$hafile |sed -n '/###### cluster node config ######/,/###### cluster interface ######/{//!p}'\
 	|grep "State of node:"|awk '{print $4}'|uniq`
-	if [ "$nodestate"==UP ]
+	if [ "$nodestate" == UP ]
 	then
 		nodestate="All UP"
 	else
@@ -188,7 +188,7 @@ do
 	### caavg_private 
 	diskstatus=`cat ./result/$hafile |sed -n '/###### cluster storage ######/,/###### cltopinfo ######/{//!p}'\
 	|grep "State :"|awk '{print $3}'|uniq`
-	if [ "$diskstatus"==UP ]
+	if [ "$diskstatus" == UP ]
 	then
 		diskstatus="All UP"
 	else
@@ -197,7 +197,7 @@ do
 	### interface state
 	interfacest=`cat ./result/$hafile |sed -n '/###### cluster interface ######/,/###### cluster storage ######/{//!p}'\
 	|grep "Interface state ="|awk '{print $4}'|uniq`
-	if [ "$interfacest"==UP ]
+	if [ "$interfacest" == UP ]
 	then
 		interfacest="All UP"
 	else

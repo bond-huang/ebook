@@ -165,6 +165,20 @@ root      401418  0.0  0.0  12132  1192 pts/1    S+   23:20   0:00 grep --color=
 ```
 [root@centos82 ~]# nginx
 ```
+
+## 常见问题
+### 虚拟环境启动问题
+我从其它系统拷贝过来的目录，执行启动虚拟环境时候报错，示例：
+```
+[navusr@huang navigator]$ python3 -m venv venv
+Error: Command '['/home/navusr/navigator/venv/bin/python3', '-Im', 'ensurepip', '--u
+pgrade', '--default-pip']' returned non-zero exit status 1.[navusr@huang navigator]$ ^C
+```
+使用下面命令即可：
+```
+[navusr@huang navigator]$ python3 -m venv --without-pip venv
+```
+参考链接：[Python创建虚拟环境 Error: Command returned non-zero exit status 101.](https://blog.csdn.net/qq_36667170/article/details/124424412)
 ## 待补充
 
 

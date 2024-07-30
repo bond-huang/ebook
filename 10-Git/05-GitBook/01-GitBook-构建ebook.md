@@ -202,4 +202,79 @@ info: found 48 asset files
 info: >> generation finished with success in 718.2s ! 
 ```
 构建完成后web可以访问，不需要重启Nginx。
+
+## 迁移到其它系统
+源版本是centos8.2，目标版本是centos7.9。首先安装nodejs：
+```
+yum install nodejs
+```
+安装npm：
+```
+yum install npm
+```
+安装GitBook-cli：
+```
+npm install -g gitbook-cli
+```
+安装很慢，耐心等待：
+```
+[root@huang ~]# npm list -g
+/usr/local/lib
+└── gitbook-cli@2.3.2
+```
+给gitbook用户添加权限，编辑`/etc/sudoers`文件：
+```
+gitbook ALL=(ALL)       ALL
+```
+进入gitbook用户然后安装gitbook：
+```sh
+gitbook -V
+```
+安装成功，版本和原版本一致：
+```
+[gitbook@huang ~]$ gitbook -V
+CLI version: 2.3.2
+GitBook version: 3.2.3
+```
+安装git：
+
+```sh
+yum install git
+```
+可以下载项目重新配置，参考上面文档，可以直接从源系统拷贝：
+```sh
+scp -r root@121.43.191.157:/home/gitbook/ebook /home/gitbook/ebook
+```
+新增了内容，重新生产下目录：
+```sh
+sh summary_crt.sh
+```
+也重新构建下，如果没有更新没必要：
+```sh
+gitbook build .
+```
+安装nginx：
+```sh
+yum install nginx
+```
+拷贝nginx配置文件：
+```sh
+scp  root@121.43.191.157:/etc/nginx/nginx.conf /etc/nginx/
+```
+拷贝证书：
+```sh
+scp  root@121.43.191.157:/etc/nginx/big1000* /etc/nginx/
+```
+拷贝日志文件：
+```sh
+scp -r root@121.43.191.157:/etc/nginx/logs /etc/nginx/logs
+```
+启动nginx：
+```sh
+systemctl start nginx
+```
+阿里云上防火墙端口打开，443端口，然后访问验证：
+```
+https://gitbook.big1000.com/
+```
 ## 待补充
