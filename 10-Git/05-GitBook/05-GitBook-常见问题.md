@@ -1,6 +1,7 @@
 # GitBook-常见问题
 ## 安装报错
-安装GitBook报错：
+### npm安装gitbook报错
+npm安装GitBook报错：
 ```
 [root@centos82 ~]# npm install -g gitbook
 npm WARN deprecated graceful-fs@3.0.5: please upgrade to graceful-fs 4 for compatibility with current and future versions of Node.js
@@ -8,7 +9,7 @@ npm WARN deprecated chokidar@1.0.6: Chokidar 2 will break on node v14+. Upgrade 
 npm WARN deprecated nunjucks@2.2.0: potential XSS vulnerability in autoescape mode, and with escape filter was fixed in v2.4.3
 npm WARN deprecated request@2.51.0: request has been deprecated, see https://github.com/request/request/issues/3142
 ```
-安装完成gitbook-cli后，运行`gitbook -V`自动安装：
+安装完成gitbook-cli后，直接运行`gitbook -V`自动安装：
 ```
 [root@centos82 ~]# gitbook -V
 CLI version: 2.3.2
@@ -18,6 +19,27 @@ gitbook@3.2.3 ../tmp/tmp-8300BiiqfilAM1im/node_modules/gitbook
 └── npm@3.9.2
 GitBook version: 3.2.3
 ```
+### 安装gitbook报错
+报错示例如下：
+```
+[gitbook@huang ~]$ gitbook -V
+CLI version: 2.3.2
+Installing GitBook 3.2.3
+/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287
+      if (cb) cb.apply(this, arguments)
+                 ^
+
+TypeError: cb.apply is not a function
+    at /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:18
+    at FSReqCallback.oncomplete (node:fs:203:5)
+```
+根据报错提示，打开`polyfills.js`文件，注释掉下面三行即可，示例：
+```
+//fs.stat = statFix(fs.stat)
+//fs.fstat = statFix(fs.fstat)
+//fs.lstat = statFix(fs.lstat)
+```
+参考链接：[gitbook出现TypeError: cb.apply is not a function解决办法](https://cloud.tencent.com/developer/article/2047604)
 ## 构建报错
 构建时候报错示例：
 ```

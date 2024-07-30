@@ -47,6 +47,21 @@ testusr3:x:1014:1014::/home/testusr3:/bin/bash
 - 注意在脚本中，`grep`后面要加上`-w`进行完全匹配，否则christ和christb这种用户`grep`后结果是两个
 - 脚本没有考虑用户目录的权限，创建后是默认权限，可能与原分区权限不一样，需要注意
 
+上面脚本发现一个问题，，像mysql自动创建用户有描述，中间有空格，条目示例：
+```
+mysql:x:27:27:MySQL Server:/var/lib/mysql:/sbin/nologin
+```
+在MySQL Server字段中，遍历的时候会换行，导致用户是无法创建的。示例：
+```
+[root@huang usradd]# for usrinfo in `cat passwd.txt`;do echo "$usrinfo";done
+redis:x:1002:1002::/home/redis:/bin/bash
+nginx:x:989:985:Nginx
+web
+server:/var/lib/nginx:/sbin/nologin
+apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
+mysql:x:27:27:MySQL
+Server:/var/lib/mysql:/sbin/nologin
+```
 ### 用户访问问题
 #### 检查是否免密
 批量检查iplist1文件中IP是否免密登录：
