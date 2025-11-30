@@ -32,4 +32,6 @@ Secondary superblock在块31处(4096*31=126976 dec=0x1F000)：
 # lquerypv -h /dev/lv00 1F000 10
 0001F000 65872143 00000000 00001000 00000000 |e.!C............|
 ```
+## 文件系统修复
+[Repairing Corrupt File Systems or File System Log Devices](https://www.ibm.com/support/pages/repairing-corrupt-file-systems-or-file-system-log-devices)
 ## 待补充

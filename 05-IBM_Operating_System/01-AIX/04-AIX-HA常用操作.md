@@ -112,4 +112,7 @@ smit查看及修改方法：
 ### 非并发VG添加到HA
 参考链接：[How to add an existing nonconcurrent volume group to PowerHA resource group](https://www.ibm.com/support/pages/how-add-existing-nonconcurrent-volume-group-powerha-resource-group)
 
+[How to add an existing nonconcurrent  volume group to PowerHA resource group](https://www.ibm.com/support/pages/how-add-existing-nonconcurrent-volume-group-powerha-resource-group)
+[Aix 之 hacmp 在线添加 concurrent VG](https://www.cnblogs.com/flash100/p/14139658.html)
+
 ### 待补充

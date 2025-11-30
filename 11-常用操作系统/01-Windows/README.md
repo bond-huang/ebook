@@ -15,3 +15,6 @@ Windows操作系统日常遇到一些问题和操作，记录下来避免忘记�
 - [Windows-常用操作](https://gitbook.big1000.com/11-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01-Windows/05-Windows-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.html)
 - [Photoshop-基础操作](https://gitbook.big1000.com/11-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01-Windows/11-Photoshop-%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C.html)
 - [Adobe-其它软件操作](https://gitbook.big1000.com/11-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01-Windows/12-Adobe-%E5%85%B6%E5%AE%83%E8%BD%AF%E4%BB%B6%E6%93%8D%E4%BD%9C.html)
+
+## 其它链接
+[Windws Server 2012 Server Backup(备份与还原)](https://blog.csdn.net/weixin_44517119/article/details/87161072)

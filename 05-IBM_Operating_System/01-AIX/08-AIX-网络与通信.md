@@ -32,6 +32,10 @@ tcpdump -i en0 -w telnet.cap -s 0 host 192.168.100.2 and port 22
 ```
 ## 待补充
 
+[Optimizing AIX 7 network performance](https://developer.ibm.com/articles/au-aix7networkoptimize1/?mhsrc=ibmsearch_a&mhq=Ken%20Milberg)
+
+[AIX网卡微码更新说明](https://download4.boulder.ibm.com/sar/CMA/IOA/08bly/3/Shiner-S_EN0S_EN0U_EN0T_EN0V_30100310_readme_V9-AIXandLinux.html)
+
 nslookup
 
 ssh -v <host>

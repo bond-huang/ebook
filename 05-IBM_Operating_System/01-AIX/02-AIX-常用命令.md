@@ -43,7 +43,7 @@ du -sg
 
 ssh -v <host>
 
-###
+### 网络配置相关
 &#8195;&#8195;有个需求，给网卡配置一个IP,但是不想启用，启用就会IP冲突，如果直接配置在`START Now`里选择`No`的话IP也会自动生效，配置方法：
 - 首先配置一个无效的IP在此网卡上
 - 然后修改网卡属性：
@@ -58,6 +58,19 @@ ssh -v <host>
     - Current STATE选项里面选择detach
     - 回车确认
 - 需要启用ip时使用命令`ifconfig en1 up`即可
+
+## 设备相关
+### 扫描新设备
+查看父设备：
+```
+# lsdev -Cl hdisk6 -F parent
+```
+针对性扫描：
+```
+cfgmgr -vl fscsi0
+```
+磁盘多路径的话，还需要扫描fscsi1等
+## 其他
 
 强制删除非空目录
 rm -rf wkhtmltopdf

@@ -371,4 +371,15 @@ AIX FCP_ERR12和FCP_ERR4报错相关参考：
 - [IV82478: DISKS MAY NOT CONFIGURE. SAN BOOT MAY FAIL W/CISCO SWITCH. APPLIES TO AIX 7200-01](https://www.ibm.com/support/pages/apar/IV82478)
 - [Fix pack information for: CLASS 3 NAMESERVER QUERY ODM SUPPORT FOR LEGACY FC/F](https://www.ibm.com/support/pages/fix-pack-information-class-3-nameserver-query-odm-support-legacy-fcf-4)
 
+## 其他常见问题
+AIX系统中，ent端口未使用，但是报错MUSENT_LINK_DOWN或者
+
+AIX7.1相关说明：
+- [IV84198: SYSTEM WITH IV62866, MUSENT_LINK_DOWN IS SEEN WHILE REBOOTING](https://www.ibm.com/support/pages/apar/IV84198)
+
+AIX6.1相关说明：
+- [IV63294: SHIENTDD LOGS LINK DOWN WHEN ENTSTAT RUN ON UNUSED PORT APPLIES TO AIX 6100-09](https://www.ibm.com/support/pages/apar/IV63294)
+
+引入了ENTSTAT_MODE功能，官方说明：
+- [ENTSTAT_MODE and Unused Physical Network Adapter](https://www.ibm.com/support/pages/entstatmode-and-unused-physical-network-adapter)
 ## 待补充

@@ -120,4 +120,19 @@ pax: snap.pax : 0511-626 An invalid file header has been read.
 pax: snap.pax :          Skipping to the next file...ls
 ```
 解压报错了，并且没一会虚拟AIX把我电脑搞蓝屏，以后再示例。
+
+## 常用链接
+[AIX Web Download Pack Programs](https://www.ibm.com/resources/mrs/assets/packageList?source=aixbp&lang=en_US)
+
+[IV53993: MEMORY LEAK IN CRYPT CAUSING GETPWNAM_R AND CRYPT TO FAIL APPLIES TO AIX 7100-03](https://www.ibm.com/support/pages/apar/IV53993)
+
+[Troubleshooting LED Code 0c61 while booting from a restored disk using alt_disk_mksysb.](https://www.ibm.com/support/pages/troubleshooting-led-code-0c61-while-booting-restored-disk-using-altdiskmksysb#:~:text=Error%3A%20the%20boot%20image%20is%20corrupted%20or%20truncated.,to%20restore.%20%23%20restore%20-xqvf%20opslab172_7200%20.%2Fimage.data%20)
+
+[IEEE 802.3ad Link Aggregation troubleshooting](https://www.ibm.com/docs/en/aix/7.2.0?topic=configuration-ieee-8023ad-link-aggregation-troubleshooting)
+
+[AIX 重新创建损坏的引导映像](https://www.ibm.com/docs/zh/aix/7.3.0?topic=backups-recreating-corrupted-boot-image)
+
+[AIX filesystems 文件](https://www.ibm.com/docs/zh/aix/7.3.0?topic=files-filesystems-file)
+
+AIX开源软件下载：[https://public.dhe.ibm.com/aix/freeSoftware/aixtoolbox/RPMS/](https://public.dhe.ibm.com/aix/freeSoftware/aixtoolbox/RPMS/)
 ## 待补充

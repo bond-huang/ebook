@@ -22,3 +22,4 @@ IBM Power System是采用Power处理器的商用服务器，通常称为Power小
 
 - [Power-小型机数据收集](https://gitbook.big1000.com/01-IBM_Power_System/02-Power_System/01-Power-%E5%B0%8F%E5%9E%8B%E6%9C%BA%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86.html)
 - [Power-小型机硬盘](https://gitbook.big1000.com/01-IBM_Power_System/02-Power_System/10-Power-%E5%B0%8F%E5%9E%8B%E6%9C%BA%E7%A1%AC%E7%9B%98.html)
+- [Power-常见问题](https://gitbook.big1000.com/01-IBM_Power_System/02-Power_System/11-Power-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)

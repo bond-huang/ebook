@@ -295,4 +295,29 @@ stopsrc -s IBM.StorageRM
 参考链接：
 - 类似问题bug参考：[IV66412: LOGGER CORE DUMP APPLIES TO AIX 7100-03](https://www.ibm.com/support/pages/apar/IV66412)
 
+## 其他问题
+[Abnormal termination of Cluster Manager daemon](https://www.ibm.com/docs/en/powerha-aix/7.2?topic=services-abnormal-termination-cluster-manager-daemon)
+
+### 进程异常
+### pkm_kern进程问题
+问题描述：pkm_kern进程占用CPU很高，
+
+712版本对应问题说明IV57096：
+[https://www.ibm.com/support/pages/apar/IV57096](https://www.ibm.com/support/pages/apar/IV57096)
+```
+instfix  -i |grep IV57096
+```
+修复对应APAR IV76704：
+[https://www.ibm.com/support/pages/apar/IV76704](https://www.ibm.com/support/pages/apar/IV76704)
+升级到7128后，可以找到IV76704
+```
+instfix  -i |grep IV76704
+```
+713版本对应问题说明IV69864：
+[https://www.ibm.com/support/pages/apar/IV69864](https://www.ibm.com/support/pages/apar/IV69864)
+```
+instfix  -i |grep IV69864
+```
+修复7134版本，对应APAR IV75208：
+[https://www.ibm.com/support/pages/apar/IV75208](https://www.ibm.com/support/pages/apar/IV75208)
 ## 待补充

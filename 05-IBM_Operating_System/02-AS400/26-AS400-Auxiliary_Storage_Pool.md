@@ -21,6 +21,24 @@
   ```
 
 参考链接：[Creating an unencrypted auxiliary storage pool](https://www.ibm.com/docs/en/i/7.3?topic=pools-creating-unencrypted-asp)
+
+也可以使用命令，IASP创建使用命令`CFGDEVASP`，示例如下：
+```
+ 			Configure Device ASP (CFGDEVASP)
+ 
+ ASP device . . . . . . . . . . . > TMPIASP       Name, *ALL                 
+ Action . . . . . . . . . . . . . > *CREATE       *CREATE, *DELETE, *PREPARE 
+ ASP type . . . . . . . . . . . .   *PRIMARY      *PRIMARY, *SECONDARY, *UDFS
+ Protection . . . . . . . . . . .   *NO           *NO, *YES                  
+ Encryption . . . . . . . . . . .   *NO           *NO, *YES                  
+ Disk units . . . . . . . . . . .   *SELECT       Name, *SELECT          
+```
+然后选择IASP磁盘，开始后下面有进度条，前台在跑，注意不要关闭窗口：
+```
+Configuration of ASP device TMPIASP is 0% complete.
+```
+官方参考文档：[IBM i 7.3 创建独立磁盘池](https://www.ibm.com/docs/zh/i/7.3?topic=cidp-creating-independent-disk-pool)
+
 #### 删除ASP(1-32)
 使用Dedicated Service Tools (DST) 菜单步骤:
 - 选择选项`3.Use Dedicated Service Tools (DST)`

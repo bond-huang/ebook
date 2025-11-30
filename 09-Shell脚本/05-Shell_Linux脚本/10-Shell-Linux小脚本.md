@@ -62,6 +62,22 @@ apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
 mysql:x:27:27:MySQL
 Server:/var/lib/mysql:/sbin/nologin
 ```
+#### 脚本缺陷
+注意，像mysql用户有描述，脚本当初没有考虑到这点：
+```
+mysql:x:27:27:MySQL Server:/var/lib/mysql:/sbin/nologin
+```
+在MySQL Server字段中，遍历的时候会换行，导致用户是无法创建的。后期有时间进行修复。示例：
+```
+[root@huang usradd]# for usrinfo in `cat passwd.txt`;do echo "$usrinfo";done
+redis:x:1002:1002::/home/redis:/bin/bash
+nginx:x:989:985:Nginx
+web
+server:/var/lib/nginx:/sbin/nologin
+apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
+mysql:x:27:27:MySQL
+Server:/var/lib/mysql:/sbin/nologin
+```
 ### 用户访问问题
 #### 检查是否免密
 批量检查iplist1文件中IP是否免密登录：

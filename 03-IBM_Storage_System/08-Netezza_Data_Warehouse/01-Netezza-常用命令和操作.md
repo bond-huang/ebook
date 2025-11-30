@@ -68,3 +68,15 @@ warning状态的hostdisk磁盘维护步骤如下：
 官方参考链接：
 - [Host Disk Failure / SAS Controller Warning](https://www.ibm.com/support/pages/host-disk-failure-sas-controller-warning)
 - [PureData System for Analytics: Host Disk 'Failed Down'](https://www.ibm.com/support/pages/puredata-system-analytics-host-disk-failed-down)
+
+### 更换SPU
+硬件概览：[IBM PureData System for Analytics,  7.1 Hardware](https://www.ibm.com/docs/en/psfa/7.1.0?topic=folder-hardware)
+
+更换SPU参考：
+- [Replacing a SPU in an HP host](https://www.ibm.com/support/pages/node/464429)
+- [Replacing a SPU that is Stuck in the Chassis](https://www.ibm.com/support/pages/replacing-spu-stuck-chassis)
+
+管理SPU：[IBM PureData System for Analytics,  7.1 Manage SPUs](https://www.ibm.com/docs/en/psfa/7.1.0?topic=tasks-manage-spus)
+
+查看SPU状态：nz_spu --loc=spa1.spu9 --status
+## 待补充
