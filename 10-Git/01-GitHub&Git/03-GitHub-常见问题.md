@@ -182,4 +182,19 @@ $ git config --global http.sslBackend "openssl"
     - 表示有3个错误，并且是modified的
 
 参考博客：[vscode-git中的U,M和D文件标记含义](https://blog.csdn.net/qsj0606/article/details/114439860)
+### push不成功
+push后发现github上实际没更新，如下所示：
+```
+Enumerating objects: 106, done.
+Counting objects: 100% (105/105), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (61/61), done.
+Writing objects: 100% (63/63), 40.25 KiB | 1.61 MiB/s, done.
+Total 63 (delta 27), reused 0 (delta 0), pack-reused 0
+error: RPC failed; curl 16 Error in the HTTP2 framing layer
+send-pack: unexpected disconnect while reading sideband packet
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
+```
+再来一次就可以了。
 ## 待补充
