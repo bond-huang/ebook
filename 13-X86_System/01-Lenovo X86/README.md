@@ -9,5 +9,6 @@
 
 
 ## 常用链接
-[flexsystem.lenovo](https://flexsystem.lenovofiles.com/help/index.jsp)
-[https://bladecenter.lenovofiles.com/help/index.jsp](https://bladecenter.lenovofiles.com/help/index.jsp)
+- [flexsystem.lenovo](https://flexsystem.lenovofiles.com/help/index.jsp)
+- [https://bladecenter.lenovofiles.com/help/index.jsp](https://bladecenter.lenovofiles.com/help/index.jsp)
+- [System service parts - IBM BladeCenter H (1886, 7989, 8852)](https://www.ibm.com/support/pages/system-service-parts-ibm-bladecenter-h-1886-7989-8852)

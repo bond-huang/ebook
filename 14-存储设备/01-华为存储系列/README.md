@@ -9,4 +9,7 @@
 
 
 ## 常用链接
-[S2600T无法登陆ISM,命令行定位风险盘](https://support.huawei.com/enterprise/fr/knowledge/EKB1100022172)
+- [S2600T无法登陆ISM,命令行定位风险盘](https://support.huawei.com/enterprise/fr/knowledge/EKB1100022172)
+- [ICSlite下载及文档链接](https://support.huawei.com/enterprise/zh/bulletins-website/ENEWS2000010768)
+- [华为服务器存储维保查询](https://support.huawei.com/enterprise/ecareWechat?lang=zh)
+- [OceanStor 2000, 5x10, 5x10F, 6x10, 6x10F系列 产品文档](https://support.huawei.com/hedex/hdx.do?docid=EDOC1100098465&id=ZH-CN_TOPIC_0181628769)

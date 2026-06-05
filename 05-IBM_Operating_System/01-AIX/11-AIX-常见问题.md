@@ -353,6 +353,18 @@ lsattr -E -l en0 -F "value" -a netmask
 - 检查`/etc/rc.net.serial`文件，里面会查询网卡配置，获取IP掩码的信息启动时候进行配置，如果上面命令都查看不到信息，这个文件里面的命令也不会获取IP信息
 - 检查/`etc/inittab`文件，是否有自定义的启动项影响IP配置
 
+### FTP问题
+#### FTP传输慢
+FTP传输慢，可以修改下面参数，更改后重启ftp服务：
+```
+no -p -o rfc1323=1           
+no  -p -o tcp_recvspace=1048576 
+no -p -o tcp_sendspace=1048576  
+```
+参考链接：[【转】 解决：AIX FTP 传输速度慢](https://www.talkwithtrend.com/Article/25953)
+
+perfpmr下载：[https://ftp.software.ibm.com/aix/tools/perftools/perfpmr/](https://ftp.software.ibm.com/aix/tools/perftools/perfpmr/)
+
 ## 其它问题
 ### 错误代码0403-059
 执行某些命令时候会收到`0403-059`报错，示例如下：
