@@ -1,23 +1,5 @@
 # SHM-AI编程阶段1
-## 版本更新说明
-原始版本V1.0为之前边学边做的框架，后续主要由AI进行，版本更新说明如下：
-
-V1.1版本：
-- UI优化：登录页面及主页风格进行优化，头部及侧边导航进行优化
-
-V2.0版本：
-- 后端从Mock数据模拟改成MySQL数据库
-
-V2.1版本：
-- 新增用户管理模块
-- 新增Linux系统检查模板
-- 系统清单优化，细化系统信息，新增分类
-- 修复无法翻页的问题
-- 增加修改系统信息后成功提示，并且返回前一页面
-- 增加删除条目需要管理员密码才行，避免随意删除
-- 每个host的主页模板进行了确认，新增点击view就跳转到对应主页
-- 新增System Class页面，对系统进行了多维度分类，可以选择同类型系统。
-
+使用AI开始完善此项目。
 ## AI环境配置
 ### 安装Claude
 安装Claude，打开Powershell终端，执行：
@@ -245,7 +227,7 @@ category|分类|Database/Application/Web Server等
 business_name|业务名称|-   
 data_center|数据中心|DC-Beijing/DC-Shanghai等
 
-### System Class页面
+### System Class页面创建
 &#8195;&#8195;需求：左侧导航的system class是我计划的系统分类主页，还没做，根据之前的数据类型和页面风格，帮我涉及一个分类导航页面，根据不同分类，点进去后显示是此分类的系统清单。 
 
 新增功能，System Class分类页面：
@@ -268,5 +250,118 @@ src/api/demo.js |新增 getCategories()、getCategoryHosts()
 :---|:---
 GET /api/categories|获取分类统计（数量、健康状态）
 GET /api/categories/:name/hosts|获取指定分类的主机列表 
+
+## V2.2版本
+### 登录报错
+项目登陆后就弹出server error错误：
+```
+修复： 将 dashboard.js 第 10行和第 22-24 行的 status_info 改为status，与数据库实际表结构一致。
+```
+### Home页面优化
+&#8195;&#8195;需求：home页面下我设计了四个按钮，分别是All hosts list，点击帮我跳转到刚才All systems页面，还要healthy hosts，点击展示筛选healthy状态的主机，后面类推。
+
+全部完成！改了三处：
+- 后端 server/routes/hosts.js — GET /api/allsystems 新增 status 查询参数，支持按状态筛选
+- 前端 src/api/demo.js — getSystems() 新增 status 参数透传  
+- 前端 src/views/allsystems/AllSystems.vue — 从路由 query.status 读取筛选条件，并监听路由变化自动刷新
+- 前端 src/views/Dashboard.vue — 四个按钮绑定点击事件：   
+    - All Hosts List → 跳转 /allsystems（全部主机）
+    - Healthy Hosts → 跳转 /allsystems?status=Health
+    - Warning Hosts → 跳转 /allsystems?status=Warning
+    - Severe Hosts → 跳转 /allsystems?status=Severe
+
+### System class分类优化
+&#8195;&#8195;需求：在system class页面，我看你根据用途进行分类，帮我再单独弄几个分类，例如根据数据中心分类，根据系统类型分类
+
+后端 server/routes/hosts.js — 新增4个接口：
+  - GET /api/datacenters — 按数据中心分组统计  - GET /api/datacenters/:name/hosts — 某数据中心的主机列表
+  - GET /api/hosttypes — 按系统类型（AIX/Linux/AS400）分组统计  - GET /api/hosttypes/:name/hosts — 某系统类型的主机列表
+
+前端 src/api/demo.js — 新增 4 个 API 函数，前端 src/views/CategoryList.vue — 顶部加了三个 Tab 切换：
+  - By Usage — 按用途分类（Database、Application 等）
+  - By Data Center — 按数据中心分类（DC-Beijing、DC-Shanghai 等）
+  - By System Type — 按系统类型分类（AIX、Linux、AS400）
+
+### 连接测试系统
+&#8195;&#8195;需求：我加入了一个真实的linux系统IP，192.168.31.17，我需要在系统主页获取到的CPU内存等信息是真实的，帮我写一下如何进入这个系统获取信息。
+
+后端已重启。现在你需要给 192.168.31.17这台主机配置 SSH 登录凭据。在 MySQL 中执行：
+```sql
+UPDATE hosts SET ssh_user = '你的用户名', ssh_password = '你的密码' WHERE ip_address = '192.168.31.17';
+```
+比如 root 用户：
+```sql
+UPDATE hosts SET ssh_user = 'root', ssh_password = 'your_password' WHERE ip_address = '192.168.31.17';
+```
+&#8195;&#8195;配置好后，打开这台主机的详情页 → Performance Check tab，四个模块（CPU、内存、磁盘、网络）会自动通过SSH实时采集真实数据：
+- CPU — 仪表盘（总使用率）+ 柱状图（user/system/iowait/idle 分项）
+- 内存 — 仪表盘 + 堆叠柱状图（RAM/Swap）+ 详细数值面板
+- 磁盘 — 表格展示各分区，带彩色进度条（绿/黄/红）
+- 网络 — 柱状图（各网卡 RX/TX 流量 MB）+ 数据表格
+
+&#8195;&#8195;需求：我不想每个系统都输入账户密码，帮我在系统页面的overview页面的Refresh按钮前面加个按钮，叫Authentication，用来输入系统账户密码。 
+
+功能已完成。打开任意主机详情页 → Overview tab → 点击 Authentication 按钮：
+- 弹窗中输入SSH用户名和密码
+- 点 Test Connection — 会先保存凭据，然后实时SSH连接测试，成功会显示远程主机名 -点 Save — 仅保存凭据
+- 保存后，切到 Performance Check tab 就会自动通过 SSH 采集真实的 CPU、内存、磁盘、网络数据。
+
+&#8195;&#8195;需求：Authentication右边的Refresh按键，我点一次，就马上去系统获取一次数据，数据马上更新到仪表盘。
+
+现在点Refresh按钮会：
+- SSH 连接到目标系统  
+- 采集 CPU、内存、Swap、磁盘数据
+- 四个仪表盘实时更新（CPU 使用率、内存使用率、Swap 使用率、最高磁盘使用率）  4. 颜色自动变化：绿色 < 60%，黄色 60-80%，红色 > 80%
+- 成功后提示远程主机名
+
+&#8195;&#8195;需求：performance check里面的图标大小异常了，修复一下，并且定时从系统抓取的数据进行记录，保留一天时间，在这里进行展示，图标格式不用变：
+- 图表尺寸修复： 四个组件统一用 height: 300px; width: 100% + autoresize，图表自适应容器。
+  定时采集 + 历史展示：
+- 新建 perf_history 表存储采集数据  - 后端定时任务每 10 分钟自动 SSH 采集所有已配置凭据的主机，数据保留 24 小时                      
+- 四个图表组件改为从 /api/perf/history/:hostId 拉取历史数据，渲染为 24 小时折线图（和之前格式一致）
+- AIX 主机和未配置凭据的主机仍显示默认数据
+
+&#8195;&#8195;现在的流程：Overview 页点 Authentication 配置密码 → 点Refresh验证连通 → 切到Performance Check查看24小时趋势图，每10分钟自动更新新数据点。
+
+### 系统主页信息页面优化
+&#8195;&#8195;需求：在linux系统的主页的Host Information里面加点内容，参考我写的Linuxtest1页面里面的项目，加一点内容，数据从实际的系统获取。
+
+Host Information现在参考了Linuxtest1页面的字段，点击Refresh会从真实系统SSH采集以下信息：
+
+字段|来源命令
+:---|:---
+OS Version|/etc/os-release PRETTY_NAME
+Kernel|uname -r
+HostName|hostname
+Architecture|uname -m
+SELinux|getenforce
+CPU Cores|nproc 
+Memory Size|free -m
+Swap Size|free -m
+Uptime|uptime -p
+Load Average|/proc/loadavg (1/5/15 min)
+
+加上原来的Status、Category、Data Center、Description，一共15个字段，3列5行布局。
+
+### 一键巡检功能
+&#8195;&#8195;需求：操作系统主页Automatic PM页面，我的设计是点击Generate Report后自动生成html的报告，帮我写巡检脚本，并且脚本保留，Generate Report左边弄个Inspection Script按钮，点击后展示脚本内容。生成的报告参考我在reports目录下的html报告，报告保存在reports下，新建一个文件夹，文件夹名称用系统hostname加IP组成，报告记录在Reports List里面，记录日期和名称，报告名称包含：系统名称+日期时间。后面view点击后查看报告，Download就可以下载，delete删除，删除时候进行提示。
+
+编译通过。AutoPM 页面功能完整：
+- Inspection Script 按钮 — 点击弹窗展示 67 行 Linux 巡检脚本（暗色终端风格）
+- Generate Report 按钮 — 点击后通过 SSH 连接目标系统执行巡检，采集：
+  - 系统信息（OS、Kernel、Architecture、Uptime 等）  
+  - CPU 使用率（user/system/iowait/idle）                                                          
+  - 内存和 Swap
+  - 磁盘各分区使用率
+  - 系统错误日志
+  - Top 进程
+  - SELinux / Firewall 状态
+  - 重启历史
+
+&#8195;&#8195;生成HTML报告保存在server/reports/{hostname}_{ip}/ 目录，参考了现有 AIX报告的风格，带颜色状态分析（绿色正常/红色警告）：
+- Reports List — 自动加载报告列表，每条显示日期和文件名，支持：
+  - View — 新窗口打开 HTML 报告
+  - Download — 浏览器下载
+  - Delete — 二次确认弹窗后删除
 
 ## 待补充
