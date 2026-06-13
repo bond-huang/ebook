@@ -40,3 +40,15 @@ V2.3版本：
 - Script Library进行编写，对脚本进行管理，可以添加删除及编写
 - 修复添加脚本时候失败了，脚本说明可以上传markdown文档，上传后可以编辑  
 - 添加Analytical Tools页面，进行分类，使用python对上传的csv进行分析测试
+
+V2.4版本：
+- 修复Analytical Tools页面过大，点开后覆盖左边导航的问题
+- 修复重启后数据库数据没了项目打不开的问题
+- 修复在更新Analytical Tools页面后，其他也没无法滚动的问题
+- 优化分类图标里面描述问题对齐方式，改成左对齐
+- 修复下拉后左侧导航有白色区域不美观的问题
+- 添加AIX系统支持，输入账户密码后Test Connection提示Real-time collection not supported for host type: AIX。AIX也定制巡检脚本，根据系统类型不一样，放置不一样的脚本，点击生成巡检报告
+- 修复AIX报告不在Reports List中显示的问题，修复AIX系统主页Host Information显示Linux条目的问题
+- 修复AutoPM巡检脚本显示问题
+- 修复左侧导航展开后下面的看不到了，改成可以滑动
+- 系统的Standard Check页面改成DIY功能页面，可以从脚本库添加需求的脚本，定制系统检查或管理功能

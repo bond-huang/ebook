@@ -115,4 +115,163 @@ Analytical Tool 三级导航结构：
 
 路径：Analytical Tools → Analysis Tool → Performance Analysis → SVC Performance Analysis
 
+## V2.4
+### 后端优化
+重启电脑后数据全没了，项目也打不开，进行了修复，以后重装系统或换机器，只需要：
+- 装 MySQL 8.4
+- 放入 my.ini
+- mysqld --initialize-insecure
+- 注册服务
+- 导入 schema.sql + seed.sql
+
+### 内容优化
+进行了问题修复及页面优化：
+- Analytical Tools页面有点大了，点开后覆盖了左边导航。问题原因：
+  - 内层 el-container 没有明确设置 flex: 1，导致它无法正确计算宽度
+  - 侧边栏没有设置 flex-shrink: 0，在 flex 布局中可能被压缩
+- 分离图标里面Web Server和3 Systems改成靠左，看起来协调一点，和下面状态图标对齐
+- 左侧导航在滚动右边滚动条后，下面有一段白色区域，不好看修复下
+- 左侧导航不要弄滚动条，随页面右边滚动进行滚动
+- 左侧导航展开后被页面挡住了：问题原因：之前侧边栏写死了 width: 60px，展开菜单时文字溢出被内容区遮挡。现在侧边栏宽度随状态变化，右侧content-wrapper用了flex: 1，会自动适应剩余空间
+- 左侧导航展开后，下面的看不到了，帮我改成可以滑动翻到下面去
+
+### 功能优化
+&#8195;&#8195;需求：准备添加AIX系统，输入账户密码后Test Connection提示Real-time collection not supported for host type: AIX。帮我添加AIX支持，AIX也定制巡检脚本，根据系统类型不一样，放置不一样的脚本，点击生成巡检报告。Linux的不要删了
+
+修改完成！修改总结
+-  server/services/perfCollector.js
+  - 添加了 collectAIX() 函数，用于采集AIX主机的实时性能数据
+  - 支持 AIX 特有命令：svmon, lparstat, iostat, lsdev, lsconf 等  - 导出 collectAIX 函数
+- server/routes/perf-realtime.js
+  - 导入 collectAIX 函数
+  - 添加 AIX 主机类型判断，支持 AIX 实时性能采集
+- server/services/inspection.js
+  - 重命名为 LINUX_SCRIPT_NAME 和 LINUX_INSPECTION_SCRIPT
+  - 添加了 AIX_SCRIPT_NAME 和 AIX_INSPECTION_SCRIPT（AIX 巡检脚本）
+  - 添加了 getInspectionConfig() 函数，根据系统类型返回对应配置
+  - 添加了 runAIXInspection() 函数，执行 AIX 巡检命令
+  - 修改 runInspection() 支持 hostType 参数
+- server/routes/reports.js
+  - 导入 getInspectionConfig 替代原来的 SCRIPT_NAME
+  - 添加 hostType 查询参数支持
+  - 移除 "Only Linux hosts are supported" 限制
+  - 将 host_type 传递给 runInspection() 和 generateReport()
+- server/services/reportGenerator.js
+  - 更新报告模板支持 Linux 和 AIX
+  - AIX 报告包含 LPAR、IO Stats、System Config、Paging Space 等 AIX 特有信息
+  - 标题和元数据显示系统类型
+
+现在系统支持：
+- Linux: 完整的 CPU、内存、磁盘、网络采集
+- AIX: 完整的 CPU、内存（svmon）、磁盘（df -g）、网络、LPAR、IO Stats 采集
+- 两个系统都可以生成巡检报告
+
+&#8195;&#8195;需求：AIX系统生成的报告不在Reports List里面显示，改一下。在AIX系统主页，Overview显示Host Information的条目还是linux，帮我参照AIXtest1页面改条目，除了几个关键信息是预填入的，其他信息通过Refresh获取，并且保留显示最后一次获取的值。
+
+修复AIX报告不在Reports List中显示的问题
+- server/routes/reports.js  - 生成报告时，目录名改用数据库中的host.host_name，而不是SSH获取的data.systemInfo.hostname
+- 这样报告目录名与列表查询时使用的目录名一致
+
+修复AIX系统主页Host Information显示Linux条目的问题
+- src/components/hostpage/Dashboard.vue
+- Host Information现在根据host.HostType显示不同条目：
+  - Linux: SELinux、CPU Cores、Memory Size、Swap Size
+  - AIX: LPAR、Memory Size、Paging Space、IO Stats
+  - 公共字段（OS Version、Kernel、HostName、IP、Architecture、Status、Category、Data Center、Uptime、Load
+  Average、Description）始终显示
+  - sysInfo 数据结构添加了 AIX 特有字段：lpar、pagingSpace、ioStats
+  - Refresh 时会正确获取并缓存 AIX 特有数据
+
+修复AutoPM巡检脚本显示问题：
+- src/components/hostpage/AutoPM.vue
+  - 点击 "Inspection Script" 按钮时，根据主机类型加载对应的脚本
+  - AIX 显示 AIX_Inspection.sh，Linux 显示 Linux_RHEL8.sh
+
+&#8195;&#8195;需求：AIX除了基础的HostType、HostName、IP Addr、Status、Category、BusinessName、DataCenter项外，AIX从系统获取信息还有：Machine Type 、Serial Number、Platform Firmware Level、AIX Level、CPU Entitled Capacity、Memory Size、和Page Space Size ，这些给我展示在系统主页Host Information里面，一共14项，其他的都不需要了，prtconf、lparstat、uname -Mu、oslevel -s、lsps等命令获取这些信息
+
+后端server/services/perfCollector.js
+- AIX性能采集现在使用以下命令获取信息：  
+  - prtconf → Machine Type、Serial Number、Platform Firmware Level、Memory Size  
+  - uname -Mu → 备用获取 Machine Type 和 Serial Number
+  - oslevel -s → AIX Level
+  - lparstat → CPU Entitled Capacity
+  - lsps -a → Page Space Size
+  - svmon → Memory Size
+
+前端src/components/hostpage/Dashboard.vue。AIX系统主页Host Information现在显示14项：
+
+字段|来源
+:---|:---
+Host Type|数据库
+Host Name|数据库
+IP Address|数据库
+Status|数据库
+Category|数据库
+Description|数据库
+Data Center|数据库
+Machine Type|prtconf
+Serial Number|prtconf/uname
+Platform Firmware Level|prtconf
+AIX Level|oslevel -s
+CPU Entitled Capacity|lparstat
+Memory Size|prtconf/svmon
+Page Space Size|lsps
+
+### AIX snap日志分析
+&#8195;&#8195;需求：在shm目录下放置一个名为1snap.pax.Z的文件，这是AIX系统snam -gc收集的系统日志，能帮我写一个工具，分析这个日志，生成分析报告，Python或shell分析都行，把脚本给我，我回头加到分析工具里面去进行测试 
+
+分析结果
+  - Node: sapecp01
+  - Partition: 740A_1  - AIX Level: 7100-00-10-1334
+  - CPUs: 16 VCPUs, 16.00 Entitled  - Memory: 127744 MB (128GB)
+  - Error Events: 312 total (298 PERM, 5 TEMP, 9 INFO)
+  - Disks: 17
+
+报告已生成：D:\AI\shm\1snap_report.html
+
+脚本位置：D:\AI\shm\tools\snap_analyzer.py
+
+使用方法：
+  1. 先解压 .Z 文件：uncompress 1snap.pax.Z（在 Git Bash 中）
+  2. 运行分析：python tools/snap_analyzer.py 1snap.pax
+  3. 查看生成的 HTML 报告
+
+报告包含：
+  - 系统信息（Node、Partition、OS Level、CPU、Memory）
+  - 错误日志汇总（按类型统计、Top 错误标签、最近 30 条错误）
+  - 磁盘设备列表
+  - HTML 格式，可以直接在浏览器中查看
+
+此方法暂未添加
+
+### 系统功能添加
+&#8195;&#8195;需求：每个系统规划了一个Standard Check页面，描述为System Online Standardized Check，这个我想改造下。改成从Script Library里面添加脚本，弄一个Add Script按钮，点击后从Script Library根据分类一层一层选择脚本，添加在Standard Check页面后以列表的形式展示，第一列是Name(脚本名称)，第二列是Readme，弄一个按钮，点击查看的是脚本上传的markdown内容，第三列是Script，同样东一个按钮，叫View Script，点击查看脚本内容，第四列是Description，从Script Library添加脚本时候写个简单描述，第五列是功能按钮，分三个，四个按钮是Run，点击后在当前系统运行脚本，结果用弹窗展示，第二个按钮是History，点击显示脚本执行结果的历史记录，第三个是Delete，点击就删除此脚本。
+
+Standard Check改造完成！功能说明
+- Add Script 按钮 — 点击后弹窗，从Script Library 按 System > Type > Script 三层选择脚本，可填写简要描述
+- Run — 通过 SSH 在目标主机执行脚本，弹窗显示执行结果
+- History — 显示脚本执行历史记录，可点击查看每次执行的输出
+- Delete — 从当前主机移除该脚本关联
+
+脚本列表表格：
+
+列|说明
+:---|:---
+Name|脚本名称（来自 Script Library）
+Readme|查看按钮，弹窗显示 markdown 渲染内容
+Script|View Script 按钮，弹窗显示脚本代码（语法高亮）
+Description|添加时填写的描述
+Actions|Run/History/Delete三个按钮
+
+新增的数据库表
+- host_scripts — 主机与脚本的关联关系
+- script_run_history — 脚本执行历史记录
+
+新增的后端 API
+  - GET /api/standard-check/:hostId — 获取主机关联的脚本
+  - POST /api/standard-check/:hostId — 添加脚本关联
+  - DELETE /api/standard-check/:hostId/:scriptId — 删除关联
+  - POST /api/standard-check/:hostId/:scriptId/run — 执行脚本
+  - GET /api/standard-check/:hostId/:scriptId/history — 查看执行历史
+
 ## 待补充

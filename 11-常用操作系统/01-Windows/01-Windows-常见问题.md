@@ -147,4 +147,59 @@ Windows7启动时候按`F8`可以进入维护模式，Windows10进入方法：
 - [win10自动修复无法修复你的电脑的解决方法(操作+原理理解)](https://blog.csdn.net/qq_41904864/article/details/113928885)
 - [cmd命令行修改windows虚拟内存](https://blog.csdn.net/i929479824/article/details/126776931)
 
+## 网络问题
+### 网桥与WIFI冲突问题
+&#8195;&#8195;问题描述：我有个qemu虚拟机用tap做网卡，但是我笔记本没法访问，所以我把它和一个vmware虚拟网卡一起做了网桥，VMware虚拟网卡是NAT模式，并且有DHCP服务，用tap的虚拟机配置的是VMware DHCP网段的IP，我的笔记本电脑就可以访问这个虚拟机了，但是一旦网桥启动，我的无线WiFi就没法打开网页了，但是可以微信聊天，帮我看看啥问题。
+
+故障根因一句话，Windows系统多网卡DNS择优逻辑+网桥接口度量紊乱：
+- 把VMnet8（VMware NAT网卡）和QEMU-TAP合成Windows网桥br0后，网桥自动继承VMnet8的空/内网DNS；Windows判定网桥跃点比WiFi更低，全局域名解析优先走网桥内网DNS（无法解析公网）
+- 微信自带内置IP/私有 DNS，不受系统解析栈影响，所以微信正常、浏览器网页打不开
+- VMnet8本身只是内网NAT网段（比如 192.168.137.x），它的DHCP只分配内网地址、没有公网DNS转发能力；网桥绑上它之后，网桥适配器拿到的DNS是空或者VMware内网无效DNS，完全不能解析baidu、网页域名。
+
+分步根治操作（不用拆网桥，保留 QEMU 访问能力）：
+- 压低网桥 br0、VMnet8 的路由优先级（最核心）
+  - Win+R 输入ncpa.cpl打开网络适配器
+  - 右键WLAN（WiFi） → 属性 → 双击Internet协议版本4(TCP/IPv4)
+  - 高级 → 取消自动跃点，手动填 10（数值越小优先级最高）
+  - 右键你的网桥（网桥） → IPv4 高级，手动跃点填200
+  - 右键VMware Network Adapter VMnet8 → IPv4 高级，跃点同样填200
+- Windows 默认优先用跃点数最小网卡的 DNS 做全局解析，WiFi 强制最低数值，系统永远优先拿WiFi运营商DNS解析域名
+
+给网桥br0强制填充无效占位DNS，杜绝抢解析，网桥适配器IPv4设置：
+- IP地址：自动获取（保留 VMnet8 DHCP 网段，QEMU正常拿IP）
+- DNS服务器：手动填写无效地址127.0.0.1
+- 不让网桥提供任何可用公网DNS，系统只会采信WiFi的DNS。
+
+关闭VMnet8不必要的DNS下发干扰：
+- 打开VMware虚拟网络编辑器（管理员权限）→选中VMnet8(NAT)：
+- NAT设置里记下网关，不用改；
+- DHCP设置：不要修改DNS字段，保持空白即可，它只负责给虚拟机分配内网IP
+
+刷新系统网络栈，立刻生效，管理员CMD逐条执行：
+```shell
+ipconfig /flushdns
+netsh winsock reset
+netsh int ip reset
+```
+执行完不用重启，直接测试网页。或命令验证是否修复，测解析：
+```shell
+nslookup www.baidu.com
+```
+返回 WiFi 路由器 / 公共 DNSIP = 修复成功；
+
+更稳妥的架构优化（长期不翻车方案，推荐）。现在的拓扑设计有冗余，换结构从根源避免冲突：
+- 拆掉Windows系统网桥，不再把TAP和VMnet8绑一起
+- QEMU启动参数直接对接 VMnet8 网段 TAP：
+  ```
+  QEMU -net tap,ifname=tap0,script=no,downscript=no
+  ```
+- 手动给tap0配置和VMnet8同网段静态IP（不要依赖 DHCP）
+- 这样只有VMnet8一块虚拟网卡，无网桥二层堆叠，不会打乱Windows多网卡度量与DNS逻辑，WiFi永远稳定。
+
+避坑点:
+- 绝对不要给网桥/VMnet8设置默认网关，全局默认网关只允许WiFi网卡持有；
+- 无线WiFi本身对多层网桥兼容性差，只要涉及Windows系统网桥绑定虚拟网卡，必出DNS/路由优先级问题，有线网卡概率低很多
+
+&#8195;&#8195;说明：以上方案由AI提供，已经经过了验证，修改DNS手动跃点及VMware上配置了一个无效DNS后，问题解决了。后面提供的一个方案待验证。
+
 ## 待补充
