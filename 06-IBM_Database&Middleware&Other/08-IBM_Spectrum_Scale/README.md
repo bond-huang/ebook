@@ -12,3 +12,4 @@ General Parallel File System（GPFS）在4.1版本之后更名为Spectrum Scale�
 - [GPFS-常用命令](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/08-IBM_Spectrum_Scale/01-GPFS-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
 - [GPFS-安装与配置](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/08-IBM_Spectrum_Scale/02-GPFS-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html)
 - [GPFS-常用操作](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/08-IBM_Spectrum_Scale/03-GPFS-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.html)
+- [GPFS-常见问题](https://gitbook.big1000.com/06-IBM_Database&Middleware&Other/08-IBM_Spectrum_Scale/04-GPFS-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)

@@ -1,4 +1,65 @@
 # Windows-常用操作
+
+## 软件安装使用
+### 安装wget
+打开PowerShell，执行命令进行安装：
+```shell
+winget install wget
+```
+会有冲突，需要取消别名：
+```shell
+Remove-Item Alias:wget -Force
+```
+使用示例：
+```shell
+wget -r -np -nH --cut-dirs=7 -c https://update.cs2c.com.cn/NS/V10/V10SP3-2403/os/adv/lic/base/aarch64
+```
+### 安装oscdimg
+打开PowerShell，执行命令进行安装：
+```shell
+winget install oscdimg
+```
+示例：
+```shell
+PS C:\Users\admin> winget install oscdimg
+已找到 OSCDIMG [Microsoft.OSCDIMG] 版本 2.56
+此应用程序由其所有者授权给你。
+Microsoft 对第三方程序包概不负责，也不向第三方程序包授予任何许可证。
+正在下载 https://msdl.microsoft.com/download/symbols/oscdimg.exe/688CABB065000/oscdimg.exe
+  ██████████████████████████████   140 KB /  140 KB
+已成功验证安装程序哈希
+正在启动程序包安装...
+已修改路径环境变量；重启 shell 以使用新值。
+添加了命令行别名： "oscdimg"
+已成功安装
+```
+使用示例：
+```shell
+oscdimg -h -m -u2 -lV10SP3_AARCH64 "F:\kylin_aarch64" "F:\V10SP3_aarch64.iso"
+```
+运行示例：
+```
+PS C:\Users\admin> oscdimg -h -m -u2 -lV10SP3_AARCH64 "F:\kylin_aarch64" "F:\V10SP3_aarch64.iso"
+
+OSCDIMG 2.56 CD-ROM and DVD-ROM Premastering Utility
+Copyright (C) Microsoft, 1993-2012. All rights reserved.
+Licensed only for producing Microsoft authorized content.
+
+Scanning source tree (8000 files in 4 directories)
+Scanning source tree complete (8211 files in 6 directories)
+
+Computing directory information complete
+
+Image file is 19143720960 bytes
+
+Writing 8211 files in 6 directories to F:\V10SP3_aarch64.iso
+
+100% complete
+
+Final image file is 19160522752 bytes
+
+Done.
+```
 ## 系统常用操作
 ### JAVA环境变量配置
 添加JAVA环境变量（windows10为例）：

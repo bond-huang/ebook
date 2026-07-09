@@ -52,3 +52,8 @@ V2.4版本：
 - 修复AutoPM巡检脚本显示问题
 - 修复左侧导航展开后下面的看不到了，改成可以滑动
 - 系统的Standard Check页面改成DIY功能页面，可以从脚本库添加需求的脚本，定制系统检查或管理功能
+
+V2.5版本：
+- 修复AIX运行脚本默认bash问题，根据脚本的shebang自动选择shell
+- 添加Linux SQLite3轻量数据库巡检脚本进行测试
+- 添加AI Assistant页面功能，接入AI大模型
