@@ -159,10 +159,19 @@ Installed:
 ```shell
 #初始化
 git init
+# 配置用户名(GitHub昵称)
+git config --global user.name "Github用户名"
+# 配置邮箱(Git注册邮箱)
+git config --global user.email "GitHub注册邮箱"
+# 查看是否配置成功
+git config --global --list
 #生成密钥，输入GitHub注册邮箱
-ssh–keygen –t rsa –C <email add>
+ssh–keygen –t rsa –C <GitHub注册邮箱>
+# ED25519加密（新版推荐，安全）
+ssh-keygen -t ed25519 -C "GitHub注册邮箱"
+# 老系统报错就换RSA：ssh-keygen -t rsa -b 4096 -C "邮箱"
 ```
-生成的密钥在目录<User directory>/.ssh下面，打开.pub的文件，复制里面的所有内容。
+&#8195;&#8195;生成的密钥在目录`<User directory>/.ssh`下面(Windows:C:\Users\用户名\.ssh\id_ed25519.pub)（公钥文件），打开`.pub`的文件，复制里面的所有内容。
 在GitHub WEB界面依次进行如下操作：
 - 点击右上角头像，选择选项“setting”
 - 点击左边导航栏“SSH and GPG keys"
@@ -174,7 +183,7 @@ ssh–keygen –t rsa –C <email add>
 ```shell
 ssh -T git@github.com
 ```
-提示成功即可以了。
+出现：`Hi xxx! You've successfully authenticated`表示可以了。
 ## 克隆仓库
 我是预先再GitHub已经有Repositories了，所以不需要新建，直接clone过来即可。
 再GitHub WEB界面依次进行如下操作：

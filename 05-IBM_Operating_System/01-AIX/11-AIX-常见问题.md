@@ -330,6 +330,37 @@ touch: 0652-046 Cannot create testfile.
 - [IV54476: J2 FILESYSTEM GETS CORRUPTED AFTER ROLLBACK OF EXTERNAL SNAPSHOT APPLIES TO AIX 6100-09](https://www.ibm.com/support/pages/apar/IV54476?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
 - [IV57152: J2 FILESYSTEM GETS CORRUPTED AFTER ROLLBACK OF EXTERNAL SNAPSHOT APPLIES TO AIX 7100-02](https://www.ibm.com/support/pages/apar/IV57152?mhsrc=ibmsearch_a&mhq=superblock%20%20corrupted)
 
+### 文件系统挂载问题
+#### 异常宕机后提示被其他节点挂载
+系统是单节点，异常宕机后系统启动正常，手动激活VG，挂载文件系统报错：
+```SH
+mount: /dev/lv001 on /db2data
+0506-365 Cannot mount guarded filesystem.
+The filesystem is potentially mounted on another node.
+```
+检查`etc/filesystems`，发现文件系统挂载属性guraded是yes，加noguard参数挂载成功：
+```sh
+# mount -o noguard /dev/node00log /db2data/db2inst1
+mount: /dev/node00log on /db2data/db2inst1
+Mount guard override for filesystem
+The filesystem is potentially mounted on another node,
+Replaying log for /dev/node00log
+```
+&#8195;&#8195;同一个VG的另外一个文件系统同样挂载无任何输出，挂载成功，但是2040G的文件系统只显示40G，里面没任何数据，`umount`后再不加参数`mount`成功。
+
+#### NFS服务端宕机后挂载问题
+&#8195;&#8195;NSF服务端的系统异常宕机，客户端需要重新挂载，umount异常需要先停掉相关占用的进程，然后挂载提示：
+```sh
+# mount node1:/db2home /db2home
+node1:/db2home
+mount: 1831-011 access denied for node1:/db2home
+mount: 1831-008 giving up on node1:/db2home
+The file access permissions do not allow the specified action.
+```
+服务端需要exportfs：
+```sh
+exportfs -a
+```
 ## 网络问题
 ### IP配置问题
 &#8195;&#8195;配置的IP重启后没有了，可能是ifconfig命令配置的，不会写入ODM库里面，当然也有可能是其他原因。使用`mktcpip`命令配置的IP才会在`lsattr`里面查看到，才会写入ODM库。例如`mktcpip`命令配置en0查看属性可以看到IP信息：

@@ -287,11 +287,30 @@ Number of days of warning before password expires       : 7
 ```
 #### 找不到匹配的host key算法
 &#8195;&#8195;OpenSSH版本过高，而shell终端上没有对应的加密算法。例如RHEL9.0默认是OpenSSH_8.7p1版本。需要升级shell终端，例如使用Xshell6版本，或者使用其它版本shell终端。
-## 登录问题
+## ssh问题
+### ssh登录问题
 #### ssh-copy-id命令报错
 报错如下：
 ```
 /usr/bin/ssh-copy-id: ERROR: No identities found
 ```
 使用`ssh-keygen -t dsa`生成公钥后即可。
+### ssh远程访问问题
+#### 秘钥老旧问题
+ssh远端服务器报错示例：
+```
+Unable to negotiate with 192.168.2.222 port 22: no matching host Rey type found. Their offer: ssh-rsa,ssh-dss
+```
+原因是对端系统版本老旧，不支持新的加密算法，重新生成也不行，只能在源端临时解决，方法一：
+```shell
+ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa root@目标IP
+```
+写进源端系统方法，指定目标IP：
+```shell
+Host 192.168.2.222
+    HostKeyAlgorithms +ssh-rsa
+    KexAlgorithms +diffie-hellman-group-exchange-sha1
+    PubkeyAcceptedKeyTypes +ssh-rsa
+```
+IP改成`*`就是全局的了。
 ## 待补充

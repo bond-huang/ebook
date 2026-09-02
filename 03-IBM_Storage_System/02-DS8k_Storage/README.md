@@ -11,3 +11,4 @@ IBM DS8000系列存储是IBM 高端存储系列。IBM DS8900F是使用最先进�
 - [DS8000-Copy_Services](https://gitbook.big1000.com/03-IBM_Storage_System/02-DS8k_Storage/03-DS8000-Copy_Services.html)
 - [DS8000-Copy Services Manager](https://gitbook.big1000.com/03-IBM_Storage_System/02-DS8k_Storage/04-DS8000-Copy_Services_Manager.html)
 - [DS8000-常见维护](https://gitbook.big1000.com/03-IBM_Storage_System/02-DS8k_Storage/10-DS8000-%E7%A1%AC%E4%BB%B6%E7%BB%B4%E6%8A%A4.html)
+- [DS8000-常见故障](https://gitbook.big1000.com/03-IBM_Storage_System/02-DS8k_Storage/20-DS8000-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C.html)

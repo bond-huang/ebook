@@ -37,3 +37,4 @@ AIX 诊断工具summ：[IBM AIX Diagnostic Tool "summ": A Summarized System Erro
 - [AIX-HAXD常见问题](https://gitbook.big1000.com/05-IBM_Operating_System/01-AIX/14-AIX-HAXD%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)
 - [AIX-HA常见问题](https://gitbook.big1000.com/05-IBM_Operating_System/01-AIX/15-AIX-HA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.html)
 - [AIX-PowerHA常用命令](https://gitbook.big1000.com/05-IBM_Operating_System/01-AIX/16-AIX-PowerHA%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html)
+- [AIX-常用工具](https://gitbook.big1000.com/05-IBM_Operating_System/01-AIX/17-AIX-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7.html)

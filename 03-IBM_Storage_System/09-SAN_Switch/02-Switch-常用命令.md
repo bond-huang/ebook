@@ -20,6 +20,7 @@ switchshow|查看交换机配置信息
 ipaddrshow|查看交换机ip地址
 switchStatusshow|查看交换机健康状态
 portshow &#60;port_index&#62;|查看某个端口状态，NPIV的虚拟WWN查看
+portcfgshow &#60;port_index&#62;|查看端口详细信息
 slotshow|查看交换机slot状态
 sfpshow &#60;port_index&#62;|查看某个sfp状态
 porterrshow|查看端口数据和数据类型错误统计信息
@@ -33,7 +34,9 @@ islshow|查看thunk连接状态
 errdump|查看交换机日志
 supportshow|查看交换机诊断信息
 fabricShow|显示fabric信息及级联信息
+fabriclog --show |查看所有fabric事件日志
 nsshow|查看当前交换机设备信息
+nscamshow|查看远端交换机信息
 nsallshow|查看fabric中的所有设备信息
 nszoneshow -wwn &#60;wwn&#62;|查看此wwn号在整个级联集群中配置
 

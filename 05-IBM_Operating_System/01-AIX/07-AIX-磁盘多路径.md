@@ -11,6 +11,13 @@
 - AIX和VIOS系统推荐多路径说明：[The Recommended Multi-path Driver to use on IBM AIX and VIOS When Attached to SVC and Storwize storage](https://www.ibm.com/support/pages/node/697363)
 - IBM MPIO多路径说明：[IBM AIX multipath I/O (MPIO) resiliency and problem determination](https://developer.ibm.com/articles/au-aix-multipath-io-mpio/)
 - lsmpio命令:[lsmpio命令](https://www.ibm.com/docs/en/aix/7.2?topic=l-lsmpio-command)
+- [IBM AIX MPIO 最佳实践与注意事项](https://www.ibm.com/support/pages/ibm-aix-mpio-best-practices-and-considerations)
+- [Path control module attributes](https://www.ibm.com/docs/en/aix/7.2.0?topic=io-path-control-module-attributes)
+- [IBM AIX multipath I/O (MPIO) resiliency and problem determination](https://developer.ibm.com/articles/au-aix-multipath-io-mpio/)
+- [AIX MPIO Closed Path Recovery Feature](https://www.ibm.com/support/pages/node/7184977)
+
+官方PDF文档：
+- [Guide to Selecting an AIX or VIOS Multi‑Pathing Path Control Module](https://public.dhe.ibm.com/software/server/supporttools/zdocs/GuidetoselectingAIXPCM_v0.7.pdf)
 
 ### 从SDDPCM迁移到AIXPCM
 参考官方文档，使用PowerHA环境进行了测试：
@@ -222,6 +229,19 @@ timeout_policy  fail_path                                           Timeout Poli
 unique_id       33213600507110180813E50000000000003F304214503IBMfcp Unique device identifier         False
 ww_name         0x500507110110c1a4                                  FC World Wide Name               False
 ```
+`lsmpio`命令查看磁盘使用多路径软件及路径情况 :
+```
+# lsmpio -ar
+Adapter Driver: fscsi6 -> AIX PCM
+    Adapter WWPN:  c050760b42080000
+    Link State:    Up
+                          Paths      Paths      Paths      Paths
+    Remote Ports        Enabled   Disabled     Failed    Missing         ID
+    50050768101682b3          4          0          0          0   0xc40001
+    50050768101782af          4          0          0          0   0xc40101
+    500507681016830e          4          0          0          0   0xc40201
+    5005076810178307          4          0          0          0   0xc40301
+```
 #### 卸载SDDPCM
 使用`smit deinstall`命令即可：
 ```
@@ -322,6 +342,15 @@ manage_disk_drivers -d 2810XIV -o AIX_non_MPIO
 attribute value description user_settable
 priority  1     Priority    True                        
 ```
+具体到某条路径：
+```
+# lspath -AHE -l hdisk0 -p fscsi6 -w "500507681016880e,1000000000000"
+attribute value              description  user_settable
+
+scsi_id   0xc40201           SCSI ID      False
+node_name 0x500507681000880e FC Node Name False
+priority  1                  Priority     True
+```
 修改磁盘路径优先级,步骤如下：
 - smit mpio
 - MPIO Path Management
@@ -361,6 +390,20 @@ return code = 0
 # chdev -l hdisk2 -a algorithm=load_balance_port
 # chdev -l hdisk2 -a algorithm=round_robin
 ```
+主备模式下路径选择情况查看：
+```
+# lsmpio -l hdisk0
+name    path_id  status   path_status  parent  connection
+
+hdisk0  0        Enabled  Sel,Opt      fscsi4  500507681015880e,1000000000000
+hdisk0  1        Enabled  Non          fscsi4  5005076810188807,1000000000000
+hdisk0  2        Enabled  Opt          fscsi5  500507681015880e,1000000000000
+hdisk0  3        Enabled  Non          fscsi5  5005076810188807,1000000000000
+```
+主备模式下如何查看选择路径还可以用`iostat`命令确认：
+```
+# iostat -a 1 10
+```
 ### 路径状态
 一共六种状态：
 - Enabled：正常状态
@@ -396,8 +439,10 @@ algorithm = fail_over：
 algorithm = round_robin：     
 &#8195;&#8195;使用此算法，将在磁盘的所有启用路径上分配和激活I/O。可以通过修改path_priority属性来加权沿每个路径路由的I /O百分比；如果路径发生故障或被禁用，则该路径不再用于发送I/O。      
 algorithm = shortest_queue：     
-&#8195;&#8195;该算法的行为与round_robin轻负载时非常相似。当负载增加时，此算法将优先选择活动I/O操作最少的路径。因此，如果一个路径由于存储区域网络（SAN）的拥塞而变慢，则其他较少拥塞的路径将用于更多的I/O操作。该算法将忽略路径优先级值。    
+&#8195;&#8195;该算法的行为与round_robin轻负载时非常相似。当负载增加时，此算法将优先选择活动I/O操作最少的路径。因此，如果一个路径由于存储区域网络（SAN）的拥塞而变慢，则其他较少拥塞的路径将用于更多的I/O操作。该算法将忽略路径优先级值。 
 
+补充说明：AIX7.3.4 Release Notes后，官方把DS8000/SVC默认算法改为shortest_queue。官方说明：
+[AIX 7.3.4 发布说明](https://www.ibm.com/docs/zh/aix/7.3.0?topic=notes-aix-734-release)
 #### algorithm（使用SDDPCM）  
 Failover only (fo 故障转移)：    
 &#8195;&#8195;设备的所有I/O操作都将发送到同一（首选）路径，直到该路径由于I/O错误而failed。发生故障后选择一条备用路径用于后续的I/O操作。                
@@ -439,5 +484,79 @@ IBM官方相关参考链接：
 - SDDPCM介绍与下载：[Subsystem Device Driver Path Control Module](https://www.ibm.com/support/pages/node/651285)
 - SDDPCM介绍:[Subsystem Device Driver Path Control Module for IBM AIX](https://developer.ibm.com/technologies/systems/articles/au-aix-install-sddpcm/#)
 
+## 故障排查
+### 常用信息确认命令
+#### 磁盘相关
+磁盘路径统计信息可以使用`lsmpio -Sdl hdiskX`命令查看:
+```
+# lsmpio -Sdl hdisk0
+Disk: hdisk0
+    Path statistics since Mon Sep 05 14:32:54 CST 2022
+    Path 0: (fscsi4:500507681015880e,1000000000000)
+        Path Selections:                           1995642051
+        Adapter Errors:                                    42
+            Software:                        0
+            Hardware:                        0
+            Transport Dead:                  0
+            Transport Busy:                  0
+            Transport Fault:                 0
+            No Device Response:             41
+            Target Port ID Changed:          0
+        Command Timeouts:                                   1
+        Reservation Conflicts:                              5
+        SCSI Queue Full:                                    0
+        SCSI Busy:                                          0
+        SCSI ACA Active:                                    0
+        SCSI Task Aborted:                                  0
+        SCSI Aborted Command:                               0
+        SCSI Check Condition:                              29
+            Medium Error:                    0
+            Hardware Error:                  0
+            Not Ready:                       0
+            Other:                          29
+        Last Error:                                  SCSI Check Condition
+        Last Error Time:                             Sun Aug 16 23:29:47 CST 2026
+        Path Failure Count:                                 3
+            Due to Adapter Error:            1
+            Due to I/O Error:                1
+            Due to Health Check:             0
+            Due to SCSI Sense:               0
+            Due to Qualifier Bit:            0
+            Due to Opening Error:            0
+            Due to PG SN Mismatch:           0
+        Last Path Failure:                           Timeout
+        Last Path Failure Time:                      Sat Feb 28 23:33:02 CST 2026
+```
+示例中`Path Selections`值越多代表被选为主路径的时间越长。
+### 路径闪断
+#### 路径闪断但确影响业务
+路闪断报错示例：
+```
+813FE820   0816235026 U S MQSeries       SOFTWARE PROGRAM ERROR
+DCB47997   0816232926 T H hdisk1         DISK OPERATION ERROR
+DCB47997   0816232926 T H hdisk0         DISK OPERATION ERROR
+F31FFAC3   0816232926 I H hdisk0         PATH HAS RECOVERED
+00000003   0816232926 N U fcs6
+4B436A3D   0816232926 T H fscsi6         LINK ERROR
+4B436A3D   0816232926 T H fscsi6         LINK ERROR
+4B436A3D   0816232926 T H fscsi6         LINK ERROR
+DE3B8540   0816232826 P H hdisk0         PATH HAS FAILED
+```
+&#8195;&#8195;PowerVM虚拟化环境，fcs6是vfc，报错路径指向同一个物理端口，不同存储链路，现象就是报错点业务受到影响，系统性能消耗明显增加。检查SAN交换机光功率正常，有少量历史丢帧记录，但是不确定是否是报错点的。问题引起可能原因是`algorithm`是`fail_over`，即主备模式，故障点发生了路径切换，路径检测是一分钟，故影响到业务，使用AIXPCM时，`algorithm`参数通常推荐推荐`shortest_queue`，具体参考官方最近实践。
+
+修改方法：
+- 在线修改命令：`chdev -l hdisk0 -a algorithm=shortest_queue -U`;
+- 修改后查看属性:lsattr -El hdisk0是否修改成功；
+- 验证：`iostat -a 1 10`命令查看其他fscsi是否有数据，或`lsmpio -l hdisk0`命令查看；
+- 如果在线不行：`chdev -l hdisk0 -a algorithm=shortest_queue -P`修改后找停机窗口重启系统生效。
+
+磁盘属性后面线上`True+`表示可以在线修改，示例：
+```sh
+# lsattr -El hdisk0
+PCM             PCM/friend/fcpother                                 Path Control Module              False
+PR_key_value    none                                                Persistant Reserve Key Value     True+
+algorithm       fail_over                                           Algorithm                        True+
+```
+官方说明链接：[IBM AIX Troubleshooting: chdev command displays the error message "0514-047 Cannot access a device."](https://www.ibm.com/support/pages/ibm-aix-troubleshooting-chdev-command-displays-error-message-0514-047-cannot-access-device)
 ## 其它多路径软件
-近期有安装过AIX Host Utilities，但是由于兼容性最后没成功，后期用到了再记录。
+&#8195;&#8195;近期有安装过AIX Host Utilities，但是由于兼容性最后没成功，后期用到了再记录。华为多路径在华为存储章节单独说明。

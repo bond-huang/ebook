@@ -197,4 +197,15 @@ fatal: the remote end hung up unexpectedly
 Everything up-to-date
 ```
 再来一次就可以了。
+## 添加仓库报错
+### git clone报错
+报错示例：
+```shell
+$ git remote add origin git@github.com:bond-huang/shm.git
+fatal: not a git repository (or any of the parent directories): .git
+```
+要先初始化：
+```shell
+git init
+```
 ## 待补充
