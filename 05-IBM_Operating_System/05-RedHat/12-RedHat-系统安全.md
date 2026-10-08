@@ -125,6 +125,7 @@ iptables -L -n
 删除规则（`-D` = Delete），示例：
 ```sh
 iptables -D INPUT -p tcp --dport 3306 -j ACCEPT
+iptables -D INPUT -p tcp --dport 3306 -m iprange --src-range 192.168.1.10-192.168.1.15 -j ACCEPT
 ```
 按行号删，先查看，再删，示例：
 ```sh

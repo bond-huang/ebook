@@ -15,6 +15,82 @@ Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 ```
 python -m SimpleHTTPServer
 ```
+指定目录及局域网（默认就是了）访问：
+```sh
+# 先切到你要共享的目录，比如D盘
+cd D:\
+# 0.0.0.0 代表监听本机所有网卡，局域网其他电脑可以连
+python -m http.server 8000 --bind 0.0.0.0
+```
+指定目录及添加用户密码访问，AI给的代码，验证可用：
+```python
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+from socketserver import ThreadingMixIn
+import base64
+import os
+
+# =========配置=========
+USER = "admin"
+PWD = "123456"
+PORT = 8000
+SHARE_DIR = r"D:/"
+# ======================
+
+class ThreadHTTPServer(ThreadingMixIn, HTTPServer):
+    daemon_threads = True
+
+class AuthHandler(SimpleHTTPRequestHandler):
+    def check_auth(self):
+        auth_header = self.headers.get("Authorization")
+        if auth_header is None or not auth_header.startswith("Basic "):
+            self.send_auth()
+            return False
+        try:
+            auth_raw = base64.b64decode(auth_header[6:]).decode("utf-8")
+            user, pwd = auth_raw.split(":", 1)
+        except Exception:
+            self.send_auth()
+            return False
+        return user == USER and pwd == PWD
+
+    def send_auth(self):
+        self.send_response(401)
+        self.send_header('WWW-Authenticate', 'Basic realm="File Access"')
+        self.send_header("Content-Type", "text/html;charset=utf-8")
+        self.end_headers()
+        # 先写字符串，再encode转bytes，不再在b""里写中文
+        html = "<h3>Please input username and password</h3>"
+        self.wfile.write(html.encode("utf-8"))
+
+    def do_GET(self):
+        if not self.check_auth():
+            return
+        try:
+            super().do_GET()
+        except Exception as e:
+            print(f"请求异常: {e}")
+
+    def do_HEAD(self):
+        if not self.check_auth():
+            return
+        super().do_HEAD()
+
+if __name__ == "__main__":
+    os.chdir(SHARE_DIR)
+    server = ThreadHTTPServer(("0.0.0.0", PORT), AuthHandler)
+    print(f"✅ 带密码文件服务已启动，端口{PORT}，局域网全部网卡可访问")
+    print(f"账号:{USER}，密码:{PWD}")
+    print(f"共享目录 = {SHARE_DIR}")
+    print("按 Ctrl+C 停止服务")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        server.shutdown()
+```
+保存，例如名为`server_auth.py`，运行：
+```sh
+python server_auth.py
+```
 ### 字符串转换为JSON
 &#8195;&#8195;JSON是一种轻量级的数据交换格式，网上可以搜索到在线JSON格式化工具，当然可以在命令行的Python解析器来解析JSOS串。使用示例：
 ```

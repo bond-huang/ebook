@@ -201,7 +201,10 @@ info: found 48 asset files
 ......
 info: >> generation finished with success in 718.2s ! 
 ```
-构建完成后web可以访问，不需要重启Nginx。
+构建完成后web可以访问，不需要重启Nginx。可以后台运行：
+```sh
+nohup gitbook build . > build.log 2>&1 &
+```
 
 ## 迁移到其它系统
 源版本是centos8.2，目标版本是centos7.9。首先安装nodejs：

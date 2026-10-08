@@ -55,4 +55,20 @@ Windows could not start the VMware Inventory Service on LocaComputer. For more i
 ```
 &#8195;&#8195;可能是Inventory Service database问题，数据损坏导致无法启动，需要reset Inventory Service database，对于6.0版本官方参考文档：[How to reset Inventory Service database for vCenter Server 6.0 (2146264)](https://kb.vmware.com/s/article/2146264?lang=en_us)。
 
+## 迁移问题
+### 存储迁移问题
+#### iso迁移问题
+迁移iso文件到其他存储设备上时候，提示：
+```
+无法访问文件[xxxx xxxx] iso/rhel-server-6.40x86-dvd.iso
+```
+&#8195;&#8195;原因是iso被一个或多个虚拟机挂载，在系统还挂载文件系统情况下（或者未挂载但未eject），如果直接虚拟机上点击移除，会导致虚拟化hang住无法操作（实际未重启），状态也会异常，并且无法卸载，操作方法：
+- 利用RVtools导出即时的vCD清单
+- 筛选Connected字段，选择true
+- 筛选Device Type字段，选择相应的iso
+- 进入挂载iso的每台虚拟机，查看文件系统，如过挂载了iso，检查是否有占用，没有就`umount`
+- 然后运行命令`eject`或`eject -v`，两个版本进过测试差异如下：
+    - 红帽6版本需要手动在vcenter上卸载光驱
+    - 红帽7版本vcenter上虚拟机的光驱已经断开连接
+
 ## 待补充

@@ -79,4 +79,20 @@ sysctl vm.swappiness = 10
 vm.swappiness = 10
 ```
 然后运行`sysctl -p`使配置永久生效。
+
+#### swap扩容
+示例LVM形式swap设备名是`dm-1`，扩容28G：
+```sh
+swapoff /dev/dm-1
+lvextend -L +28G /dev/rhel/swap
+mkswap /dev/dm-1
+swapon /dev/dm-1
+```
+文件形式的swap（swapfile）扩容示例：
+```sh
+dd if=/dev/zero of=/swapfile bs=1G count=28
+chmod 0600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+```
 ## 待补充
